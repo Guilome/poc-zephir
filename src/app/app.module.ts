@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { MestachesComponent } from './mestaches/mestaches.component';
 import { NavComponent } from './nav/nav.component';
+import { GestionComponent } from './gestion/gestion.component';
+import { VisuGestionComponent } from './visu-gestion/visu-gestion.component';
 
 
 @NgModule({
@@ -13,7 +15,9 @@ import { NavComponent } from './nav/nav.component';
     AppComponent,
     LoginComponent,
     MestachesComponent,
-    NavComponent
+    NavComponent,
+    GestionComponent,
+    VisuGestionComponent
   ],
   imports: [
     BrowserModule

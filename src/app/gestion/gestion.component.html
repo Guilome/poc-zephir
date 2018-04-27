@@ -1,0 +1,22 @@
+<div class="card text-white  mb-3 {{card}}" style="max-width: 35rem;">
+  <div class="card-header">{{titre}}
+    <div class="float-right">
+      <a *ngIf="eye" onclick="alert('Bonjour le monde !');"> <i class="fa fa-eye pull-xs-right fa-2x"></i></a>
+      <i *ngIf="search"class="fa fa-search fa-2x"></i>
+      <i *ngIf="share"class="fa fa-share-square-o fa-2x"></i>
+      <i *ngIf="inbox"class="fa fa-inbox fa-2x"></i>
+      <i *ngIf="calendar"class="fa fa-calendar fa-2x"></i>
+      <i *ngIf="file" class="fa fa-file-o fa-2x"></i>
+      <i *ngIf="filter" class="fa fa-filter fa-2x"></i>
+      <i *ngIf="chart" class="fa fa-pie-chart fa-2x"></i>
+      <i *ngIf="refresh" class="fa fa-refresh fa-2x"></i>
+      <i *ngIf="trash" class="fa fa-trash-o fa-2x"></i>
+    </div>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Titre</h5>
+    <h5>Titre 2 </h5>
+
+    <p class="card-text">description... </p>
+  </div>
+
