@@ -1,7 +1,11 @@
-<div class="card text-white  mb-3 {{card}}" style="max-width: 35rem;">
-  <div class="card-header">{{titre}}
+<div class="card mb-3 {{card}}" style="max-width: 35rem;">
+
+  <h3>{{titre}}</h3>
+
+  <div class="card-header">
+
     <div class="float-right">
-      <a *ngIf="eye" onclick="alert('Bonjour le monde !');"> <i class="fa fa-eye pull-xs-right fa-2x"></i></a>
+      <a *ngIf="eye" onclick="alert('Hello word !');" title="Visualiser"> <i class="fa fa-eye pull-xs-right fa-2x"></i></a>
       <i *ngIf="search"class="fa fa-search fa-2x"></i>
       <i *ngIf="share"class="fa fa-share-square-o fa-2x"></i>
       <i *ngIf="inbox"class="fa fa-inbox fa-2x"></i>
@@ -15,7 +19,7 @@
   </div>
   <div class="card-body">
     <h5 class="card-title">Titre</h5>
-    <h5>Titre 2 </h5>
+    <h5>Titre H5 </h5>
 
     <p class="card-text">description... </p>
   </div>
