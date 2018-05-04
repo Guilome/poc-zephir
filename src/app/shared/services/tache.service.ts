@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Nature, Status, Tache, Priorite} from '../domain/Tache';
-import {Context} from '../util/context';
+import {Context} from '../domain/context';
 
 @Injectable()
 export class TacheService {
