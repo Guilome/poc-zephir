@@ -7,9 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VisuGestionComponent implements OnInit {
 
-  mesTaches = 'Mes tâches';
-  mesDevisAvalider = 'Mes devis à valider';
-  card = 'bg-info';
+
   constructor() { }
 
   ngOnInit() {

@@ -13,6 +13,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit() {
+  test() {
+    console.log('Test on submit');
+    alert('Hello ! ');
   }
 }

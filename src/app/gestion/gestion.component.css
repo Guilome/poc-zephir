@@ -1,3 +1,23 @@
 a{
   cursor: pointer;
 }
+div{
+  font-size: 14px;
+}
+div.tache {
+  background-color: rgba(0,0,0,0.1);
+}
+
+div.card-header{
+  font-size: 15px;
+  background-color: rgba(0,0,0,0.4);
+  color:white;
+}
+button{
+  color: white;
+}
+
+div.bg-devis {
+  font-size: 15px;
+  background-color: rgba(0,255,0,0.4);
+}

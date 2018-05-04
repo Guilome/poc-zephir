@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { MestachesComponent } from './mestaches/mestaches.component';
 import { NavComponent } from './nav/nav.component';
 import { GestionComponent } from './gestion/gestion.component';
 import { VisuGestionComponent } from './visu-gestion/visu-gestion.component';
@@ -15,6 +14,11 @@ import { ActualitesComponent } from './nav-bar/actualites/actualites.component';
 import { RecrutementComponent } from './nav-bar/recrutement/recrutement.component';
 import { EspacePresseComponent } from './nav-bar/espace-presse/espace-presse.component';
 import { ContactComponent } from './nav-bar/contact/contact.component';
+import {TacheService} from './shared/services/tache.service';
+import { TraitementTacheComponent } from './traitement/traitement-tache/traitement-tache.component';
+import { DetailTacheComponent } from './traitement/traitement-tache/detail-tache/detail-tache.component';
+import { ApercuDocumentComponent } from './traitement/traitement-tache/apercu-document/apercu-document.component';
+import { ConformiteComponent } from './traitement/traitement-tache/conformite/conformite.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -25,13 +29,14 @@ const appRoutes: Routes = [
   { path: 'Espace-Presse', component: EspacePresseComponent},
   { path: 'Contact', component: ContactComponent},
   { path: 'gestionBO', component: VisuGestionComponent},
+  { path: 'TraitementTache', component: TraitementTacheComponent},
+
   { path: '**', redirectTo: 'gestionBO'}
 ];
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    MestachesComponent,
     NavComponent,
     GestionComponent,
     VisuGestionComponent,
@@ -41,13 +46,17 @@ const appRoutes: Routes = [
     ActualitesComponent,
     RecrutementComponent,
     EspacePresseComponent,
-    ContactComponent
+    ContactComponent,
+    TraitementTacheComponent,
+    DetailTacheComponent,
+    ApercuDocumentComponent,
+    ConformiteComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
   ],
-  providers: [],
+  providers: [TacheService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,26 +1,101 @@
-<div class="card mb-3 {{card}}" style="max-width: 35rem;">
+<div class="accordion" id="accordion">
+  <div class="card {{card}}" >
 
-  <h3>{{titre}}</h3>
 
-  <div class="card-header">
+  <div class="card-header card-transparent" >
+    <button class="btn btn-link" type="button" data-toggle="collapse" [attr.data-target]="'#collapseOne' + numId"  aria-expanded="false" [attr.aria-controls]="'collapseOne'+numId">
 
+      {{titre}}
+
+    </button>
     <div class="float-right">
-      <a *ngIf="eye" onclick="alert('Hello word !');" title="Visualiser"> <i class="fa fa-eye pull-xs-right fa-2x"></i></a>
-      <i *ngIf="search"class="fa fa-search fa-2x"></i>
-      <i *ngIf="share"class="fa fa-share-square-o fa-2x"></i>
-      <i *ngIf="inbox"class="fa fa-inbox fa-2x"></i>
-      <i *ngIf="calendar"class="fa fa-calendar fa-2x"></i>
-      <i *ngIf="file" class="fa fa-file-o fa-2x"></i>
-      <i *ngIf="filter" class="fa fa-filter fa-2x"></i>
-      <i *ngIf="chart" class="fa fa-pie-chart fa-2x"></i>
-      <i *ngIf="refresh" class="fa fa-refresh fa-2x"></i>
-      <i *ngIf="trash" class="fa fa-trash-o fa-2x"></i>
+      <a *ngIf="eye" (click)="visualiser()" title="Visualiser"> <i class="fa fa-eye pull-xs-right fa-lg"></i></a>
+      <i *ngIf="search"class="fa fa-search fa-lg"></i>
+      <i *ngIf="share"class="fa fa-share-square-o fa-lg"></i>
+      <i *ngIf="inbox"class="fa fa-inbox fa-lg"></i>
+      <i *ngIf="calendar"class="fa fa-calendar fa-lg"></i>
+      <i *ngIf="file" class="fa fa-file-o fa-lg"></i>
+      <i *ngIf="filter" class="fa fa-filter fa-lg"></i>
+      <i *ngIf="chart" class="fa fa-pie-chart fa-lg"></i>
+      <i *ngIf="refresh" class="fa fa-refresh fa-lg"></i>
+      <i *ngIf="trash" class="fa fa-trash-o fa-lg" (click)="visualiser()"></i>
+      <button *ngIf="tacheBoolean" class="btn btn-outline-dark" data-toggle="modal" data-target="#idModalTache"><i class="fa fa-search-plus"></i></button>
     </div>
   </div>
-  <div class="card-body">
-    <h5 class="card-title">Titre</h5>
-    <h5>Titre H5 </h5>
 
-    <p class="card-text">description... </p>
+  <div [attr.id]="'collapseOne'+numId" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+    <div class="card-body">
+      <!-- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES ---  BEGIN TECHES -->
+
+        <table *ngIf="tacheBoolean" class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col">Priorité</th>
+            <th scope="col">Code</th>
+            <th scope="col">Libellé</th>
+            <th scope="col">Date</th>
+            <th scope="col">Intermédiaire</th>
+            <th scope="col">Client</th>
+            <th scope="col">Numéro Contrat</th>
+            <th scope="col">Nature</th>
+            <th scope="col">État</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let tache of taches">
+            <th scope="row">{{tache.priorite}}</th>
+            <td>{{tache.code}}</td>
+            <td>{{tache.libelle}}</td>
+            <td>{{tache.dateLimite|date: 'MM/dd/yyyy' }}</td>
+            <td>{{tache.context.nomAppelIntermediaire}}</td>
+            <td>{{tache.context.nomAppelClient}}</td>
+            <td>{{tache.context.numeroContrat}}</td>
+            <td>{{tache.nature}}</td>
+            <td>{{tache.status}}</td>
+          </tr>
+          </tbody>
+        </table>
+      <!-- /END TACHES --- END TECHES --- END TACHES --- END TACHES --- END TACHES --- END TACHES --- END TECHES -->
+
+    </div>
   </div>
+  </div>
+  <!-- The Modal MES TACHES-->
+  <div *ngIf="tacheBoolean" class="modal fade" id="idModalTache">
+    <div class="modal-dialog">
+      <div class="modal-content">
 
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th scope="col">Numéro Contrat</th>
+              <th scope="col">Nature</th>
+              <th scope="col"> Libellé</th>
+              <th scope="col">État</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let tache of taches" ng-click="go(ai)">
+              <th scope="row">{{tache.context.numeroContrat}}</th>
+              <td>{{tache.nature}}</td>
+              <td>{{tache.libelle}}</td>
+              <td>{{tache.status}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Annuler</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- /END The Modal MES TACHES-->
+</div>
