@@ -16,7 +16,7 @@ export class Tache {
   public status: Status;
   public urlDocument: string;
   public conformite: boolean;
-  motifNonConformite: string;
+  public motifNonConformite: string;
   public context: Context;
 
 }
@@ -30,7 +30,7 @@ export enum Nature {
 }
 export enum Status {
   A_VERIFIER = 'À vérifier',
-  A_VALIDER  = 'À Valider',
+  A_VALIDER  = 'À valider',
   EN_ATTENTE = 'En attente',
   OK = 'Ok'
 }

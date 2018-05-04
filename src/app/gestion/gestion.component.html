@@ -14,7 +14,7 @@
       <i *ngIf="share"class="fa fa-share-square-o fa-lg"></i>
       <i *ngIf="inbox"class="fa fa-inbox fa-lg"></i>
       <i *ngIf="calendar"class="fa fa-calendar fa-lg"></i>
-      <i *ngIf="file" class="fa fa-file-o fa-lg"></i>
+      <a routerLink="/EditTache"><i *ngIf="file" class="fa fa-file-o fa-lg"></i></a>
       <i *ngIf="filter" class="fa fa-filter fa-lg"></i>
       <i *ngIf="chart" class="fa fa-pie-chart fa-lg"></i>
       <i *ngIf="refresh" class="fa fa-refresh fa-lg"></i>
@@ -39,6 +39,7 @@
             <th scope="col">Numéro Contrat</th>
             <th scope="col">Nature</th>
             <th scope="col">État</th>
+            <th>Action</th>
           </tr>
           </thead>
           <tbody>
@@ -52,6 +53,7 @@
             <td>{{tache.context.numeroContrat}}</td>
             <td>{{tache.nature}}</td>
             <td>{{tache.status}}</td>
+            <td> <a routerLink="/TraitementTache/{{tache.ident}}"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
           </tr>
           </tbody>
         </table>

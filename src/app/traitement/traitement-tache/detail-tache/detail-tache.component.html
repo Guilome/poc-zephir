@@ -1,3 +1,29 @@
-<p>
-  tache de verification
-</p>
+<h5>
+  Tâche de verification
+</h5>
+<dl>
+  <dt><b>Priorité : </b></dt>
+  <dd>{{tache.priorite}}</dd>
+
+  <dt><b> Code : </b></dt>
+  <dd>{{tache.code}}</dd>
+
+  <dt><b>Desciption :</b></dt>
+  <dd>{{tache.libelle}}</dd>
+
+  <dt><b>Date :</b></dt>
+  <dd>{{tache.dateLimite | date : 'dd/mm/yyyy'}}</dd>
+
+  <dt><b>Intermédiaire : </b></dt>
+  <dd>{{tache.context.nomAppelIntermediaire}}</dd>
+
+  <dt><b>Client :</b></dt>
+  <dd>{{tache.context.nomAppelClient}}</dd>
+
+  <dt><b>Contrat : </b></dt>
+  <dd>{{tache.context.numeroContrat}}</dd>
+
+  <dt><b>Sinistre : </b></dt>
+  <dd>{{tache.context.numeroSinitre}}</dd>
+
+</dl>

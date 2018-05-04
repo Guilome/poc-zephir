@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {ActivatedRoute, RouterModule, Routes} from '@angular/router';
+import {FormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -19,6 +20,7 @@ import { TraitementTacheComponent } from './traitement/traitement-tache/traiteme
 import { DetailTacheComponent } from './traitement/traitement-tache/detail-tache/detail-tache.component';
 import { ApercuDocumentComponent } from './traitement/traitement-tache/apercu-document/apercu-document.component';
 import { ConformiteComponent } from './traitement/traitement-tache/conformite/conformite.component';
+import {EditTacheComponent} from './traitement/traitement-tache/edit-tache/edit-tache.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -30,7 +32,8 @@ const appRoutes: Routes = [
   { path: 'Contact', component: ContactComponent},
   { path: 'gestionBO', component: VisuGestionComponent},
   { path: 'TraitementTache', component: TraitementTacheComponent},
-
+  { path: 'TraitementTache/:id', component: TraitementTacheComponent},
+  { path: 'EditTache', component: EditTacheComponent},
   { path: '**', redirectTo: 'gestionBO'}
 ];
 @NgModule({
@@ -50,11 +53,13 @@ const appRoutes: Routes = [
     TraitementTacheComponent,
     DetailTacheComponent,
     ApercuDocumentComponent,
-    ConformiteComponent
+    ConformiteComponent,
+    EditTacheComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
+    FormsModule
   ],
   providers: [TacheService],
   bootstrap: [AppComponent]

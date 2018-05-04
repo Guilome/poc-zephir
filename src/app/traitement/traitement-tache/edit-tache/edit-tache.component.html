@@ -1,0 +1,46 @@
+<div clas="row">
+  <div class="col-sm-5 col-sm-offset-2">
+
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+      <div class="form-group">
+        <label for="numeroContrat">Contrat</label>
+        <input type="text" id="numeroContrat" class="form-control" name="numeroContrat" ngModel required>
+      </div>
+
+      <div class="form-group">
+        <label for="code">Action</label>
+        <select id="code" class="form-control" name="code" [ngModel]="defaultAction">
+          <option value="AVENANT">Avenant</option>
+          <option value="RESILILATION">Résiliation</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="dateLimite">Date limite de traitement</label>
+        <input type="date" id="dateLimite" class="form-control" name="dateLimite" ngModel useValueAsDate required>
+      </div>
+
+      <div class="form-group">
+        <label for="priorite">Priorité</label>
+        <select id="priorite" class="form-control" name="priorite" [ngModel]="defaultPriorite">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Enregistrer</button>
+
+    </form>
+
+  </div>
+</div>

@@ -8,15 +8,12 @@
 }
 
 #buttom-content {
+  top: 200px;
   position: absolute;
   bottom: 0;
   right: 0;
 }
-#idContentRight{
-  vertical-align: middle;
-}
-.vcenter {
-  display: inline-block;
-  vertical-align: middle;
-  float: none;
+
+.align-middle {
+  text-align: center;
 }

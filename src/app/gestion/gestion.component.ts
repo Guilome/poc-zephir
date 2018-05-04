@@ -23,7 +23,7 @@ export class GestionComponent implements OnInit {
   chart = false;
   trash = false;
   tacheBoolean = false;
-  taches = {};
+  taches = [];
   numId = 0;
   constructor(public tacheService: TacheService) {
   }
@@ -33,7 +33,7 @@ export class GestionComponent implements OnInit {
     if (this.titre === 'Mes tâches') {
         this.mesTaches();
         this.tacheBoolean = true;
-        this.taches = this.tacheService.listTaches();
+        this.taches = this.tacheService.listerTaches();
         this.numId = 1;
     } else if (this.titre === 'Mes devis à valider') {
         this.mesDevis();
@@ -50,6 +50,11 @@ export class GestionComponent implements OnInit {
   visualiser() {
     alert('Hello ! ' + this.titre);
   }
+  nouvelleTache() {
+    alert('Nouvelle tache');
+
+  }
+
   private mesTaches() {
     this.eye = true;
     this.search = true;
