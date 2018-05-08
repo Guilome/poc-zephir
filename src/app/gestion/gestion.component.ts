@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {debug, log} from 'util';
 import {TacheService} from '../shared/services/tache.service';
+import { Tache } from '../shared/domain/Tache';
 
 @Component({
   selector: 'app-gestion',
@@ -23,7 +24,7 @@ export class GestionComponent implements OnInit {
   chart = false;
   trash = false;
   tacheBoolean = false;
-  taches = [];
+  taches: Tache[];
   numId = 0;
   constructor(public tacheService: TacheService) {
   }
@@ -33,7 +34,7 @@ export class GestionComponent implements OnInit {
     if (this.titre === 'Mes tâches') {
         this.mesTaches();
         this.tacheBoolean = true;
-        this.taches = this.tacheService.listerTaches();
+        this.tacheService.listerTaches().subscribe(data => this.taches = data);
         this.numId = 1;
     } else if (this.titre === 'Mes devis à valider') {
         this.mesDevis();
