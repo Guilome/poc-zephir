@@ -30,7 +30,8 @@ export class EditTacheComponent implements OnInit {
     const dateLimite = form.value['dateLimite'];
     const priorite = form.value['priorite'];
 
-    const tache = new Tache(Nature.TACHE, code);
+    const tache = new Tache(Nature.TACHE);
+    tache.code = code;
     tache.context = new Context(12, numeroContrat, 'ARRAULT ELODIE', 'ESPACE MOLINEL');
     tache.status = Status.EN_ATTENTE;
     // tache.libelle = 'Permis de conduire';

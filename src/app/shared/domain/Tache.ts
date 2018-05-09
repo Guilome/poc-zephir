@@ -11,9 +11,7 @@ export class Tache {
     .set('NOTE', 'Note')
     .set('NOTE_INTERNE', 'Note Interne');
   //
-  constructor(public nature: Nature, code: string  ) {
-    this._libelle = Tache.libCode.get(code);
-    this.code = code;
+  constructor(public nature: Nature ) {
   }
   // Private
   private _libelle: string;
@@ -35,7 +33,7 @@ export class Tache {
   idGroupe: number;
 
   get libelle(): string {
-    return this._libelle;
+    return Tache.libCode.get(this.code);
   }
 
 }
