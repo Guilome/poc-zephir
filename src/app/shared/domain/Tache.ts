@@ -2,14 +2,26 @@ import {Context} from './context';
 
 
 export class Tache {
-
-  constructor(public nature: Nature ) {}
+  //
+  static libCode = new Map()
+    .set('ATT_CG', 'Carte grise')
+    .set('ATT_PERMIS', 'Permis de conduire')
+    .set('AVENANT', 'Avenant')
+    .set('RESILILATION', 'Résiliation')
+    .set('NOTE', 'Note')
+    .set('NOTE_INTERNE', 'Note Interne');
+  //
+  constructor(public nature: Nature, code: string  ) {
+    this._libelle = Tache.libCode.get(code);
+    this.code = code;
+  }
+  // Private
+  private _libelle: string;
 
   public ident: number;
   public code: string;
   public famille: string;
   public sousFamille: string;
-  public libelle: string;
   public message: string; // commentaire
   public priorite: Priorite;
   public dateLimite: Date;
@@ -19,6 +31,13 @@ export class Tache {
   public motifNonConformite: string;
   public context: Context;
 
+  idUtilisateur: number;
+  idGroupe: number;
+
+  get libelle(): string {
+    return this._libelle;
+  }
+
 }
 
 
@@ -26,7 +45,7 @@ export enum Nature {
   TACHE = 'Tâche',
   PIECE = 'Piece',
   NOTE = 'Note',
-  ALERTE = 'Alerte'
+  ALERTE = 'Alerte',
 }
 export enum Status {
   A_VERIFIER = 'À vérifier',

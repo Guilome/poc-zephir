@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {debug, log} from 'util';
-import {TacheService} from '../shared/services/tache.service';
-import { Tache } from '../shared/domain/Tache';
+import {TacheService} from '../../shared/services/tache.service';
+import { Tache } from '../../shared/domain/Tache';
+import {NoteService} from '../../shared/services/note.service';
 
 @Component({
   selector: 'app-gestion',
@@ -23,10 +24,13 @@ export class GestionComponent implements OnInit {
   refresh = false;
   chart = false;
   trash = false;
-  tacheBoolean = false;
-  taches: Tache[];
   numId = 0;
-  constructor(public tacheService: TacheService) {
+  // Boolean :
+  tacheBoolean = false;
+  noteBoolean = false;
+  // Liste :
+  taches: Tache[];
+  constructor(public tacheService: TacheService, public noteService: NoteService) {
   }
 
   ngOnInit() {
@@ -42,6 +46,11 @@ export class GestionComponent implements OnInit {
     } else if (this.titre === 'Mes Notes') {
       this.mesNotes();
       this.numId = 3;
+      this.noteBoolean = true;
+      // récupération des données :
+      this.noteService.listerNotes().subscribe(data => this.taches = data);
+
+
     } else {
       this.numId = Math.floor(Math.random() * (999999 - 100000)) + 100000;
       console.log(this.numId);

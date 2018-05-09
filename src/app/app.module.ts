@@ -6,7 +6,7 @@ import {FormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
-import { GestionComponent } from './gestion/gestion.component';
+import { GestionComponent } from './visu-gestion/gestion/gestion.component';
 import { VisuGestionComponent } from './visu-gestion/visu-gestion.component';
 import { QuiSommeNousComponent } from './nav-bar/qui-somme-nous/qui-somme-nous.component';
 import { DevenirCourtierPartenaireComponent } from './nav-bar/devenir-courtier-partenaire/devenir-courtier-partenaire.component';
@@ -21,6 +21,7 @@ import { DetailTacheComponent } from './traitement/traitement-tache/detail-tache
 import { ApercuDocumentComponent } from './traitement/traitement-tache/apercu-document/apercu-document.component';
 import { ConformiteComponent } from './traitement/traitement-tache/conformite/conformite.component';
 import {EditTacheComponent} from './traitement/traitement-tache/edit-tache/edit-tache.component';
+import {NoteService} from './shared/services/note.service';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -61,7 +62,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FormsModule
   ],
-  providers: [TacheService],
+  providers: [TacheService, NoteService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

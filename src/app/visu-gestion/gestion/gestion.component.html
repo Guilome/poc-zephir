@@ -14,7 +14,7 @@
       <i *ngIf="share"class="fa fa-share-square-o fa-lg"></i>
       <i *ngIf="inbox"class="fa fa-inbox fa-lg"></i>
       <i *ngIf="calendar"class="fa fa-calendar fa-lg"></i>
-      <a routerLink="/EditTache"><i *ngIf="file" class="fa fa-file-o fa-lg"></i></a>
+      <a routerLink="/EditTache"><i *ngIf="file" title="Ajouter" class="fa fa-file-o fa-lg"></i></a>
       <i *ngIf="filter" class="fa fa-filter fa-lg"></i>
       <i *ngIf="chart" class="fa fa-pie-chart fa-lg"></i>
       <i *ngIf="refresh" class="fa fa-refresh fa-lg"></i>
@@ -59,6 +59,31 @@
         </table>
       <!-- /END TACHES --- END TECHES --- END TACHES --- END TACHES --- END TACHES --- END TACHES --- END TECHES -->
 
+      <!-- BEGIN NOTES --- BEGIN NOTES --- BEGIN NOTES --- BEGIN NOTES --- BEGIN NOTES --- BEGIN NOTES ---  BEGIN NOTES -->
+      <table *ngIf="noteBoolean" class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">Nature</th>
+          <th scope="col">Code</th>
+          <th scope="col">Message</th>
+          <th scope="col">Date</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let note of taches">
+          <th scope="row">{{note.nature}}</th>
+          <td>{{note.code}}</td>
+          <td>
+            <label  title="{{note.message}}">...</label></td>
+          <td>{{note.dateLimite | date: 'MM/dd/yyyy' }}</td>
+
+          <td> <a routerLink="/TraitementTache/{{note.ident}}"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
+        </tr>
+        </tbody>
+      </table>
+      <!-- /END NOTES --- /END NOTES --- /END NOTES --- /END NOTES --- /END NOTES --- /END NOTES --- /END NOTES --- /END NOTES -->
+
     </div>
   </div>
   </div>
@@ -77,7 +102,7 @@
             <tr>
               <th scope="col">Numéro Contrat</th>
               <th scope="col">Nature</th>
-              <th scope="col"> Libellé</th>
+              <th scope="col">Libellé</th>
               <th scope="col">État</th>
             </tr>
             </thead>
@@ -101,3 +126,4 @@
   </div>
   <!-- /END The Modal MES TACHES-->
 </div>
+
