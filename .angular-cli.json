@@ -21,14 +21,15 @@
       "styles": [
                 "styles.css",
                 "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-                "../node_modules/font-awesome/css/font-awesome.css"
-      ],
+                "../node_modules/font-awesome/css/font-awesome.css",
+                "../node_modules/bootstrap-editable/css/bootstrap-editable.css"
+                ],
       "scripts": [
-        "../node_modules/jquery/dist/jquery.js",
-
-        "../node_modules/bootstrap/dist/js/bootstrap.js",
-                  "../node_modules/traceur/bin/traceur.js"
-      ],
+                  "../node_modules/jquery/dist/jquery.js",
+                  "../node_modules/bootstrap/dist/js/bootstrap.js",
+                  "../node_modules/traceur/bin/traceur.js",
+                  "../node_modules/bootstrap-editable/js/index.js"
+                ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

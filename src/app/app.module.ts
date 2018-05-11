@@ -22,6 +22,7 @@ import { ApercuDocumentComponent } from './traitement/traitement-tache/apercu-do
 import { ConformiteComponent } from './traitement/traitement-tache/conformite/conformite.component';
 import {EditTacheComponent} from './traitement/traitement-tache/edit-tache/edit-tache.component';
 import {NoteService} from './shared/services/note.service';
+import { NouvelleNoteComponent } from './traitement/nouvelle-note/nouvelle-note.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
   { path: 'TraitementTache', component: TraitementTacheComponent},
   { path: 'TraitementTache/:id', component: TraitementTacheComponent},
   { path: 'EditTache', component: EditTacheComponent},
+  { path: 'NouvelleNote', component: NouvelleNoteComponent},
   { path: '**', redirectTo: 'gestionBO'}
 ];
 @NgModule({
@@ -55,7 +57,8 @@ const appRoutes: Routes = [
     DetailTacheComponent,
     ApercuDocumentComponent,
     ConformiteComponent,
-    EditTacheComponent
+    EditTacheComponent,
+    NouvelleNoteComponent
   ],
   imports: [
     BrowserModule,

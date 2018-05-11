@@ -14,6 +14,7 @@ export class EditTacheComponent implements OnInit {
 
   defaultAction = 'AVENANT';
   defaultPriorite = '0';
+  currentDate = new Date();
 
   constructor(private tacheService: TacheService, private router: Router) {
   }

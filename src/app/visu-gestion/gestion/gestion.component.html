@@ -9,12 +9,12 @@
 
     </button>
     <div class="float-right">
-      <a *ngIf="eye" (click)="visualiser()" title="Visualiser"> <i class="fa fa-eye pull-xs-right fa-lg"></i></a>
+      <a *ngIf="eye" (click)="visualiser(eye)" title="Visualiser"> <i class="fa fa-eye pull-xs-right fa-lg" #eye></i></a>
       <i *ngIf="search"class="fa fa-search fa-lg"></i>
       <i *ngIf="share"class="fa fa-share-square-o fa-lg"></i>
       <i *ngIf="inbox"class="fa fa-inbox fa-lg"></i>
       <i *ngIf="calendar"class="fa fa-calendar fa-lg"></i>
-      <a routerLink="/EditTache"><i *ngIf="file" title="Ajouter" class="fa fa-file-o fa-lg"></i></a>
+      <a (click)="nouvelleTache()"><i *ngIf="file" title="Ajouter" class="fa fa-file-o fa-lg"></i></a>
       <i *ngIf="filter" class="fa fa-filter fa-lg"></i>
       <i *ngIf="chart" class="fa fa-pie-chart fa-lg"></i>
       <i *ngIf="refresh" class="fa fa-refresh fa-lg"></i>
@@ -71,14 +71,19 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let note of taches">
-          <th scope="row">{{note.nature}}</th>
-          <td>{{note.code}}</td>
-          <td>
-            <label  title="{{note.message}}">...</label></td>
-          <td>{{note.dateLimite | date: 'MM/dd/yyyy' }}</td>
+        <tr *ngFor="let note of taches; let i = index" [attr.id]="'tr'+i">
+          <ng-container *ngIf="xorPersonalise(note.status != 'Ok')">
 
-          <td> <a routerLink="/TraitementTache/{{note.ident}}"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
+              <th scope="row">{{note.nature}}</th>
+              <td>{{note.code}}</td>
+              <td title="{{note.message}}"><u>...</u></td>
+              <td>{{note.dateLimite | date: 'MM/dd/yyyy' }}</td>
+              <td>
+                <a (click)="ouvrirNote(note.ident, 'tr'+i)"><i *ngIf="note.status == 'Ok'" class="fa fa-check-square-o fa-lg"  title="Re-ouvrir"></i></a>
+                <a (click)="fermerNote(note.ident, 'tr'+i)"><i *ngIf="note.status != 'Ok'"class="fa fa-square-o fa-lg"  title="Fermer"></i></a>
+              </td>
+          </ng-container>
+
         </tr>
         </tbody>
       </table>
@@ -126,4 +131,3 @@
   </div>
   <!-- /END The Modal MES TACHES-->
 </div>
-

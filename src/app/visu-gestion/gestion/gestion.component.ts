@@ -3,6 +3,7 @@ import {debug, log} from 'util';
 import {TacheService} from '../../shared/services/tache.service';
 import { Tache } from '../../shared/domain/Tache';
 import {NoteService} from '../../shared/services/note.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-gestion',
@@ -25,12 +26,15 @@ export class GestionComponent implements OnInit {
   chart = false;
   trash = false;
   numId = 0;
+
+  voirNoteFermee = false;
   // Boolean :
   tacheBoolean = false;
   noteBoolean = false;
   // Liste :
   taches: Tache[];
-  constructor(public tacheService: TacheService, public noteService: NoteService) {
+  // Contructor :
+  constructor(public tacheService: TacheService, public noteService: NoteService, private router: Router) {
   }
 
   ngOnInit() {
@@ -57,11 +61,43 @@ export class GestionComponent implements OnInit {
     }
 
   }
-  visualiser() {
-    alert('Hello ! ' + this.titre);
+  xorPersonalise(b: boolean): boolean {
+    if ( this.voirNoteFermee) {
+      return true;
+    }
+    return b;
+  }
+  visualiser(eye) {
+    if (this.tacheBoolean) {
+      alert('Hello ! ' + this.titre);
+    }
+    if (this.noteBoolean) {
+
+      this.voirNoteFermee = !this.voirNoteFermee;
+      if( this.voirNoteFermee ) {
+        eye.classList.add('del');
+      } else {
+        eye.classList.remove('del');
+      }
+    }
   }
   nouvelleTache() {
-    alert('Nouvelle tache');
+    if (this.noteBoolean) {
+      this.router.navigate(['/NouvelleNote']);
+    } else if (this.tacheBoolean) {
+      this.router.navigate(['/EditTache']);
+    }
+  }
+  fermerNote(idNote, tr: any) {
+    this.noteService.fermer(idNote);
+    document.getElementById(tr).classList.add('del');
+
+
+  }
+  ouvrirNote(idNote, tr: any) {
+
+    this.noteService.reOuvrir(idNote);
+    document.getElementById(tr).classList.remove('del');
 
   }
 

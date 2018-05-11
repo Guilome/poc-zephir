@@ -21,3 +21,7 @@ div.bg-devis {
   font-size: 15px;
   background-color: rgba(0,255,0,0.4);
 }
+.del {
+  text-decoration: line-through;
+  color: gray;
+}

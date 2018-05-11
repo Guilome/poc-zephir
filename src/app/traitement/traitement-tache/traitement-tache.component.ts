@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Tache} from '../../shared/domain/Tache';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {TacheService} from '../../shared/services/tache.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-traitement-tache',
@@ -15,5 +16,8 @@ export class TraitementTacheComponent implements OnInit {
 
   ngOnInit() {
   }
+
+
+
 
 }

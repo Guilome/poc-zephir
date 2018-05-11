@@ -12,6 +12,8 @@ export class Tache {
     .set('NOTE_INTERNE', 'Note Interne');
   //
   constructor(public nature: Nature ) {
+    this.status = Status.EN_ATTENTE;
+    console.log(this.status);
   }
   // Private
   private _libelle: string;

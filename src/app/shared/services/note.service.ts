@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import {Nature, Tache} from '../domain/Tache';
+import {Nature, Status, Tache} from '../domain/Tache';
 
 @Injectable()
 export class NoteService {
@@ -17,11 +17,13 @@ export class NoteService {
 
     if ( taille < 1) {
       const note1 = new Tache(Nature.NOTE);
+      note1.ident = 10;
       note1.code = 'NOTE';
       note1.message = 'Rappeler M. MOLINARO JACQUES pour lui proposer de changer de formule de garanties sur son contrat habitation';
       note1.dateLimite = new Date('08/05/2018');
 
       const note2 = new Tache(Nature.NOTE);
+      note2.ident = 11;
       note2.code =  'NOTE_INTERNE';
       note2.message = 'Ne plus souscrire de devis SOLUTIO à effet 2020 partir du 01/12/2019';
       note2.dateLimite = new Date('12/05/2018');
@@ -33,5 +35,37 @@ export class NoteService {
     }
     return this.noteSubject.asObservable();
 
+  }
+
+  addNote(code, groupe, message, dateLimite) {
+
+    const note = new Tache(Nature.NOTE);
+    note.code = code;
+    note.idGroupe = this.getIdGroupe(groupe);
+    note.message = message;
+    note.dateLimite = dateLimite;
+    this.notes.push(note);
+    // abonnement :
+    this.noteSubject.next(this.notes);
+  }
+
+  /**
+   * return l'ID du groupe entré en parametre
+   * @param groupe
+   * @returns {number}
+   */
+  private getIdGroupe(groupe): number {
+    return 1;
+  }
+
+  fermer(idNote) {
+    this.notes.find(n => n.ident === idNote).status = Status.OK;
+  }
+  reOuvrir(idNote) {
+    this.notes.find(n => n.ident === idNote).status = Status.EN_ATTENTE;
+  }
+
+  getNoteById(idNote: number): Tache {
+    return this.notes.find(n => n.ident === idNote);
   }
 }
