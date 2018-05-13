@@ -1,6 +1,10 @@
 a{
   cursor: pointer;
 }
+u {
+  cursor: help;
+}
+
 div{
   font-size: 14px;
 }
