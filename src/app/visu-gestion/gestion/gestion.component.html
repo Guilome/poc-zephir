@@ -1,4 +1,4 @@
-<div class="accordion" id="accordion">
+<div class="accordion" id="accordion" xmlns="">
   <div class="card {{card}}" >
 
 
@@ -10,16 +10,14 @@
     </button>
     <div class="float-right">
       <a *ngIf="eye" (click)="visualiser(eye)" title="Visualiser"> <i class="fa fa-eye pull-xs-right fa-lg" #eye></i></a>
-      <i *ngIf="search"class="fa fa-search fa-lg"></i>
+      <i *ngIf="search"class="fa fa-search fa-lg" title="Recherche avancée"></i>
       <i *ngIf="share"class="fa fa-share-square-o fa-lg"></i>
-      <i *ngIf="inbox"class="fa fa-inbox fa-lg"></i>
-      <i *ngIf="calendar"class="fa fa-calendar fa-lg"></i>
+      <i *ngIf="inbox"class="fa fa-inbox fa-lg" title="Demander une nouvelle tâche"></i>
+      <i *ngIf="calendar"class="fa fa-calendar fa-lg" title="Réaffecte mes tâches"></i>
       <a (click)="nouvelleTache()"><i *ngIf="file" title="Ajouter" class="fa fa-file-o fa-lg"></i></a>
-      <i *ngIf="filter" class="fa fa-filter fa-lg"></i>
-      <i *ngIf="chart" class="fa fa-pie-chart fa-lg"></i>
-      <i *ngIf="refresh" class="fa fa-refresh fa-lg"></i>
-      <i *ngIf="trash" class="fa fa-trash-o fa-lg" (click)="visualiser()"></i>
-      <button *ngIf="tacheBoolean" class="btn btn-outline-dark" data-toggle="modal" data-target="#idModalTache"><i class="fa fa-search-plus"></i></button>
+      <i *ngIf="filter" class="fa fa-filter fa-lg" title="Filter"></i>
+      <i *ngIf="chart" class="fa fa-pie-chart fa-lg" title="Mes statistiques"></i>
+      <i *ngIf="refresh" class="fa fa-refresh fa-lg" title="Rafraichir"></i>
     </div>
   </div>
 
@@ -44,16 +42,18 @@
           </thead>
           <tbody>
           <tr *ngFor="let tache of taches">
-            <th scope="row">{{tache.priorite}}</th>
-            <td>{{tache.code}}</td>
-            <td>{{tache.libelle}}</td>
-            <td>{{tache.dateLimite|date: 'MM/dd/yyyy' }}</td>
-            <td>{{tache.context.nomAppelIntermediaire}}</td>
-            <td>{{tache.context.nomAppelClient}}</td>
-            <td>{{tache.context.numeroContrat}}</td>
-            <td>{{tache.nature}}</td>
-            <td>{{tache.status}}</td>
-            <td> <a routerLink="/TraitementTache/{{tache.ident}}"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
+            <ng-container *ngIf="tache.dateCloture == null ">
+              <th scope="row">{{tache.priorite}}</th>
+              <td>{{tache.code}}</td>
+              <td>{{tache.libelle}}</td>
+              <td>{{tache.dateLimite|date: 'MM/dd/yyyy' }}</td>
+              <td>{{tache.context.nomAppelIntermediaire}}</td>
+              <td>{{tache.context.nomAppelClient}}</td>
+              <td>{{tache.context.numeroContrat}}</td>
+              <td>{{tache.nature}}</td>
+              <td>{{tache.status}}</td>
+              <td> <a routerLink="/TraitementTache/{{tache.ident}}"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
+            </ng-container>
           </tr>
           </tbody>
         </table>
@@ -71,17 +71,18 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let note of taches; let i = index" [attr.id]="'tr'+i">
-          <ng-container *ngIf="xorPersonalise(note.status != 'Ok')">
+        <tr *ngFor="let note of taches" [attr.id]="'tr'+note.ident">
+          <ng-container *ngIf="voirNoteTerminer(note.dateCloture)">
 
               <th scope="row">{{note.nature}}</th>
               <td>{{note.code}}</td>
               <td>    <u data-toggle="tooltip" title="{{note.message}}">...</u>
               </td>
               <td>{{note.dateLimite | date: 'MM/dd/yyyy' }}</td>
-              <td>
-                <a (click)="ouvrirNote(note.ident, 'tr'+i)"><i *ngIf="note.status == 'Ok'" class="fa fa-check-square-o fa-lg"  title="Re-ouvrir"></i></a>
-                <a (click)="fermerNote(note.ident, 'tr'+i)"><i *ngIf="note.status != 'Ok'"class="fa fa-square-o fa-lg"  title="Fermer"></i></a>
+              <td align="center">
+                <a (click)="ouvrirNote(note.ident)"><i *ngIf="note.status == 'Ok'" class="fa fa-check-square-o fa-lg"  title="Re-ouvrir"></i></a>
+                <a (click)="fermerNote(note.ident)"><i *ngIf="note.status != 'Ok'"class="fa fa-square-o fa-lg"  title="Fermer"></i></a>
+                <a (click)="supprimerNote(note.ident)"> <i class="fa fa-trash-o fa-lg" title="Supprimer"></i></a>
               </td>
           </ng-container>
 
@@ -93,42 +94,6 @@
     </div>
   </div>
   </div>
-  <!-- The Modal MES TACHES-->
-  <div *ngIf="tacheBoolean" class="modal fade" id="idModalTache">
-    <div class="modal-dialog">
-      <div class="modal-content">
 
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-
-        <div class="modal-body">
-          <table class="table table-striped">
-            <thead>
-            <tr>
-              <th scope="col">Numéro Contrat</th>
-              <th scope="col">Nature</th>
-              <th scope="col">Libellé</th>
-              <th scope="col">État</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let tache of taches" ng-click="go(ai)">
-              <th scope="row">{{tache.context.numeroContrat}}</th>
-              <td>{{tache.nature}}</td>
-              <td>{{tache.libelle}}</td>
-              <td>{{tache.status}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Annuler</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-  <!-- /END The Modal MES TACHES-->
 </div>
+

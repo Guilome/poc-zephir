@@ -1,6 +1,5 @@
-<h5>
-  Tâche de verification
-</h5>
+<h4 *ngIf="(tache.status | lowercase) === 'à vérifier'">  Tâche de verification </h4>
+<h4 *ngIf="(tache.status | lowercase) === 'à valider'">  Tâche de validation </h4>
 <dl>
   <dt><b>Priorité : </b></dt>
   <dd>{{tache.priorite}}</dd>

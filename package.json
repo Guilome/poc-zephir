@@ -25,6 +25,7 @@
     "angular-cli-ghpages": "^0.5.2",
     "angular-font-awesome": "^3.1.2",
     "bootstrap": "^4.1.0",
+    "bootstrap-confirmation": "0.0.2",
     "bootstrap-editable": "^1.0.1",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",

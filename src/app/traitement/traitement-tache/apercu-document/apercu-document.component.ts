@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Tache} from '../../../shared/domain/Tache';
+import {TacheService} from '../../../shared/services/tache.service';
+import {ActivatedRoute} from '@angular/router';
+import {DomSanitizer} from '@angular/platform-browser';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-apercu-document',
@@ -7,9 +12,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ApercuDocumentComponent implements OnInit {
 
-  constructor() { }
+  tache: Tache;
+  private idSubscription: Subscription;
+  constructor(private tacheService: TacheService,
+              private route: ActivatedRoute, private sanitizer: DomSanitizer) {
+  }
 
   ngOnInit() {
+    this.idSubscription = this.route.params.subscribe((params: any) => {
+      this.tache = this.tacheService.getTacheById(+params.id);
+    });
+  }
+
+  // transformation URL
+  urlSafe() {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.tache.urlDocument);
   }
 
 }

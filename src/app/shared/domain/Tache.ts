@@ -13,7 +13,6 @@ export class Tache {
   //
   constructor(public nature: Nature ) {
     this.status = Status.EN_ATTENTE;
-    console.log(this.status);
   }
   // Private
   private _libelle: string;
@@ -24,7 +23,8 @@ export class Tache {
   public sousFamille: string;
   public message: string; // commentaire
   public priorite: Priorite;
-  public dateLimite: Date;
+  public dateLimite: Date; // format DD/MM/YYYY hh:mm
+  public dateCloture: Date; // format DD/MM/YYYY hh:mm
   public status: Status;
   public urlDocument: string;
   public conformite: boolean;

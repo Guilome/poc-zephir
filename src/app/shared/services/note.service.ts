@@ -59,13 +59,22 @@ export class NoteService {
   }
 
   fermer(idNote) {
-    this.notes.find(n => n.ident === idNote).status = Status.OK;
+    const note = this.notes.find(n =>  n.ident === idNote);
+    note.status = Status.OK;
+    note.dateCloture = new Date(); // date du jour + heure
   }
   reOuvrir(idNote) {
-    this.notes.find(n => n.ident === idNote).status = Status.EN_ATTENTE;
+    const note = this.notes.find(n => n.ident === idNote);
+    note.status = Status.EN_ATTENTE;
+    note.dateCloture = null; // date du jour + heure
   }
 
   getNoteById(idNote: number): Tache {
     return this.notes.find(n => n.ident === idNote);
+  }
+
+  removeNote(idNote: number) {
+    this.notes = this.notes.filter(n => n.ident !== idNote);
+    this.noteSubject.next(this.notes);
   }
 }

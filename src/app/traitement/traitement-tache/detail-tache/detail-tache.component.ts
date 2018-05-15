@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Tache} from '../../../shared/domain/Tache';
 import {ActivatedRoute} from '@angular/router';
 import {TacheService} from '../../../shared/services/tache.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-detail-tache',
@@ -11,17 +12,16 @@ import {TacheService} from '../../../shared/services/tache.service';
 export class DetailTacheComponent implements OnInit {
 
   tache: Tache;
+  private idSubscription: Subscription;
 
   constructor(private tacheService: TacheService,
               private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    const id = this.route.snapshot.params['id'];
-    this.tache = this.tacheService.getTacheById(+id);
-    console.log(this.tache);
-    console.log(id);
-
+    this.idSubscription = this.route.params.subscribe((params: any) => {
+      this.tache = this.tacheService.getTacheById(+params.id);
+    });
   }
 
 }

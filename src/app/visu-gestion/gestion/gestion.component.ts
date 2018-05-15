@@ -27,7 +27,8 @@ export class GestionComponent implements OnInit {
   trash = false;
   numId = 0;
 
-  voirNoteFermee = false;
+  boolDateCloture = false;
+
   // Boolean :
   tacheBoolean = false;
   noteBoolean = false;
@@ -57,15 +58,16 @@ export class GestionComponent implements OnInit {
 
     } else {
       this.numId = Math.floor(Math.random() * (999999 - 100000)) + 100000;
-      console.log(this.numId);
     }
 
   }
-  xorPersonalise(b: boolean): boolean {
-    if ( this.voirNoteFermee) {
-      return true;
+
+  voirNoteTerminer(dateCloture: any): boolean {
+    if ( dateCloture != null) {
+      console.log('Return true ! ')
+      return this.boolDateCloture;
     }
-    return b;
+    return true;
   }
   visualiser(eye) {
     if (this.tacheBoolean) {
@@ -73,11 +75,13 @@ export class GestionComponent implements OnInit {
     }
     if (this.noteBoolean) {
 
-      this.voirNoteFermee = !this.voirNoteFermee;
-      if( this.voirNoteFermee ) {
+      this.boolDateCloture = !this.boolDateCloture;
+      if ( this.boolDateCloture ) {
         eye.classList.add('del');
+        eye.title = 'Cacher mes notes terminée';
       } else {
         eye.classList.remove('del');
+        eye.title = 'Voir mes notes terminée';
       }
     }
   }
@@ -88,30 +92,31 @@ export class GestionComponent implements OnInit {
       this.router.navigate(['/EditTache']);
     }
   }
-  fermerNote(idNote, tr: any) {
+  fermerNote(idNote) {
     this.noteService.fermer(idNote);
-    document.getElementById(tr).classList.add('del');
-
-
+    document.getElementById('tr' + idNote).classList.add('del');
   }
-  ouvrirNote(idNote, tr: any) {
+  ouvrirNote(idNote) {
 
     this.noteService.reOuvrir(idNote);
-    document.getElementById(tr).classList.remove('del');
+    document.getElementById('tr' + idNote).classList.remove('del');
 
+  }
+  supprimerNote(idNote: number) {
+    if (confirm('Confirmer-vous la suppression définitive de cette note ?')) {
+      this.noteService.removeNote(idNote);
+    }
   }
 
   private mesTaches() {
-    this.eye = true;
+
     this.search = true;
-    this.share = true;
     this.inbox = true;
     this.calendar = true;
     this.file = true;
     this.filter = true;
     this.chart = true;
     this.refresh = true;
-
   }
 
   private mesDevis() {
