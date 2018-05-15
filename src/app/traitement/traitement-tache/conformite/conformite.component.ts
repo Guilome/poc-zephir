@@ -83,7 +83,7 @@ export class ConformiteComponent implements OnInit {
   goToProductDetails(id) {
     this.router.navigate(['/TraitementTache', id]);
   }
-  private goToDashboard() {
+  goToDashboard() {
     this.router.navigate(['/gestionBO']);
   }
 
