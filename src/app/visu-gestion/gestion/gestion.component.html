@@ -42,7 +42,7 @@
           </thead>
           <tbody>
           <tr *ngFor="let tache of taches">
-            <ng-container *ngIf="tache.dateCloture == null ">
+            <ng-container *ngIf="recuperMestaches(tache)">
               <th scope="row">{{tache.priorite}}</th>
               <td>{{tache.code}}</td>
               <td>{{tache.libelle}}</td>
@@ -91,9 +91,18 @@
       </table>
       <!-- /END NOTES --- /END NOTES --- /END NOTES --- /END NOTES --- /END NOTES --- /END NOTES --- /END NOTES --- /END NOTES -->
 
+      <!-- BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE -->
+      <div *ngIf="groupeBoolean"   class="col-sm-6" >
+        <button (click)="mesGroupes()">Click ! </button>
+        <canvas id="chart"></canvas>
+      </div>
+
+      <!-- END-GROUPE ---- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE -->
+
     </div>
   </div>
   </div>
 
 </div>
+
 

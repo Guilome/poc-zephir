@@ -4,7 +4,8 @@ import {TacheService} from '../../shared/services/tache.service';
 import { Tache } from '../../shared/domain/Tache';
 import {NoteService} from '../../shared/services/note.service';
 import {Router} from '@angular/router';
-
+import {Chart} from 'chart.js';
+import {GroupeService} from '../../shared/services/groupe.service';
 @Component({
   selector: 'app-gestion',
   templateUrl: './gestion.component.html',
@@ -25,21 +26,25 @@ export class GestionComponent implements OnInit {
   refresh = false;
   chart = false;
   trash = false;
-  numId = 0;
+  numId = 0; // card ID
 
   boolDateCloture = false;
 
   // Boolean :
   tacheBoolean = false;
   noteBoolean = false;
+  groupeBoolean = false;
   // Liste :
   taches: Tache[];
+
+  // Current User :
+  idCurrentUser = 1;
+
   // Contructor :
-  constructor(public tacheService: TacheService, public noteService: NoteService, private router: Router) {
+  constructor(public tacheService: TacheService, public noteService: NoteService, private router: Router, private groupeService: GroupeService) {
   }
 
   ngOnInit() {
-
     if (this.titre === 'Mes tâches') {
         this.mesTaches();
         this.tacheBoolean = true;
@@ -48,9 +53,12 @@ export class GestionComponent implements OnInit {
     } else if (this.titre === 'Mes devis à valider') {
         this.mesDevis();
       this.numId = 2;
+    } else if (this.titre === 'Mes groupes') {
+        this.groupeBoolean = true;
+      this.numId = 3;
     } else if (this.titre === 'Mes Notes') {
       this.mesNotes();
-      this.numId = 3;
+      this.numId = 4;
       this.noteBoolean = true;
       // récupération des données :
       this.noteService.listerNotes().subscribe(data => this.taches = data);
@@ -60,11 +68,12 @@ export class GestionComponent implements OnInit {
       this.numId = Math.floor(Math.random() * (999999 - 100000)) + 100000;
     }
 
+
+
   }
 
   voirNoteTerminer(dateCloture: any): boolean {
     if ( dateCloture != null) {
-      console.log('Return true ! ')
       return this.boolDateCloture;
     }
     return true;
@@ -138,8 +147,35 @@ export class GestionComponent implements OnInit {
     this.trash = true;
   }
 
+  recuperMestaches(pTache: Tache) {
+    if (pTache.idUtilisateur == null) {
+      return false;
+    }
+    return pTache.dateCloture == null && pTache.idUtilisateur === this.idCurrentUser;
 
+  }
 
+  mesGroupes() {
+    const groupes = this.groupeService.getAll();
+    const ctx = document.getElementById('chart');
+    console.log(ctx);
+    if (ctx != null) {
+      const chart = new Chart(ctx, {
+        type: 'pie',
+
+        data: {
+          labels: ['January', 'February', 'March'],
+          datasets: [{
+            data: [0, 10, 5, 2],
+          }]
+        }
+        ,
+
+        // Configuration options go here
+        options: {}
+      });
+    }
+  }
 }
 
 

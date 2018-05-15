@@ -76,11 +76,11 @@ export class ConformiteComponent implements OnInit {
     if (idNext == null || this.tache.ident === idNext ) {
       this.goToDashboard();
     } else {
-      this.goToProductDetails(idNext);
+      this.goToTacheDetails(idNext);
     }
   }
 
-  goToProductDetails(id) {
+  goToTacheDetails(id) {
     this.router.navigate(['/TraitementTache', id]);
   }
   goToDashboard() {
