@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {Nature, Status, Tache, Priorite} from '../domain/Tache';
 import {Context} from '../domain/context';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
+import {GroupeService} from './groupe.service';
+import {Code} from '../domain/groupe';
+import {t} from '@angular/core/src/render3';
 
 //
 // AVENANT = Avenant
@@ -11,9 +14,17 @@ import { Subject, BehaviorSubject, Observable } from 'rxjs';
 export class TacheService {
 
   public currentGestionnaire = 1;
-
+  public gestionnaires = [];
 
   constructor() {
+    // Gestionnaire ID :
+    const gestionnaire2 = 2;
+    const gestionnaire3 = 3;
+    const gestionnaire4 = 4;
+    this.gestionnaires.push(this.currentGestionnaire);
+    this.gestionnaires.push(gestionnaire2);
+    this.gestionnaires.push(gestionnaire3);
+    this.gestionnaires.push(gestionnaire4);
     let length = 0;
     this.tacheSubject.subscribe(data => length = data.length);
     if (length < 1) {
@@ -22,6 +33,7 @@ export class TacheService {
       tache1.ident = 1;
       tache1.context = new Context(1, 'S14053911', 'ASSELINE JEAN', 'GO ASSUR');
       tache1.status = Status.A_VERIFIER;
+      tache1.idGroupe = 1;
       tache1.code = 'ATT_PERMIS';
       tache1.priorite = Priorite.CINQ;
       tache1.dateLimite = new Date('12/05/2018');
@@ -31,6 +43,7 @@ export class TacheService {
       tache3.ident = 3;
       tache3.context = new Context(3, 'SD600003', 'ASSAPO SERGE4', 'CAP');
       tache3.status = Status.A_VERIFIER;
+      tache3.idGroupe =  1;
       tache3.code = 'ATT_CG';
       tache3.priorite = Priorite.CINQ;
       tache3.dateLimite = new Date('05/05/2018');
@@ -40,6 +53,7 @@ export class TacheService {
       tache2.ident = 2;
       tache2.context = new Context(2, 'SD600002', 'ASSEMAIAN WILLIAM', 'LISE MONIQUE');
       tache2.status = Status.A_VERIFIER;
+      tache2.idGroupe = 1;
       tache2.code = 'AVENANT';
       tache2.priorite = Priorite.CINQ;
       tache2.dateLimite = new Date('02/05/2018');
@@ -91,7 +105,7 @@ export class TacheService {
   }
 
   nextId(idTache: number, idUser: number): number {
-    const i = this.listTaches.findIndex(t => t.ident === idTache);
+    const i = this.listTaches.findIndex( t => t.ident === idTache);
     const nextTache = this.getTacheFromInex(i + 1);
     if (nextTache != null && nextTache.idUtilisateur === idUser) {
       return nextTache.ident;
@@ -105,16 +119,14 @@ export class TacheService {
   }
 
   create17Taches() {
-    // Gestionnaire ID :
-    const gestionnaire2 = 2;
-    const gestionnaire3 = 3;
-    const gestionnaire4 = 4;
+
 
     for (let i = 0; i < 17; i++) {
       const lTache = new Tache(Nature.PIECE);
       lTache.ident = i + 4;
       lTache.context = new Context(i, 'SD60000' + i, 'ASSAPO SERGE' + i, 'CAP' + i);
       lTache.status = Status.A_VERIFIER;
+      lTache.idGroupe = 1;
       lTache.code = ['ATT_CG', 'ATT_PERMIS'][i % 2];
       lTache.priorite = Priorite.CINQ;
       lTache.dateLimite = new Date('05/05/2018');
@@ -122,14 +134,25 @@ export class TacheService {
       if (i < 4) { // 4 taches pour current user
         lTache.idUtilisateur = this.currentGestionnaire;
       } else if (i < 7) {
-        lTache.idUtilisateur = gestionnaire2;
+        lTache.idUtilisateur = this.gestionnaires[2];
       } else if (i < 9) {
-        lTache.idUtilisateur = gestionnaire3;
+        lTache.idUtilisateur = this.gestionnaires[3];
       } else if (i < 13) {
-        lTache.idUtilisateur = gestionnaire4;
+        lTache.idUtilisateur = this.gestionnaires[4];
       }
       this.listTaches.push(lTache);
     }
+  }
+
+  getGestionnaires(): any {
+    return this.gestionnaires;
+  }
+  public dispatcher(codeGroupe: Code) {
+    this.listTaches.filter(tt => tt.idUtilisateur == null)
+      .forEach( ( tache , i) => {
+      tache.idUtilisateur = this.gestionnaires[i % this.gestionnaires.length];
+    });
+    this.tacheSubject.next(this.listTaches);
   }
 }
 

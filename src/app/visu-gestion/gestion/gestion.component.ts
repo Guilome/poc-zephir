@@ -5,6 +5,7 @@ import {NoteService} from '../../shared/services/note.service';
 import {Router} from '@angular/router';
 import {Chart} from 'chart.js';
 import {GroupeService} from '../../shared/services/groupe.service';
+import {Code} from '../../shared/domain/groupe';
 
 @Component({
   selector: 'app-gestion',
@@ -36,6 +37,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
   groupeBoolean = false;
   // Liste :
   taches: Tache[];
+  // map groupe key/value
+  dataGroupe: Map<string, number>;
 
   // Current User :
   idCurrentUser = 1;
@@ -75,7 +78,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.groupeBoolean){
+    if (this.groupeBoolean) {
       this.mesGroupes();
     }
   }
@@ -164,18 +167,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
   }
 
   mesGroupes() {
-    const data = new Map<string, number>();
-    for (const t of this.tacheService.listTaches) {
-      if (t.idUtilisateur != null) {
-        const key = 'Gestionnaire ' + t.idUtilisateur;
-        const sum = data.get(key);
-        data.set(key,  sum == null ? 1 : sum + 1 );
-
-      } else {
-        const sum = data.get('Non Affectées');
-        data.set('Non Affectées' , sum == null ? 1 : sum + 1);
-      }
-    }
+    this.groupeService.getAffectationTaches(Code.VERIFICATION).subscribe(data => this.dataGroupe = data);
     const colors = [
       'cyan',
       'red',
@@ -184,15 +176,15 @@ export class GestionComponent implements OnInit, AfterViewInit {
       'Purple',
       'yellow',
       'grey'
-    ]
+    ];
     const ctx = document.getElementById('chart');
     if (ctx != null) {
       const chart = new Chart(ctx, {
         type: 'pie',
         data: {
-          labels: Array.from(data.keys()),
+          labels: Array.from(this.dataGroupe.keys()),
           datasets: [{
-            data: Array.from(data.values()),
+            data: Array.from(this.dataGroupe.values()),
             backgroundColor: colors
           }]
         }
@@ -205,6 +197,14 @@ export class GestionComponent implements OnInit, AfterViewInit {
         }
       });
     }
+  }
+
+  dispatcher(){
+    this.groupeService.dispatcher(Code.VERIFICATION);
+  }
+
+  courbeille(){
+    this.groupeService.courbeille(Code.VERIFICATION);
   }
 }
 
