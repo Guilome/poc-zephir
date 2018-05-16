@@ -71,8 +71,9 @@ export class TacheService {
     return this.listTaches.find(t => t.ident === id);
   }
 
-  setDateCloture(idTache: number) {
+  setDateCloture(idTache: number): Tache {
     this.getTacheById(idTache).dateCloture = new Date();
+    return this.getTacheById(idTache);
   }
 
   /*

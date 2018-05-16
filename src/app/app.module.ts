@@ -23,6 +23,8 @@ import { ConformiteComponent } from './traitement/traitement-tache/conformite/co
 import {EditTacheComponent} from './traitement/traitement-tache/edit-tache/edit-tache.component';
 import {NoteService} from './shared/services/note.service';
 import { NouvelleNoteComponent } from './traitement/nouvelle-note/nouvelle-note.component';
+import {GroupeService} from './shared/services/groupe.service';
+import {NavGestionComponent} from './nav/nav-gestion/nav-gestion.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -58,14 +60,15 @@ const appRoutes: Routes = [
     ApercuDocumentComponent,
     ConformiteComponent,
     EditTacheComponent,
-    NouvelleNoteComponent
+    NouvelleNoteComponent,
+    NavGestionComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     FormsModule
   ],
-  providers: [TacheService, NoteService],
+  providers: [TacheService, NoteService, GroupeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

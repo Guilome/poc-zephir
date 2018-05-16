@@ -41,7 +41,7 @@ export class ConformiteComponent implements OnInit {
 
     } else if (this.tache.status === Status.A_VALIDER) {
       if (confirm('Confirmez-vous la conformité de ce document ?')) {
-        this.tacheService.setDateCloture(this.tache.ident);
+        this.tache = this.tacheService.setDateCloture(this.tache.ident);
         this.alertShow(alertSuccess, 'La tâche a été fermée');
       }
     }
