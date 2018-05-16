@@ -10,6 +10,8 @@ import { Subject, BehaviorSubject, Observable } from 'rxjs';
 @Injectable()
 export class TacheService {
 
+  public currentGestionnaire = 1;
+
 
   constructor() {
     let length = 0;
@@ -88,10 +90,10 @@ export class TacheService {
     this.setDateCloture(idTache);
   }
 
-  nextId(idTache: number): number {
+  nextId(idTache: number, idUser: number): number {
     const i = this.listTaches.findIndex(t => t.ident === idTache);
     const nextTache = this.getTacheFromInex(i + 1);
-    if (nextTache != null) {
+    if (nextTache != null && nextTache.idUtilisateur === idUser) {
       return nextTache.ident;
     } else {
       return null;
@@ -104,7 +106,6 @@ export class TacheService {
 
   create17Taches() {
     // Gestionnaire ID :
-    const currentGestionnaire = 1;
     const gestionnaire2 = 2;
     const gestionnaire3 = 3;
     const gestionnaire4 = 4;
@@ -119,7 +120,7 @@ export class TacheService {
       lTache.dateLimite = new Date('05/05/2018');
       lTache.urlDocument = 'http://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf';
       if (i < 4) { // 4 taches pour current user
-        lTache.idUtilisateur = currentGestionnaire;
+        lTache.idUtilisateur = this.currentGestionnaire;
       } else if (i < 7) {
         lTache.idUtilisateur = gestionnaire2;
       } else if (i < 9) {
