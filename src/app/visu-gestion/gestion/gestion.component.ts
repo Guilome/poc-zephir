@@ -43,6 +43,17 @@ export class GestionComponent implements OnInit, AfterViewInit {
   // Current User :
   idCurrentUser = 1;
 
+  context: any;
+  public c: Chart;
+  private colors = [
+    'grey',
+    'cyan',
+    'red',
+    'blue',
+    'green',
+    'Purple',
+    'yellow'
+  ];
   // Contructor :
   constructor(public tacheService: TacheService, public noteService: NoteService, private router: Router, private groupeService: GroupeService) {
 
@@ -79,6 +90,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if (this.groupeBoolean) {
+      this.context = document.getElementById('chart');
       this.mesGroupes();
     }
   }
@@ -167,25 +179,37 @@ export class GestionComponent implements OnInit, AfterViewInit {
   }
 
   mesGroupes() {
-    this.groupeService.getAffectationTaches(Code.VERIFICATION).subscribe(data => this.dataGroupe = data);
-    const colors = [
-      'cyan',
-      'red',
-      'blue',
-      'green',
-      'Purple',
-      'yellow',
-      'grey'
-    ];
-    const ctx = document.getElementById('chart');
-    if (ctx != null) {
-      const chart = new Chart(ctx, {
+    this.groupeService.getAffectationTaches(Code.VERIFICATION).subscribe(data => {
+      this.dataGroupe = data;
+      this.UpdateCanvas();
+    });
+
+  }
+  private UpdateCanvas() {
+    if(this.c == null){
+      this.createCanvas();
+    } else {
+      this.c.data = {
+        labels: Array.from(this.dataGroupe.keys()),
+        datasets: [{
+          data: Array.from(this.dataGroupe.values()),
+          backgroundColor: this.colors
+        }]
+      };
+    }
+    this.c.update();
+  }
+  private createCanvas() {
+
+
+    if (this.context != null) {
+      this.c = new Chart(this.context, {
         type: 'pie',
         data: {
           labels: Array.from(this.dataGroupe.keys()),
           datasets: [{
             data: Array.from(this.dataGroupe.values()),
-            backgroundColor: colors
+            backgroundColor: this.colors
           }]
         }
         ,
@@ -199,11 +223,18 @@ export class GestionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  dispatcher(){
+  /**
+   * Dispatche les tache non affectées aux gestionnaires de manière équitable
+   */
+  dispatcher() {
     this.groupeService.dispatcher(Code.VERIFICATION);
   }
 
-  courbeille(){
+  /**
+   * Tout remettre dans la courbeille
+   * aucune taches ne sera affectée à un gestionnaire
+   */
+  courbeille() {
     this.groupeService.courbeille(Code.VERIFICATION);
   }
 }

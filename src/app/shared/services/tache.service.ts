@@ -134,11 +134,11 @@ export class TacheService {
       if (i < 4) { // 4 taches pour current user
         lTache.idUtilisateur = this.currentGestionnaire;
       } else if (i < 7) {
-        lTache.idUtilisateur = this.gestionnaires[2];
+        lTache.idUtilisateur = this.gestionnaires[1];
       } else if (i < 9) {
-        lTache.idUtilisateur = this.gestionnaires[3];
+        lTache.idUtilisateur = this.gestionnaires[2];
       } else if (i < 13) {
-        lTache.idUtilisateur = this.gestionnaires[4];
+        lTache.idUtilisateur = this.gestionnaires[3];
       }
       this.listTaches.push(lTache);
     }
@@ -154,5 +154,12 @@ export class TacheService {
     });
     this.tacheSubject.next(this.listTaches);
   }
-}
+
+  public courbeille(codeGroupe: Code) {
+    this.listTaches.forEach(t => t.idUtilisateur = null);
+    this.tacheSubject.next(this.listTaches);
+
+  }
+
+  }
 

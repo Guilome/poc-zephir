@@ -32,20 +32,32 @@ export class GroupeService {
     if (this.taches.length < 1) {
       this.refreshTaches(codeGroupe);
     }
+    this.refreshMap();
+
+    return this.mapSubject;
+  }
+
+  private refreshMap() {
     const map = new Map<string, number>();
+    // liste des gestionnaires : Initialisation
+    map.set('Non Affectées', 0);
+    for ( let i = 1 ; i <= 4 ; i++) {
+      map.set( 'Gestionnaire ' + i, 0);
+    }
+
     for (const t of this.taches) {
       if (t.idUtilisateur != null) {
         const key = 'Gestionnaire ' + t.idUtilisateur;
         const sum = map.get(key);
-        map.set(key, sum == null ? 1 : sum + 1);
+        map.set(key,  sum + 1);
 
       } else {
         const sum = map.get('Non Affectées');
-        map.set('Non Affectées', sum == null ? 1 : sum + 1);
+        map.set('Non Affectées', sum + 1);
       }
     }
     this.mapSubject.next(map);
-    return this.mapSubject;
+
   }
 
 
@@ -68,10 +80,12 @@ export class GroupeService {
 
   public dispatcher(codeGroupe: Code) {
     this.tacheService.dispatcher(codeGroupe);
-    this.getAffectationTaches(codeGroupe);
+    this.refreshMap();
   }
 
   public courbeille(codeGroupe: Code) {
+    this.tacheService.courbeille(codeGroupe);
+    this.refreshMap();
 
   }
 }
