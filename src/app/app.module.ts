@@ -25,7 +25,9 @@ import {NoteService} from './shared/services/note.service';
 import { NouvelleNoteComponent } from './traitement/nouvelle-note/nouvelle-note.component';
 import {GroupeService} from './shared/services/groupe.service';
 import {NavGestionComponent} from './nav/nav-gestion/nav-gestion.component';
-import { InformationConducteurComponent } from './traitement/traitement-tache/conformite/information-conducteur/information-conducteur.component';
+import {TitreService} from './shared/services/titre.service';
+import {ToastModule} from 'ng2-toastr';
+import {InformationConducteurComponent} from './traitement/traitement-tache/conformite/information-conducteur/information-conducteur.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -40,6 +42,7 @@ const appRoutes: Routes = [
   { path: 'TraitementTache/:id', component: TraitementTacheComponent},
   { path: 'EditTache', component: EditTacheComponent},
   { path: 'NouvelleNote', component: NouvelleNoteComponent},
+  { path: 'Connexion', component: LoginComponent},
   { path: '**', redirectTo: 'gestionBO'}
 ];
 @NgModule({
@@ -70,7 +73,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FormsModule
   ],
-  providers: [TacheService, NoteService, GroupeService],
+  providers: [TacheService, NoteService, GroupeService, TitreService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

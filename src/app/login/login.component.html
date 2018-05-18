@@ -1,12 +1,16 @@
 <div class="container">
   <form class="form-signin" >
     <h2 class="form-signin-heading">CONNEXION</h2>
-    <input type="text" class="form-control" name="username" placeholder="Code" required="" autofocus="" />
-    <input type="password" class="form-control" name="password" placeholder="Mot de passe" required=""/>
+    <div class="form-group">
+    <input type="text" class="form-control" name="username" placeholder="Code" required="" autofocus="" #code/>
+
+    <input type="password" class="form-control" name="password" placeholder="Mot de passe" required="" #psw/>
+    </div>
+
     <!--label class="checkbox">
-      <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+      <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Se souvenir de moi
     </--label -->
-    <button class="btn btn-lg btn-primary btn-block">Envoyer</button>
+    <button class="btn btn-lg btn-primary btn-block" (click)="connexion(code, psw)">Envoyer</button>
   </form>
 </div>
 

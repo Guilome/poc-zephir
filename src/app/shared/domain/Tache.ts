@@ -23,7 +23,7 @@ export class Tache {
   public famille: string;
   public sousFamille: string;
   public message: string; // commentaire
-  public priorite: Priorite;
+  public priorite: number;
   public dateLimite: Date; // format DD/MM/YYYY hh:mm
   public dateCloture: Date; // format DD/MM/YYYY hh:mm
   public status: Status;
@@ -55,7 +55,7 @@ export enum Status {
   OK = 'Ok'
 }
 
-
+/*
 export enum Priorite {
   ZERO = 0,
   UN = 1,
@@ -68,4 +68,4 @@ export enum Priorite {
   HUIT = 8,
   NEUF = 9,
   DIX = 10
-}
+}*/

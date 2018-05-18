@@ -4,6 +4,7 @@ import {Context} from '../../../shared/domain/context';
 import {Nature, Status, Tache} from '../../../shared/domain/Tache';
 import {NgForm} from '@angular/forms';
 import {TacheService} from '../../../shared/services/tache.service';
+import {TitreService} from '../../../shared/services/titre.service';
 
 @Component({
   selector: 'app-edit-tache',
@@ -16,10 +17,12 @@ export class EditTacheComponent implements OnInit {
   defaultPriorite = '0';
   currentDate = new Date();
 
-  constructor(private tacheService: TacheService, private router: Router) {
+  constructor(private tacheService: TacheService, private router: Router, private titreService: TitreService) {
   }
 
   ngOnInit() {
+    this.titreService.updateTitre('Nouvelle Tâche');
+
   }
 
   onSubmit(form: NgForm) {
@@ -38,6 +41,9 @@ export class EditTacheComponent implements OnInit {
     // tache.libelle = 'Permis de conduire';
     tache.priorite = priorite;
     tache.dateLimite = dateLimite;
+    if (localStorage.getItem('idCurrentUser') != null) {
+      tache.idUtilisateur = parseInt( localStorage.getItem('idCurrentUser'));
+    }
 
     this.tacheService.addTache(tache);
     this.router.navigate(['/gestionBO']);

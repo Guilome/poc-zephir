@@ -1,19 +1,15 @@
-<h4 *ngIf="(tache.status | lowercase) === 'à vérifier'">  Tâche de verification </h4>
-<h4 *ngIf="(tache.status | lowercase) === 'à valider'">  Tâche de validation </h4>
+<h4> {{tache.libelle}}</h4>
+
+<h5 style="color: lightslategray">Caractéristiques</h5>
+<br>
+<strong>Priorité : </strong>  {{tache.priorite}} <br>
+<strong>Date de GED : </strong> {{tache.dateLimite | date : 'dd/MM/yyyy'}} <br>
+<strong>Date limite : </strong> {{tache.dateLimite | date : 'dd/MM/yyyy'}} <br>
+<br>
+<h5 style="color: lightslategray">Contexte de rattachement</h5>
+
 <dl>
-  <dt><b>Priorité : </b></dt>
-  <dd>{{tache.priorite}}</dd>
-
-  <dt><b> Code : </b></dt>
-  <dd>{{tache.code}}</dd>
-
-  <dt><b>Desciption :</b></dt>
-  <dd>{{tache.libelle}}</dd>
-
-  <dt><b>Date :</b></dt>
-  <dd>{{tache.dateLimite | date : 'dd/mm/yyyy'}}</dd>
-
-  <dt><b>Intermédiaire : </b></dt>
+  <dt><b>Courtier : </b></dt>
   <dd>{{tache.context.nomAppelIntermediaire}}</dd>
 
   <dt><b>Client :</b></dt>
@@ -21,8 +17,4 @@
 
   <dt><b>Contrat : </b></dt>
   <dd>{{tache.context.numeroContrat}}</dd>
-
-  <dt><b>Sinistre : </b></dt>
-  <dd>{{tache.context.numeroSinitre}}</dd>
-
 </dl>

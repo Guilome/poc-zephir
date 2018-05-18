@@ -4,6 +4,7 @@ import {Nature, Tache} from '../../shared/domain/Tache';
 import {Context} from '../../shared/domain/context';
 import {NoteService} from '../../shared/services/note.service';
 import {Router} from '@angular/router';
+import {TitreService} from '../../shared/services/titre.service';
 
 @Component({
   selector: 'app-nouvelle-note',
@@ -24,10 +25,10 @@ export class NouvelleNoteComponent implements OnInit {
   groupes = ['Avenant'];
   defaultGroupe = this.groupes[0].toUpperCase();
 
-  constructor(private noteService: NoteService, private router: Router) { }
+  constructor(private noteService: NoteService, private router: Router, private titreService: TitreService) { }
 
   ngOnInit() {
-
+    this.titreService.updateTitre('Nouvelle Note');
   }
 
   onSubmit(form: NgForm, msg: any) {

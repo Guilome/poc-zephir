@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {TitreService} from '../../shared/services/titre.service';
 
 @Component({
   selector: 'app-nav-gestion',
@@ -7,9 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavGestionComponent implements OnInit {
 
-  constructor() { }
+  public titre: string;
+  constructor(private titreService: TitreService) { }
 
   ngOnInit() {
+    this.titreService.getTitre().subscribe(titre => this.titre = titre);
+  }
+
+  closeNav() {
+    document.getElementById('myNav').style.width = '0%';
+  }
+
+  openNav() {
+    document.getElementById('myNav').style.width = '30%';
+  }
+
+  test() {
+    document.getElementById('myNav').style.width = '0%';
+    this.titreService.updateTitre('TOTO');
   }
 
 }

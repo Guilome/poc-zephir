@@ -11,7 +11,7 @@ import {NgForm} from '@angular/forms';
 })
 export class TraitementTacheComponent implements OnInit {
 
-
+  showDetail = true;
   constructor() { }
 
   ngOnInit() {
