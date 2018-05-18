@@ -25,6 +25,7 @@ import {NoteService} from './shared/services/note.service';
 import { NouvelleNoteComponent } from './traitement/nouvelle-note/nouvelle-note.component';
 import {GroupeService} from './shared/services/groupe.service';
 import {NavGestionComponent} from './nav/nav-gestion/nav-gestion.component';
+import { InformationConducteurComponent } from './traitement/traitement-tache/conformite/information-conducteur/information-conducteur.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -61,7 +62,8 @@ const appRoutes: Routes = [
     ConformiteComponent,
     EditTacheComponent,
     NouvelleNoteComponent,
-    NavGestionComponent
+    NavGestionComponent,
+    InformationConducteurComponent
   ],
   imports: [
     BrowserModule,

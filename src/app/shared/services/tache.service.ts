@@ -87,16 +87,29 @@ export class TacheService {
     return this.listTaches.find(t => t.ident === id);
   }
 
-  setDateCloture(idTache: number): Tache {
+  /**
+   * set la date de cloture et modifie le status en "OK"
+   * @param {number} idTache
+   * @returns {Tache}
+   */
+  setDateClotureAndStatus(idTache: number): Tache {
+    this.getTacheById(idTache).status = Status.OK;
+    return this.setDateCloture(idTache);
+  }
+  private setDateCloture(idTache: number): Tache {
     this.getTacheById(idTache).dateCloture = new Date();
     return this.getTacheById(idTache);
   }
 
-  /*
-    Passer le status de "A_VERIFIER" à "A_VALIDER"
+  /**
+   * Passer le status de "A_VERIFIER" à "A_VALIDER"
+   * la pièce est affectée au groupe "Validation"
+   * @param {number} idTache
    */
-  updateStatus(idTache: number) {
-    this.getTacheById(idTache).status = Status.A_VALIDER;
+  updateStatusAndGroupe(idTache: number) {
+    const tache = this.getTacheById(idTache);
+    tache.status = Status.A_VALIDER;
+    tache.idGroupe = 2; // groupe validation ident : 2
   }
 
   closeTacheNonConforme(idTache: number, motif: string) {
@@ -104,23 +117,26 @@ export class TacheService {
     this.setDateCloture(idTache);
   }
 
+  /**
+   * renvoie l'id de la tache suivante en fonction de son status et de l'utilisateur
+   * @param {number} idTache
+   * @param {number} idUser
+   * @returns {number}
+   */
   nextId(idTache: number, idUser: number): number {
-    const i = this.listTaches.findIndex( t => t.ident === idTache);
-    const nextTache = this.getTacheFromInex(i + 1);
-    if (nextTache != null && nextTache.idUtilisateur === idUser) {
+
+    const tache = this.getTacheById(idTache)
+    const myTacheslist = this.listTaches.filter(t => t.idUtilisateur === idUser && t.status === tache.status).sort((obj1, obj2) => obj1.ident - obj2.ident);
+    const nextIndex = (myTacheslist.findIndex( t => t.ident === idTache ) + 1) % myTacheslist.length;
+    const nextTache = myTacheslist.find(( t, i) => i === nextIndex );
+    if (nextTache != null) {
       return nextTache.ident;
     } else {
       return null;
     }
   }
 
-  getTacheFromInex(index: number): Tache {
-    return this.listTaches.find((t, i) => i === index);
-  }
-
   create17Taches() {
-
-
     for (let i = 0; i < 17; i++) {
       const lTache = new Tache(Nature.PIECE);
       lTache.ident = i + 4;

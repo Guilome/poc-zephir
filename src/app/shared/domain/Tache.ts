@@ -13,6 +13,7 @@ export class Tache {
   //
   constructor(public nature: Nature ) {
     this.status = Status.EN_ATTENTE;
+    this.dateCloture = null;
   }
   // Private
   private _libelle: string;

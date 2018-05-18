@@ -7,16 +7,42 @@
 
 
   <h5>Motif de non conformité : </h5>
-  <textarea class="col-sm-12" #motif></textarea>
+  <select class="form-control" #motif>
+    <option disabled selected value> -- Motif -- </option>
+    <option value="CRM non conforme">CRM non conforme </option>
+    <option value="CRM non conforme">Véhicule interdit à la souscription</option>
+  </select>
   <div class="alert alert-danger" role="alert" style="visibility:hidden" #alertDanger></div>
   <div class="alert alert-success" role="alert" style="visibility:hidden" #alertSuccess></div>
 
+
   <div id="buttom-content" >
-    <button type="button" class="btn btn-primary" style="border-radius: 8px;" (click)="DocSuivant()"> Documment suivant > </button>
+    <button type="button" class="btn btn-primary" style="border-radius: 8px;" (click)="docSuivant()"> Documment suivant > </button>
 
     <button type="button" class="btn btn-primary" style="border-radius: 8px;" (click)="goToDashboard()"> Terminer </button>
 
   </div>
 
-
 </div>
+<!-- The Modal -->
+<div class="modal fade" id="idinfoConducteur">
+  <div class="modal-dialog  modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <app-information-conducteur></app-information-conducteur>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-outline-warning" data-toggle="modal" data-target="#idinfoConducteur">Open Modal</button>

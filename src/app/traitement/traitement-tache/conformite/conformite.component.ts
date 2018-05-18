@@ -35,13 +35,14 @@ export class ConformiteComponent implements OnInit {
     if (this.tache.dateCloture == null) {
       if (this.tache.status === Status.A_VERIFIER) {
       if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
-        this.tacheService.updateStatus(this.tache.ident);
+        this.docSuivant();
+        this.tacheService.updateStatusAndGroupe(this.tache.ident);
         this.alertShow(alertSuccess, 'Le status de la tache a été modifier en <strong>À VALIDER</strong>');
       }
 
     } else if (this.tache.status === Status.A_VALIDER) {
       if (confirm('Confirmez-vous la conformité de ce document ?')) {
-        this.tache = this.tacheService.setDateCloture(this.tache.ident);
+        this.tache = this.tacheService.setDateClotureAndStatus(this.tache.ident);
         this.alertShow(alertSuccess, 'La tâche a été fermée');
       }
     }
@@ -59,8 +60,9 @@ export class ConformiteComponent implements OnInit {
         this.tacheService.closeTacheNonConforme(this.tache.ident, motif.value);
         /*const nextId = this.tacheService.nextId(this.tache.ident);
         this.tache = this.tacheService.getTacheById(nextId);*/
-        this.DocSuivant();
+        this.docSuivant();
         this.alertShow(alertDanger, 'La tâche a été fermé');
+        motif.value = '';
       } else {
         this.alertShow(alertDanger, 'Veuillez renseigner le motif');
       }
@@ -72,11 +74,14 @@ export class ConformiteComponent implements OnInit {
   /*
     les documents sont triés en fonction de leurs "ident" dès qu'on arrive au dernier ident la page bascule au DashBoard
    */
-  DocSuivant() {
+  docSuivant() {
+    console.log('ident :' + this.tache.ident);
+
     const idNext = this.tacheService.nextId(this.tache.ident, this.tacheService.currentGestionnaire);
     if (idNext == null || this.tache.ident === idNext ) {
       this.goToDashboard();
     } else {
+
       this.goToTacheDetails(idNext);
     }
   }

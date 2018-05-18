@@ -1,6 +1,6 @@
 export class Devis {
 
-  static map = new Map()
+  static mapEtat = new Map()
     .set(1, 'Devis')
     .set(2, 'En cours')
     .set(3, 'Mis en demeure')
@@ -23,6 +23,7 @@ export class Devis {
   public conditionAcceptation: string;
 
   constructor(public  nature: Nature) {
+    this.etatContrat = Devis.mapEtat.get(1);
   }
 
 }
