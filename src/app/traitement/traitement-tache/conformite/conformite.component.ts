@@ -94,9 +94,10 @@ export class ConformiteComponent implements OnInit {
   }
 
   private alertShow(alert, msg) {
-    alert.style.visibility = 'visible';
+    alert.style.display = 'block';
+    
     alert.innerHTML = msg;
-    setTimeout(function() {alert.style.visibility = 'hidden'; }, 8000);
+    setTimeout(function() {alert.style.display = 'none'; }, 4000);
   }
 
   private formatDateDDmmYYYY(date: Date): string {

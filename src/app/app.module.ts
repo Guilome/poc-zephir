@@ -26,7 +26,6 @@ import { NouvelleNoteComponent } from './traitement/nouvelle-note/nouvelle-note.
 import {GroupeService} from './shared/services/groupe.service';
 import {NavGestionComponent} from './nav/nav-gestion/nav-gestion.component';
 import {TitreService} from './shared/services/titre.service';
-import {ToastModule} from 'ng2-toastr';
 import {InformationConducteurComponent} from './traitement/traitement-tache/conformite/information-conducteur/information-conducteur.component';
 
 const appRoutes: Routes = [
