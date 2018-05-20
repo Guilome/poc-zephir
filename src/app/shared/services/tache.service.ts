@@ -148,7 +148,7 @@ export class TacheService {
       lTache.code = ['ATT_CG', 'ATT_PERMIS'][i % 2];
       lTache.priorite = 5;
       lTache.dateLimite = new Date('05/05/2018');
-      lTache.urlDocument = 'http://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf';
+      lTache.urlDocument = 'https://www.cartegrise.com/pdf/generic/1/mandat_immatriculation_professionnel.pdf';
       if (i < 4) { // 4 taches pour current user
         lTache.idUtilisateur = this.currentGestionnaire;
       } else if (i < 7) {
