@@ -27,6 +27,9 @@ import {GroupeService} from './shared/services/groupe.service';
 import {NavGestionComponent} from './nav/nav-gestion/nav-gestion.component';
 import {TitreService} from './shared/services/titre.service';
 import {InformationConducteurComponent} from './traitement/traitement-tache/conformite/information-conducteur/information-conducteur.component';
+import {CommonModule} from '@angular/common';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToastrModule} from 'ngx-toastr';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -70,7 +73,10 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    FormsModule
+    FormsModule,
+    CommonModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(),
   ],
   providers: [TacheService, NoteService, GroupeService, TitreService],
   bootstrap: [AppComponent]

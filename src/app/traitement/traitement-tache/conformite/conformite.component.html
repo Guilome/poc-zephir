@@ -24,7 +24,7 @@
   </div>
 
 </div>
-<app-information-conducteur style="font-size: 0.7em"></app-information-conducteur>
+<app-information-conducteur style="font-size: 0.7em" *ngIf="tache.status === 'À valider'"></app-information-conducteur>
 
 <!-- The Modal -->
 <div class="modal fade" id="idinfoConducteur">
@@ -47,5 +47,4 @@
   </div>
 </div>
 
-<button class="btn btn-outline-warning" data-toggle="modal" data-target="#idinfoConducteur">Open Modal</button>
 <button onclick="toastr.info('Hi! I am info message.');" class="alert-primary">Bjr</button>
