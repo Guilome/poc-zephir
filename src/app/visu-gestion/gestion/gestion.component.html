@@ -75,8 +75,7 @@
 
               <th scope="row">{{note.nature}}</th>
               <td>{{note.code}}</td>
-              <td>    <u data-toggle="tooltip" title="{{note.message}}">...</u>
-              </td>
+              <td>  <span tooltip="{{note.message}}"  >...</span>  </td>
               <td>{{note.dateLimite | date: 'MM/dd/yyyy' }}</td>
               <td align="center">
                 <a (click)="ouvrirNote(note.ident)"><i *ngIf="note.status == 'Ok'" class="fa fa-check-square-o fa-lg"  title="Re-ouvrir"></i></a>
@@ -108,6 +107,5 @@
     </div>
   </div>
   </div>
-
 
 

@@ -30,6 +30,7 @@ import {InformationConducteurComponent} from './traitement/traitement-tache/conf
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
+import {TooltipModule} from 'ng2-tooltip-directive';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -77,6 +78,8 @@ const appRoutes: Routes = [
     CommonModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(),
+    TooltipModule,
+    TooltipModule
   ],
   providers: [TacheService, NoteService, GroupeService, TitreService],
   bootstrap: [AppComponent]

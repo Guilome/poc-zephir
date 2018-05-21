@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Tache, Status} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
 import {Subscription} from 'rxjs/Subscription';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-conformite',
@@ -11,7 +12,7 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class ConformiteComponent implements OnInit {
 
-  constructor(private router: Router, private tacheService: TacheService, private route: ActivatedRoute) {
+  constructor(private router: Router, private tacheService: TacheService, private route: ActivatedRoute, public toastr: ToastrService) {
   }
   tache: Tache;
   private idSubscription: Subscription;
@@ -95,7 +96,7 @@ export class ConformiteComponent implements OnInit {
 
   private alertShow(alert, msg) {
     alert.style.display = 'block';
-    
+
     alert.innerHTML = msg;
     setTimeout(function() {alert.style.display = 'none'; }, 4000);
   }

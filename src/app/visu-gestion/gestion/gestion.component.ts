@@ -55,7 +55,10 @@ export class GestionComponent implements OnInit, AfterViewInit {
     'yellow'
   ];
   // Contructor :
-  constructor(public tacheService: TacheService, public noteService: NoteService, private router: Router, private groupeService: GroupeService) {
+  constructor(public tacheService: TacheService,
+              public noteService: NoteService,
+              private router: Router,
+              private groupeService: GroupeService) {
 
   }
 
@@ -216,7 +219,14 @@ export class GestionComponent implements OnInit, AfterViewInit {
         options: {
           title: {
             display: true,
-            text: 'Groupe Vérification'
+            text: 'Groupe Vérification',
+            fontColor: 'white'
+
+          },
+          legend: {
+            labels: {
+              fontColor: 'white',
+            }
           }
         }
       });
@@ -237,6 +247,9 @@ export class GestionComponent implements OnInit, AfterViewInit {
   courbeille() {
     this.groupeService.courbeille(Code.VERIFICATION);
   }
+
+
+
 }
 
 
