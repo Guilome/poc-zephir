@@ -1,20 +1,19 @@
 <div class="align-middle">
 
 
-  <button type="button" title="Conforme" [disabled]="tache.dateCloture != null" class="btn btn-success btn-circle fa fa-check fa-4x" (click)="conforme(alertSuccess)">  </button>
+  <button type="button" title="Conforme" [disabled]="tache.dateCloture != null" class="btn btn-success btn-circle fa fa-check fa-4x" (click)="conforme()">  </button>
   <button type="button" title="Non conforme" [disabled]="tache.dateCloture != null" class="btn btn-danger btn-circle fa fa-times  fa-4x" (click)="nonConforme(motif,alertDanger)">  </button>
 
 
 
   <h5>Motif de non conformité : </h5>
-  <select class="form-control" #motif>
-    <option disabled selected value> -- Motif -- </option>
+
+  <select class="form-control selectpicker"  multiple #motif title="Choisir un motif ou plusieurs motifs">
     <option value="CRM non conforme">CRM non conforme </option>
     <option value="CRM non conforme">Véhicule interdit à la souscription</option>
   </select>
-  <div class="alert alert-danger"  role="alert" style="display:none" #alertDanger></div>
-  <div class="alert alert-success" role="alert" style="display:none" #alertSuccess></div>
 
+  <div class="alert alert-danger"  role="alert" style="display:none" #alertDanger></div>
 
   <div id="buttom-content" >
     <button type="button" class="btn btn-primary" style="border-radius: 8px;" (click)="docSuivant()"> Documment suivant > </button>
@@ -47,4 +46,3 @@
   </div>
 </div>
 
-<button (click)="toastr.error('Hello world!', 'Toastr fun!')" >Toast </button>

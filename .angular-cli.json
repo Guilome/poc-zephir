@@ -22,12 +22,14 @@
                 "styles.css",
                 "../node_modules/bootstrap/dist/css/bootstrap.min.css",
                 "../node_modules/font-awesome/css/font-awesome.css",
-                "../node_modules/ngx-toastr/toastr.css"
+                "../node_modules/ngx-toastr/toastr.css",
+                "../node_modules/bootstrap-select/dist/css/bootstrap-select.css"
       ],
       "scripts": [
                   "../node_modules/jquery/dist/jquery.js",
                   "../node_modules/bootstrap/dist/js/bootstrap.bundle.js",
-                  "../node_modules/traceur/bin/traceur.js"
+                  "../node_modules/traceur/bin/traceur.js",
+                  "../node_modules/bootstrap-select/dist/js/bootstrap-select.js"
 
       ],
       "environmentSource": "environments/environment.ts",

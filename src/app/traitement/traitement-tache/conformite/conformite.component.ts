@@ -32,23 +32,23 @@ export class ConformiteComponent implements OnInit {
   /*
    Fermer la tache et créer une nouvelle si étape "A_VALIDER"
     */
-  conforme(alertSuccess) {
+  conforme() {
     if (this.tache.dateCloture == null) {
       if (this.tache.status === Status.A_VERIFIER) {
       if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
         this.docSuivant();
         this.tacheService.updateStatusAndGroupe(this.tache.ident);
-        this.alertShow(alertSuccess, 'Le status de la tache a été modifier en <strong>À VALIDER</strong>');
+        this.toastr.success('Le status de la tache a été modifier en <b>À VALIDER</b>', '', {enableHtml: true});
       }
 
     } else if (this.tache.status === Status.A_VALIDER) {
       if (confirm('Confirmez-vous la conformité de ce document ?')) {
         this.tache = this.tacheService.setDateClotureAndStatus(this.tache.ident);
-        this.alertShow(alertSuccess, 'La tâche a été fermée');
+        this.toastr.success('La tâche a été <b>fermée</b>', '', {enableHtml: true});
       }
     }
   } else {
-      this.alertShow(alertSuccess, 'La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.tache.dateCloture));
+      this.toastr.success('La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.tache.dateCloture), '', {enableHtml: true});
     }
   }
   /*
