@@ -2,7 +2,7 @@
 
 
 <!-- BODY -->
-<div class="accordion" id="accordion">
+<div class="accordion" id="accordion" *ngIf="ifConnexion()">
 
 <div class="row">
   <div class="col-sm-12">
@@ -12,7 +12,7 @@
 
 <div class="row">
   <div class="col-sm-12">
-    <app-gestion [titre]="'Mes devis à valider'" [card]="'bg-devis'"></app-gestion>
+    <app-gestion [titre]="'Mes actions métier'" [card]="'bg-devis'"></app-gestion>
   </div>
 </div>
 

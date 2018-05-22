@@ -8,13 +8,13 @@ import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
 import { GestionComponent } from './visu-gestion/gestion/gestion.component';
 import { VisuGestionComponent } from './visu-gestion/visu-gestion.component';
-import { QuiSommeNousComponent } from './nav-bar/qui-somme-nous/qui-somme-nous.component';
-import { DevenirCourtierPartenaireComponent } from './nav-bar/devenir-courtier-partenaire/devenir-courtier-partenaire.component';
-import { NosSolutionsComponent } from './nav-bar/nos-solutions/nos-solutions.component';
-import { ActualitesComponent } from './nav-bar/actualites/actualites.component';
-import { RecrutementComponent } from './nav-bar/recrutement/recrutement.component';
-import { EspacePresseComponent } from './nav-bar/espace-presse/espace-presse.component';
-import { ContactComponent } from './nav-bar/contact/contact.component';
+import { QuiSommeNousComponent } from './nav/nav-bar/qui-somme-nous/qui-somme-nous.component';
+import { DevenirCourtierPartenaireComponent } from './nav/nav-bar/devenir-courtier-partenaire/devenir-courtier-partenaire.component';
+import { NosSolutionsComponent } from './nav/nav-bar/nos-solutions/nos-solutions.component';
+import { ActualitesComponent } from './nav/nav-bar/actualites/actualites.component';
+import { RecrutementComponent } from './nav/nav-bar/recrutement/recrutement.component';
+import { EspacePresseComponent } from './nav/nav-bar/espace-presse/espace-presse.component';
+import { ContactComponent } from './nav/nav-bar/contact/contact.component';
 import {TacheService} from './shared/services/tache.service';
 import { TraitementTacheComponent } from './traitement/traitement-tache/traitement-tache.component';
 import { DetailTacheComponent } from './traitement/traitement-tache/detail-tache/detail-tache.component';
@@ -32,6 +32,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
 import {TooltipModule} from 'ng2-tooltip-directive';
 import {PopoverModule} from 'ng4-popover';
+import {UserService} from './shared/services/user.service';
+import { AccueilComponent } from './accueil/accueil.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -47,7 +49,9 @@ const appRoutes: Routes = [
   { path: 'EditTache', component: EditTacheComponent},
   { path: 'NouvelleNote', component: NouvelleNoteComponent},
   { path: 'Connexion', component: LoginComponent},
-  { path: '**', redirectTo: 'gestionBO'}
+  { path: 'Accueil', component: AccueilComponent},
+
+  { path: '**', redirectTo: 'Accueil'}
 ];
 @NgModule({
   declarations: [
@@ -70,7 +74,8 @@ const appRoutes: Routes = [
     EditTacheComponent,
     NouvelleNoteComponent,
     NavGestionComponent,
-    InformationConducteurComponent
+    InformationConducteurComponent,
+    AccueilComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +87,7 @@ const appRoutes: Routes = [
     TooltipModule,
     PopoverModule
   ],
-  providers: [TacheService, NoteService, GroupeService, TitreService],
+  providers: [TacheService, NoteService, GroupeService, TitreService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

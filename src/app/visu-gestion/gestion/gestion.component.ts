@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {Chart} from 'chart.js';
 import {GroupeService} from '../../shared/services/groupe.service';
 import {Code} from '../../shared/domain/groupe';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-gestion',
@@ -21,6 +22,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
   search = false;
   share = false;
   inbox = false;
+  outbox = false;
   calendar = false;
   file = false;
   filter = false;
@@ -58,7 +60,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
   constructor(public tacheService: TacheService,
               public noteService: NoteService,
               private router: Router,
-              private groupeService: GroupeService) {
+              private groupeService: GroupeService,
+              private toastr: ToastrService) {
 
   }
 
@@ -69,8 +72,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
         this.tacheBoolean = true;
         this.tacheService.listerTaches().subscribe(data => this.taches = data);
         this.numId = 1;
-    } else if (this.titre === 'Mes devis à valider') {
-        this.mesDevis();
+    } else if (this.titre === 'Mes actions métier') {
+        this.mesActionsMetier();
       this.numId = 2;
     } else if (this.titre === 'Mes groupes') {
         this.groupeBoolean = true;
@@ -144,17 +147,14 @@ export class GestionComponent implements OnInit, AfterViewInit {
   }
 
   private mesTaches() {
-
-    this.search = true;
-    this.inbox = true;
     this.calendar = true;
-    this.file = true;
-    this.filter = true;
     this.chart = true;
     this.refresh = true;
+    this.inbox = true;
+    this.outbox = true;
   }
 
-  private mesDevis() {
+  private mesActionsMetier() {
     this.eye = true;
     this.search = true;
     this.inbox = true;
@@ -165,10 +165,6 @@ export class GestionComponent implements OnInit, AfterViewInit {
 
   private mesNotes() {
     this.eye = true;
-    this.search = true;
-    this.inbox = true;
-    this.file = true;
-    this.filter = true;
     this.refresh = true;
     this.trash = true;
   }
@@ -188,8 +184,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
     });
 
   }
-  private UpdateCanvas() {
-    if(this.c == null){
+  public UpdateCanvas() {
+    if (this.c == null) {
       this.createCanvas();
     } else {
       this.c.data = {
@@ -226,7 +222,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
           legend: {
             labels: {
               fontColor: 'white',
-            }
+            },
+            position: 'right'
           }
         }
       });
@@ -244,10 +241,18 @@ export class GestionComponent implements OnInit, AfterViewInit {
    * Tout remettre dans la courbeille
    * aucune taches ne sera affectée à un gestionnaire
    */
-  courbeille() {
-    this.groupeService.courbeille(Code.VERIFICATION);
+  corbeille() {
+    this.groupeService.corbeille(Code.VERIFICATION);
   }
 
+  /**
+   * Les tâches qui sont affectées à l'utilisateur courant seront misent en corbeille
+   */
+  userCorbeille() {
+    if ( this.groupeService.corbeilleUser() ) {
+      this.toastr.success('Vos taches ont été misent à la corbeille');
+    }
+  }
 
 
 }

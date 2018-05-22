@@ -23,9 +23,7 @@ export class NavGestionComponent implements OnInit {
     document.getElementById('myNav').style.width = '30%';
   }
 
-  test() {
-    document.getElementById('myNav').style.width = '0%';
-    this.titreService.updateTitre('TOTO');
+  ifConnexion(): boolean {
+    return localStorage.getItem('USER') != null;
   }
-
 }

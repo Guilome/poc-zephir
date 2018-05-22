@@ -173,10 +173,21 @@ export class TacheService {
     this.tacheSubject.next(this.listTaches);
   }
 
-  public courbeille(codeGroupe: Code) {
+  public corbeille(codeGroupe: Code) {
     this.listTaches.forEach(tache => tache.idUtilisateur = null);
     this.tacheSubject.next(this.listTaches);
 
+  }
+
+  public corbeilleUser(): boolean {
+    const userId = parseInt(localStorage.getItem('USER'), 10);
+    if(userId != null) {
+      this.listTaches.filter(tache => tache.idUtilisateur === userId).forEach(tache => tache.idUtilisateur = null);
+      this.tacheSubject.next(this.listTaches);
+      return true;
+    }
+    console.log('Utilisateur non connecté');
+    return false;
   }
 
   }

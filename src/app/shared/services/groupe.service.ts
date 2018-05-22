@@ -44,7 +44,7 @@ export class GroupeService {
     for ( let i = 1 ; i <= 4 ; i++) {
       map.set( 'Gestionnaire ' + i, 0);
     }
-
+    console.log('Je suis passé par là')
     for (const t of this.taches) {
       if (t.idUtilisateur != null) {
         const key = 'Gestionnaire ' + t.idUtilisateur;
@@ -83,9 +83,15 @@ export class GroupeService {
     this.refreshMap();
   }
 
-  public courbeille(codeGroupe: Code) {
-    this.tacheService.courbeille(codeGroupe);
+  public corbeille(codeGroupe: Code) {
+    this.tacheService.corbeille(codeGroupe);
     this.refreshMap();
+  }
+
+  public corbeilleUser(): boolean{
+    const ret = this.tacheService.corbeilleUser();
+    this.refreshMap();
+    return ret;
 
   }
 }
