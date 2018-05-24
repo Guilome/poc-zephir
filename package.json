@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --prod --base-href https://igacha664.github.io/poc-zephir/",
+    "start": "ng serve --port 8080 --host 0.0.0.0",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,6 +23,7 @@
     "@angular/router": "^5.2.0",
     "@ng-bootstrap/ng-bootstrap": "^2.0.0",
     "angular-bootstrap-multiselect": "^1.1.11",
+    "angular-cli-ghpages": "^0.5.2",
     "angular-font-awesome": "^3.1.2",
     "bootstrap": "^4.1.0",
     "bootstrap-select": "^1.13.1",
