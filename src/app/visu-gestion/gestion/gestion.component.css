@@ -25,6 +25,9 @@ div.bg-devis {
   font-size: 15px;
   background-color: rgba(0,255,0,0.4);
 }
+div.bg-groupe{
+  background-color: #F9966B;
+}
 .del {
   text-decoration: line-through;
   color: silver;

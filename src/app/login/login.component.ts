@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {TitreService} from '../shared/services/titre.service';
-import {UserService} from '../shared/services/user.service';
-import {User} from '../shared/domain/user';
+import {UtilisateurService} from '../shared/services/utilisateur.service';
+import {Utilisateur} from '../shared/domain/Utilisateur';
 import {ToastrService} from 'ngx-toastr';
 
 @Component({
@@ -12,7 +12,7 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router, private titreService: TitreService, private userService: UserService, private toastr: ToastrService) {
+  constructor(private router: Router, private titreService: TitreService, private userService: UtilisateurService, private toastr: ToastrService) {
   }
 
   ngOnInit() {
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   private userExist(code: string, psw: string): boolean {
     for ( const user of this.userService.getAll()) {
-      if(user.name.toLowerCase() === code.toLowerCase()) {
+      if(user.nom.toLowerCase() === code.toLowerCase()) {
         localStorage.setItem('USER', user.ident.toString());
         return true;
       }

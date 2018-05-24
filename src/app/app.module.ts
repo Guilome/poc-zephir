@@ -32,7 +32,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
 import {TooltipModule} from 'ng2-tooltip-directive';
 import {PopoverModule} from 'ng4-popover';
-import {UserService} from './shared/services/user.service';
+import {UtilisateurService} from './shared/services/utilisateur.service';
 import { AccueilComponent } from './accueil/accueil.component';
 
 const appRoutes: Routes = [
@@ -86,8 +86,8 @@ const appRoutes: Routes = [
     ToastrModule.forRoot(),
     TooltipModule,
     PopoverModule
-  ],
-  providers: [TacheService, NoteService, GroupeService, TitreService, UserService],
+],
+  providers: [TacheService, NoteService, GroupeService, TitreService, UtilisateurService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

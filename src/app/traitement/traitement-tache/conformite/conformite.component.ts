@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterContentInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Tache, Status} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
 import {Subscription} from 'rxjs/Subscription';
 import {ToastrService} from 'ngx-toastr';
-
+import {SelectModule} from 'ng2-select';
 @Component({
   selector: 'app-conformite',
   templateUrl: './conformite.component.html',
@@ -16,15 +16,13 @@ export class ConformiteComponent implements OnInit {
   }
   tache: Tache;
   private idSubscription: Subscription;
+  public motifBoolean = true;
 
   ngOnInit() {
- /*   //const id = this.route.snapshot.params['id'];
-
-    this.tache = this.tacheService.getTacheById(+id);
-*/
     this.idSubscription = this.route.params.subscribe((params: any) => {
       this.tache = this.tacheService.getTacheById(+params.id);
     });
+
 
 
   }
@@ -56,20 +54,33 @@ export class ConformiteComponent implements OnInit {
     Message de cloture obligtoire
   */
   nonConforme(motif, alertDanger: any) {
+    //$('.selectpicker').selectpicker('val', 'Mustard');
+
+    document.getElementById('motifSelect');
+    console.log('True motif !' + document.getElementById('motifSelect') + ' ; ');
+    document.getElementById('motifSelect').style.display = 'block';
+    document.getElementById('motifSelect').classList.add('selectpicker');
+    /*
     if (this.tache.dateCloture == null) {
-      if (motif.value.trim() !== '') {
-        this.tacheService.closeTacheNonConforme(this.tache.ident, motif.value);
-        /*const nextId = this.tacheService.nextId(this.tache.ident);
-        this.tache = this.tacheService.getTacheById(nextId);*/
-        this.docSuivant();
-        this.alertShow(alertDanger, 'La tâche a été fermé');
-        motif.value = '';
+      if (this.motifBoolean) {
+        if (motif.value.trim() !== '') {
+          this.tacheService.closeTacheNonConforme(this.tache.ident, motif.value);
+          this.docSuivant();
+          this.alertShow(alertDanger, 'La tâche a été fermé');
+          motif.value = '';
+        } else {
+          this.alertShow(alertDanger, 'Veuillez renseigner le motif');
+        }
       } else {
-        this.alertShow(alertDanger, 'Veuillez renseigner le motif');
+        console.log('Entré1 Else')
+
+        this.alertShow(alertDanger, 'Aucune action possible : La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.tache.dateCloture));
       }
     } else {
-      this.alertShow(alertDanger, 'Aucune action possible : La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.tache.dateCloture));
+      console.log('True motif !')
+      this.motifBoolean = true;
     }
+    */
   }
 
   /*
@@ -78,7 +89,7 @@ export class ConformiteComponent implements OnInit {
   docSuivant() {
     console.log('ident :' + this.tache.ident);
 
-    const idNext = this.tacheService.nextId(this.tache.ident, this.tacheService.currentGestionnaire);
+    const idNext = this.tacheService.nextId(this.tache.ident, parseInt(localStorage.getItem('USER'), 10));
     if (idNext == null || this.tache.ident === idNext ) {
       this.goToDashboard();
     } else {
@@ -104,4 +115,6 @@ export class ConformiteComponent implements OnInit {
   private formatDateDDmmYYYY(date: Date): string {
     return ('0' + (date.getDate() + 1)).slice(-2)  + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
   }
+
+
 }
