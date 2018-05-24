@@ -9,7 +9,8 @@ export class Tache {
     .set('AVENANT', 'Avenant')
     .set('RESILILATION', 'Résiliation')
     .set('NOTE', 'Note')
-    .set('NOTE_INTERNE', 'Note Interne');
+    .set('NOTE_INTERNE', 'Note Interne')
+    .set('ATT_RI','Relevé d\'information');
   //
   constructor(public nature: Nature ) {
     this.status = Status.EN_ATTENTE;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {UserService} from '../shared/services/user.service';
+import {UtilisateurService} from '../shared/services/utilisateur.service';
 
 @Component({
   selector: 'app-nav',
@@ -9,7 +9,7 @@ import {UserService} from '../shared/services/user.service';
 })
 export class NavComponent implements OnInit {
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(private router: Router, private userService: UtilisateurService) { }
 
   public userName = '';
   public connexionBoolean

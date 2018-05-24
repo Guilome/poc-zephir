@@ -42,8 +42,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
   // map groupe key/value
   dataGroupe: Map<string, number>;
 
-  // Current User :
-  idCurrentUser = 1;
+  // Current Utilisateur :
+  idCurrentUser;
 
   context: any;
   public c: Chart;
@@ -72,6 +72,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
         this.tacheBoolean = true;
         this.tacheService.listerTaches().subscribe(data => this.taches = data);
         this.numId = 1;
+        this.idCurrentUser = parseInt(localStorage.getItem('USER'));
     } else if (this.titre === 'Mes actions métier') {
         this.mesActionsMetier();
       this.numId = 2;
@@ -108,10 +109,12 @@ export class GestionComponent implements OnInit, AfterViewInit {
     return true;
   }
   visualiser(eye) {
+    // TACHES
     if (this.tacheBoolean) {
       alert('Hello ! ' + this.titre);
     }
-    if (this.noteBoolean) {
+    // NOTES
+    else if (this.noteBoolean) {
 
       this.boolDateCloture = !this.boolDateCloture;
       if ( this.boolDateCloture ) {
@@ -184,7 +187,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
     });
 
   }
-  public UpdateCanvas() {
+  private  UpdateCanvas() {
     if (this.c == null) {
       this.createCanvas();
     } else {

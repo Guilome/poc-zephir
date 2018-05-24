@@ -1,4 +1,4 @@
-<div class="align-middle">
+<div class="align-middle" xmlns="">
 
 
   <button type="button" title="Conforme" [disabled]="tache.dateCloture != null" class="btn btn-success btn-circle fa fa-check fa-4x" (click)="conforme()">  </button>
@@ -8,11 +8,10 @@
 
   <h5>Motif de non conformité : </h5>
 
-  <select class="form-control selectpicker"  multiple #motif title="Choisir un motif ou plusieurs motifs">
+  <select  id="motifSelect" class="form-control selectpicker" multiple #motif title="Selectionner un ou plusieurs motifs" data-tickIcon="glyphicon-print" data-style="btn-info" data-selected-text-format="count">
     <option value="CRM non conforme">CRM non conforme </option>
-    <option value="CRM non conforme">Véhicule interdit à la souscription</option>
+    <option value="Véhicule interdit à la souscription">Véhicule interdit à la souscription</option>
   </select>
-
   <div class="alert alert-danger"  role="alert" style="display:none" #alertDanger></div>
 
   <div id="buttom-content" >
@@ -24,9 +23,13 @@
 
 </div>
 <app-information-conducteur style="font-size: 0.7em" *ngIf="tache.status === 'À valider'"></app-information-conducteur>
-
+<select class="selectpicker" data-size="2">
+    <option>Mustard</option>
+    <option>Ketchup</option>
+    <option>Relish</option>
+  </select>
 <!-- The Modal -->
-<div class="modal fade" id="idinfoConducteur">
+<!--div class="modal fade" id="idinfoConducteur">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
 
@@ -44,5 +47,5 @@
 
     </div>
   </div>
-</div>
+</div-->
 

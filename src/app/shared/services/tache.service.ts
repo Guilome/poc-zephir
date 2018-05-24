@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import {GroupeService} from './groupe.service';
 import {Code} from '../domain/groupe';
 import {t} from '@angular/core/src/render3';
+import {UtilisateurService} from './utilisateur.service';
 
 //
 // AVENANT = Avenant
@@ -15,18 +16,8 @@ import {t} from '@angular/core/src/render3';
 @Injectable()
 export class TacheService {
 
-  public currentGestionnaire = 1;
-  public gestionnaires = [];
+  constructor(private UtilisaturService: UtilisateurService) {
 
-  constructor() {
-    // Gestionnaire ID :
-    const gestionnaire2 = 2;
-    const gestionnaire3 = 3;
-    const gestionnaire4 = 4;
-    this.gestionnaires.push(this.currentGestionnaire);
-    this.gestionnaires.push(gestionnaire2);
-    this.gestionnaires.push(gestionnaire3);
-    this.gestionnaires.push(gestionnaire4);
     let length = 0;
     this.tacheSubject.subscribe(data => length = data.length);
     if (length < 1) {
@@ -145,31 +136,29 @@ export class TacheService {
       lTache.context = new Context(i, 'SD60000' + i, 'ASSAPO SERGE' + i, 'CAP' + i);
       lTache.status = Status.A_VERIFIER;
       lTache.idGroupe = 1;
-      lTache.code = ['ATT_CG', 'ATT_PERMIS'][i % 2];
+      lTache.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i % 3];
       lTache.priorite = 5;
       lTache.dateLimite = new Date('05/05/2018');
       lTache.urlDocument = 'https://www.cartegrise.com/pdf/generic/1/mandat_immatriculation_professionnel.pdf';
       if (i < 4) { // 4 taches pour current user
-        lTache.idUtilisateur = this.currentGestionnaire;
+        lTache.idUtilisateur = this.UtilisaturService.getUserById(1).ident;
       } else if (i < 7) {
-        lTache.idUtilisateur = this.gestionnaires[1];
+        lTache.idUtilisateur = this.UtilisaturService.getUserById(2).ident;
       } else if (i < 9) {
-        lTache.idUtilisateur = this.gestionnaires[2];
+        lTache.idUtilisateur = this.UtilisaturService.getUserById(3).ident;
       } else if (i < 13) {
-        lTache.idUtilisateur = this.gestionnaires[3];
+        lTache.idUtilisateur = this.UtilisaturService.getUserById(4).ident;
       }
       this.listTaches.push(lTache);
     }
   }
 
-  getGestionnaires(): any {
-    return this.gestionnaires;
-  }
   public dispatcher(codeGroupe: Code) {
+    const tailleGestionnaires =  this.UtilisaturService.getAll().length;
     this.listTaches.filter(tt => tt.idUtilisateur == null)
       .forEach( ( tache , i) => {
-      tache.idUtilisateur = this.gestionnaires[i % this.gestionnaires.length];
-    });
+      tache.idUtilisateur = this.UtilisaturService.getUserByIndex(i % tailleGestionnaires).ident;
+      });
     this.tacheSubject.next(this.listTaches);
   }
 
