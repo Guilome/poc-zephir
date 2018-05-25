@@ -34,14 +34,11 @@ import {TooltipModule} from 'ng2-tooltip-directive';
 import {PopoverModule} from 'ng4-popover';
 import {UtilisateurService} from './shared/services/utilisateur.service';
 import { AccueilComponent } from './accueil/accueil.component';
-<<<<<<< HEAD
 import { ActionMetierService } from './shared/services/action-metier.service';
-=======
 import { DonnerTacheComponent } from './affecter-tache/donner-tache/donner-tache.component';
 import { GestionnaireComponent } from './affecter-tache/gestionnaire/gestionnaire.component';
 import { TacheNonAffecteComponent } from './affecter-tache/tache-non-affecte/tache-non-affecte.component';
 import { PrendreTacheComponent } from './affecter-tache/prendre-tache/prendre-tache.component';
->>>>>>> 03977f6612ee443360ab2773a8c8c66bd9442f5a
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
