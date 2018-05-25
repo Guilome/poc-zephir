@@ -23,6 +23,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
   share = false;
   inbox = false;
   outbox = false;
+  take = false;
   calendar = false;
   file = false;
   filter = false;
@@ -126,6 +127,11 @@ export class GestionComponent implements OnInit, AfterViewInit {
       }
     }
   }
+  prendreTache() {
+    if(this.tacheBoolean) {
+      this.router.navigate(['/PrendreTache'])
+    }
+  }
   nouvelleTache() {
     if (this.noteBoolean) {
       this.router.navigate(['/NouvelleNote']);
@@ -155,6 +161,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
     this.refresh = true;
     this.inbox = true;
     this.outbox = true;
+    this.take = true;
   }
 
   private mesActionsMetier() {

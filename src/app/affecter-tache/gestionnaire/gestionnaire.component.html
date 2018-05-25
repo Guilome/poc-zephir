@@ -1,8 +1,8 @@
 <div ng-app="app">
-  <div class="card text-white bg-card">
-    <div class="card-header">
+  <div class="card text-white color-card">
+    <div class="card-header color-header">
       Gestionnaires
-      <input class="mt-2 float-right" type="checkbox" id="all" [checked]="allChecked" name="gestionnaire" (change)="checkbox = !checkbox; returnAll()">
+      <input class="mt-2 float-right" type="checkbox" id="all" [checked]="isAllChecked()" name="gestionnaire" (change)="checkbox = !checkbox; returnAll()">
     </div>
     <div class="card-body">
       <table class="table table-borderless">

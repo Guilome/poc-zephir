@@ -10,8 +10,8 @@ export class GestionnaireComponent implements OnInit {
 
   lesGestionnaires: Utilisateur[]
   allChecked: Boolean
-  returnGestionnaire:number[]  
-  @Output() gestionnaireAssigner:EventEmitter<number[]> = new EventEmitter<number[]>();
+  gestionnaires:Utilisateur[] = []
+  @Output() gestionnaireAssigner:EventEmitter<Utilisateur[]> = new EventEmitter<Utilisateur[]>();
   collectChecks = []
   collectGestionnaire = []
 
@@ -19,55 +19,70 @@ export class GestionnaireComponent implements OnInit {
   }
 
   ngOnInit() {    
-    this.returnGestionnaire = []
     this.lesGestionnaires = this.GestionnaireService.getAll()
     
   }
 
-  //Retourne l'ID des gestionnaires selectionnés
+  //Retourne les gestionnaires selectionnés
   return(){    
- 
-    var collectInput=document.getElementsByTagName('input')      
-    for (let i = 0; i < collectInput.length; i++) {
-      this.collectChecks.push(collectInput[i])
-    }
+
     if (this.collectGestionnaire.length < 7) {
-      this.collectChecks.forEach(checkbox => {
-        if (checkbox.name === "gestionnaire" && checkbox.id != "all"){
-          this.collectGestionnaire.push(checkbox)     
+      var collectInput=document.getElementsByTagName('input')      
+      for (let i = 0; i < collectInput.length; i++) {
+        if(collectInput[i].type === "checkbox"){
+          if (collectInput[i].name === "gestionnaire" && collectInput[i].id != "all"){
+            this.collectGestionnaire.push(collectInput[i])     
+          }
         }
-      });
+      }
     }
 
-    //Rempli la liste des ID  des gestionnaires selectionnés
-    this.collectGestionnaire.forEach(tache => {
-      if(tache.checked === true){
-        if (this.returnGestionnaire.indexOf(tache.id) === -1) {
-          console.log("add : " + tache.id);     
-          this.returnGestionnaire.push(tache.id)
-        }        
+    //Rempli la liste des gestionnaires selectionnés
+    this.collectGestionnaire.forEach(gestionnaire => {
+      if(gestionnaire.checked === true){
+        this.lesGestionnaires.forEach(g =>{
+          if (g.ident == gestionnaire.id) {
+            if (this.gestionnaires.indexOf(g) === -1) {
+              console.log("add : " + gestionnaire.id);     
+              this.gestionnaires.push(g)
+            }  
+          }
+        })
       }
       else{  
-        if (this.returnGestionnaire.indexOf(tache.id) != -1) {      
-          console.log("remove : " + tache.id);
-          this.returnGestionnaire.splice(this.returnGestionnaire.indexOf(tache.id), 1)
+        if (this.gestionnaires.indexOf(gestionnaire) != -1) {      
+          console.log("remove : " + gestionnaire.id);
+          this.gestionnaires.splice(this.gestionnaires.indexOf(gestionnaire), 1)
         }
       }      
     });    
-    this.gestionnaireAssigner.emit(this.returnGestionnaire)
+    this.gestionnaireAssigner.emit(this.gestionnaires)
   }
 
   // Retourne l'ID de tout les gestionnaires
   returnAll(){
     //Rempli la liste de l'ID de tout les gestionnaires
-    if (this.returnGestionnaire.length < 7) {
-      this.returnGestionnaire = []
+    if (this.gestionnaires.length < 7) {
+      this.gestionnaires = []
       console.log("add all")    
-      this.lesGestionnaires.forEach(tache => {
-        this.returnGestionnaire.push(tache.ident)
+      this.lesGestionnaires.forEach(gestionnaire => {
+        this.gestionnaires.push(gestionnaire)
       });
     }
-    this.gestionnaireAssigner.emit(this.returnGestionnaire)
+    this.gestionnaireAssigner.emit(this.gestionnaires)
+  }
+
+  isAllChecked():Boolean {
+
+    var collectInput = document.getElementsByTagName('input');
+  
+    for (let i = 0; i < collectInput.length; i++) {
+      if (collectInput[i].name === "tache" && collectInput[i].id != "all") {
+        if (!collectInput[i].checked)
+          return false;
+      }
+    }  
+    return true;
   }
 }
 

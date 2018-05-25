@@ -34,9 +34,10 @@ import {TooltipModule} from 'ng2-tooltip-directive';
 import {PopoverModule} from 'ng4-popover';
 import {UtilisateurService} from './shared/services/utilisateur.service';
 import { AccueilComponent } from './accueil/accueil.component';
-import { AffecterTacheComponent } from './affecter-tache/affecter-tache.component';
+import { DonnerTacheComponent } from './affecter-tache/donner-tache/donner-tache.component';
 import { GestionnaireComponent } from './affecter-tache/gestionnaire/gestionnaire.component';
 import { TacheNonAffecteComponent } from './affecter-tache/tache-non-affecte/tache-non-affecte.component';
+import { PrendreTacheComponent } from './affecter-tache/prendre-tache/prendre-tache.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -53,7 +54,8 @@ const appRoutes: Routes = [
   { path: 'NouvelleNote', component: NouvelleNoteComponent},
   { path: 'Connexion', component: LoginComponent},
   { path: 'Accueil', component: AccueilComponent},
-  { path: 'AffecterTache', component: AffecterTacheComponent},
+  { path: 'AffecterTache', component: DonnerTacheComponent},
+  { path: 'PrendreTache', component: PrendreTacheComponent},
 
   { path: '**', redirectTo: 'Accueil'}
 ];
@@ -80,9 +82,10 @@ const appRoutes: Routes = [
     NavGestionComponent,
     InformationConducteurComponent,
     AccueilComponent,
-    AffecterTacheComponent,
+    DonnerTacheComponent,
     GestionnaireComponent,
-    TacheNonAffecteComponent
+    TacheNonAffecteComponent,
+    PrendreTacheComponent
   ],
   imports: [
     BrowserModule,
