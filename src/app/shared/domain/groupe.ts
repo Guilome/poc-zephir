@@ -9,5 +9,6 @@ export class Groupe {
 export enum Code {
   VERIFICATION = 'Vérification des pièces justificatives',
   VALIDATION = 'Validation des pièces justificatives',
-  AVENANT = 'Avenant à réaliser'
+  AVENANT = 'Avenant / Résiliations',
+  SOUSCRIPTION = 'Souscriptions'
 }

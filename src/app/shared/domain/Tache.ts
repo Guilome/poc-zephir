@@ -6,18 +6,23 @@ export class Tache {
   static libCode = new Map()
     .set('ATT_CG', 'Carte grise')
     .set('ATT_PERMIS', 'Permis de conduire')
-    .set('AVENANT', 'Avenant')
+    .set('AVENANT', 'Demande d\'avenant')
     .set('RESILILATION', 'Résiliation')
     .set('NOTE', 'Note')
     .set('NOTE_INTERNE', 'Note Interne')
-    .set('ATT_RI','Relevé d\'information');
+    .set('ATT_RI','Relevé d\'information')
+    .set('ATT_MANDAT', 'Mandat de prélèvement')
+    .set('DEV', 'Devis à valider')
+    .set('DEV_AFN','Devis d\'avenant à valider')
+    .set('DEV_AVT','Devis d\'avenant à valider')
+    .set('RESIL','Demande de résiliation')
+    .set('SANS_EFFET','Demande de sans effet');
+
   //
   constructor(public nature: Nature ) {
     this.status = Status.EN_ATTENTE;
     this.dateCloture = null;
   }
-  // Private
-  private _libelle: string;
 
   public ident: number;
   public code: string;
@@ -25,6 +30,7 @@ export class Tache {
   public sousFamille: string;
   public message: string; // commentaire
   public priorite: number;
+  public dateCreation: Date;
   public dateLimite: Date; // format DD/MM/YYYY hh:mm
   public dateCloture: Date; // format DD/MM/YYYY hh:mm
   public status: Status;

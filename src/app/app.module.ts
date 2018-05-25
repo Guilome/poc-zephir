@@ -34,6 +34,7 @@ import {TooltipModule} from 'ng2-tooltip-directive';
 import {PopoverModule} from 'ng4-popover';
 import {UtilisateurService} from './shared/services/utilisateur.service';
 import { AccueilComponent } from './accueil/accueil.component';
+import { ActionMetierService } from './shared/services/action-metier.service';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -87,7 +88,7 @@ const appRoutes: Routes = [
     TooltipModule,
     PopoverModule
 ],
-  providers: [TacheService, NoteService, GroupeService, TitreService, UtilisateurService],
+  providers: [TacheService, NoteService, GroupeService, TitreService, UtilisateurService, ActionMetierService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,7 +8,7 @@
     </div>
     <div class="col-3">
       <label class="control-label" for="crm">CRM :</label>
-      <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crm" value="0.68">
+      <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crm" value="{{currentCRM}}" #crm>
     </div>
   </div>
   <div class="row">
@@ -39,7 +39,7 @@
   <div class="row">
     <div class="col-5">
       <label class="control-label" for="date2delivrance">Date de délivrance :</label>
-      <input type="date" class="form-control" id="date2delivrance" value="2000-01-01">
+      <input type="date" class="form-control" id="date2delivrance" value="{{currentDate2delivrance}}" #date2delivrance>
     </div>
     <div class="col-md-7" >
       <div class="row">
@@ -73,7 +73,6 @@
 </div>
 
 <h2>Informations Véhicule</h2>
-
   <div class="form-group">
     <div class="row">
       <div class="col-sm-6">
@@ -114,6 +113,73 @@
       </div>
     </div>
   </div>
+<!-- 25/05/2018 -->
+<br>
+<div class="row float-right" >
+    <button type="button" class="btn btn-outline-warning" style="border-radius: 8px; margin-right: 10px;" data-toggle="modal" data-target="#idModalRefuser"> Refuser </button>
+    <button type="button" class="btn btn-outline-success" style="border-radius: 8px;" data-toggle="modal" data-target="#idModalValider"> Valider </button>
+</div>
+<!-- The Modal REFUSER -->
+<div class="modal fade" id="idModalRefuser">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="background-color: transparent;">
 
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
 
+      <div class="modal-body">
+          <div class="link-modal" id="linkmodal"> 
+            <button type="button" class="btn btn-primary" > Demande de sans-effet sur le contrat  </button>
+          </div>
+          <div class="link-modal" id="linkmodal">
+            <button type="button" class="btn btn-primary" > Réaliser un sans-effet sur le contrat  </button>
+            </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- The Modal  VALDER -->
+<div class="modal" id="idModalValider" >
+  <div class="modal-dialog modal-dialog-centered modal-lg" >
+    <div class="modal-content" style="background-color: transparent;">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body" >
+          <div class="link-modal" id="linkmodal">
+            <div id="info" style="background-color:orange;" *ngIf="ifChangement(crm, date2delivrance)">
+              <h4 for="info">Demande d’avenant effectuée avec les informations suivantes : </h4>
+              <h5 *ngIf="currentCRM != crm.value" >CRM : {{currentCRM}} <i class="fa fa-arrow-right"></i> {{crm.value}}</h5>
+              <h5 *ngIf="currentDate2delivrance != date2delivrance.value" >Date d'obtention du permis : {{dateFormat(currentDate2delivrance)}} <i class="fa fa-arrow-right"></i> {{dateFormat(date2delivrance.value)}}</h5>
+            </div>
+              <button type="button" class="btn btn-primary" > Demande d’avenant  </button>
+        </div>
+        <br>
+        <div class="link-modal" id="linkmodal">
+
+            <button type="button" class="btn btn-primary" style="text-align:center;"> Réaliser un devis d’avenant </button>
+        </div>
+        <br>
+        <div class="link-modal" id="linkmodal">
+
+            <button type="button" class="btn btn-primary" >Réaliser un avenant </button>
+      </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 

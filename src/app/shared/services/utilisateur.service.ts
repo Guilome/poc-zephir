@@ -9,12 +9,16 @@ export class UtilisateurService {
 
   private usersSubject: BehaviorSubject<Utilisateur[]> = new BehaviorSubject([]);
   constructor() {
-    const user1 = new Utilisateur(1, 'Gestionnaire1');
-    const user2 = new Utilisateur(2, 'Gestionnaire2');
-    const user3 = new Utilisateur(3, 'Gestionnaire3');
-    const user4 = new Utilisateur(4, 'Gestionnaire4');
+    const listUsers = [];
+    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille',	'Gestionnaire'));
+    listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	'Gestionnaire'));
+    listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	'Gestionnaire'));
+    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	'Gestionnaire'));
+    listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	'Superviseur'));
+    listUsers.push(new Utilisateur(6,	'BOYER',	'Eric',	'Directeur'));
 
-    this.usersSubject.next([user1, user2, user3, user4]);
+
+    this.usersSubject.next(listUsers);
   }
 
   getAll(): Utilisateur[] {

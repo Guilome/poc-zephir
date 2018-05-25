@@ -14,13 +14,11 @@ export class GroupeService {
   taches = [];
 
   constructor(private tacheService: TacheService) {
-    const g1 = new Groupe(1, Code.VERIFICATION);
-    const g2 = new Groupe(2, Code.VALIDATION);
-    const g3 = new Groupe(3, Code.AVENANT);
-
-    this.groupes.push(g1);
-    this.groupes.push(g2);
-    this.groupes.push(g3);
+   
+    this.groupes.push(new Groupe(1, Code.VERIFICATION));
+    this.groupes.push(new Groupe(2, Code.VALIDATION));
+    this.groupes.push(new Groupe(3, Code.AVENANT));
+    this.groupes.push(new Groupe(4, Code.SOUSCRIPTION));
 
   }
 

@@ -1,39 +1,37 @@
-export class Devis {
+export class Contrat {
 
   static mapEtat = new Map()
-    .set(1, 'Devis')
-    .set(2, 'En cours')
-    .set(3, 'Mis en demeure')
-    .set(4, 'Suspendu')
-    .set(5, 'Suspendu contentieux')
+    .set(0, 'Devis')
+    .set(1, 'En cours')
+    .set(2, 'Mis en demeure')
+    .set(3, 'Suspendu')
+    .set(4, 'Suspendu contentieux')
     .set(6, 'Résilié')
     .set(7, 'Résilié contentieux');
 
-
-
-  public ident: number;
   public identDevisAvenant: number;
-  public numContrat: string;
-  public codeProduit: string;
+  public numero: string;
+  
   public nomAppelClient: string;
+  public nomAppelIntermediaire: string;
   public etatContrat: string;
   public dateCreation: Date; // format DD/MM/YYYY hh:mm
   public dateEffet: Date; // format DD/MM/YYYY
   public fractionnement: Fractionnement;
   public conditionAcceptation: string;
 
-  constructor(public  nature: Nature) {
-    this.etatContrat = Devis.mapEtat.get(1);
+  constructor(public ident: number, public codeProduit: string) {
+    this.etatContrat = Contrat.mapEtat.get(1);
   }
 
 }
 
-enum Nature {
+export enum NatureContrat {
   DEV = 'Devis',
   DEV_AVT = 'Devis d\'avenant'
 }
 
-enum Fractionnement {
+export enum Fractionnement {
   M = 'Mensuel',
   T = 'Trimestriel',
   S = 'Semestriel',

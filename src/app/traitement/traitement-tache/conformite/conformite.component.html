@@ -1,4 +1,4 @@
-<div class="align-middle" xmlns="">
+<div class="align-middle" xmlns="" *ngIf="tache.status != 'À valider'">
 
 
   <button type="button" title="Conforme" [disabled]="tache.dateCloture != null" class="btn btn-success btn-circle fa fa-check fa-4x" (click)="conforme()">  </button>
@@ -22,30 +22,6 @@
   </div>
 
 </div>
-<app-information-conducteur style="font-size: 0.7em" *ngIf="tache.status === 'À valider'"></app-information-conducteur>
-<select class="selectpicker" data-size="2">
-    <option>Mustard</option>
-    <option>Ketchup</option>
-    <option>Relish</option>
-  </select>
-<!-- The Modal -->
-<!--div class="modal fade" id="idinfoConducteur">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <div class="modal-body">
-
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-      </div>
-
-    </div>
-  </div>
-</div-->
-
+<div *ngIf="tache.status === 'À valider'">
+  <app-information-conducteur style="font-size: 0.7em" ></app-information-conducteur>
+</div>

@@ -7,6 +7,7 @@ import {Chart} from 'chart.js';
 import {GroupeService} from '../../shared/services/groupe.service';
 import {Code} from '../../shared/domain/groupe';
 import {ToastrService} from 'ngx-toastr';
+import { ActionMetierService } from '../../shared/services/action-metier.service';
 
 @Component({
   selector: 'app-gestion',
@@ -37,8 +38,10 @@ export class GestionComponent implements OnInit, AfterViewInit {
   tacheBoolean = false;
   noteBoolean = false;
   groupeBoolean = false;
+  actionMetier = false;
   // Liste :
   taches: Tache[];
+  actionMetiers: Tache[];
   // map groupe key/value
   dataGroupe: Map<string, number>;
 
@@ -61,7 +64,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
               public noteService: NoteService,
               private router: Router,
               private groupeService: GroupeService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private actionMetierService: ActionMetierService) {
 
   }
 
@@ -75,7 +79,10 @@ export class GestionComponent implements OnInit, AfterViewInit {
         this.idCurrentUser = parseInt(localStorage.getItem('USER'));
     } else if (this.titre === 'Mes actions métier') {
         this.mesActionsMetier();
-      this.numId = 2;
+        this.actionMetiers =this.actionMetierService.listActionMetier;
+        this.actionMetier = true;
+        this.numId = 2;
+        console.log('Salut')
     } else if (this.titre === 'Mes groupes') {
         this.groupeBoolean = true;
         this.numId = 3;
@@ -174,10 +181,11 @@ export class GestionComponent implements OnInit, AfterViewInit {
 
   recuperMestaches(pTache: Tache) {
     if (pTache.idUtilisateur == null) {
+      console.log('null')
       return false;
     }
-    return pTache.dateCloture == null && pTache.idUtilisateur === this.idCurrentUser;
 
+    return pTache.dateCloture == null && pTache.idUtilisateur === this.idCurrentUser;
   }
 
   mesGroupes() {

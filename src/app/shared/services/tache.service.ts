@@ -8,6 +8,7 @@ import {GroupeService} from './groupe.service';
 import {Code} from '../domain/groupe';
 import {t} from '@angular/core/src/render3';
 import {UtilisateurService} from './utilisateur.service';
+import { Contrat } from '../domain/contrat';
 
 //
 // AVENANT = Avenant
@@ -24,33 +25,36 @@ export class TacheService {
 
       const tache1 = new Tache(Nature.PIECE);
       tache1.ident = 1;
-      tache1.context = new Context(1, 'S14053911', 'ASSELINE JEAN', 'GO ASSUR');
+      tache1.context = new Context(1, 'ASSELINE JEAN', 'GO ASSUR', new Contrat(3,'TEST'));
       tache1.status = Status.A_VERIFIER;
       tache1.idGroupe = 1;
       tache1.code = 'ATT_PERMIS';
       tache1.priorite = 5;
       tache1.dateLimite = new Date('12/05/2018');
-      tache1.urlDocument = 'http://www.orimi.com/pdf-test.pdf';
+      tache1.urlDocument = 'assets/pdf/PDC.pdf';
+      tache1.idUtilisateur = 1;
 
       const tache3 = new Tache(Nature.PIECE);
       tache3.ident = 3;
-      tache3.context = new Context(3, 'SD600003', 'ASSAPO SERGE4', 'CAP');
+      tache3.context = new Context(3, 'ASSAPO SERGE4', 'CAP', new Contrat(2,'TEST'));
       tache3.status = Status.A_VERIFIER;
       tache3.idGroupe =  1;
       tache3.code = 'ATT_CG';
       tache3.priorite = 6;
       tache3.dateLimite = new Date('05/05/2018');
-      tache3.urlDocument = 'http://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf';
+      tache3.urlDocument = 'assets/pdf/CG.pdf';
+      tache3.idUtilisateur = 1;
 
       const tache2 = new Tache(Nature.TACHE);
       tache2.ident = 2;
-      tache2.context = new Context(2, 'SD600002', 'ASSEMAIAN WILLIAM', 'LISE MONIQUE');
+      tache2.context = new Context(2, 'ASSEMAIAN WILLIAM', 'LISE MONIQUE', new Contrat(1,'TEST'));
       tache2.status = Status.A_VERIFIER;
       tache2.idGroupe = 1;
-      tache2.code = 'AVENANT';
+      tache2.code = 'ATT_RI';
       tache2.priorite = 4;
       tache2.dateLimite = new Date('02/05/2018');
-      tache2.urlDocument = 'https://s1.q4cdn.com/806093406/files/doc_downloads/test.pdf';
+      tache2.urlDocument = 'assets/pdf/RI.pdf';
+      tache2.idUtilisateur = 1;
 
       this.listTaches = [tache1, tache2, tache3].sort((obj1, obj2) => obj1.priorite - obj2.priorite);
       this.tacheSubject.next(this.listTaches);
@@ -133,7 +137,7 @@ export class TacheService {
     for (let i = 0; i < 17; i++) {
       const lTache = new Tache(Nature.PIECE);
       lTache.ident = i + 4;
-      lTache.context = new Context(i, 'SD60000' + i, 'ASSAPO SERGE' + i, 'CAP' + i);
+      lTache.context = new Context(i, 'ASSAPO SERGE' + i, 'CAP' + i, new Contrat(1,'TEST'));
       lTache.status = Status.A_VERIFIER;
       lTache.idGroupe = 1;
       lTache.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i % 3];
