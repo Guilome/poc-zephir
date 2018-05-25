@@ -4,7 +4,7 @@ import {Tache, Status} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
 import {Subscription} from 'rxjs/Subscription';
 import {ToastrService} from 'ngx-toastr';
-import {SelectModule} from 'ng2-select';
+
 @Component({
   selector: 'app-conformite',
   templateUrl: './conformite.component.html',

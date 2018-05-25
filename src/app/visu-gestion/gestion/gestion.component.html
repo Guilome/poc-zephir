@@ -13,6 +13,7 @@
       <i *ngIf="share"class="fa fa-share-square-o fa-lg"></i>
       <i *ngIf="inbox"class="fa fa-inbox fa-lg" title="Demander une nouvelle tâche"></i>
       <i *ngIf="outbox" class="fa fa-sign-in fa-lg fa-rotate-90" title="Tout remettre dans la corbeille" (click)="userCorbeille()"></i>
+      <a (click)="prendreTache()"><i *ngIf="take" class="fa fa-sign-out fa-lg fa-rotate-270 " title="Prendre de nouvelle tache"></i></a>      
       <i *ngIf="calendar"class="fa fa-calendar fa-lg" title="Réaffecte mes tâches"></i>
       <a (click)="nouvelleTache()"><i *ngIf="file" title="Ajouter" class="fa fa-file-o fa-lg"></i></a>
       <i *ngIf="filter" class="fa fa-filter fa-lg" title="Filter"></i>

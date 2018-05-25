@@ -8,7 +8,11 @@ import {GroupeService} from './groupe.service';
 import {Code} from '../domain/groupe';
 import {t} from '@angular/core/src/render3';
 import {UtilisateurService} from './utilisateur.service';
+<<<<<<< HEAD
 import { Contrat } from '../domain/contrat';
+=======
+import { Utilisateur } from '../domain/Utilisateur';
+>>>>>>> 03977f6612ee443360ab2773a8c8c66bd9442f5a
 
 //
 // AVENANT = Avenant
@@ -164,6 +168,13 @@ export class TacheService {
       tache.idUtilisateur = this.UtilisaturService.getUserByIndex(i % tailleGestionnaires).ident;
       });
     this.tacheSubject.next(this.listTaches);
+  }
+
+  public dispatcherGestionnaire(utilisateurs: Utilisateur[], taches: Tache[]){
+    const tailleGestionnaires =  utilisateurs.length;
+    taches.forEach( ( tache , i) => {
+      tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
+    });
   }
 
   public corbeille(codeGroupe: Code) {
