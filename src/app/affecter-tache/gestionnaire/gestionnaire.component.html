@@ -1,0 +1,18 @@
+<div ng-app="app">
+  <div class="card text-white bg-card">
+    <div class="card-header">
+      Gestionnaires
+      <input class="mt-2 float-right" type="checkbox" id="all" [checked]="allChecked" name="gestionnaire" (change)="checkbox = !checkbox; returnAll()">
+    </div>
+    <div class="card-body">
+      <table class="table table-borderless">
+        <tbody>
+          <tr *ngFor="let gestionnaire of lesGestionnaires">
+            <td>{{gestionnaire.nom}}</td>
+            <td><input type="checkbox" id="{{gestionnaire.ident}}" [checked]="checkbox" name="gestionnaire" (change)="allChecked = false; return()"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
