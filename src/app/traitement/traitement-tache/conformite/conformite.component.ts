@@ -12,20 +12,38 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class ConformiteComponent implements OnInit {
 
-  constructor(private router: Router, private tacheService: TacheService, private route: ActivatedRoute, public toastr: ToastrService) {
-  }
+  constructor(private router: Router, 
+    private tacheService: TacheService, 
+    private route: ActivatedRoute, 
+    public toastr: ToastrService) {}
+
   tache: Tache;
   private idSubscription: Subscription;
   public motifBoolean = true;
 
-  ngOnInit() {
-    this.idSubscription = this.route.params.subscribe((params: any) => {
-      this.tache = this.tacheService.getTacheById(+params.id);
-    });
-
-
-
-  }
+  // multiplSelect
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings = {};
+  ngOnInit(){
+      this.idSubscription = this.route.params.subscribe((params: any) => {
+        this.tache = this.tacheService.getTacheById(+params.id);
+      });
+      this.dropdownList = [
+                            {"id": 1, "itemName":"CRM non conforme"},
+                            {"id": 2, "itemName":"Véhicule interdit à la souscription"}
+                          ];
+      this.selectedItems = [];
+      this.dropdownSettings = { 
+                                singleSelection: false, 
+                                text:"Selectionner un ou plusieurs motifs",
+                                selectAllText:'Tout Selectionner',
+                                unSelectAllText:'Tout désélectionner',
+                                enableSearchFilter: true,
+                                classes:"myclass custom-class"
+                              };
+                            }
+  
 
   /*
    Fermer la tache et créer une nouvelle si étape "A_VALIDER"
@@ -53,34 +71,29 @@ export class ConformiteComponent implements OnInit {
     FERMER LA TACHE dans les deux étapes (à voir)
     Message de cloture obligtoire
   */
-  nonConforme(motif, alertDanger: any) {
-    //$('.selectpicker').selectpicker('val', 'Mustard');
-
-    document.getElementById('motifSelect');
-    console.log('True motif !' + document.getElementById('motifSelect') + ' ; ');
-    document.getElementById('motifSelect').style.display = 'block';
-    document.getElementById('motifSelect').classList.add('selectpicker');
-    /*
+  nonConforme() {
     if (this.tache.dateCloture == null) {
       if (this.motifBoolean) {
-        if (motif.value.trim() !== '') {
-          this.tacheService.closeTacheNonConforme(this.tache.ident, motif.value);
+        
+        if (this.selectedItems.length > 0) {
+          
+          this.tacheService.closeTacheNonConforme(this.tache.ident, this.recuperationMotif());
           this.docSuivant();
-          this.alertShow(alertDanger, 'La tâche a été fermé');
-          motif.value = '';
+          this.toastr.success('La tâche a été fermé');
+          this.selectedItems = [];
+          console.log(this.selectedItems.length);
+          
         } else {
-          this.alertShow(alertDanger, 'Veuillez renseigner le motif');
+          this.toastr.error('Veuillez renseigner le(s) motif(s)');
         }
       } else {
-        console.log('Entré1 Else')
-
-        this.alertShow(alertDanger, 'Aucune action possible : La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.tache.dateCloture));
+        this.toastr.error('Aucune action possible : La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.tache.dateCloture));
       }
     } else {
       console.log('True motif !')
       this.motifBoolean = true;
     }
-    */
+    
   }
 
   /*
@@ -117,4 +130,11 @@ export class ConformiteComponent implements OnInit {
   }
 
 
+  private recuperationMotif(): string {
+    let motif = '';
+    for(let i in this.selectedItems){
+      motif += this.selectedItems[i]['itemName'] + '.\n';
+    }
+    return motif;
+  }
 }

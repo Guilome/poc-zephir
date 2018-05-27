@@ -39,6 +39,8 @@ import { DonnerTacheComponent } from './affecter-tache/donner-tache/donner-tache
 import { GestionnaireComponent } from './affecter-tache/gestionnaire/gestionnaire.component';
 import { TacheNonAffecteComponent } from './affecter-tache/tache-non-affecte/tache-non-affecte.component';
 import { PrendreTacheComponent } from './affecter-tache/prendre-tache/prendre-tache.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -96,7 +98,9 @@ const appRoutes: Routes = [
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(),
     TooltipModule,
-    PopoverModule
+    PopoverModule,
+    AngularMultiSelectModule,
+        
 ],
   providers: [TacheService, NoteService, GroupeService, TitreService, UtilisateurService, ActionMetierService],
   bootstrap: [AppComponent]

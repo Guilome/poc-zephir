@@ -72,18 +72,18 @@ export class GestionComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
+    this.idCurrentUser = parseInt(localStorage.getItem('USER'));
+
     if (this.titre === 'Mes tâches') {
         this.mesTaches();
         this.tacheBoolean = true;
         this.tacheService.listerTaches().subscribe(data => this.taches = data);
         this.numId = 1;
-        this.idCurrentUser = parseInt(localStorage.getItem('USER'));
     } else if (this.titre === 'Mes actions métier') {
         this.mesActionsMetier();
         this.actionMetiers =this.actionMetierService.listActionMetier;
         this.actionMetier = true;
         this.numId = 2;
-        console.log('Salut')
     } else if (this.titre === 'Mes groupes') {
         this.groupeBoolean = true;
         this.numId = 3;
@@ -188,7 +188,6 @@ export class GestionComponent implements OnInit, AfterViewInit {
 
   recuperMestaches(pTache: Tache) {
     if (pTache.idUtilisateur == null) {
-      console.log('null')
       return false;
     }
 

@@ -46,7 +46,7 @@ export class TacheService {
       tache3.urlDocument = 'assets/pdf/CG.pdf';
       tache3.idUtilisateur = 1;
 
-      const tache2 = new Tache(Nature.TACHE);
+      const tache2 = new Tache(Nature.PIECE);
       tache2.ident = 2;
       tache2.context = new Context(2, 'ASSEMAIAN WILLIAM', 'LISE MONIQUE', new Contrat(1,'TEST'));
       tache2.status = Status.A_VERIFIER;
