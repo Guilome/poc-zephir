@@ -5,8 +5,10 @@ import {NoteService} from '../../shared/services/note.service';
 import {Router} from '@angular/router';
 import {Chart} from 'chart.js';
 import {GroupeService} from '../../shared/services/groupe.service';
-import {Code} from '../../shared/domain/groupe';
+import {Code, Groupe} from '../../shared/domain/groupe';
 import {ToastrService} from 'ngx-toastr';
+import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
+import { UtilisateurService } from '../../shared/services/utilisateur.service';
 
 @Component({
   selector: 'app-gestion',
@@ -17,6 +19,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
 
   @Input() titre: string;
   @Input() card: string;
+  @Input() profil: Profil;
 
   eye = false;
   search = false;
@@ -40,11 +43,14 @@ export class GestionComponent implements OnInit, AfterViewInit {
   groupeBoolean = false;
   // Liste :
   taches: Tache[];
+  groupes: Groupe[];
   // map groupe key/value
   dataGroupe: Map<string, number>;
 
   // Current Utilisateur :
   idCurrentUser;
+
+  utilisateur:Utilisateur 
 
   context: any;
   public c: Chart;
@@ -62,7 +68,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
               public noteService: NoteService,
               private router: Router,
               private groupeService: GroupeService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private utilService: UtilisateurService) {
 
   }
 
@@ -78,6 +85,9 @@ export class GestionComponent implements OnInit, AfterViewInit {
         this.mesActionsMetier();
       this.numId = 2;
     } else if (this.titre === 'Mes groupes') {
+        this.utilisateur = this.utilService.getUserById(parseInt(localStorage.getItem('USER')))
+        this.profil = this.utilisateur.profil
+        this.groupes = this.groupeService.getAll().filter(f => f.utilisateurs.includes(this.utilisateur)) 
         this.groupeBoolean = true;
         this.numId = 3;
     } else if (this.titre === 'Mes Notes') {
@@ -86,14 +96,9 @@ export class GestionComponent implements OnInit, AfterViewInit {
       this.noteBoolean = true;
       // récupération des données :
       this.noteService.listerNotes().subscribe(data => this.taches = data);
-
-
     } else {
       this.numId = Math.floor(Math.random() * (999999 - 100000)) + 100000;
     }
-
-
-
   }
 
   ngAfterViewInit() {
@@ -186,13 +191,12 @@ export class GestionComponent implements OnInit, AfterViewInit {
     return pTache.dateCloture == null && pTache.idUtilisateur === this.idCurrentUser;
 
   }
-
+  
   mesGroupes() {
     this.groupeService.getAffectationTaches(Code.VERIFICATION).subscribe(data => {
       this.dataGroupe = data;
       this.UpdateCanvas();
     });
-
   }
   private  UpdateCanvas() {
     if (this.c == null) {
@@ -239,7 +243,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
       });
     }
   }
-
+  
   /**
    * Dispatche les tache non affectées aux gestionnaires de manière équitable
    */
@@ -264,7 +268,14 @@ export class GestionComponent implements OnInit, AfterViewInit {
     }
   }
 
-
+  permission(role: string) {
+    if (role === Profil.SUPERVISEUR.toString() || role === Profil.DIRECTEUR.toString()) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
 }
 
 

@@ -91,6 +91,28 @@
 
       <!-- BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE -->
       <ng-container *ngIf="groupeBoolean">
+        <div class="row mb-5">
+            <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th>Groupe</th>
+                    <th>Profil</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let groupe of groupes">
+                    <ng-container *ngIf="permission(profil); else elseBlock">
+                      <a class="white" href="#">{{groupe.libelle}}</a>
+                    </ng-container>
+                    <ng-template #elseBlock>
+                        <td>{{groupe.libelle}}</td>
+                    </ng-template>
+                    <td>{{profil}}</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        
         <div class="row">
             <canvas id="chart"></canvas>
         </div>

@@ -1,6 +1,10 @@
+import { Utilisateur } from "./Utilisateur";
+
 export class Groupe {
 
   public libelle: string;
+
+  utilisateurs: Utilisateur[]
 
   constructor(public ident: number, public code: Code) {
     this.libelle = this.code.valueOf();

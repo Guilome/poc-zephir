@@ -38,6 +38,7 @@ import { DonnerTacheComponent } from './affecter-tache/donner-tache/donner-tache
 import { GestionnaireComponent } from './affecter-tache/gestionnaire/gestionnaire.component';
 import { TacheNonAffecteComponent } from './affecter-tache/tache-non-affecte/tache-non-affecte.component';
 import { PrendreTacheComponent } from './affecter-tache/prendre-tache/prendre-tache.component';
+import { VisuSuperviseurComponent } from './visu-superviseur/visu-superviseur.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -85,7 +86,8 @@ const appRoutes: Routes = [
     DonnerTacheComponent,
     GestionnaireComponent,
     TacheNonAffecteComponent,
-    PrendreTacheComponent
+    PrendreTacheComponent,
+    VisuSuperviseurComponent
   ],
   imports: [
     BrowserModule,

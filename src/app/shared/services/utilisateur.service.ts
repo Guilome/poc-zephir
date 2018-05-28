@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Utilisateur} from '../domain/Utilisateur';
+import {Utilisateur, Profil} from '../domain/Utilisateur';
 import {Tache} from '../domain/Tache';
 import index from '@angular/cli/lib/cli';
 
@@ -9,10 +9,10 @@ export class UtilisateurService {
 
   private usersSubject: BehaviorSubject<Utilisateur[]> = new BehaviorSubject([]);
   constructor() {
-    const user1 = new Utilisateur(1, 'Gestionnaire1');
-    const user2 = new Utilisateur(2, 'Gestionnaire2');
-    const user3 = new Utilisateur(3, 'Gestionnaire3');
-    const user4 = new Utilisateur(4, 'Gestionnaire4');
+    const user1 = new Utilisateur(1, 'Gestionnaire1', Profil.GESTIONNAIRE);
+    const user2 = new Utilisateur(2, 'Gestionnaire2', Profil.SUPERVISEUR);
+    const user3 = new Utilisateur(3, 'Gestionnaire3', Profil.DIRECTEUR);
+    const user4 = new Utilisateur(4, 'Gestionnaire4', Profil.GESTIONNAIRE);
 
     this.usersSubject.next([user1, user2, user3, user4]);
   }
@@ -23,6 +23,10 @@ export class UtilisateurService {
 
   getName(name: string) {
     return this.getUserById(parseInt(name, 10)).nom;
+  }
+
+  getProfil(profil: Profil) {
+    return this.getUserById(parseInt(profil, 10)).profil;
   }
 
   public getUserById(ident: number) {

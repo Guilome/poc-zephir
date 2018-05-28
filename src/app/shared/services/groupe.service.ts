@@ -3,6 +3,7 @@ import {Groupe, Code} from '../domain/groupe';
 import {TacheService} from './tache.service';
 import {Tache} from '../domain/Tache';
 import {BehaviorSubject} from '../../../../node_modules/rxjs';
+import { UtilisateurService } from './utilisateur.service';
 
 @Injectable()
 export class GroupeService {
@@ -13,10 +14,13 @@ export class GroupeService {
   groupes = [];
   taches = [];
 
-  constructor(private tacheService: TacheService) {
+  constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {
     const g1 = new Groupe(1, Code.VERIFICATION);
     const g2 = new Groupe(2, Code.VALIDATION);
     const g3 = new Groupe(3, Code.AVENANT);
+    g1.utilisateurs = utilisateurService.getAll()
+    g2.utilisateurs = []
+    g3.utilisateurs = []
 
     this.groupes.push(g1);
     this.groupes.push(g2);
@@ -26,6 +30,10 @@ export class GroupeService {
 
   getAll(): Groupe[] {
     return this.groupes;
+  }
+
+  public getGroupeById(ident: number): Groupe {
+    return this.groupes.find(groupe => groupe.ident === ident)
   }
 
   getAffectationTaches(codeGroupe: Code): BehaviorSubject<Map<string, number>> {
