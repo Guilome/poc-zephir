@@ -1,5 +1,5 @@
 
-<h3>{{tache.libelle}} - <a href="#">{{tache.context.numeroContrat}}</a> <i class="fa fa-info-circle" [popover]="myPopover"></i> </h3>
+<h3>{{tache.libelle}} - <a href="#">{{tache.context.contrat.numero}}</a> <i class="fa fa-info-circle" [popover]="myPopover"></i> </h3>
 
 <!--iframe [src]="urlSafe()" width="100%" height="800px"></iframe-->
 
@@ -15,7 +15,9 @@
 <div id="divPdf"></div>
 
   <popover-content #myPopover
-                   title="Détail"
+                   title="Informations contrat"
                    [closeOnClickOutside]="true">
-    <app-detail-tache></app-detail-tache>
+    <div class="container">
+      <app-detail-tache></app-detail-tache>
+    </div>
   </popover-content>

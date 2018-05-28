@@ -144,15 +144,15 @@ export class TacheService {
     for (let i = 0; i < 17; i++) {
       const lTache = new Tache(Nature.PIECE);
       lTache.ident = i + 4;
-      const c = new Contrat(1,'TEST' + i+4)
+      const c = new Contrat(7475065+i,'SOLUTIO')
       c.numero = 'S1405810'+ i+4;
-      lTache.context = new Context(i, 'ASSAPO SERGE' + i, 'CAP' + i, c);
+      lTache.context = new Context(1000020+i, this.nomApl[i], this.nomInter[i] + i, c);
       lTache.status = Status.A_VERIFIER;
       lTache.idGroupe = 1;
       lTache.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i % 3];
       lTache.priorite = 5;
       lTache.dateLimite = new Date('05/05/2018');
-      lTache.urlDocument = 'https://www.cartegrise.com/pdf/generic/1/mandat_immatriculation_professionnel.pdf';
+      lTache.urlDocument = ['assets/pdf/CG.pdf','assets/pdf/PDC.pdf','assets/pdf/RI.pdf'][i % 3];
       if (i < 4) { // 4 taches pour current user
         lTache.idUtilisateur = this.UtilisaturService.getUserById(1).ident;
       } else if (i < 7) {
@@ -165,7 +165,44 @@ export class TacheService {
       this.listTaches.push(lTache);
     }
   }
-
+  private nomInter = [
+            'ROUQUETTE FREDERIC'
+            ,'ROUQUETTE FREDERIC'
+            ,'IQBAL ZAFAR'
+            ,'IQBAL ZAFAR'
+            ,'IQBAL ZAFAR'
+            ,'FOSTER MALCOLM'
+            ,'FOSTER MALCOLM'
+            ,'FOSTER MALCOLM'
+            ,'CETANI MARIO'
+            ,'CETANI MARIO'
+            ,'CETANI MARIO'
+            ,'SCHONDORF DANIEL'
+            ,'SCHONDORF DANIEL'
+            ,'SCHONDORF DANIEL'
+            ,'LAMBERT PIERRETTE'
+            ,'LAMBERT PIERRETTE'
+            ,'LAMBERT PIERRETTE'
+  ]
+  private nomApl = [
+          'BOYER ET MORVILLIERS',
+          'BOYER ET MORVILLIERS',
+          'LEADER ASSURANCES',
+          'LEADER ASSURANCES',
+          'FAAC',
+          'FAAC',
+          'FAAC',
+          'PEREIRE DIRECT',
+          'PEREIRE DIRECT',
+          'PEREIRE DIRECT',
+          'APM ASSURANCES',
+          'APM ASSURANCES',
+          'APM ASSURANCES',
+          'ASSUR INVEST',
+          'ASSUR INVEST',
+          'ASSUR INVEST',
+          'H/ZEPHIR ASSURANCES'
+  ]
   public dispatcher(codeGroupe: Code) {
     const tailleGestionnaires =  this.UtilisaturService.getAll().length;
     this.listTaches.filter(tt => tt.idUtilisateur == null)
@@ -199,5 +236,8 @@ export class TacheService {
     return false;
   }
 
+  public getPiecesByContext(context: Context): Tache[]{
+    return this.listTaches.filter(piece => piece.context = context)
+  }
   }
 

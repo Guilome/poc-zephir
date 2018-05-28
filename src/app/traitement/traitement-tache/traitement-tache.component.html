@@ -5,10 +5,16 @@
     <app-detail-tache></app-detail-tache>
   </div-->
 
-  <div class="col">
+  <div  class="col-2">
+    contrat ...
+    <li>
+      <ul *ngFor="let p of listPieces">{{p.status}}</ul>
+    </li>
+
+  </div>
+  <div class="col-6">
     <app-apercu-document></app-apercu-document>
   </div>
-
 
   <div class="col" id="idContentRight">
     <app-conformite ></app-conformite>

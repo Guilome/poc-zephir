@@ -12,9 +12,17 @@ import {NgForm} from '@angular/forms';
 export class TraitementTacheComponent implements OnInit {
 
   showDetail = true;
-  constructor() { }
+  listPieces = [];
+
+  constructor(private tacheService: TacheService,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.params.subscribe((params: any) => {
+      const tache = this.tacheService.getTacheById(+params.id);
+      this.listPieces = this.tacheService.getPiecesByContext(tache.context)
+    });
+
   }
 
 
