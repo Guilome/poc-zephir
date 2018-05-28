@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {Context} from '../../../shared/domain/context';
 import {Nature, Status, Tache} from '../../../shared/domain/Tache';
 import {NgForm} from '@angular/forms';
 import {TacheService} from '../../../shared/services/tache.service';
 import {TitreService} from '../../../shared/services/titre.service';
 import { Contrat } from '../../../shared/domain/contrat';
+import { ActionMetierService } from '../../../shared/services/action-metier.service';
 
 @Component({
   selector: 'app-edit-tache',
@@ -17,13 +18,19 @@ export class EditTacheComponent implements OnInit {
   defaultAction = 'AVENANT';
   defaultPriorite = '0';
   currentDate = new Date();
+  currentTache: Tache;
 
-  constructor(private tacheService: TacheService, private router: Router, private titreService: TitreService) {
-  }
+  constructor(private tacheService: TacheService, 
+              private router: Router,
+              private route: ActivatedRoute,
+              private titreService: TitreService, 
+              public actionMetier: ActionMetierService) { }
 
   ngOnInit() {
     this.titreService.updateTitre('Nouvelle Tâche');
-
+    this.route.params.subscribe(params => {
+      this.currentTache = this.actionMetier.getById(+params['id']); // (+) converts string 'id' to a number
+   });
   }
 
   onSubmit(form: NgForm) {

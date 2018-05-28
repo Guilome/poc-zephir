@@ -74,12 +74,12 @@ export class GestionComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.idCurrentUser = parseInt(localStorage.getItem('USER'));
 
-    if (this.titre === 'Mes tâches') {
+    if (this.titre === 'Pièces justificatives') {
         this.mesTaches();
         this.tacheBoolean = true;
         this.tacheService.listerTaches().subscribe(data => this.taches = data);
         this.numId = 1;
-    } else if (this.titre === 'Mes actions métier') {
+    } else if (this.titre === 'Actions métier') {
         this.mesActionsMetier();
         this.actionMetiers =this.actionMetierService.listActionMetier;
         this.actionMetier = true;
