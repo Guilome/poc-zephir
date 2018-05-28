@@ -19,7 +19,7 @@ export class ConformiteComponent implements OnInit {
 
   tache: Tache;
   private idSubscription: Subscription;
-  public motifBoolean = true;
+  public motifBoolean = false;
 
   // multiplSelect
   dropdownList = [];
@@ -49,6 +49,8 @@ export class ConformiteComponent implements OnInit {
    Fermer la tache et créer une nouvelle si étape "A_VALIDER"
     */
   conforme() {
+    this.motifBoolean = false;
+    this.selectedItems = [];
     if (this.tache.dateCloture == null) {
       if (this.tache.status === Status.A_VERIFIER) {
       if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
@@ -81,17 +83,16 @@ export class ConformiteComponent implements OnInit {
           this.docSuivant();
           this.toastr.success('La tâche a été fermé');
           this.selectedItems = [];
-          console.log(this.selectedItems.length);
+          this.motifBoolean = false;
           
         } else {
           this.toastr.error('Veuillez renseigner le(s) motif(s)');
         }
       } else {
-        this.toastr.error('Aucune action possible : La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.tache.dateCloture));
+        this.motifBoolean = true;
       }
     } else {
-      console.log('True motif !')
-      this.motifBoolean = true;
+      this.toastr.error('Aucune action possible : La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.tache.dateCloture));
     }
     
   }

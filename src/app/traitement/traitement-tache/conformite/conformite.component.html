@@ -1,32 +1,22 @@
 <div class="align-middle" xmlns="" *ngIf="tache.status != 'À valider'">
 
+    <button type="button" title="Conforme" [disabled]="tache.dateCloture != null" class="btn btn-success btn-circle fa fa-check fa-4x" (click)="conforme()">  </button>
+    <button type="button" title="Non conforme" [disabled]="tache.dateCloture != null" class="btn btn-danger btn-circle fa fa-times  fa-4x" (click)="nonConforme()">  </button>
 
-  <button type="button" title="Conforme" [disabled]="tache.dateCloture != null" class="btn btn-success btn-circle fa fa-check fa-4x" (click)="conforme()">  </button>
-  <button type="button" title="Non conforme" [disabled]="tache.dateCloture != null" class="btn btn-danger btn-circle fa fa-times  fa-4x" (click)="nonConforme()">  </button>
+    <h5>Motif de non conformité : </h5>
 
+    <angular2-multiselect [data]="dropdownList"
+                          [(ngModel)]="selectedItems" 
+                          [settings]="dropdownSettings" *ngIf="motifBoolean" >
+    </angular2-multiselect>
 
-
-  <h5>Motif de non conformité : </h5>
-<!-- work only when load page
-  <select  id="motifSelect" class="form-control selectpicker" multiple #motif title="Selectionner un ou plusieurs motifs" data-tickIcon="glyphicon-print" data-style="btn-info" data-selected-text-format="count">
-    <option value="CRM non conforme">CRM non conforme </option>
-    <option value="Véhicule interdit à la souscription">Véhicule interdit à la souscription</option>
-  </select>
--->
-<angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems" 
-[settings]="dropdownSettings" >
-</angular2-multiselect>
-
-  <!--div class="alert alert-danger"  role="alert" style="display:none" #alertDanger></div-->
-
-  <div id="buttom-content" >
-    <button type="button" class="btn btn-primary" style="border-radius: 8px;" (click)="docSuivant()"> Documment suivant > </button>
-
-    <button type="button" class="btn btn-primary" style="border-radius: 8px;" (click)="goToDashboard()"> Terminer </button>
-
-  </div>
+    <div id="buttom-content" >
+      <button type="button" class="btn btn-primary" style="border-radius: 8px;margin-top: 10px;" (click)="docSuivant()"> Documment suivant > </button>
+      <button type="button" class="btn btn-primary" style="border-radius: 8px; margin-top: 10px;" (click)="goToDashboard()"> Terminer </button>
+    </div>
 
 </div>
+
 <div *ngIf="tache.status === 'À valider'">
   <app-information-conducteur style="font-size: 0.7em" ></app-information-conducteur>
 </div>

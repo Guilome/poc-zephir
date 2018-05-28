@@ -26,8 +26,10 @@ export class TacheService {
 
       const tache1 = new Tache(Nature.PIECE);
       tache1.ident = 1;
-      tache1.context = new Context(1, 'ASSELINE JEAN', 'GO ASSUR', new Contrat(3,'TEST'));
-      tache1.status = Status.A_VERIFIER;
+      const c1 = new Contrat(1,'TEST2')
+      c1.numero = 'S14058101';
+      tache1.context = new Context(1, 'ASSELINE JEAN', 'GO ASSUR', c1);
+      tache1.status = Status.A_VALIDER;
       tache1.idGroupe = 1;
       tache1.code = 'ATT_PERMIS';
       tache1.priorite = 5;
@@ -37,7 +39,9 @@ export class TacheService {
 
       const tache3 = new Tache(Nature.PIECE);
       tache3.ident = 3;
-      tache3.context = new Context(3, 'ASSAPO SERGE4', 'CAP', new Contrat(2,'TEST'));
+      const c3 = new Contrat(1,'TEST3')
+      c3.numero = 'S14058103';
+      tache3.context = new Context(3, 'ASSAPO SERGE4', 'CAP', c3);
       tache3.status = Status.A_VERIFIER;
       tache3.idGroupe =  1;
       tache3.code = 'ATT_CG';
@@ -48,7 +52,9 @@ export class TacheService {
 
       const tache2 = new Tache(Nature.PIECE);
       tache2.ident = 2;
-      tache2.context = new Context(2, 'ASSEMAIAN WILLIAM', 'LISE MONIQUE', new Contrat(1,'TEST'));
+      const c2 = new Contrat(1,'TEST2')
+      c2.numero = 'S14058102';
+      tache2.context = new Context(2, 'ASSEMAIAN WILLIAM', 'LISE MONIQUE', c2);
       tache2.status = Status.A_VERIFIER;
       tache2.idGroupe = 1;
       tache2.code = 'ATT_RI';
@@ -138,7 +144,9 @@ export class TacheService {
     for (let i = 0; i < 17; i++) {
       const lTache = new Tache(Nature.PIECE);
       lTache.ident = i + 4;
-      lTache.context = new Context(i, 'ASSAPO SERGE' + i, 'CAP' + i, new Contrat(1,'TEST'));
+      const c = new Contrat(1,'TEST' + i+4)
+      c.numero = 'S1405810'+ i+4;
+      lTache.context = new Context(i, 'ASSAPO SERGE' + i, 'CAP' + i, c);
       lTache.status = Status.A_VERIFIER;
       lTache.idGroupe = 1;
       lTache.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i % 3];

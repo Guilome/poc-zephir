@@ -10,6 +10,22 @@ export class ActionMetierService {
   listActionMetier = [];
   //actionMetierSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
 
+  getById(id: number) {
+    return this.listActionMetier.find(t => t.ident === id);
+  }
+
+  create(tache: Tache) {
+
+    const a = new Tache(Nature.TACHE);
+    a.ident = tache.ident;
+    a.idUtilisateur = null;
+    a.idGroupe = tache.idGroupe;
+    a.context = tache.context;
+    a.code = 'SANS_EFFET';
+    a.dateCreation = new Date();
+    a.priorite = 1;
+    this.listActionMetier.push(a);
+  }
   constructor() { 
     const contrat1 = new Contrat(7543663,'SOLUTIO');
     contrat1.numero = 'S14058101';
@@ -28,6 +44,7 @@ export class ActionMetierService {
     a1.context = context1;
     a1.code = 'DEV';
     a1.dateCreation = new Date('10/05/2018');
+    a1.priorite = 1;
 
     //--
     const contrat2 = new Contrat(7504437,'SOLUTIO');
@@ -47,6 +64,7 @@ export class ActionMetierService {
     a2.context = context2;
     a2.code = 'DEV';
     a2.dateCreation = new Date('10/05/2018');
+    a2.priorite = 1;
 
     //////--
     const contrat3 = new Contrat(7584136,'SOLUTIO');
@@ -66,6 +84,7 @@ export class ActionMetierService {
     a3.context = context3;
     a3.code = 'DEV_AVT';
     a3.dateCreation = new Date('10/05/2018');
+    a3.priorite = 1;
 
     ////--
 
@@ -86,6 +105,7 @@ export class ActionMetierService {
     a4.context = context4;
     a4.code = 'RESIL';
     a4.dateCreation = new Date('10/05/2018');
+    a4.priorite = 1;
 
     ////--
 
@@ -106,6 +126,7 @@ export class ActionMetierService {
     a5.context = context5;
     a5.code = 'AVENANT';
     a5.dateCreation = new Date('10/05/2018');
+    a5.priorite = 1;
 
     //////--
     const contrat6 = new Contrat(7478984,'SOLUTIO');
@@ -125,6 +146,7 @@ export class ActionMetierService {
     a6.context = context6;
     a6.code = 'AVENANT';
     a6.dateCreation = new Date('10/05/2018');
+    a6.priorite = 1;
 
     //////--
     const contrat7 = new Contrat(7539150,'SOLUTIO');
@@ -142,8 +164,9 @@ export class ActionMetierService {
     a7.idUtilisateur = 1;
     a7.idGroupe = 4;
     a7.context = context7;
-    a7.code = 'DEV_AFN ';
+    a7.code = 'DEV_AFN';
     a7.dateCreation = new Date('10/05/2018');
+    a7.priorite = 1;
 
     //////--
     const contrat8 = new Contrat(7561996,'SOLUTIO');
@@ -163,6 +186,7 @@ export class ActionMetierService {
     a8.context = context8;
     a8.code = 'DEV_AVT';
     a8.dateCreation = new Date('10/05/2018');
+    a8.priorite = 1;
 
     //////--
     const contrat9 = new Contrat(7606547,'SOLUTIO');
@@ -182,6 +206,7 @@ export class ActionMetierService {
     a9.context = context9;
     a9.code = 'DEV_AVT';
     a9.dateCreation = new Date('10/05/2018');
+    a9.priorite = 1;
 
     //////--
     const contrat10 = new Contrat(7475146,'SOLUTIO');
@@ -201,6 +226,7 @@ export class ActionMetierService {
     a10.context = context10;
     a10.code = 'RESIL';
     a10.dateCreation = new Date('10/05/2018');
+    a10.priorite = 1;
 
     //////--
     const contrat11 = new Contrat(7405964,'SOLUTIO');
@@ -220,6 +246,7 @@ export class ActionMetierService {
     a11.context = context11;
     a11.code = 'SANS_EFFET';
     a11.dateCreation = new Date('10/05/2018');
+    a11.priorite = 1;
 
     //////--
 
@@ -240,6 +267,8 @@ export class ActionMetierService {
     a12.context = context12;
     a12.code = 'SANS_EFFET';
     a12.dateCreation = new Date('10/05/2018');
+    a12.priorite = 1;
+
     //////--
 
     const contrat13 = new Contrat(7562385,'SOLUTIO');
@@ -259,6 +288,7 @@ export class ActionMetierService {
     a13.context = context13;
     a13.code = 'SANS_EFFET';
     a13.dateCreation = new Date('10/05/2018');
+    a13.priorite = 1;
 
     //////--
 
@@ -279,6 +309,7 @@ export class ActionMetierService {
     a14.context = context14;
     a14.code = 'AVENANT';
     a14.dateCreation = new Date('10/05/2018');
+    a14.priorite = 1;
 
     //////--
 
@@ -299,6 +330,7 @@ export class ActionMetierService {
     a15.context = context15;
     a15.code = 'AVENANT';
     a15.dateCreation = new Date('10/05/2018');
+    a15.priorite = 1;
 
 
     //////--
@@ -320,6 +352,7 @@ export class ActionMetierService {
     a16.context = context16;
     a16.code = 'AVENANT';
     a16.dateCreation = new Date('10/05/2018');
+    a16.priorite = 1;
 
     //////--
 
@@ -340,6 +373,7 @@ export class ActionMetierService {
     a17.context = context17;
     a17.code = 'AVENANT';
     a17.dateCreation = new Date('10/05/2018');
+    a17.priorite = 1;
 
     //////--
 
@@ -360,7 +394,8 @@ export class ActionMetierService {
     a18.context = context18;
     a18.code = 'AVENANT';
     a18.dateCreation = new Date('10/05/2018');
-    
+    a18.priorite = 1;
+
     //////--
 
     const contrat19 = new Contrat(7630678,'SOLUTIO');
@@ -380,6 +415,7 @@ export class ActionMetierService {
     a19.context = context19;
     a19.code = 'AVENANT';
     a19.dateCreation = new Date('10/05/2018');
+    a19.priorite = 1;
 
     //////--
     const contrat20 = new Contrat(7623869,'SOLUTIO');
@@ -399,6 +435,7 @@ export class ActionMetierService {
     a20.context = context20;
     a20.code = 'AVENANT';
     a20.dateCreation = new Date('10/05/2018');
+    a20.priorite = 1;
 
     //////--
 
@@ -419,6 +456,7 @@ export class ActionMetierService {
     a21.context = context21;
     a21.code = 'AVENANT';
     a21.dateCreation = new Date('10/05/2018');
+    a21.priorite = 1;
 
 
     //////--
@@ -440,6 +478,7 @@ export class ActionMetierService {
     a22.context = context22;
     a22.code = 'AVENANT';
     a22.dateCreation = new Date('10/05/2018');
+    a22.priorite = 1;
 
     //////--
 
@@ -460,6 +499,7 @@ export class ActionMetierService {
     a23.context = context23;
     a23.code = 'AVENANT';
     a23.dateCreation = new Date('10/05/2018');
+    a23.priorite = 1;
 
     //////--
 
@@ -480,7 +520,8 @@ export class ActionMetierService {
     a24.context = context24;
     a24.code = 'AVENANT';
     a24.dateCreation = new Date('10/05/2018');
-    
+    a24.priorite = 1;
+
     this.listActionMetier.push(a1)
     this.listActionMetier.push(a2)
     this.listActionMetier.push(a3)
