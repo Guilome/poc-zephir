@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActionMetierService } from '../../../../shared/services/action-metier.service';
 import { Tache } from '../../../../shared/domain/Tache';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-information-conducteur',
@@ -13,7 +14,9 @@ export class InformationConducteurComponent implements OnInit {
   public currentCRM = 0.68;
   public currentDate2delivrance = '2000-01-01';
   currentTache: Tache;
-  constructor(private actionMetierService: ActionMetierService, private route: ActivatedRoute) { }
+  constructor(private actionMetierService: ActionMetierService, 
+              private route: ActivatedRoute,
+              private toastr: ToastrService) { }
 
   ngOnInit() {
     this.currentCRM = 0.68;
@@ -48,5 +51,6 @@ export class InformationConducteurComponent implements OnInit {
    */
   demandeSansEffet(){
     this.actionMetierService.create(this.currentTache);
+    this.toastr.success('Une demande "SANS-EFFET" a été creé');
   }
 }
