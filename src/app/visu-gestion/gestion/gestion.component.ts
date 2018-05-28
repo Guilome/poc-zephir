@@ -204,9 +204,10 @@ export class GestionComponent implements OnInit, AfterViewInit {
   mesGroupes() {
     this.groupeService.getAffectationTaches(Code.VERIFICATION).subscribe(data => {
       this.dataGroupe = data;
-      this.UpdateCanvas();
+      //this.UpdateCanvas();
     });
   }
+  /*
   private  UpdateCanvas() {
     if (this.c == null) {
       this.createCanvas();
@@ -252,7 +253,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
       });
     }
   }
-  
+  */
   /**
    * Dispatche les tache non affectées aux gestionnaires de manière équitable
    */
