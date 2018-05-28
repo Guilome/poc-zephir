@@ -5,6 +5,7 @@ import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Utilisateur } from '../../shared/domain/Utilisateur';
 import { log } from 'util';
 import { Router } from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'donner-tache',
@@ -15,41 +16,44 @@ export class DonnerTacheComponent implements OnInit {
 
   taches: Tache[] = []
   gestionnaires: Utilisateur[] = []
+  lesTaches:Tache[]
+  lesGestionnaires: Utilisateur[]
 
-  constructor(public tacheService: TacheService, public userService: UtilisateurService, private route: Router) { }
+  constructor(public tacheService: TacheService, public userService: UtilisateurService, private route: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.lesGestionnaires = this.userService.getAll()    
+    this.tacheService.listerTaches().subscribe(data => this.lesTaches = data)
   }
 
   traiterTache(tabTache: Tache[]){
-    console.log(tabTache);    
     this.taches = tabTache
   }
 
   traiterGestionnaire(tabGest: Utilisateur[]){
-    console.log(tabGest);
     this.gestionnaires = tabGest
   }
 
   affecterTacheGestionnaire(){   
+    if (this.gestionnaires.length == this.lesGestionnaires.length && this.taches.length == this.lesTaches.length) {
+      console.log("test");
+      
+    }
     if (this.gestionnaires.length == 0 && this.taches.length == 0){
-      window.alert("Veuillez selectionner des tâches ou un gestionnaire") 
+      this.toastr.error("Veuillez selectionner des tâches ou un gestionnaire")
     }
     else {
       if (this.gestionnaires.length == 1) {
-        this.taches.forEach(tache => {
-          console.log(tache);      
+        this.taches.forEach(tache => { 
           this.gestionnaires.forEach(g => {
-            console.log(g);        
             tache.idUtilisateur = g.ident
           });
         });    
       }
       else {
-        console.log("je suis la");
         this.tacheService.dispatcherGestionnaire(this.gestionnaires, this.taches)
       }
-    }
-    this.route.navigate(['/page1'])
+      this.route.navigate(['/GestionGroupe/1'])
+    }    
   }
 }

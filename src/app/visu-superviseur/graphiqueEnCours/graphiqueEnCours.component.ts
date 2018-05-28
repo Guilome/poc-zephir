@@ -5,14 +5,14 @@ import { GroupeService } from '../../shared/services/groupe.service';
 import { Router } from '@angular/router';
 import { TacheService } from '../../shared/services/tache.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
-import { Utilisateur } from '../../shared/domain/Utilisateur';
+import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
 
 @Component({
-  selector: 'graphiqueGestionnaire',
-  templateUrl: './graphiqueGestionnaire.component.html',
-  styleUrls: ['./graphiqueGestionnaire.component.css']
+  selector: 'graphiqueEnCours',
+  templateUrl: './graphiqueEnCours.component.html',
+  styleUrls: ['./graphiqueEnCours.component.css']
 })
-export class GraphiqueGestionnaireComponent implements OnInit {
+export class GraphiqueEnCoursComponent implements OnInit {
 
   lesGestionnaires: Utilisateur[]
   groupe :Groupe
@@ -35,7 +35,7 @@ export class GraphiqueGestionnaireComponent implements OnInit {
   ngOnInit() {
     this.context = document.getElementById('chart');
     this.monGroupe();
-    this.lesGestionnaires = this.utilService.getAll()
+    this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil != Profil.DIRECTEUR)
   }
 
   monGroupe() {

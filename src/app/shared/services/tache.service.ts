@@ -9,7 +9,7 @@ import {Code} from '../domain/groupe';
 import {t} from '@angular/core/src/render3';
 import {UtilisateurService} from './utilisateur.service';
 import { Contrat } from '../domain/contrat';
-import { Utilisateur } from '../domain/Utilisateur';
+import { Utilisateur, Profil } from '../domain/Utilisateur';
 
 //
 // AVENANT = Avenant
@@ -18,7 +18,7 @@ import { Utilisateur } from '../domain/Utilisateur';
 @Injectable()
 export class TacheService {
 
-  constructor(private UtilisaturService: UtilisateurService) {
+  constructor(private UtilisateurService: UtilisateurService) {
 
     let length = 0;
     this.tacheSubject.subscribe(data => length = data.length);
@@ -154,13 +154,13 @@ export class TacheService {
       lTache.dateLimite = new Date('05/05/2018');
       lTache.urlDocument = ['assets/pdf/CG.pdf','assets/pdf/PDC.pdf','assets/pdf/RI.pdf'][i % 3];
       if (i < 4) { // 4 taches pour current user
-        lTache.idUtilisateur = this.UtilisaturService.getUserById(1).ident;
+        lTache.idUtilisateur = this.UtilisateurService.getUserById(1).ident;
       } else if (i < 7) {
-        lTache.idUtilisateur = this.UtilisaturService.getUserById(2).ident;
+        lTache.idUtilisateur = this.UtilisateurService.getUserById(2).ident;
       } else if (i < 9) {
-        lTache.idUtilisateur = this.UtilisaturService.getUserById(3).ident;
+        lTache.idUtilisateur = this.UtilisateurService.getUserById(3).ident;
       } else if (i < 13) {
-        lTache.idUtilisateur = this.UtilisaturService.getUserById(4).ident;
+        lTache.idUtilisateur = this.UtilisateurService.getUserById(4).ident;
       }
       this.listTaches.push(lTache);
     }
@@ -204,10 +204,10 @@ export class TacheService {
           'H/ZEPHIR ASSURANCES'
   ]
   public dispatcher(codeGroupe: Code) {
-    const tailleGestionnaires =  this.UtilisaturService.getAll().length;
+    const tailleGestionnaires =  this.UtilisateurService.getAll().filter(u => u.profil != Profil.DIRECTEUR).length;
     this.listTaches.filter(tt => tt.idUtilisateur == null)
       .forEach( ( tache , i) => {
-      tache.idUtilisateur = this.UtilisaturService.getUserByIndex(i % tailleGestionnaires).ident;
+      tache.idUtilisateur = this.UtilisateurService.getUserByIndex(i % tailleGestionnaires).ident;
       });
     this.tacheSubject.next(this.listTaches);
   }

@@ -2,14 +2,14 @@
   <div class="card text-white color-card">
     <div class="card-header color-header">
       Gestionnaires
-      <input class="mt-2 float-right" type="checkbox" id="all" [checked]="isAllChecked()" name="gestionnaire" (change)="checkbox = !checkbox; returnAll()">
+      <input class="mt-2 float-right" type="checkbox" id="allGest" [checked]="isAllGest()" name="gestionnaire" (change)="checkboxGest = !checkboxGest; returnAll()">
     </div>
     <div class="card-body">
       <table class="table table-borderless">
         <tbody>
           <tr *ngFor="let gestionnaire of lesGestionnaires">
             <td>{{gestionnaire.nom}}</td>
-            <td><input type="checkbox" id="{{gestionnaire.ident}}" [checked]="checkbox" name="gestionnaire" (change)="allChecked = false; return()"></td>
+            <td><input type="checkbox" id="{{gestionnaire.ident}}" [checked]="checkboxGest" name="gestionnaire" (change)="return()"></td>
           </tr>
         </tbody>
       </table>
