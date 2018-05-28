@@ -4,7 +4,7 @@ import {TacheService} from './tache.service';
 import {Tache} from '../domain/Tache';
 import {BehaviorSubject} from '../../../../node_modules/rxjs';
 import { UtilisateurService } from './utilisateur.service';
-import { Utilisateur } from '../domain/Utilisateur';
+import { Utilisateur, Profil } from '../domain/Utilisateur';
 
 @Injectable()
 export class GroupeService {
@@ -18,7 +18,7 @@ export class GroupeService {
 
   constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {
     
-    this.utilisateurs = utilisateurService.getAll()
+    this.utilisateurs = utilisateurService.getAll().filter(u => u.profil != Profil.DIRECTEUR)
     
     this.groupes.push(new Groupe(1, Code.VERIFICATION, this.utilisateurs));
     this.groupes.push(new Groupe(2, Code.VALIDATION, this.utilisateurs));
@@ -48,15 +48,13 @@ export class GroupeService {
     const map = new Map<string, number>();
     // liste des gestionnaires : Initialisation
     map.set('Non Affectées', 0);
-    for ( let i = 1 ; i <= 5 ; i++) {
-      map.set( 'Gestionnaire ' + i, 0);
-    }
+    let gestionnaires = this.utilisateurService.getAll().filter(g => g.profil != Profil.DIRECTEUR).forEach(g => map.set( g.nom+' '+g.prenom, 0))
     for (const t of this.taches) {
       if (t.idUtilisateur != null) {
-        const key = 'Gestionnaire ' + t.idUtilisateur;
+        let gestionnaire = this.utilisateurService.getUserById(t.idUtilisateur)
+        const key = gestionnaire.nom+' '+gestionnaire.prenom;
         const sum = map.get(key);
         map.set(key,  sum + 1);
-
       } else {
         const sum = map.get('Non Affectées');
         map.set('Non Affectées', sum + 1);

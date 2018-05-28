@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, group } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../shared/services/groupe.service';
-import { Code } from '../shared/domain/groupe';
+import { Code, Groupe } from '../shared/domain/groupe';
 
 @Component({
   selector: 'app-visu-superviseur',
@@ -10,7 +10,13 @@ import { Code } from '../shared/domain/groupe';
 })
 export class VisuSuperviseurComponent implements OnInit {
 
-  constructor(private route: Router, private groupeService: GroupeService) { }
+  idGroupe: number
+  groupe: Groupe
+
+  constructor(private route: Router, private activeRoute: ActivatedRoute, private groupeService: GroupeService) { 
+    this.idGroupe = parseInt(activeRoute.snapshot.paramMap.get("id"))
+    this.groupe = groupeService.getGroupeById(this.idGroupe)
+  }
 
   ngOnInit() {
   }
@@ -22,6 +28,10 @@ export class VisuSuperviseurComponent implements OnInit {
   }
 
   corbeille() {
-    this.groupeService.corbeille(Code.VERIFICATION);
+    this.groupeService.corbeille(this.groupe.code);
+  }
+
+  dispatcher() {
+    this.groupeService.dispatcher(this.groupe.code);
   }
 }

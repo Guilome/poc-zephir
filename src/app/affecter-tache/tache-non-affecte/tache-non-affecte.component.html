@@ -2,14 +2,14 @@
   <div class="card text-white color-card">
     <div class="card-header color-header">
       Taches 
-      <input class="mt-2 float-right" type="checkbox" id="all" [checked]="isAllChecked()" name="tache" (change)="checkbox = !checkbox; returnAll()">
+      <input class="mt-2 float-right" type="checkbox" id="allTache" [checked]="isAllTaches()" name="tache" (change)="checkboxTache = !checkboxTache; returnAll()">
     </div>
     <div class="card-body">
       <table class="table table-borderless">
         <tbody>
           <tr *ngFor="let tache of lesTaches">
             <td>{{tache.libelle}} {{tache.status | lowercase}}</td>
-            <td><input type="checkbox" id="{{tache.ident}}" [checked]="checkbox" name="tache" (change)="return()"></td>
+            <td><input type="checkbox" id="{{tache.ident}}" [checked]="checkboxTache" name="tache" (change)="return()"></td>
           </tr>
         </tbody>
       </table>

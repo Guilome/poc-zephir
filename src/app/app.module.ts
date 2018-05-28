@@ -41,7 +41,7 @@ import { TacheNonAffecteComponent } from './affecter-tache/tache-non-affecte/tac
 import { PrendreTacheComponent } from './affecter-tache/prendre-tache/prendre-tache.component';
 import { VisuSuperviseurComponent } from './visu-superviseur/visu-superviseur.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-import { GraphiqueGestionnaireComponent } from './visu-superviseur/graphiqueGestionnaire/graphiqueGestionnaire.component';
+import { GraphiqueEnCoursComponent } from './visu-superviseur/graphiqueEnCours/graphiqueEnCours.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -92,7 +92,7 @@ const appRoutes: Routes = [
     TacheNonAffecteComponent,
     PrendreTacheComponent,
     VisuSuperviseurComponent,
-    GraphiqueGestionnaireComponent
+    GraphiqueEnCoursComponent
   ],
   imports: [
     BrowserModule,

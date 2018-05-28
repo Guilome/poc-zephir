@@ -15,11 +15,13 @@ export class GestionnaireComponent implements OnInit {
   collectChecks = []
   collectGestionnaire = []
 
-  constructor(public GestionnaireService: UtilisateurService) {     
+  constructor(public GestionnaireService: UtilisateurService) {  
+
   }
 
   ngOnInit() {    
     this.lesGestionnaires = this.GestionnaireService.getAll() 
+    this.trierListe()   
   }
 
   trierListe() {
@@ -33,7 +35,7 @@ export class GestionnaireComponent implements OnInit {
       var collectInput=document.getElementsByTagName('input')      
       for (let i = 0; i < collectInput.length; i++) {
         if(collectInput[i].type === "checkbox"){
-          if (collectInput[i].name === "gestionnaire" && collectInput[i].id != "all"){
+          if (collectInput[i].name === "gestionnaire" && collectInput[i].id != "allGest" && collectInput[i].id != "allTache"){
             this.collectGestionnaire.push(collectInput[i])     
           }
         }
@@ -46,7 +48,6 @@ export class GestionnaireComponent implements OnInit {
         this.lesGestionnaires.forEach(g =>{
           if (g.ident == gestionnaire.id) {
             if (this.gestionnaires.indexOf(g) === -1) {
-              console.log("add : " + gestionnaire.id);     
               this.gestionnaires.push(g)
             }  
           }
@@ -54,7 +55,6 @@ export class GestionnaireComponent implements OnInit {
       }
       else{  
         if (this.gestionnaires.indexOf(gestionnaire) != -1) {      
-          console.log("remove : " + gestionnaire.id);
           this.gestionnaires.splice(this.gestionnaires.indexOf(gestionnaire), 1)
         }
       }      
@@ -67,7 +67,6 @@ export class GestionnaireComponent implements OnInit {
     //Rempli la liste de l'ID de tout les gestionnaires
     if (this.gestionnaires.length < 7) {
       this.gestionnaires = []
-      console.log("add all")    
       this.lesGestionnaires.forEach(gestionnaire => {
         this.gestionnaires.push(gestionnaire)
       });
@@ -75,12 +74,12 @@ export class GestionnaireComponent implements OnInit {
     this.gestionnaireAssigner.emit(this.gestionnaires)
   }
 
-  isAllChecked():Boolean {
+  isAllGest():Boolean {
 
     var collectInput = document.getElementsByTagName('input');
   
     for (let i = 0; i < collectInput.length; i++) {
-      if (collectInput[i].name === "tache" && collectInput[i].id != "all") {
+      if (collectInput[i].name === "tache" && collectInput[i].id != "allGest" && collectInput[i].id != "allTache") {
         if (!collectInput[i].checked)
           return false;
       }

@@ -4,6 +4,7 @@ import { Utilisateur } from '../../shared/domain/Utilisateur';
 import { TacheService } from '../../shared/services/tache.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Router } from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-prendre-tache',
@@ -15,7 +16,7 @@ export class PrendreTacheComponent implements OnInit {
   taches: Tache[] = []
   idGestionnaire: number
 
-  constructor(public tacheService: TacheService, public userService: UtilisateurService, private router: Router) { }
+  constructor(public tacheService: TacheService, public userService: UtilisateurService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.idGestionnaire = parseInt(localStorage.getItem('USER'))
@@ -28,7 +29,7 @@ export class PrendreTacheComponent implements OnInit {
 
   affecterTacheGestionnaire(){   
     if (this.taches.length == 0){
-      window.alert("Veuillez selectionner des tâches ") 
+      this.toastr.error("Veuillez selectionner des tâches")
     }
     else {
       this.taches.forEach(tache => {

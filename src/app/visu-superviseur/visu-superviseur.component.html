@@ -1,12 +1,13 @@
 <div *ngIf="ifConnexion()">
     <div>
         <div>
-            <graphiqueGestionnaire></graphiqueGestionnaire>
+            <graphiqueEnCours></graphiqueEnCours>
         </div>
-        <div>
-            <div class="btn-group btn-group-lg" role="group" aria-label="Basic example" >
-                <a href="AffecterTache" class="btn btn-secondary btn-lg" role="button" >Dispatcher</a>
-                <button class="btn-secondary-lg" (click)="corbeille()">Corbeille</button>
+        <div class="row mt-5 align-center">
+            <div class="btn-group btn-group offset-4" role="group" aria-label="Basic example">
+                <a routerLink="/AffecterTache" class="btn btn-secondary btn" role="button">Dispatcher</a>
+                <button class="btn btn-secondary btn" (click)="dispatcher()">Dispatch auto</button>
+                <button class="btn btn-secondary btn" (click)="corbeille()">Corbeille</button>
             </div>
         </div>
     </div>

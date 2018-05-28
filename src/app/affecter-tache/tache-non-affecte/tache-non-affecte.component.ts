@@ -35,7 +35,7 @@ export class TacheNonAffecteComponent implements OnInit {
       var collectInput=document.getElementsByTagName('input')      
       for (let i = 0; i < collectInput.length; i++) {
         if(collectInput[i].type === "checkbox"){
-          if (collectInput[i].name === "tache" && collectInput[i].id != "all"){
+          if (collectInput[i].name === "tache" && collectInput[i].id != "allTache" && collectInput[i].id != "allGest"){
             this.collectTache.push(collectInput[i])            
           }
         }
@@ -48,7 +48,6 @@ export class TacheNonAffecteComponent implements OnInit {
         this.lesTaches.forEach(t => { 
           if (t.ident == tache.id) {    
             if (this.taches.indexOf(t) === -1) {
-              console.log("add : " + tache.id); 
               this.taches.push(t)                      
             }   
           }
@@ -56,7 +55,6 @@ export class TacheNonAffecteComponent implements OnInit {
       }
       else{
         if (this.taches.indexOf(tache) != -1) {      
-          console.log("remove : " + tache.id);
           this.taches.splice(this.taches.indexOf(tache), 1)
         }
       }      
@@ -69,7 +67,6 @@ export class TacheNonAffecteComponent implements OnInit {
     //Rempli la liste de l'ID de toute les tâches
     if (this.taches.length < 7) {
       this.taches = []
-      console.log("add all")    
       this.lesTaches.forEach(tache => {
         this.taches.push(tache)
       });
@@ -77,12 +74,12 @@ export class TacheNonAffecteComponent implements OnInit {
     this.tacheAssigner.emit(this.taches)
   }
 
-  isAllChecked():Boolean {
+  isAllTaches():Boolean {
 
     var collectInput = document.getElementsByTagName('input');
   
     for (let i = 0; i < collectInput.length; i++) {
-      if (collectInput[i].name === "tache" && collectInput[i].id != "all") {
+      if (collectInput[i].name === "tache" && collectInput[i].id != "allTache" && collectInput[i].id != "allGest") {
         if (!collectInput[i].checked)
           return false;
       }
