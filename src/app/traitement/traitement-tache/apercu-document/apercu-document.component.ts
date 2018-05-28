@@ -21,6 +21,8 @@ export class ApercuDocumentComponent implements OnInit {
   ngOnInit() {
     this.idSubscription = this.route.params.subscribe((params: any) => {
       this.tache = this.tacheService.getTacheById(+params.id);
+      document.getElementById('divPdf').innerHTML = 
+      '<object data="'+ this.tache.urlDocument +'" width="100%" height="800px" type="application/pdf"></object>'  
     });
   }
 

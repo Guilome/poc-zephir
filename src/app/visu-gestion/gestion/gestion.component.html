@@ -127,6 +127,41 @@
       </ng-container>
       <!-- END-GROUPE ---- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE -->
 
+      <!--BEGIN ACTION METIER // BEGIN ACTION METIER // BEGIN ACTION METIER // BEGIN ACTION METIER // BEGIN ACTION METIER // -->
+      <ng-container *ngIf="actionMetiers">
+          <table class="table table-striped">
+              <thead>
+              <tr>
+                <th scope="col">Nature</th>
+                <th scope="col">Priorité</th>
+                <th scope="col">Libellé</th>
+                <th scope="col">Date</th>
+                <th scope="col">Intermédiaire</th>
+                <th scope="col">Client</th>
+                <th scope="col">Numéro Contrat</th>
+                <th scope="col">État</th>
+                <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let actM of actionMetiers">
+                <ng-container *ngIf="recuperMestaches(actM)">
+                  <td>{{actM.nature}}</td>
+                  <th scope="row">{{actM.priorite}}</th>
+                  <td>{{actM.libelle}}</td>
+                  <td>{{actM.dateLimite|date: 'MM/dd/yyyy' }}</td>
+                  <td>{{actM.context.nomAppelIntermediaire}}</td>
+                  <td>{{actM.context.nomAppelClient}}</td>
+                  <td>{{actM.context.numeroContrat}}</td>
+                  <td>{{actM.status}}</td>
+                  <td> <a routerLink="/TraitementTache/"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
+                </ng-container>
+              </tr>
+              </tbody>
+            </table>
+      </ng-container>
+              <!-- END ACTION METIER // END ACTION METIER // END ACTION METIER // END ACTION METIER // END ACTION METIER // -->
+
     </div>
   </div>
   </div>

@@ -1,11 +1,7 @@
 import { Groupe } from "./groupe";
 
 export class Utilisateur {
-
-  public prenom:	String
- 
-
-  constructor(public ident: number, public nom: string, public profil: Profil) {}
+  constructor(public ident: number, public nom: string, public prenom:	String, public profil: Profil ) {}
 }
 export enum Profil {
   GESTIONNAIRE = 'Gestionnaire',

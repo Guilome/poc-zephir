@@ -34,11 +34,14 @@ import {TooltipModule} from 'ng2-tooltip-directive';
 import {PopoverModule} from 'ng4-popover';
 import {UtilisateurService} from './shared/services/utilisateur.service';
 import { AccueilComponent } from './accueil/accueil.component';
+import { ActionMetierService } from './shared/services/action-metier.service';
 import { DonnerTacheComponent } from './affecter-tache/donner-tache/donner-tache.component';
 import { GestionnaireComponent } from './affecter-tache/gestionnaire/gestionnaire.component';
 import { TacheNonAffecteComponent } from './affecter-tache/tache-non-affecte/tache-non-affecte.component';
 import { PrendreTacheComponent } from './affecter-tache/prendre-tache/prendre-tache.component';
 import { VisuSuperviseurComponent } from './visu-superviseur/visu-superviseur.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -57,6 +60,7 @@ const appRoutes: Routes = [
   { path: 'Accueil', component: AccueilComponent},
   { path: 'AffecterTache', component: DonnerTacheComponent},
   { path: 'PrendreTache', component: PrendreTacheComponent},
+  { path: 'GestionGroupe', component: VisuSuperviseurComponent},
 
   { path: '**', redirectTo: 'Accueil'}
 ];
@@ -97,9 +101,11 @@ const appRoutes: Routes = [
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(),
     TooltipModule,
-    PopoverModule
+    PopoverModule,
+    AngularMultiSelectModule,
+        
 ],
-  providers: [TacheService, NoteService, GroupeService, TitreService, UtilisateurService],
+  providers: [TacheService, NoteService, GroupeService, TitreService, UtilisateurService, ActionMetierService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

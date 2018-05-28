@@ -9,6 +9,7 @@ import {Code, Groupe} from '../../shared/domain/groupe';
 import {ToastrService} from 'ngx-toastr';
 import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
+import { ActionMetierService } from '../../shared/services/action-metier.service';
 
 @Component({
   selector: 'app-gestion',
@@ -41,9 +42,11 @@ export class GestionComponent implements OnInit, AfterViewInit {
   tacheBoolean = false;
   noteBoolean = false;
   groupeBoolean = false;
+  actionMetier = false;
   // Liste :
   taches: Tache[];
   groupes: Groupe[];
+  actionMetiers: Tache[];
   // map groupe key/value
   dataGroupe: Map<string, number>;
 
@@ -69,21 +72,25 @@ export class GestionComponent implements OnInit, AfterViewInit {
               private router: Router,
               private groupeService: GroupeService,
               private toastr: ToastrService,
-              private utilService: UtilisateurService) {
+              private utilService: UtilisateurService,
+              private actionMetierService: ActionMetierService) {
 
   }
 
 
   ngOnInit() {
+    this.idCurrentUser = parseInt(localStorage.getItem('USER'));
+
     if (this.titre === 'Mes tâches') {
         this.mesTaches();
         this.tacheBoolean = true;
         this.tacheService.listerTaches().subscribe(data => this.taches = data);
         this.numId = 1;
-        this.idCurrentUser = parseInt(localStorage.getItem('USER'));
     } else if (this.titre === 'Mes actions métier') {
         this.mesActionsMetier();
-      this.numId = 2;
+        this.actionMetiers =this.actionMetierService.listActionMetier;
+        this.actionMetier = true;
+        this.numId = 2;
     } else if (this.titre === 'Mes groupes') {
         this.utilisateur = this.utilService.getUserById(parseInt(localStorage.getItem('USER')))
         this.profil = this.utilisateur.profil
@@ -188,8 +195,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
     if (pTache.idUtilisateur == null) {
       return false;
     }
-    return pTache.dateCloture == null && pTache.idUtilisateur === this.idCurrentUser;
 
+    return pTache.dateCloture == null && pTache.idUtilisateur === this.idCurrentUser;
   }
   
   mesGroupes() {

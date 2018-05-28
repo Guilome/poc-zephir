@@ -5,6 +5,7 @@ import {Nature, Status, Tache} from '../../../shared/domain/Tache';
 import {NgForm} from '@angular/forms';
 import {TacheService} from '../../../shared/services/tache.service';
 import {TitreService} from '../../../shared/services/titre.service';
+import { Contrat } from '../../../shared/domain/contrat';
 
 @Component({
   selector: 'app-edit-tache',
@@ -36,7 +37,7 @@ export class EditTacheComponent implements OnInit {
 
     const tache = new Tache(Nature.TACHE);
     tache.code = code;
-    tache.context = new Context(12, numeroContrat, 'ARRAULT ELODIE', 'ESPACE MOLINEL');
+    tache.context = new Context(12, 'ARRAULT ELODIE', 'ESPACE MOLINEL', new Contrat(1,'TEST'));
     tache.status = Status.EN_ATTENTE;
     // tache.libelle = 'Permis de conduire';
     tache.priorite = priorite;

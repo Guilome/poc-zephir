@@ -14,6 +14,7 @@ export class GroupeService {
   groupes = [];
   taches = [];
 
+<<<<<<< HEAD
   constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {
     const g1 = new Groupe(1, Code.VERIFICATION);
     const g2 = new Groupe(2, Code.VALIDATION);
@@ -25,6 +26,14 @@ export class GroupeService {
     this.groupes.push(g1);
     this.groupes.push(g2);
     this.groupes.push(g3);
+=======
+  constructor(private tacheService: TacheService) {
+   
+    this.groupes.push(new Groupe(1, Code.VERIFICATION));
+    this.groupes.push(new Groupe(2, Code.VALIDATION));
+    this.groupes.push(new Groupe(3, Code.AVENANT));
+    this.groupes.push(new Groupe(4, Code.SOUSCRIPTION));
+>>>>>>> 0d3e983ac9a810a7e88f533cd73c6602e9f5cec5
 
   }
 

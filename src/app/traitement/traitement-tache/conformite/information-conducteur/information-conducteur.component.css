@@ -1,0 +1,26 @@
+.modal-backdrop {
+    background-color:transparent;
+  }
+  
+  .link-modal{
+    width: 90%;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-left: 15px;
+  }
+  
+  
+  .link-modal button{
+    border: 1px solid #fff;
+    color: #fff;
+    font-family: Verdana;
+    font-size: 20px;
+    letter-spacing: 0.3em;
+    padding: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 20px;
+  }
+  
+  

@@ -29,7 +29,6 @@ export class NoteService {
       note2.dateLimite = new Date('12/05/2018');
 
 
-
       this.notes = [note1, note2];
       this.noteSubject.next(this.notes);
     }
