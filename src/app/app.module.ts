@@ -41,7 +41,7 @@ import { TacheNonAffecteComponent } from './affecter-tache/tache-non-affecte/tac
 import { PrendreTacheComponent } from './affecter-tache/prendre-tache/prendre-tache.component';
 import { VisuSuperviseurComponent } from './visu-superviseur/visu-superviseur.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-
+import { GraphiqueGestionnaireComponent } from './visu-superviseur/graphiqueGestionnaire/graphiqueGestionnaire.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -60,7 +60,7 @@ const appRoutes: Routes = [
   { path: 'Accueil', component: AccueilComponent},
   { path: 'AffecterTache', component: DonnerTacheComponent},
   { path: 'PrendreTache', component: PrendreTacheComponent},
-  { path: 'GestionGroupe', component: VisuSuperviseurComponent},
+  { path: 'GestionGroupe/:id', component: VisuSuperviseurComponent},
 
   { path: '**', redirectTo: 'Accueil'}
 ];
@@ -91,7 +91,8 @@ const appRoutes: Routes = [
     GestionnaireComponent,
     TacheNonAffecteComponent,
     PrendreTacheComponent,
-    VisuSuperviseurComponent
+    VisuSuperviseurComponent,
+    GraphiqueGestionnaireComponent
   ],
   imports: [
     BrowserModule,

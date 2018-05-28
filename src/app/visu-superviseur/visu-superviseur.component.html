@@ -1,5 +1,17 @@
-<!-- BODY -->
-<div class="accordion" id="accordion" *ngIf="ifConnexion()">
-    
+<div *ngIf="ifConnexion()">
+    <div>
+        <div>
+            <graphiqueGestionnaire></graphiqueGestionnaire>
+        </div>
+        <div>
+            <div class="btn-group btn-group-lg" role="group" aria-label="Basic example" >
+                <a href="AffecterTache" class="btn btn-secondary btn-lg" role="button" >Dispatcher</a>
+                <button class="btn-secondary-lg" (click)="corbeille()">Corbeille</button>
+            </div>
+        </div>
+    </div>
+    <div>
+
+    </div>
 </div>
     

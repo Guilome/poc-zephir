@@ -4,6 +4,7 @@ import {TacheService} from './tache.service';
 import {Tache} from '../domain/Tache';
 import {BehaviorSubject} from '../../../../node_modules/rxjs';
 import { UtilisateurService } from './utilisateur.service';
+import { Utilisateur } from '../domain/Utilisateur';
 
 @Injectable()
 export class GroupeService {
@@ -13,27 +14,16 @@ export class GroupeService {
 
   groupes = [];
   taches = [];
+  utilisateurs = []
 
-<<<<<<< HEAD
   constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {
-    const g1 = new Groupe(1, Code.VERIFICATION);
-    const g2 = new Groupe(2, Code.VALIDATION);
-    const g3 = new Groupe(3, Code.AVENANT);
-    g1.utilisateurs = utilisateurService.getAll()
-    g2.utilisateurs = []
-    g3.utilisateurs = []
-
-    this.groupes.push(g1);
-    this.groupes.push(g2);
-    this.groupes.push(g3);
-=======
-  constructor(private tacheService: TacheService) {
-   
-    this.groupes.push(new Groupe(1, Code.VERIFICATION));
-    this.groupes.push(new Groupe(2, Code.VALIDATION));
-    this.groupes.push(new Groupe(3, Code.AVENANT));
-    this.groupes.push(new Groupe(4, Code.SOUSCRIPTION));
->>>>>>> 0d3e983ac9a810a7e88f533cd73c6602e9f5cec5
+    
+    this.utilisateurs = utilisateurService.getAll()
+    
+    this.groupes.push(new Groupe(1, Code.VERIFICATION, this.utilisateurs));
+    this.groupes.push(new Groupe(2, Code.VALIDATION, this.utilisateurs));
+    this.groupes.push(new Groupe(3, Code.AVENANT, this.utilisateurs));
+    this.groupes.push(new Groupe(4, Code.SOUSCRIPTION, this.utilisateurs));
 
   }
 
@@ -58,7 +48,7 @@ export class GroupeService {
     const map = new Map<string, number>();
     // liste des gestionnaires : Initialisation
     map.set('Non Affectées', 0);
-    for ( let i = 1 ; i <= 4 ; i++) {
+    for ( let i = 1 ; i <= 5 ; i++) {
       map.set( 'Gestionnaire ' + i, 0);
     }
     for (const t of this.taches) {

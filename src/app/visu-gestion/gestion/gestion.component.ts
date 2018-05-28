@@ -94,7 +94,9 @@ export class GestionComponent implements OnInit, AfterViewInit {
     } else if (this.titre === 'Mes groupes') {
         this.utilisateur = this.utilService.getUserById(parseInt(localStorage.getItem('USER')))
         this.profil = this.utilisateur.profil
-        this.groupes = this.groupeService.getAll().filter(f => f.utilisateurs.includes(this.utilisateur)) 
+        this.groupes = this.groupeService.getAll()
+        console.log(this.groupes);        
+        this.groupes = this.groupes.filter(f => f.utilisateurs.includes(this.utilisateur)) 
         this.groupeBoolean = true;
         this.numId = 3;
     } else if (this.titre === 'Mes Notes') {

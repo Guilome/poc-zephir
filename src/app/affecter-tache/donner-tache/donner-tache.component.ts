@@ -4,6 +4,7 @@ import { Tache } from '../../shared/domain/Tache';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Utilisateur } from '../../shared/domain/Utilisateur';
 import { log } from 'util';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'donner-tache',
@@ -15,7 +16,7 @@ export class DonnerTacheComponent implements OnInit {
   taches: Tache[] = []
   gestionnaires: Utilisateur[] = []
 
-  constructor(public tacheService: TacheService, public userService: UtilisateurService) { }
+  constructor(public tacheService: TacheService, public userService: UtilisateurService, private route: Router) { }
 
   ngOnInit() {
   }
@@ -49,5 +50,6 @@ export class DonnerTacheComponent implements OnInit {
         this.tacheService.dispatcherGestionnaire(this.gestionnaires, this.taches)
       }
     }
+    this.route.navigate(['/page1'])
   }
 }

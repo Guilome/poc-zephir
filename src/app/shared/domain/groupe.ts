@@ -4,9 +4,7 @@ export class Groupe {
 
   public libelle: string;
 
-  utilisateurs: Utilisateur[]
-
-  constructor(public ident: number, public code: Code) {
+  constructor(public ident: number, public code: Code, public utilisateurs: Utilisateur[]) {
     this.libelle = this.code.valueOf();
   }
 }

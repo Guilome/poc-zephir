@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GroupeService } from '../shared/services/groupe.service';
+import { Code } from '../shared/domain/groupe';
 
 @Component({
   selector: 'app-visu-superviseur',
@@ -8,15 +10,18 @@ import { Router } from '@angular/router';
 })
 export class VisuSuperviseurComponent implements OnInit {
 
-  constructor(private route: Router) { }
+  constructor(private route: Router, private groupeService: GroupeService) { }
 
   ngOnInit() {
   }
 
-  // Doit vérifier si le profil utilisateur est bien Superviseur
   ifConnexion(): boolean {
     if (this.route.url === '/Connexion')
       return true;
     return localStorage.getItem('USER') != null;
+  }
+
+  corbeille() {
+    this.groupeService.corbeille(Code.VERIFICATION);
   }
 }

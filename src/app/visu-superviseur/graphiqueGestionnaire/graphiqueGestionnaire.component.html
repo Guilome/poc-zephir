@@ -1,0 +1,21 @@
+<div class="mt-5 row">
+  <div class="col-8">
+      <canvas id="chart"></canvas>
+  </div>
+  <div class="col-4">
+    <div class="card text-white color-card">
+      <div class="card-header color-header">
+        Gestionnaires
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tbody>
+            <tr *ngFor="let gestionnaire of lesGestionnaires">
+              <td>{{gestionnaire.nom}} {{gestionnaire.prenom}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
