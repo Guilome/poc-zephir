@@ -14,8 +14,8 @@
             <td><i class="fa fa-plus fa-lg" (click)="toggleChildren(contrat)"></i></td>
             <td>
               {{contrat.numero}}
-                <div id="expanded-data" *ngFor="let folder of folderClass">
-                    <table class="table table-striped" id="nested-table" *ngIf="folder.bool && folder.id == contrat.ident ">
+                <div *ngFor="let folder of folderClass">
+                    <table class="table table-striped mt-2" *ngIf="folder.bool && folder.id == contrat.ident ">
                       <thead>
                         <tr>
                           <th>Priorité</th>

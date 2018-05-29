@@ -18,7 +18,7 @@ export class TableTreeContratComponent implements OnInit {
 
   constructor(public contratService: ContratService) {
     this.idCurrentUser = parseInt(localStorage.getItem('USER'));
-    this.contrats = this.contratService.getContratByIdUtilisateur(this.idCurrentUser)   
+    this.contrats = this.contratService.getContratByIdUtilisateur(this.idCurrentUser).filter(contrat => contrat.listeTaches.length > 0) 
   }
 
   ngOnInit() {
