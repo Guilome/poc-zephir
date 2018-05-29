@@ -42,6 +42,7 @@ import { PrendreTacheComponent } from './affecter-tache/prendre-tache/prendre-ta
 import { VisuSuperviseurComponent } from './visu-superviseur/visu-superviseur.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { GraphiqueEnCoursComponent } from './visu-superviseur/graphiqueEnCours/graphiqueEnCours.component';
+import { SplitPipe } from './shared/pipe/split.pipe';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -92,7 +93,8 @@ const appRoutes: Routes = [
     TacheNonAffecteComponent,
     PrendreTacheComponent,
     VisuSuperviseurComponent,
-    GraphiqueEnCoursComponent
+    GraphiqueEnCoursComponent,
+    SplitPipe
   ],
   imports: [
     BrowserModule,

@@ -12,7 +12,6 @@
     <h5>Pièces justificatives : </h5>
       <div *ngFor="let p of listPieces">
           <div class="row">
-
             {{p.libelle}}
             <div class="col">
               <button (click)="detailPiece(p.ident)" *ngIf="p.status == 'À vérifier'" class="btn btn-outline-warning float-right">À vérifier</button>
