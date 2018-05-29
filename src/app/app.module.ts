@@ -42,6 +42,8 @@ import { PrendreTacheComponent } from './affecter-tache/prendre-tache/prendre-ta
 import { VisuSuperviseurComponent } from './visu-superviseur/visu-superviseur.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { GraphiqueEnCoursComponent } from './visu-superviseur/graphiqueEnCours/graphiqueEnCours.component';
+import { ContratService } from './shared/services/contrat.service';
+import { TableTreeContratComponent } from './visu-gestion/table-tree-contrat/table-tree-contrat.component'
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -92,7 +94,8 @@ const appRoutes: Routes = [
     TacheNonAffecteComponent,
     PrendreTacheComponent,
     VisuSuperviseurComponent,
-    GraphiqueEnCoursComponent
+    GraphiqueEnCoursComponent,
+    TableTreeContratComponent
   ],
   imports: [
     BrowserModule,
@@ -103,10 +106,9 @@ const appRoutes: Routes = [
     ToastrModule.forRoot(),
     TooltipModule,
     PopoverModule,
-    AngularMultiSelectModule,
-        
-],
-  providers: [TacheService, NoteService, GroupeService, TitreService, UtilisateurService, ActionMetierService],
+    AngularMultiSelectModule
+  ],
+  providers: [TacheService, NoteService, GroupeService, TitreService, UtilisateurService, ActionMetierService, ContratService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

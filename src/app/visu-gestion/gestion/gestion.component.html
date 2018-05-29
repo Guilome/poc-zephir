@@ -24,8 +24,17 @@
 
   <div [attr.id]="'collapseOne'+numId" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
     <div class="card-body">
-      <!-- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES ---  BEGIN TECHES -->
+      
 
+      <!-- BEGIN CONTRAT --- BEGIN CONTRAT --- BEGIN CONTRAT --- BEGIN CONTRAT --- BEGIN CONTRAT --- BEGIN CONTRAT ---  BEGIN CONTRAT -->
+      <ng-container *ngIf="contratBoolean">
+          <table-tree-contrat></table-tree-contrat>
+      </ng-container>
+      <!-- /END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT -->      
+
+
+      <!-- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES ---  BEGIN TECHES -->
+      <!--
         <table *ngIf="tacheBoolean" class="table table-striped">
           <thead>
           <tr>
@@ -54,6 +63,7 @@
           </tr>
           </tbody>
         </table>
+      -->
       <!-- /END TACHES --- END TECHES --- END TACHES --- END TACHES --- END TACHES --- END TACHES --- END TECHES -->
 
       <!--BEGIN ACTION METIER // BEGIN ACTION METIER // BEGIN ACTION METIER // BEGIN ACTION METIER // BEGIN ACTION METIER // -->

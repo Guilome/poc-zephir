@@ -10,6 +10,8 @@ import {ToastrService} from 'ngx-toastr';
 import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { ActionMetierService } from '../../shared/services/action-metier.service';
+import { ContratService } from '../../shared/services/contrat.service';
+import { Contrat } from '../../shared/domain/contrat';
 
 @Component({
   selector: 'app-gestion',
@@ -20,8 +22,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
 
   @Input() titre: string;
   @Input() card: string;
-  @Input() profil: Profil;
-
+  @Input() profil: Profil;  
   eye = false;
   search = false;
   share = false;
@@ -43,10 +44,13 @@ export class GestionComponent implements OnInit, AfterViewInit {
   noteBoolean = false;
   groupeBoolean = false;
   actionMetier = false;
+  contratBoolean = false
+
   // Liste :
   taches: Tache[];
   groupes: Groupe[];
   actionMetiers: Tache[];
+  contrats: Contrat[]
   // map groupe key/value
   dataGroupe: Map<string, number>;
 
@@ -73,7 +77,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
               private groupeService: GroupeService,
               private toastr: ToastrService,
               private utilService: UtilisateurService,
-              private actionMetierService: ActionMetierService) {
+              private actionMetierService: ActionMetierService,
+              public contratService: ContratService) {
 
   }
 
@@ -82,30 +87,32 @@ export class GestionComponent implements OnInit, AfterViewInit {
     this.idCurrentUser = parseInt(localStorage.getItem('USER'));
 
     if (this.titre === 'Pièces justificatives') {
-        this.mesTaches();
-        this.tacheBoolean = true;
-        this.tacheService.listerTaches().subscribe(data => this.taches = data);
-        this.numId = 1;
+      this.mesTaches();
+      this.tacheBoolean = false;
+      this.tacheService.listerTaches().subscribe(data => this.taches = data);
+      this.numId = 1;
     } else if (this.titre === 'Actions métier') {
-        this.mesActionsMetier();
-        this.actionMetiers =this.actionMetierService.listActionMetier;
-        this.actionMetier = true;
-        this.numId = 2;
+      this.mesActionsMetier();
+      this.actionMetiers =this.actionMetierService.listActionMetier;
+      this.actionMetier = true;
+      this.numId = 2;
     } else if (this.titre === 'Mes groupes') {
-        this.utilisateur = this.utilService.getUserById(parseInt(localStorage.getItem('USER')))
-        this.profil = this.utilisateur.profil
-        this.groupes = this.groupeService.getAll()
-        console.log(this.groupes);        
-        this.groupes = this.groupes.filter(f => f.utilisateurs.includes(this.utilisateur)) 
-        this.groupeBoolean = true;
-        this.numId = 3;
+      this.utilisateur = this.utilService.getUserById(this.idCurrentUser)
+      this.profil = this.utilisateur.profil
+      this.groupes = this.groupeService.getAll()
+      this.groupes = this.groupes.filter(f => f.utilisateurs.includes(this.utilisateur)) 
+      this.groupeBoolean = true;
+      this.numId = 3;
     } else if (this.titre === 'Mes Notes') {
       this.mesNotes();
       this.numId = 4;
       this.noteBoolean = true;
       // récupération des données :
       this.noteService.listerNotes().subscribe(data => this.taches = data);
-    } else {
+    } else if (this.titre === 'Contrats') {
+      this.contratBoolean = true;        
+      this.contrats = this.contratService.getContratByIdUtilisateur(this.idCurrentUser)     
+      } else {
       this.numId = Math.floor(Math.random() * (999999 - 100000)) + 100000;
     }
   }
@@ -200,60 +207,13 @@ export class GestionComponent implements OnInit, AfterViewInit {
 
     return pTache.dateCloture == null && pTache.idUtilisateur === this.idCurrentUser;
   }
-  
+
   mesGroupes() {
     this.groupeService.getAffectationTaches(Code.VERIFICATION).subscribe(data => {
       this.dataGroupe = data;
-      //this.UpdateCanvas();
     });
   }
-  /*
-  private  UpdateCanvas() {
-    if (this.c == null) {
-      this.createCanvas();
-    } else {
-      this.c.data = {
-        labels: Array.from(this.dataGroupe.keys()),
-        datasets: [{
-          data: Array.from(this.dataGroupe.values()),
-          backgroundColor: this.colors
-        }]
-      };
-    }
-    this.c.update();
-  }
-  private createCanvas() {
-
-
-    if (this.context != null) {
-      this.c = new Chart(this.context, {
-        type: 'pie',
-        data: {
-          labels: Array.from(this.dataGroupe.keys()),
-          datasets: [{
-            data: Array.from(this.dataGroupe.values()),
-            backgroundColor: this.colors
-          }]
-        }
-        ,
-        options: {
-          title: {
-            display: true,
-            text: 'Groupe Vérification',
-            fontColor: 'white'
-
-          },
-          legend: {
-            labels: {
-              fontColor: 'white',
-            },
-            position: 'right'
-          }
-        }
-      });
-    }
-  }
-  */
+  
   /**
    * Dispatche les tache non affectées aux gestionnaires de manière équitable
    */
@@ -286,6 +246,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
       return false
     }
   }
+
 }
 
 
