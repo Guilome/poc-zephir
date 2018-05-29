@@ -13,10 +13,4 @@ export class AccueilComponent implements OnInit {
   ngOnInit() {
   }
 
-  test(){
-    this.toastr.toastrConfig.progressBar = true
-    this.toastr.toastrConfig.enableHtml = true
-    this.toastr.success("<br /><br /><button type='button' id='confirmationRevertYes' class='btn clear'>Yes</button>",'delete item?')
-
-  }
 }
