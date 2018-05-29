@@ -120,6 +120,10 @@ export class TacheService {
     this.getTacheById(idTache).message = motif;
     this.setDateCloture(idTache);
   }
+  closeTacheConforme(idTache: number){
+    this.setDateCloture(idTache);
+    this.getTacheById(idTache).status = Status.OK;
+  }
 
   /**
    * renvoie l'id de la tache suivante en fonction de son status et de l'utilisateur
@@ -244,5 +248,7 @@ export class TacheService {
   public getPiecesByContext(context: Context): Tache[]{
     return this.listTaches.filter(piece => piece.context == context)
   }
+
+
   }
 

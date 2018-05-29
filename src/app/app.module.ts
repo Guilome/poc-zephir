@@ -45,6 +45,7 @@ import { GraphiqueEnCoursComponent } from './visu-superviseur/graphiqueEnCours/g
 import { SplitPipe } from './shared/pipe/split.pipe';
 import { ContratService } from './shared/services/contrat.service';
 import { TableTreeContratComponent } from './visu-gestion/table-tree-contrat/table-tree-contrat.component'
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -108,9 +109,18 @@ const appRoutes: Routes = [
     ToastrModule.forRoot(),
     TooltipModule,
     PopoverModule,
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
+    NgbModule.forRoot()
   ],
-  providers: [TacheService, NoteService, GroupeService, TitreService, UtilisateurService, ActionMetierService, ContratService],
+  providers: [TacheService, 
+              NoteService, 
+              GroupeService, 
+              TitreService, 
+              UtilisateurService, 
+              ActionMetierService, 
+              ContratService,
+              NgbActiveModal
+          ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

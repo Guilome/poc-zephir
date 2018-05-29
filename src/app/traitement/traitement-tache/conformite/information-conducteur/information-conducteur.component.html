@@ -117,7 +117,7 @@
 <br>
 <div class="row float-right" >
     <button type="button" class="btn btn-outline-warning" style="border-radius: 8px; margin-right: 10px;" data-toggle="modal" data-target="#idModalRefuser"> Refuser </button>
-    <button type="button" class="btn btn-outline-success" style="border-radius: 8px;" data-toggle="modal" data-target="#idModalValider"> Valider </button>
+    <button type="button" class="btn btn-outline-success" style="border-radius: 8px;" (click)="validate(crm,date2delivrance, validateModal)"> Valider </button>
 </div>
 <!-- The Modal REFUSER -->
 <div class="modal fade" id="idModalRefuser">
@@ -146,40 +146,28 @@
 </div>
 
 <!-- The Modal  VALDER -->
-<div class="modal" id="idModalValider" >
-  <div class="modal-dialog modal-dialog-centered modal-lg" >
-    <div class="modal-content" style="background-color: transparent;">
-
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <div class="modal-body" >
-          <div class="link-modal" id="linkmodal">
-            <div id="info" style="background-color:orange;" *ngIf="ifChangement(crm, date2delivrance)">
-              <h4 for="info">Demande d’avenant effectuée avec les informations suivantes : </h4>
-              <h5 *ngIf="currentCRM != crm.value" >CRM : {{currentCRM}} <i class="fa fa-arrow-right"></i> {{crm.value}}</h5>
-              <h5 *ngIf="currentDate2delivrance != date2delivrance.value" >Date d'obtention du permis : {{currentDate2delivrance| date: 'dd/MM/yyyy'}} <i class="fa fa-arrow-right"></i> {{date2delivrance.value| date: 'dd/MM/yyyy'}}</h5>
-            </div>
-              <button type="button" class="btn btn-primary" > Demande d’avenant  </button>
-        </div>
-        <br>
-        <div class="link-modal" id="linkmodal">
-
-            <button type="button" class="btn btn-primary" style="text-align:center;"> Réaliser un devis d’avenant </button>
-        </div>
-        <br>
-        <div class="link-modal" id="linkmodal">
-
-            <button type="button" class="btn btn-primary" >Réaliser un avenant </button>
-      </div>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-      </div>
-
+<!-- MODAL Ajout jour férié -->
+<ng-template #validateModal>
+    <div id="info" style="background-color:orange;" *ngIf="ifChangement(crm, date2delivrance)">
+          <h4 for="info">Demande d’avenant effectuée avec les informations suivantes : </h4>
+          <h5 *ngIf="currentCRM != crm.value" >CRM : {{currentCRM}} <i class="fa fa-arrow-right"></i> {{crm.value}}</h5>
+          <h5 *ngIf="currentDate2delivrance != date2delivrance.value" >Date d'obtention du permis : {{currentDate2delivrance| date: 'dd/MM/yyyy'}} <i class="fa fa-arrow-right"></i> {{date2delivrance.value| date: 'dd/MM/yyyy'}}</h5>
     </div>
+    <div class="link-modal">
+      <button type="button" class="btn btn-primary" > Demande d’avenant  </button>
+      </div>
+    <br>
+    <div class="link-modal">
+        <button type="button" class="btn btn-primary" style="text-align:center;"> Réaliser un devis d’avenant </button>
+    </div>
+    <br>
+    <div class="link-modal">
+        <button type="button" class="btn btn-primary" >Réaliser un avenant </button>
   </div>
-</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="closeModal()">Annuler</button>
+  </div>
+
+</ng-template>
+
 

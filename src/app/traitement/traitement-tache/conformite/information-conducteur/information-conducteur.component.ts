@@ -4,6 +4,7 @@ import { Tache } from '../../../../shared/domain/Tache';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TacheService } from '../../../../shared/services/tache.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-information-conducteur',
@@ -15,11 +16,13 @@ export class InformationConducteurComponent implements OnInit {
   public currentCRM = 0.68;
   public currentDate2delivrance = '2000-01-01';
   currentTache: Tache;
+  private currentModal:NgbModalRef;
   constructor(private actionMetierService: ActionMetierService,
               private tacheService: TacheService,
               private route: ActivatedRoute,
               private router: Router,
-              private toastr: ToastrService) { }
+              private toastr: ToastrService,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
     this.currentCRM = 0.68;
@@ -49,6 +52,18 @@ export class InformationConducteurComponent implements OnInit {
 
     this.actionMetierService.create(this.currentTache);
     this.toastr.success('Une demande "SANS-EFFET" a été creé');
+  }
+
+  validate(crm, date2delivrance, modal) {
+    if (this.ifChangement(crm, date2delivrance)) {
+      this.currentModal = this.modalService.open(modal,  { size: 'lg', backdropClass: 'light-blue-backdrop', centered: true });
+    } else {
+      console.log('Valider la tache ');
+      this.tacheService.closeTacheConforme(this.currentTache.ident);
+    }
+  }
+  closeModal(){
+    this.currentModal.close();
   }
 
   /*private docSuivant() {
