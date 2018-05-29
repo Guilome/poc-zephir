@@ -11,7 +11,7 @@
                           [settings]="dropdownSettings" *ngIf="motifBoolean" >
     </angular2-multiselect>
 
-    // liste des motifs
+    <!--// liste des motifs -->
     <ul *ngIf="tache.message != null">
       <li *ngFor="let s of tache.message|split:'.'">{{s}}</li>
     </ul>
