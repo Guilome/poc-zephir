@@ -109,7 +109,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
       this.noteBoolean = true;
       // récupération des données :
       this.noteService.listerNotes().subscribe(data => this.taches = data);
-    } else if (this.titre === 'Contrats') {
+    } else if (this.titre === 'Dossier pièce justificative') {
       this.contratBoolean = true;        
       this.contrats = this.contratService.getContratByIdUtilisateur(this.idCurrentUser)     
       } else {
