@@ -54,7 +54,7 @@ export class ConformiteComponent implements OnInit {
     if (this.tache.dateCloture == null) {
       if (this.tache.status === Status.A_VERIFIER) {
       if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
-        this.docSuivant();
+        //this.docSuivant();
         this.tacheService.updateStatusAndGroupe(this.tache.ident);
         this.toastr.success('Le status de la tache a été modifier en <b>À VALIDER</b>', '', {enableHtml: true});
       }
@@ -80,7 +80,7 @@ export class ConformiteComponent implements OnInit {
         if (this.selectedItems.length > 0) {
           
           this.tacheService.closeTacheNonConforme(this.tache.ident, this.recuperationMotif());
-          this.docSuivant();
+          //this.docSuivant();
           this.toastr.success('La tâche a été fermé');
           this.selectedItems = [];
           this.motifBoolean = false;
@@ -100,7 +100,7 @@ export class ConformiteComponent implements OnInit {
   /*
     les documents sont triés en fonction de leurs "ident" dès qu'on arrive au dernier ident la page bascule au DashBoard
    */
-  docSuivant() {
+  /*docSuivant() {
     console.log('ident :' + this.tache.ident);
 
     const idNext = this.tacheService.nextId(this.tache.ident, parseInt(localStorage.getItem('USER'), 10));
@@ -110,7 +110,7 @@ export class ConformiteComponent implements OnInit {
 
       this.goToTacheDetails(idNext);
     }
-  }
+  }*/
 
   goToTacheDetails(id) {
     this.router.navigate(['/TraitementTache', id]);

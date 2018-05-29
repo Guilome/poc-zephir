@@ -30,6 +30,7 @@ export class ActionMetierService {
     a.dateCreation = new Date();
     a.priorite = 1;
     this.listActionMetier.push(a);
+    this.actionMetierSubject.next(this.listActionMetier.filter(act => act.context == tache.context));
   }
 
 

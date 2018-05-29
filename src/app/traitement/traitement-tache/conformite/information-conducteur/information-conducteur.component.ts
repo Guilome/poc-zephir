@@ -43,35 +43,23 @@ export class InformationConducteurComponent implements OnInit {
   }
 
   /**
-   *
-   * @param date 
-   * Entrer : format YYYY-MM-dd
-   * sortie : format dd/MM/YYYY
-   */
-  dateFormat(date:string): string {
-    return date.split('-')[2] + '/' +  date.split('-')[1] + '/' + date.split('-')[0];
-  }
-
-  /**
-   * Création automatique d'une action mtier
+   * Création automatique d'une action métier
    */
   demandeSansEffet(){
 
     this.actionMetierService.create(this.currentTache);
     this.toastr.success('Une demande "SANS-EFFET" a été creé');
-    this.docSuivant();
   }
 
-  private docSuivant() {
+  /*private docSuivant() {
 
     const idNext = this.tacheService.nextId(this.currentTache.ident, parseInt(localStorage.getItem('USER'), 10));
     if (idNext == null || this.currentTache.ident === idNext ) {
       this.router.navigate(['/gestionBO']);
-
     } else {
 
       this.router.navigate(['/TraitementTache', idNext]);
 
     }
-  }
+  }*/
 }

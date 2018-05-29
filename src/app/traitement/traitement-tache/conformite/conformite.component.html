@@ -1,3 +1,4 @@
+<!-- IF -->
 <div class="align-middle" xmlns="" *ngIf="tache.status != 'À valider'">
 
     <button type="button" title="Conforme" [disabled]="tache.dateCloture != null" class="btn btn-success btn-circle fa fa-check fa-4x" (click)="conforme()">  </button>
@@ -10,13 +11,20 @@
                           [settings]="dropdownSettings" *ngIf="motifBoolean" >
     </angular2-multiselect>
 
+    <!--// liste des motifs -->
+    <ul *ngIf="tache.message != null">
+      <li *ngFor="let s of tache.message|split:'.'">{{s}}</li>
+    </ul>
+
+
     <div id="buttom-content" >
-      <button type="button" class="btn btn-primary" style="border-radius: 8px;margin-top: 10px;" (click)="docSuivant()"> Documment suivant > </button>
+      <!--button type="button" class="btn btn-primary" style="border-radius: 8px;margin-top: 10px;" (click)="docSuivant()"> Documment suivant > </button-->
       <button type="button" class="btn btn-primary" style="border-radius: 8px; margin-top: 10px;" (click)="goToDashboard()"> Terminer </button>
     </div>
 
 </div>
 
+<!-- ELSE -->
 <div *ngIf="tache.status === 'À valider'">
   <app-information-conducteur style="font-size: 0.7em" ></app-information-conducteur>
 </div>

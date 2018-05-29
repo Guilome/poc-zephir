@@ -159,7 +159,7 @@
             <div id="info" style="background-color:orange;" *ngIf="ifChangement(crm, date2delivrance)">
               <h4 for="info">Demande d’avenant effectuée avec les informations suivantes : </h4>
               <h5 *ngIf="currentCRM != crm.value" >CRM : {{currentCRM}} <i class="fa fa-arrow-right"></i> {{crm.value}}</h5>
-              <h5 *ngIf="currentDate2delivrance != date2delivrance.value" >Date d'obtention du permis : {{dateFormat(currentDate2delivrance)}} <i class="fa fa-arrow-right"></i> {{dateFormat(date2delivrance.value)}}</h5>
+              <h5 *ngIf="currentDate2delivrance != date2delivrance.value" >Date d'obtention du permis : {{currentDate2delivrance| date: 'dd/MM/yyyy'}} <i class="fa fa-arrow-right"></i> {{date2delivrance.value| date: 'dd/MM/yyyy'}}</h5>
             </div>
               <button type="button" class="btn btn-primary" > Demande d’avenant  </button>
         </div>
