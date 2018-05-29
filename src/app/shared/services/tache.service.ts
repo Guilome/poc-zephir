@@ -150,7 +150,6 @@ export class TacheService {
         c = new Contrat(7475065+i,'SOLUTIO')
         c.numero = 'S140581'+ i;
         context = new Context(1000020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
-        console.log(c.numero);
       }
       lTache.context = context;
       lTache.status = Status.A_VERIFIER;

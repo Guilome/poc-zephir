@@ -1,0 +1,43 @@
+<table class="table table-striped">
+     <thead>
+        <tr>
+            <th></th>
+            <th>Numero</th>
+            <th>Nom client</th>
+            <th>Nom intermédiaire</th>
+            <th>État</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let contrat of contrats">
+            <td><i class="fa fa-plus fa-lg" (click)="toggleChildren(contrat)"></i></td>
+            <td>
+              {{contrat.numero}}
+                <div *ngFor="let folder of folderClass">
+                    <table class="table table-striped mt-2" *ngIf="folder.bool && folder.id == contrat.ident ">
+                      <thead>
+                        <tr>
+                          <th>Priorité</th>
+                          <th>Code</th>
+                          <th>Statut</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let tache of contrat.listeTaches">
+                          <td>{{tache.priorite}}</td>
+                          <td>{{tache.code}}</td>
+                          <td>{{tache.status}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+            </td>
+            <td>{{contrat.nomAppelClient}}</td>
+            <td>{{contrat.nomAppelIntermediaire}}</td>
+            <td>{{contrat.etatContrat}}</td>
+            <td> <a routerLink="/TraitementTache/{{contrat.idContext}}"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
+        </tr>     
+    </tbody>    
+</table>
+

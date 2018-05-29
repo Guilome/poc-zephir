@@ -1,3 +1,5 @@
+import { Tache } from "./Tache";
+
 export class Contrat {
 
   static mapEtat = new Map()
@@ -19,6 +21,10 @@ export class Contrat {
   public dateEffet: Date; // format DD/MM/YYYY
   public fractionnement: Fractionnement;
   public conditionAcceptation: string;
+
+  public idUtilisateur: number
+  public idContext: number
+  public listeTaches: Tache[] = []
 
   constructor(public ident: number, public codeProduit: string) {
     this.etatContrat = Contrat.mapEtat.get(1);
