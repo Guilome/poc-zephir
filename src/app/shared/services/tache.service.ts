@@ -24,11 +24,14 @@ export class TacheService {
     this.tacheSubject.subscribe(data => length = data.length);
     if (length < 1) {
 
-      const tache1 = new Tache(Nature.PIECE);
-      tache1.ident = 1;
       const c1 = new Contrat(1,'TEST2')
       c1.numero = 'S14058101';
-      tache1.context = new Context(1, 'ASSELINE JEAN', 'GO ASSUR', c1);
+      const context = new Context(1, 'ASSELINE JEAN', 'GO ASSUR', c1);
+      
+      const tache1 = new Tache(Nature.PIECE);
+      tache1.ident = 1;
+      tache1.context = context;
+
       tache1.status = Status.A_VALIDER;
       tache1.idGroupe = 1;
       tache1.code = 'ATT_PERMIS';
@@ -39,9 +42,7 @@ export class TacheService {
 
       const tache3 = new Tache(Nature.PIECE);
       tache3.ident = 3;
-      const c3 = new Contrat(1,'TEST3')
-      c3.numero = 'S14058103';
-      tache3.context = new Context(3, 'ASSAPO SERGE4', 'CAP', c3);
+      tache3.context = context;
       tache3.status = Status.A_VERIFIER;
       tache3.idGroupe =  1;
       tache3.code = 'ATT_CG';
@@ -52,9 +53,8 @@ export class TacheService {
 
       const tache2 = new Tache(Nature.PIECE);
       tache2.ident = 2;
-      const c2 = new Contrat(1,'TEST2')
-      c2.numero = 'S14058102';
-      tache2.context = new Context(2, 'ASSEMAIAN WILLIAM', 'LISE MONIQUE', c2);
+
+      tache2.context =context;
       tache2.status = Status.A_VERIFIER;
       tache2.idGroupe = 1;
       tache2.code = 'ATT_RI';
@@ -141,12 +141,18 @@ export class TacheService {
   }
 
   create17Taches() {
+    let c: Contrat;
+    let context: Context;
     for (let i = 0; i < 17; i++) {
       const lTache = new Tache(Nature.PIECE);
       lTache.ident = i + 4;
-      const c = new Contrat(7475065+i,'SOLUTIO')
-      c.numero = 'S1405810'+ i+4;
-      lTache.context = new Context(1000020+i, this.nomApl[i], this.nomInter[i] + i, c);
+      if (i % 3 === 0){
+        c = new Contrat(7475065+i,'SOLUTIO')
+        c.numero = 'S140581'+ i;
+        context = new Context(1000020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
+        console.log(c.numero);
+      }
+      lTache.context = context;
       lTache.status = Status.A_VERIFIER;
       lTache.idGroupe = 1;
       lTache.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i % 3];
@@ -237,7 +243,7 @@ export class TacheService {
   }
 
   public getPiecesByContext(context: Context): Tache[]{
-    return this.listTaches.filter(piece => piece.context = context)
+    return this.listTaches.filter(piece => piece.context == context)
   }
   }
 

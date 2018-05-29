@@ -8,10 +8,15 @@ import { BehaviorSubject } from 'rxjs';
 export class ActionMetierService {
 
   listActionMetier = [];
-  //actionMetierSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
+
+  actionMetierSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
 
   getById(id: number) {
     return this.listActionMetier.find(t => t.ident === id);
+  }
+  getByContext(context): BehaviorSubject<Tache[]>{
+    this.actionMetierSubject.next(this.listActionMetier.filter(act => act.context == context));
+    return this.actionMetierSubject;
   }
 
   create(tache: Tache) {
@@ -26,6 +31,8 @@ export class ActionMetierService {
     a.priorite = 1;
     this.listActionMetier.push(a);
   }
+
+
   constructor() { 
     const contrat1 = new Contrat(7543663,'SOLUTIO');
     contrat1.numero = 'S14058101';
