@@ -8,6 +8,7 @@ import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
 import { ContratService } from '../../shared/services/contrat.service';
 import { Contrat } from '../../shared/domain/contrat';
+import { Nature, Tache } from '../../shared/domain/Tache';
 
 @Component({
   selector: 'graphique-en-cours',
@@ -16,7 +17,10 @@ import { Contrat } from '../../shared/domain/contrat';
 })
 export class GraphiqueEnCoursComponent implements OnInit {
 
+  mapSubjectEnCours: Map<string, number> = new Map();
+
   lesGestionnaires: Utilisateur[]
+  tachesEnCours = [] 
   lesContrats: Contrat[]
   groupe :Groupe
   context: any;
@@ -41,16 +45,15 @@ export class GraphiqueEnCoursComponent implements OnInit {
 
   ngOnInit() {
     this.context = document.getElementById('chartPie');
-    this.monGroupe();
     this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil != Profil.DIRECTEUR)
+    this.monGroupe();
   }
 
-  monGroupe() {
-    this.groupeService.getAffectationTaches(Code.VERIFICATION).subscribe(data => {
-      this.dataGroupe = data;
-      this.UpdateCanvas();
-    });
+  private monGroupe() {
+    this.getDossierEnCours(Code.VERIFICATION)
+    this.UpdateCanvas();    
   }
+
   private  UpdateCanvas() {
     if (this.c == null) {
       this.createCanvas();
@@ -71,9 +74,9 @@ export class GraphiqueEnCoursComponent implements OnInit {
       this.c = new Chart(this.context, {
         type: 'pie',
         data: {
-          labels: Array.from(this.dataGroupe.keys()),
+          labels: Array.from(this.mapSubjectEnCours.keys()),
           datasets: [{
-            data: Array.from(this.dataGroupe.values()),
+            data: Array.from(this.mapSubjectEnCours.values()),
             backgroundColor: this.colors
           }]
         }
@@ -90,4 +93,26 @@ export class GraphiqueEnCoursComponent implements OnInit {
     }
   }
 
+  private getDossierEnCours(codeGroupe: Code) {
+    this.tacheService.listerTaches().subscribe(data => this.tachesEnCours = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
+    this.tachesEnCours = this.tachesEnCours.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER)
+    this.refreshMapEnCours(this.tachesEnCours);
+  }
+
+  private refreshMapEnCours(lesTaches: Tache[]) {
+    // liste des gestionnaires : Initialisation
+    this.mapSubjectEnCours.set('Non Affectées', 0);
+    this.lesGestionnaires.forEach(g => this.mapSubjectEnCours.set( g.nom+' '+g.prenom, 0))
+    for (const t of lesTaches) {
+      if (t.idUtilisateur != null) {
+        let gestionnaire = this.utilService.getUserById(t.idUtilisateur)
+        const key = gestionnaire.nom+' '+gestionnaire.prenom;
+        const sum = this.mapSubjectEnCours.get(key);
+        this.mapSubjectEnCours.set(key,  sum + 1);
+      } else {
+        const sum = this.mapSubjectEnCours.get('Non Affectées');
+        this.mapSubjectEnCours.set('Non Affectées', sum + 1);
+      }
+    }
+  }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Groupe, Code} from '../domain/groupe';
 import {TacheService} from './tache.service';
-import {Tache} from '../domain/Tache';
+import {Tache, Nature} from '../domain/Tache';
 import {BehaviorSubject} from '../../../../node_modules/rxjs';
 import { UtilisateurService } from './utilisateur.service';
 import { Utilisateur, Profil } from '../domain/Utilisateur';
@@ -13,12 +13,9 @@ export class GroupeService {
 
   // données en mémoire
   mapSubject: BehaviorSubject<Map<string, number>> = new BehaviorSubject(new Map());
-  mapSubjectTermine: BehaviorSubject<Map<string, number>> = new BehaviorSubject(new Map());
 
-  groupes = [];
-  taches = [];
-  tachesTermine = [];
-  tachesEnCours = [];
+  groupes = []
+  taches = []
   utilisateurs = []
 
   constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {
@@ -40,32 +37,21 @@ export class GroupeService {
     return this.groupes.find(groupe => groupe.ident === ident)
   }
 
-  getTacheTerminé(codeGroupe: Code): BehaviorSubject<Map<string, number>> {
-    if (this.taches.length < 1) {
-      this.refreshTaches(codeGroupe);
-    }
-    this.tachesTermine = this.taches.filter(tache => tache.dateCloture != null)
-    
-    this.refreshMap(this.taches);
-
-    return this.mapSubjectTermine;
-  }
-
   getAffectationTaches(codeGroupe: Code): BehaviorSubject<Map<string, number>> {
     if (this.taches.length < 1) {
       this.refreshTaches(codeGroupe);
     }
-    this.refreshMap(this.taches);
+    this.refreshMap();
 
     return this.mapSubject;
   }
 
-  private refreshMap(lesTaches: Tache[]) {
+  private refreshMap() {
     const map = new Map<string, number>();
     // liste des gestionnaires : Initialisation
     map.set('Non Affectées', 0);
     let gestionnaires = this.utilisateurService.getAll().filter(g => g.profil != Profil.DIRECTEUR).forEach(g => map.set( g.nom+' '+g.prenom, 0))
-    for (const t of lesTaches) {
+    for (const t of this.taches) {
       if (t.idUtilisateur != null) {
         let gestionnaire = this.utilisateurService.getUserById(t.idUtilisateur)
         const key = gestionnaire.nom+' '+gestionnaire.prenom;
@@ -98,17 +84,17 @@ export class GroupeService {
 
   public dispatcher(codeGroupe: Code) {
     this.tacheService.dispatcher(codeGroupe);
-    this.refreshMap(this.taches);
+    this.refreshMap();
   }
 
   public corbeille(codeGroupe: Code) {
     this.tacheService.corbeille(codeGroupe);
-    this.refreshMap(this.taches);
+    this.refreshMap();
   }
 
   public corbeilleUser(): boolean {
     const ret = this.tacheService.corbeilleUser();
-    this.refreshMap(this.taches);
+    this.refreshMap();
     return ret;
   }
 }
