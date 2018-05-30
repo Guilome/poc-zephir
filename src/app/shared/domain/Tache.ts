@@ -16,7 +16,8 @@ export class Tache {
     .set('DEV_AFN','Devis d\'avenant à valider')
     .set('DEV_AVT','Devis d\'avenant à valider')
     .set('RESIL','Demande de résiliation')
-    .set('SANS_EFFET','Demande de sans effet');
+    .set('SANS_EFFET','Demande de sans effet')
+    .set('199_AFN', 'Dossier 199');
 
   //
   constructor(public nature: Nature ) {
@@ -38,6 +39,7 @@ export class Tache {
   public conformite: boolean;
   public motifNonConformite: string;
   public context: Context;
+  public idTacheMere: number;
 
   idUtilisateur: number;
   idGroupe: number;
@@ -54,6 +56,7 @@ export enum Nature {
   PIECE = 'Piece',
   NOTE = 'Note',
   ALERTE = 'Alerte',
+  DOSSIER = 'Dossier'
 }
 export enum Status {
   A_VERIFIER = 'À vérifier',

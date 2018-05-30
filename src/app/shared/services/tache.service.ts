@@ -23,50 +23,9 @@ export class TacheService {
     let length = 0;
     this.tacheSubject.subscribe(data => length = data.length);
     if (length < 1) {
-
-      const c1 = new Contrat(1,'TEST2')
-      c1.numero = 'S14058101';
-      const context = new Context(1, 'ASSELINE JEAN', 'GO ASSUR', c1);
-      
-      const tache1 = new Tache(Nature.PIECE);
-      tache1.ident = 1;
-      tache1.context = context;
-
-      tache1.status = Status.A_VALIDER;
-      tache1.idGroupe = 1;
-      tache1.code = 'ATT_PERMIS';
-      tache1.priorite = 5;
-      tache1.dateLimite = new Date('12/05/2018');
-      tache1.urlDocument = 'assets/pdf/PDC.pdf';
-      tache1.idUtilisateur = 1;
-
-      const tache3 = new Tache(Nature.PIECE);
-      tache3.ident = 3;
-      tache3.context = context;
-      tache3.status = Status.A_VERIFIER;
-      tache3.idGroupe =  1;
-      tache3.code = 'ATT_CG';
-      tache3.priorite = 6;
-      tache3.dateLimite = new Date('05/05/2018');
-      tache3.urlDocument = 'assets/pdf/CG.pdf';
-      tache3.idUtilisateur = 1;
-
-      const tache2 = new Tache(Nature.PIECE);
-      tache2.ident = 2;
-
-      tache2.context =context;
-      tache2.status = Status.A_VERIFIER;
-      tache2.idGroupe = 1;
-      tache2.code = 'ATT_RI';
-      tache2.priorite = 4;
-      tache2.dateLimite = new Date('02/05/2018');
-      tache2.urlDocument = 'assets/pdf/RI.pdf';
-      tache2.idUtilisateur = 1;
-
-      this.listTaches = [tache1, tache2, tache3].sort((obj1, obj2) => obj1.priorite - obj2.priorite);
+      this.create15Dossiers();
+      this.create_100_DossiersClotures();
       this.tacheSubject.next(this.listTaches);
-
-      this.create17Taches();
     }
   }
 
@@ -144,24 +103,37 @@ export class TacheService {
     }
   }
 
-  create17Taches() {
-    let c: Contrat;
-    let context: Context;
-    for (let i = 0; i < 17; i++) {
-      const lTache = new Tache(Nature.PIECE);
-      lTache.ident = i + 4;
-      if (i % 3 === 0){
-        c = new Contrat(7475065+i,'SOLUTIO')
+  private create_100_DossiersClotures(){
+    for (let i = 500 ; i < 600 ; i++) {
+        const lTache = new Tache(Nature.DOSSIER);
+        lTache.ident = i;
+        const c = new Contrat(65065+i,'SOLUTIO')
         c.numero = 'S140581'+ i;
-        context = new Context(1000020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
-      }
+        const context = new Context(999020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
+        lTache.context = context;
+        lTache.status = Status.A_VERIFIER;
+        lTache.idGroupe = 1;
+        lTache.priorite = 5;
+        const date = '05/' + (i%31) + '/2018';
+        lTache.dateCloture = new Date(date);
+        const idUser = (i%4) + 1;
+        lTache.idUtilisateur = this.UtilisateurService.getUserById(idUser).ident;
+        lTache.status = Status.OK;
+        this.listTaches.push(lTache);
+    }
+  }
+  private create15Dossiers() {
+    for (let i = 0; i < 15; i++) {
+      const lTache = new Tache(Nature.DOSSIER);
+      lTache.ident = i + 4;
+      const c = new Contrat(7475065+i,'SOLUTIO')
+      c.numero = 'S140581'+ i;
+      const context = new Context(1000020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
       lTache.context = context;
       lTache.status = Status.A_VERIFIER;
       lTache.idGroupe = 1;
-      lTache.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i % 3];
       lTache.priorite = 5;
-      lTache.dateLimite = new Date('05/05/2018');
-      lTache.urlDocument = ['assets/pdf/CG.pdf','assets/pdf/PDC.pdf','assets/pdf/RI.pdf'][i % 3];
+      lTache.dateLimite = new Date('06/15/2018');
       if (i < 4) { // 4 taches pour current user
         lTache.idUtilisateur = this.UtilisateurService.getUserById(1).ident;
       } else if (i < 7) {
@@ -171,6 +143,19 @@ export class TacheService {
       } else if (i < 13) {
         lTache.idUtilisateur = this.UtilisateurService.getUserById(4).ident;
       }
+      // 3 dissers non affectés 
+      this.listTaches.push(lTache);
+      this.create3Pieces(lTache);
+    }
+  }
+  private create3Pieces(dossier_199: Tache) {
+    for (let i = 0; i < 3; i++) {
+      const lTache = dossier_199;// ident, context, contrat, groupe, idUser...
+      lTache.ident = dossier_199.ident + 199;
+      lTache.idTacheMere = dossier_199.ident;
+      lTache.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i];
+      lTache.priorite = [5, 3, 6][i];
+      lTache.urlDocument = ['assets/pdf/CG.pdf','assets/pdf/PDC.pdf','assets/pdf/RI.pdf'][i % 3];
       this.listTaches.push(lTache);
     }
   }
