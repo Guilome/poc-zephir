@@ -12,7 +12,6 @@ export class GestionnaireComponent implements OnInit {
   allChecked: Boolean
   gestionnaires:Utilisateur[] = []
   @Output() gestionnaireAssigner:EventEmitter<Utilisateur[]> = new EventEmitter<Utilisateur[]>();
-  collectChecks = []
   collectGestionnaire = []
 
   constructor(public GestionnaireService: UtilisateurService) {  
@@ -35,7 +34,7 @@ export class GestionnaireComponent implements OnInit {
       var collectInput=document.getElementsByTagName('input')      
       for (let i = 0; i < collectInput.length; i++) {
         if(collectInput[i].type === "checkbox"){
-          if (collectInput[i].name === "gestionnaire" && collectInput[i].id != "allGest" && collectInput[i].id != "allTache"){
+          if (collectInput[i].name === "gestionnaires" && collectInput[i].id != "allGest" && collectInput[i].id != "allDossier"){
             this.collectGestionnaire.push(collectInput[i])     
           }
         }
@@ -79,7 +78,7 @@ export class GestionnaireComponent implements OnInit {
     var collectInput = document.getElementsByTagName('input');
   
     for (let i = 0; i < collectInput.length; i++) {
-      if (collectInput[i].name === "tache" && collectInput[i].id != "allGest" && collectInput[i].id != "allTache") {
+      if (collectInput[i].name === "gestionnaires" && collectInput[i].id == "allGest" && collectInput[i].id != "allDossier") {
         if (!collectInput[i].checked)
           return false;
       }

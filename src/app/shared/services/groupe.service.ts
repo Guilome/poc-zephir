@@ -13,9 +13,11 @@ export class GroupeService {
 
   // données en mémoire
   mapSubject: BehaviorSubject<Map<string, number>> = new BehaviorSubject(new Map());
+  mapEnCours: BehaviorSubject<Map<string, number>> = new BehaviorSubject(new Map());
 
   groupes = []
   taches = []
+  dossiersEnCours = []
   utilisateurs = []
 
   constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {
@@ -35,6 +37,14 @@ export class GroupeService {
 
   public getGroupeById(ident: number): Groupe {
     return this.groupes.find(groupe => groupe.ident === ident)
+  }
+
+  getDossierEnCours(codeGroupe: Code): BehaviorSubject<Map<string, number>>{
+    this.tacheService.listerTaches().subscribe(data => this.dossiersEnCours = data.filter(t => t.idGroupe = this.getIdGroupeByCode(codeGroupe)));
+    this.dossiersEnCours = this.dossiersEnCours.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER)
+    this.refreshMapEnCours()
+
+    return this.mapEnCours
   }
 
   getAffectationTaches(codeGroupe: Code): BehaviorSubject<Map<string, number>> {
@@ -65,6 +75,25 @@ export class GroupeService {
     this.mapSubject.next(map);
   }
 
+  private refreshMapEnCours() {
+    const map = new Map<string, number>();
+    // liste des gestionnaires : Initialisation
+    map.set('Non Affectées', 0);
+    let gestionnaires = this.utilisateurService.getAll().filter(g => g.profil != Profil.DIRECTEUR).forEach(g => map.set( g.nom+' '+g.prenom, 0))
+    for (const t of this.dossiersEnCours) {
+      if (t.idUtilisateur != null) {
+        let gestionnaire = this.utilisateurService.getUserById(t.idUtilisateur)
+        const key = gestionnaire.nom+' '+gestionnaire.prenom;
+        const sum = map.get(key);
+        map.set(key,  sum + 1);
+      } else {
+        const sum = map.get('Non Affectées');
+        map.set('Non Affectées', sum + 1);
+      }
+    }
+    this.mapEnCours.next(map)
+  }
+
   /**
    * actualise la liste de taches en fonction du groupe donné en paramétre
    * @param {Code} codeGroupe
@@ -84,12 +113,12 @@ export class GroupeService {
 
   public dispatcher(codeGroupe: Code) {
     this.tacheService.dispatcher(codeGroupe);
-    this.refreshMap();
+    this.refreshMapEnCours();
   }
 
   public corbeille(codeGroupe: Code) {
     this.tacheService.corbeille(codeGroupe);
-    this.refreshMap();
+    this.refreshMapEnCours();
   }
 
   public corbeilleUser(): boolean {
