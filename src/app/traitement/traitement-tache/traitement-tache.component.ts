@@ -24,8 +24,6 @@ export class TraitementTacheComponent implements OnInit {
   ngOnInit() {
 
     this.route.params.subscribe((params: any) => {
-      //const tache = this.tacheService.getPieceById(+params.id);
-      console.log(params);
       // liste des pieces :
       this.listPieces = this.tacheService.getPiecesByIdContext(+params.id);
       // list des actions métiers 

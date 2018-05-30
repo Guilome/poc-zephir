@@ -27,8 +27,6 @@ export class ApercuDocumentComponent implements OnInit {
       if( params.piece != null) {
           const idPiece = +params.piece;
           this.piece = this.tacheService.getPieceById(idPiece);
-          console.log(this.piece);
-          
 
           document.getElementById('divPdf').innerHTML = 
           '<object data="'+ this.piece.urlDocument +'" width="100%" height="800px" type="application/pdf"></object>' ;

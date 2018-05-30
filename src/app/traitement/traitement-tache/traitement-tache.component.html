@@ -7,30 +7,37 @@
 
   <!-- BEGIN left screnn-->
   <div  class="col-3">
-    <h4>Status : <label id="idLabelStatus" ></label> </h4>
+    <h4>Statut : <label id="idLabelStatus" ></label> </h4>
 
     <h5>Pièces justificatives : </h5>
-      <div *ngFor="let p of listPieces">
-          <div class="row">
-            {{p.libelle}} 
-            <div class="col" >
-                  <div *ngIf="p.status != 'Ok' && p.dateCloture != null; else block"> <!-- IF-->
-                      <button (click)="detailPiece(p.ident)" class="btn btn-danger float-right">X conforme</button>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" *ngFor="let p of listPieces">
+              <div >
+                  <div class="row">
+                    {{p.libelle}}
+                    <div class="col" >
+                          <div *ngIf="p.status != 'Ok' && p.dateCloture != null; else block"> <!-- IF-->
+                              <button (click)="detailPiece(p.ident)" class="btn btn-danger float-right">X conforme</button>
+                          </div>
+                          <ng-template #block> <!-- ELSE-->
+                              <button (click)="detailPiece(p)" *ngIf="p.status == 'À vérifier'" class="btn btn-outline-warning float-right">À vérifier</button>
+                              <button (click)="detailPiece(p)" *ngIf="p.status == 'À valider'" class="btn btn-outline-success float-right">À valider </button>
+                              <button (click)="detailPiece(p)" *ngIf="p.status == 'Ok'" class="btn btn-success float-right">Validée</button>
+                          </ng-template>
+                    </div>
                   </div>
-                  <ng-template #block> <!-- ELSE-->
-                      <button (click)="detailPiece(p)" *ngIf="p.status == 'À vérifier'" class="btn btn-outline-warning float-right">À vérifier</button>
-                      <button (click)="detailPiece(p)" *ngIf="p.status == 'À valider'" class="btn btn-outline-success float-right">À valider </button>
-                      <button (click)="detailPiece(p)" *ngIf="p.status == 'Ok'" class="btn btn-success float-right">Validée</button>
-                  </ng-template>
             </div>
-          </div>
-    </div>
+          </a>
+        </li>
+      </ul>
+
 
   <div class="row">
     <h5>Actions Métier : </h5>
   </div>
   <div *ngFor="let act of listActionsMetier">
-    <div class="row">{{act.libelle}}</div>
+    <div class="row"><span tooltip="{{act.message}}"  >{{act.libelle}}</span></div>
   </div>
   </div>
   <!-- END left screnn-->

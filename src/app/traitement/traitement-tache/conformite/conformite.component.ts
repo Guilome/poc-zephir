@@ -68,6 +68,8 @@ export class ConformiteComponent implements OnInit {
   } else {
       this.toastr.success('La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture), '', {enableHtml: true});
     }
+    this.titleStatus()
+
   }
   /*
     FERMER LA TACHE dans les deux étapes (à voir)
@@ -84,6 +86,7 @@ export class ConformiteComponent implements OnInit {
           this.toastr.success('La tâche a été fermé');
           this.selectedItems = [];
           this.motifBoolean = false;
+          this.titleStatus()
           
         } else {
           this.toastr.error('Veuillez renseigner le(s) motif(s)');
@@ -138,4 +141,20 @@ export class ConformiteComponent implements OnInit {
     }
     return motif;
   }
+
+  private titleStatus() {
+    // Status 
+    let idLabelStatus = document.getElementById('idLabelStatus');
+    idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
+    for (let p of this.tacheService.getPiecesByIdContext(this.piece.context.ident)) {
+      if(p.status === 'À vérifier') {
+        idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérfication</span>';
+        return;
+      }
+      if (p.status === 'À valider') {
+        idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
+      }
+    }
+  }
+
 }

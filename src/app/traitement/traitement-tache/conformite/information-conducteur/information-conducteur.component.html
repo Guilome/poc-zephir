@@ -116,55 +116,44 @@
 <!-- 25/05/2018 -->
 <br>
 <div class="row float-right" >
-    <button type="button" class="btn btn-outline-warning" style="border-radius: 8px; margin-right: 10px;" data-toggle="modal" data-target="#idModalRefuser"> Refuser </button>
+    <button type="button" class="btn btn-outline-warning" style="border-radius: 8px;" (click)="refused(RefusedModal)"> Refuser </button>
     <button type="button" class="btn btn-outline-success" style="border-radius: 8px;" (click)="validate(crm,date2delivrance, validateModal)"> Valider </button>
 </div>
 <!-- The Modal REFUSER -->
-<div class="modal fade" id="idModalRefuser">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content" style="background-color: transparent;">
-
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+<ng-template #RefusedModal>
+   <div id="info" style="border: 1px solid gainsboro;">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3>Risque refusé</h3>
       </div>
 
-      <div class="modal-body">
           <div class="link-modal" id="linkmodal"> 
-            <button type="button" class="btn btn-primary" (click)="demandeSansEffet()" data-dismiss="modal"> Demande de sans-effet sur le contrat  </button>
+            <button type="button" class="btn btn-outline-secondary" (click)="demandeSansEffet()" data-dismiss="modal"> Demande de sans-effet sur le contrat  </button>
           </div>
           <div class="link-modal" id="linkmodal">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" > Réaliser un sans-effet sur le contrat  </button>
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" > Réaliser un sans-effet sur le contrat  </button>
             </div>
-      </div>
-
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-      </div>
+          <button type="button" class="btn btn-danger" (click)="closeModal()">Annuler</button>
+        </div>
 
-    </div>
-  </div>
-</div>
-
+</ng-template>
 <!-- The Modal  VALDER -->
-<!-- MODAL Ajout jour férié -->
 <ng-template #validateModal>
-    <div id="info" style="background-color:orange;" *ngIf="ifChangement(crm, date2delivrance)">
-          <h4 for="info">Demande d’avenant effectuée avec les informations suivantes : </h4>
-          <h5 *ngIf="currentCRM != crm.value" >CRM : {{currentCRM}} <i class="fa fa-arrow-right"></i> {{crm.value}}</h5>
-          <h5 *ngIf="currentDate2delivrance != date2delivrance.value" >Date d'obtention du permis : {{currentDate2delivrance| date: 'dd/MM/yyyy'}} <i class="fa fa-arrow-right"></i> {{date2delivrance.value| date: 'dd/MM/yyyy'}}</h5>
+    <div id="info" style="border: 1px solid gainsboro;" *ngIf="ifChangement(crm, date2delivrance)">
+          <h3>Vous avez effectué les modifications suivantes : </h3>
+          <p style="align-content: center;text-align: center;" *ngIf="currentCRM != crm.value" >CRM : {{currentCRM}} <i class="fa fa-arrow-right"></i> {{crm.value}}</p>
+          <p style="align-content: center;text-align: center;" *ngIf="currentDate2delivrance != date2delivrance.value" >Date d'obtention du permis : {{currentDate2delivrance| date: 'dd/MM/yyyy'}} <i class="fa fa-arrow-right"></i> {{date2delivrance.value| date: 'dd/MM/yyyy'}}</p>
     </div>
     <div class="link-modal">
-      <button type="button" class="btn btn-primary" > Demande d’avenant  </button>
+      <button type="button" class="btn btn-outline-secondary"  (click)="DemandeAvt()"> Demande d’avenant  </button>
       </div>
-    <br>
     <div class="link-modal">
-        <button type="button" class="btn btn-primary" style="text-align:center;"> Réaliser un devis d’avenant </button>
+        <button type="button" class="btn btn-outline-secondary" style="text-align:center;"> Réaliser un devis d’avenant </button>
     </div>
-    <br>
     <div class="link-modal">
-        <button type="button" class="btn btn-primary" >Réaliser un avenant </button>
+        <button type="button" class="btn btn-outline-secondary" >Réaliser un avenant </button>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer" style="border: 1px solid gainsboro;">
     <button type="button" class="btn btn-danger" (click)="closeModal()">Annuler</button>
   </div>
 

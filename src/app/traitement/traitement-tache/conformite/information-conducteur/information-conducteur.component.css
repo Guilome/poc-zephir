@@ -13,14 +13,12 @@
   
   .link-modal button{
     border: 1px solid #fff;
-    color: #fff;
-    font-family: Verdana;
-    font-size: 20px;
-    letter-spacing: 0.3em;
-    padding: 10px;
+    color: orange;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 5px;
     text-decoration: none;
-    text-transform: uppercase;
-    border-radius: 20px;
+    width: 300px;
   }
   
   .light-blue-backdrop {

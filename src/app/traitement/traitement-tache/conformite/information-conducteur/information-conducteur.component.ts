@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TacheService } from '../../../../shared/services/tache.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { TraitementTacheComponent } from '../../traitement-tache.component';
 
 @Component({
   selector: 'app-information-conducteur',
@@ -53,19 +54,50 @@ export class InformationConducteurComponent implements OnInit {
     this.actionMetierService.create(this.currentTache);
     this.toastr.success('Une demande "SANS-EFFET" a été creé');
   }
+  refused(modal){
+    this.currentModal = this.modalService.open(modal,  { size: 'lg', backdropClass: 'light-blue-backdrop', centered: true });
+  }
 
   validate(crm, date2delivrance, modal) {
     if (this.ifChangement(crm, date2delivrance)) {
       this.currentModal = this.modalService.open(modal,  { size: 'lg', backdropClass: 'light-blue-backdrop', centered: true });
     } else {
-      console.log('Valider la tache ');
       this.tacheService.closeTacheConforme(this.currentTache.ident);
+      this.titleStatus();
     }
   }
   closeModal(){
     this.currentModal.close();
   }
 
+  private titleStatus() {
+    // Status 
+    let idLabelStatus = document.getElementById('idLabelStatus');
+    idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
+    for (let p of this.tacheService.getPiecesByIdContext(this.currentTache.context.ident)) {
+      if(p.status === 'À vérifier') {
+        idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérfication</span>';
+        return;
+      }
+      if (p.status === 'À valider') {
+        idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
+      }
+    }
+  }
+
+  DemandeAvt(crm, date2delivrance){
+    this.currentTache.message = ' ';
+    if(crm.value != this.currentCRM) {
+      this.currentTache.message += crm.value + '. '; 
+      this.currentCRM = crm.value;
+    }
+    if (date2delivrance.value != this.currentDate2delivrance) {
+      this.currentTache.message += date2delivrance.value + '. ';
+      this.currentDate2delivrance = date2delivrance.value;
+    }
+    this.actionMetierService.create(this.currentTache);
+    this.toastr.success('Une demande d\'avenant a été creé');
+  }
   /*private docSuivant() {
 
     const idNext = this.tacheService.nextId(this.currentTache.ident, parseInt(localStorage.getItem('USER'), 10));

@@ -51,7 +51,6 @@ export class TacheService {
   }
 
   getPieceById(id: number) {
-    console.log('Service getpiece by id : ' + id);
     return this.listTaches.find(t => t.ident === id && t.nature == Nature.PIECE);
   }
 
@@ -85,8 +84,11 @@ export class TacheService {
     this.setDateCloture(idTache);
   }
   closeTacheConforme(idTache: number){
-    this.setDateCloture(idTache);
-    this.getTacheById(idTache).status = Status.OK;
+    const tache = this.getTacheById(idTache);
+    tache.status = Status.OK;
+    tache.dateCloture = new Date();
+    tache.idGroupe = 2; // groupe validation ident : 2
+    console.log(this.getTacheById(idTache).status)
   }
 
   /**
@@ -148,7 +150,7 @@ export class TacheService {
       } else if (i < 13) {
         lTache.idUtilisateur = this.UtilisateurService.getUserById(4).ident;
       }
-      // 3 dissers non affectés 
+      // 3 dossiers non affectés 
       this.listTaches.push(lTache);
       this.create3Pieces(lTache);
     }
@@ -233,7 +235,6 @@ export class TacheService {
       this.tacheSubject.next(this.listTaches);
       return true;
     }
-    console.log('Utilisateur non connecté');
     return false;
   }
 
