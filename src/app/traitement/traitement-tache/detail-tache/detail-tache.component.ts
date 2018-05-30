@@ -22,8 +22,8 @@ export class DetailTacheComponent implements OnInit {
 
   ngOnInit() {
     this.idSubscription = this.route.params.subscribe((params: any) => {
-      if(params.idPiece != null){
-        this.tache = this.tacheService.getTacheById(+params.idPiece);
+      if(params.piece != null){
+        this.tache = this.tacheService.getTacheById(+params.piece);
       }
     });
 

@@ -46,7 +46,7 @@ export class TraitementTacheComponent implements OnInit {
   }
 
   detailPiece(piece: Tache) {
-    this.router.navigate(['/TraitementTache', { id: piece.context.ident, idPiece: piece.ident }]);
+    this.router.navigate(['/TraitementTache', { id: piece.context.ident, piece: piece.ident }]);
     //this.router.navigate(['/TraitementTache/'+ident+';idPiece='+ident]);
   }
 
