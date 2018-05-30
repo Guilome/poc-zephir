@@ -9,8 +9,9 @@ export class UtilisateurService {
 
   private usersSubject: BehaviorSubject<Utilisateur[]> = new BehaviorSubject([]);
   constructor() {
+
     const listUsers = [];
-    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille',	Profil.GESTIONNAIRE));
+    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille', Profil.GESTIONNAIRE));
     listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	Profil.GESTIONNAIRE));
     listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	Profil.GESTIONNAIRE));
     listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	Profil.GESTIONNAIRE));

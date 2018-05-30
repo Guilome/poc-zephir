@@ -155,8 +155,11 @@ export class TacheService {
   private create3Pieces(dossier_199: Tache) {
     for (let i = 0; i < 3; i++) {
       const lPiece = new Tache(Nature.PIECE);
-      lPiece.status = Status.A_VERIFIER;
-      lPiece.ident = dossier_199.ident + 1000 + i;
+      lPiece.status = Status.A_VERIFIER;      
+      console.log(i);
+      
+      lPiece.ident = this.listTaches.length + 20000 ;
+      console.log(lPiece.ident);
       lPiece.idTacheMere = dossier_199.ident;
       lPiece.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i];
       lPiece.priorite = [5, 3, 6][i];

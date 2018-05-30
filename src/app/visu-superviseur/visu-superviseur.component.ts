@@ -12,6 +12,9 @@ export class VisuSuperviseurComponent implements OnInit {
 
   idGroupe: number
   groupe: Groupe
+  jourB: Boolean
+  semaineB: Boolean
+  moisB: Boolean = true
 
   constructor(private route: Router, private activeRoute: ActivatedRoute, private groupeService: GroupeService) { 
     this.idGroupe = parseInt(activeRoute.snapshot.paramMap.get("id"))
@@ -33,5 +36,9 @@ export class VisuSuperviseurComponent implements OnInit {
 
   dispatcher() {
     this.groupeService.dispatcher(this.groupe.code);
+  }
+
+  vueBoutton(){
+    
   }
 }
