@@ -1,18 +1,41 @@
 <div *ngIf="ifConnexion()">
-    <div>
-        <div>
-            <graphiqueEnCours></graphiqueEnCours>
+
+    <div class="card text-center mt-5">
+        <div class="card-header">
+            Dossier en cours
         </div>
-        <div class="row mt-5 align-center">
-            <div class="btn-group btn-group offset-4" role="group" aria-label="Basic example">
+        <div class="card-body">
+            <graphique-en-cours></graphique-en-cours>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group btn-group" role="group" aria-label="Basic example">
                 <a routerLink="/AffecterTache" class="btn btn-secondary btn" role="button">Dispatcher</a>
                 <button class="btn btn-secondary btn" (click)="dispatcher()">Dispatch auto</button>
                 <button class="btn btn-secondary btn" (click)="corbeille()">Corbeille</button>
             </div>
         </div>
     </div>
-    <div>
 
+    <div class="card text-center mt-3">
+        <div class="card-header">
+            Dossier Terminé
+        </div>
+        <div class="card-body">
+            <graphique-termine></graphique-termine>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary">
+                    <input type="radio" name="options" id="jour"> Jour
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" name="options" id="semaine"> Semaine
+                </label>
+                <label class="btn btn-secondary active">
+                    <input type="radio" name="options" id="mois" checked> Mois
+                </label>
+            </div>
+        </div>
     </div>
 </div>
-    
+

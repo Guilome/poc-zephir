@@ -41,10 +41,11 @@ import { TacheNonAffecteComponent } from './affecter-tache/tache-non-affecte/tac
 import { PrendreTacheComponent } from './affecter-tache/prendre-tache/prendre-tache.component';
 import { VisuSuperviseurComponent } from './visu-superviseur/visu-superviseur.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-import { GraphiqueEnCoursComponent } from './visu-superviseur/graphiqueEnCours/graphiqueEnCours.component';
+import { GraphiqueEnCoursComponent } from './visu-superviseur/graphique-en-cours/graphique-en-cours.component';
+import { GraphiqueTermineComponent } from './visu-superviseur/graphique-termine/graphique-termine.component'
 import { SplitPipe } from './shared/pipe/split.pipe';
 import { ContratService } from './shared/services/contrat.service';
-import { TableTreeContratComponent } from './visu-gestion/table-tree-contrat/table-tree-contrat.component'
+import { TableTreeContratComponent } from './visu-gestion/table-tree-contrat/table-tree-contrat.component';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
@@ -98,7 +99,8 @@ const appRoutes: Routes = [
     VisuSuperviseurComponent,
     GraphiqueEnCoursComponent,
     SplitPipe,
-    TableTreeContratComponent
+    TableTreeContratComponent,
+    GraphiqueTermineComponent
   ],
   imports: [
     BrowserModule,

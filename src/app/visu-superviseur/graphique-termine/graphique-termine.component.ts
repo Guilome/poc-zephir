@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import {Chart} from 'chart.js';
-import { Code, Groupe } from '../../shared/domain/groupe';
-import { GroupeService } from '../../shared/services/groupe.service';
-import { Router } from '@angular/router';
-import { TacheService } from '../../shared/services/tache.service';
-import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
+import { Groupe, Code } from '../../shared/domain/groupe';
+import { TacheService } from '../../shared/services/tache.service';
+import { Router } from '@angular/router';
+import { GroupeService } from '../../shared/services/groupe.service';
+import { UtilisateurService } from '../../shared/services/utilisateur.service';
+import { ContratService } from '../../shared/services/contrat.service';
 
 @Component({
-  selector: 'graphiqueEnCours',
-  templateUrl: './graphiqueEnCours.component.html',
-  styleUrls: ['./graphiqueEnCours.component.css']
+  selector: 'graphique-termine',
+  templateUrl: './graphique-termine.component.html',
+  styleUrls: ['./graphique-termine.component.css']
 })
-export class GraphiqueEnCoursComponent implements OnInit {
+export class GraphiqueTermineComponent implements OnInit {
 
   lesGestionnaires: Utilisateur[]
   groupe :Groupe
@@ -30,19 +31,23 @@ export class GraphiqueEnCoursComponent implements OnInit {
   // map groupe key/value
   dataGroupe: Map<string, number>;
 
-  constructor(public tacheService: TacheService, private router: Router, private groupeService: GroupeService, private utilService: UtilisateurService) { }
+  constructor(public tacheService: TacheService, private router: Router, private groupeService: GroupeService, private utilService: UtilisateurService) {
+
+  }
 
   ngOnInit() {
-    this.context = document.getElementById('chart');
+    this.context = document.getElementById('chartBar');
     this.monGroupe();
     this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil != Profil.DIRECTEUR)
+
   }
 
   monGroupe() {
-    this.groupeService.getAffectationTaches(Code.VERIFICATION).subscribe(data => {
+    this.groupeService.getTacheTerminé(Code.VERIFICATION).subscribe(data => {
       this.dataGroupe = data;
       this.UpdateCanvas();
     });
+    console.log(this.dataGroupe)    
   }
   private  UpdateCanvas() {
     if (this.c == null) {
@@ -62,7 +67,7 @@ export class GraphiqueEnCoursComponent implements OnInit {
   private createCanvas() {
     if (this.context != null) {
       this.c = new Chart(this.context, {
-        type: 'pie',
+        type: 'bar',
         data: {
           labels: Array.from(this.dataGroupe.keys()),
           datasets: [{
@@ -72,20 +77,17 @@ export class GraphiqueEnCoursComponent implements OnInit {
         }
         ,
         options: {
-          title: {
-            display: true,
-            text: 'Groupe Vérification',
-            fontColor: 'black'
-          },
           legend: {
-            labels: {
-              fontColor: 'black',
-            },
-            position: 'right'
+            display: false
           }
         }
       });
     }
+    Chart.scaleService.updateScaleDefaults('linear', {
+      ticks: {
+          min: 0
+      }
+  });
   }
 
 }

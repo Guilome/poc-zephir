@@ -132,27 +132,25 @@
 
       <!-- BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE ---  BEGIN-GROUPE -->
       <ng-container *ngIf="groupeBoolean">
-        <div class="row mb-5">
-            <table class="table table-borderless">
-                <thead>
-                  <tr>
-                    <th>Groupe</th>
-                    <th>Profil</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let groupe of groupes">
-                    <ng-container *ngIf="permission(profil); else elseBlock">
-                      <a class="text-white" routerLink="/GestionGroupe/{{groupe.ident}}">{{groupe.libelle}}</a>
-                    </ng-container>
-                    <ng-template #elseBlock>
-                        <td>{{groupe.libelle}}</td>
-                    </ng-template>
-                    <td>{{profil}}</td>
-                  </tr>
-                </tbody>
-              </table>
-        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Groupe</th>
+              <th scope="col">Profil</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let groupe of groupes">
+              <ng-container *ngIf="permission(profil); else elseBlock">
+                <a class="text-white" routerLink="/GestionGroupe/{{groupe.ident}}">{{groupe.libelle}}</a>
+              </ng-container>
+              <ng-template #elseBlock>
+                <th scope="row">{{groupe.libelle}}</th>
+              </ng-template>
+              <td>{{profil}}</td>
+            </tr>
+          </tbody>
+        </table>
       </ng-container>
       <!-- END-GROUPE ---- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE-- END-GROUPE -->
 

@@ -1,31 +1,31 @@
 <table class="table table-striped">
      <thead>
         <tr>
-            <th></th>
-            <th>Numero</th>
-            <th>Nom client</th>
-            <th>Nom intermédiaire</th>
-            <th>État</th>
-            <th>Action</th>
+            <th scope="col"></th>
+            <th scope="col">Numero</th>
+            <th scope="col">Nom client</th>
+            <th scope="col">Nom intermédiaire</th>
+            <th scope="col">État</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let contrat of contrats">
-            <td><i class="fa fa-plus fa-lg" (click)="toggleChildren(contrat)"></i></td>
+            <th scope="row"><i class="fa fa-plus fa-lg" (click)="toggleChildren(contrat)"></i></th>
             <td>
               {{contrat.numero}}
                 <div *ngFor="let folder of folderClass">
                     <table class="table table-striped mt-2" *ngIf="folder.bool && folder.id == contrat.ident ">
                       <thead>
                         <tr>
-                          <th>Priorité</th>
-                          <th>Code</th>
-                          <th>Statut</th>
+                          <th scope="col">Priorité</th>
+                          <th scope="col">Code</th>
+                          <th scope="col">Statut</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let tache of contrat.listeTaches">
-                          <td>{{tache.priorite}}</td>
+                          <th scope="row">{{tache.priorite}}</th>
                           <td>{{tache.code}}</td>
                           <td>{{tache.status}}</td>
                         </tr>
