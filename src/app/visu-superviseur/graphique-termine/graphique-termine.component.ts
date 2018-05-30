@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { GroupeService } from '../../shared/services/groupe.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { ContratService } from '../../shared/services/contrat.service';
+import { Tache, Nature } from '../../shared/domain/Tache';
 
 @Component({
   selector: 'graphique-termine',
@@ -15,7 +16,11 @@ import { ContratService } from '../../shared/services/contrat.service';
 })
 export class GraphiqueTermineComponent implements OnInit {
 
+
+  mapSubjectTermine: Map<string, number> = new Map();
+
   lesGestionnaires: Utilisateur[]
+  tachesTermine = []
   groupe :Groupe
   context: any;
   public c: Chart;
@@ -37,18 +42,16 @@ export class GraphiqueTermineComponent implements OnInit {
 
   ngOnInit() {
     this.context = document.getElementById('chartBar');
-    this.monGroupe();
     this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil != Profil.DIRECTEUR)
+    this.monGroupe();
 
   }
 
-  monGroupe() {
-    this.groupeService.getTacheTerminé(Code.VERIFICATION).subscribe(data => {
-      this.dataGroupe = data;
-      this.UpdateCanvas();
-    });
-    console.log(this.dataGroupe)    
+  private monGroupe() {
+    this.getDossierTerminé(Code.VERIFICATION)
+    this.UpdateCanvas();
   }
+
   private  UpdateCanvas() {
     if (this.c == null) {
       this.createCanvas();
@@ -69,9 +72,9 @@ export class GraphiqueTermineComponent implements OnInit {
       this.c = new Chart(this.context, {
         type: 'bar',
         data: {
-          labels: Array.from(this.dataGroupe.keys()),
+          labels: Array.from(this.mapSubjectTermine.keys()),
           datasets: [{
-            data: Array.from(this.dataGroupe.values()),
+            data: Array.from(this.mapSubjectTermine.values()),
             backgroundColor: this.colors
           }]
         }
@@ -87,7 +90,29 @@ export class GraphiqueTermineComponent implements OnInit {
       ticks: {
           min: 0
       }
-  });
+    });
   }
 
+  private getDossierTerminé(codeGroupe: Code){
+    this.tacheService.listerTaches().subscribe(data => this.tachesTermine = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
+    this.tachesTermine = this.tachesTermine.filter(tache => tache.dateCloture != null && tache.nature == Nature.DOSSIER)   
+    this.refreshMapTermine(this.tachesTermine)
+  }
+
+  private refreshMapTermine(lesTaches: Tache[]) {
+    // liste des gestionnaires : Initialisation
+    this.mapSubjectTermine.set('Non Affectées', 0);
+    let gestionnaires = this.utilService.getAll().filter(g => g.profil != Profil.DIRECTEUR).forEach(g => this.mapSubjectTermine.set( g.nom+' '+g.prenom, 0))
+    for (const t of lesTaches) {
+      if (t.idUtilisateur != null) {
+        let gestionnaire = this.utilService.getUserById(t.idUtilisateur)
+        const key = gestionnaire.nom+' '+gestionnaire.prenom;
+        const sum = this.mapSubjectTermine.get(key);
+        this.mapSubjectTermine.set(key,  sum + 1);
+      } else {
+        const sum = this.mapSubjectTermine.get('Non Affectées');
+        this.mapSubjectTermine.set('Non Affectées', sum + 1);
+      }
+    }
+  }
 }
