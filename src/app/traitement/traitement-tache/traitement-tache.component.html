@@ -14,7 +14,7 @@
           <div class="row">
             {{p.libelle}}
             <div class="col" >
-                  <div *ngIf="p.status != 'Ok' && p.dateCloture != null; else block">
+                  <div *ngIf="p.status != 'Ok' && p.dateCloture != null; else block"> <!-- IF-->
                       <button (click)="detailPiece(p.ident)" class="btn btn-danger float-right">X conforme</button>
                   </div>
                   <ng-template #block> <!-- ELSE-->

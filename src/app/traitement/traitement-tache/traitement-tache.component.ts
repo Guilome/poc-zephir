@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Tache} from '../../shared/domain/Tache';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, Params} from '@angular/router';
 import {TacheService} from '../../shared/services/tache.service';
 import {NgForm} from '@angular/forms';
 import { ActionMetierService } from '../../shared/services/action-metier.service';
@@ -23,10 +23,15 @@ export class TraitementTacheComponent implements OnInit {
 
   ngOnInit() {
 
+    this.route.queryParams.subscribe((params: Params) => {
+      console.log(params);
+    });
+
     this.route.params.subscribe((params: any) => {
       const tache = this.tacheService.getTacheById(+params.id);
+      console.log(params);
       // liste des pieces :
-      this.listPieces = this.tacheService.getPiecesByContext(tache.context);
+      this.listPieces = this.tacheService.getPiecesByIdContext(+params.id);
       // list des actions métiers 
       this.actionMetierService.getByContext(tache.context).subscribe(data => this.listActionsMetier = data);
       // Status 

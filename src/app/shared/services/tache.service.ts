@@ -125,7 +125,7 @@ export class TacheService {
   private create15Dossiers() {
     for (let i = 0; i < 15; i++) {
       const lTache = new Tache(Nature.DOSSIER);
-      lTache.ident = i + 4;
+      lTache.ident = 1000020+i;
       const c = new Contrat(7475065+i,'SOLUTIO')
       c.numero = 'S140581'+ i;
       const context = new Context(1000020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
@@ -150,13 +150,15 @@ export class TacheService {
   }
   private create3Pieces(dossier_199: Tache) {
     for (let i = 0; i < 3; i++) {
-      const lTache = dossier_199;// ident, context, contrat, groupe, idUser...
-      lTache.ident = dossier_199.ident + 199;
-      lTache.idTacheMere = dossier_199.ident;
-      lTache.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i];
-      lTache.priorite = [5, 3, 6][i];
-      lTache.urlDocument = ['assets/pdf/CG.pdf','assets/pdf/PDC.pdf','assets/pdf/RI.pdf'][i % 3];
-      this.listTaches.push(lTache);
+      const lPiece = new Tache(Nature.PIECE);
+      lPiece.status = Status.A_VERIFIER;
+      lPiece.ident = dossier_199.ident + 1000 + i;
+      lPiece.idTacheMere = dossier_199.ident;
+      lPiece.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i];
+      lPiece.priorite = [5, 3, 6][i];
+      lPiece.urlDocument = ['assets/pdf/CG.pdf','assets/pdf/PDC.pdf','assets/pdf/RI.pdf'][i];
+      lPiece.context = dossier_199.context;
+      this.listTaches.push(lPiece);
     }
   }
   private nomInter = [
@@ -234,6 +236,9 @@ export class TacheService {
     return this.listTaches.filter(piece => piece.context == context)
   }
 
+  public getPiecesByIdContext(idContext: number): Tache[]{
+    return this.listTaches.filter(piece => piece.context.ident == idContext && piece.nature == Nature.PIECE)
+  }
 
   }
 
