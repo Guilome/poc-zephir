@@ -14,7 +14,7 @@
       <th scope="row"><i class="fa fa-plus fa-lg" (click)="toggleChildren(dossier.ident)"></i></th>
       <td>
         {{dossier.context.contrat.numero}}
-        <div *ngFor="let dp of dossierPieces">
+        <ng-container *ngFor="let dp of dossierPieces">
           <table class="table table-striped mt-2" *ngIf="dp.bool && dp.dossier == dossier.ident ">
             <thead>
               <tr>
@@ -33,12 +33,12 @@
               </tr>
             </tbody>
           </table>
-        </div>
+        </ng-container>
       </td>
-      <td>{{dossier.context.contrat.nomAppelClient}}</td>
-      <td>{{dossier.context.contrat.nomAppelIntermediaire}}</td>
+      <td>{{dossier.context.nomAppelClient}}</td>
+      <td>{{dossier.context.nomAppelIntermediaire}}</td>
       <td>{{dossier.context.contrat.etatContrat}}</td>
-      <td> <a routerLink="/TraitementTache/{{dossier.idContext}}"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
+      <td> <a (click)="traiterPieces(dossier.context.ident, dossier.ident)"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
     </tr>     
   </tbody>    
 </table>

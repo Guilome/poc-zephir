@@ -3,6 +3,7 @@ import { Contrat} from '../../shared/domain/contrat';
 import { ContratService } from '../../shared/services/contrat.service';
 import { Tache, Nature } from '../../shared/domain/Tache';
 import { TacheService } from '../../shared/services/tache.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'table-tree-contrat',
@@ -11,36 +12,29 @@ import { TacheService } from '../../shared/services/tache.service';
 })
 export class TableTreeContratComponent implements OnInit {
 
-  indexSup
   taches: Tache[]
   dossiers: Tache[]
   dossierPieces = []
   idCurrentUser;
+  firstIdent;
 
-  constructor(public contratService: ContratService, private tacheService: TacheService) {
+  constructor(public contratService: ContratService, private tacheService: TacheService, private route: Router) {
     this.idCurrentUser = parseInt(localStorage.getItem('USER'));
     this.tacheService.listerTaches().subscribe(data => this.taches = data)
-    this.dossiers = this.taches.filter( d => d.nature === Nature.DOSSIER && d.idUtilisateur === this.idCurrentUser)
+    this.dossiers = this.taches.filter( d => d.nature === Nature.DOSSIER && d.idUtilisateur === this.idCurrentUser && d.dateCloture == null)
   }
 
-  ngOnInit() {
-    console.log(this.dossiers.length);
-    
+  ngOnInit() {    
     this.dossiers.forEach(dossier => {
+      console.log(dossier)
       var lesPieces  = []
       this.taches.forEach(tache => {
         if (tache.nature === Nature.PIECE && tache.idTacheMere === dossier.ident){
           lesPieces.push(tache)
         }
       })
-      if (lesPieces.length == 0) {
-        this.indexSup = this.dossiers.indexOf(dossier)
-      }
-      else {
-        this.dossierPieces.push({bool:false, dossier: dossier.ident, pieces: lesPieces})   
-      }
+      this.dossierPieces.push({bool:false, dossier: dossier.ident, pieces: lesPieces})   
     })
-    this.dossiers.splice(this.indexSup, 1)
   }
 
   toggleChildren(idTacheMere: number){           
@@ -50,5 +44,14 @@ export class TableTreeContratComponent implements OnInit {
       }
     })
     
+  }
+
+  traiterPieces(idContext, idDossier) {
+    this.dossierPieces.forEach(dp => {
+      if(dp.dossier === idDossier) {
+        this.firstIdent = dp.pieces[0].ident
+      }
+    })
+    this.route.navigate(['/TraitementTache', { id: idContext, piece: this.firstIdent}])
   }
 }

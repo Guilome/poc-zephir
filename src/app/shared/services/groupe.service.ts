@@ -18,6 +18,7 @@ export class GroupeService {
   groupes = [];
   taches = [];
   tachesTermine = [];
+  tachesEnCours = [];
   utilisateurs = []
 
   constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {
