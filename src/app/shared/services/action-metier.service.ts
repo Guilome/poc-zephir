@@ -14,8 +14,8 @@ export class ActionMetierService {
   getById(id: number) {
     return this.listActionMetier.find(t => t.ident === id);
   }
-  getByContext(context): BehaviorSubject<Tache[]>{
-    this.actionMetierSubject.next(this.listActionMetier.filter(act => act.context == context));
+  getAllByIdContext(idContext: number): BehaviorSubject<Tache[]>{
+    this.actionMetierSubject.next(this.listActionMetier.filter(act => act.context.ident == idContext));
     return this.actionMetierSubject;
   }
 

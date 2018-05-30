@@ -12,15 +12,15 @@
     <h5>Pièces justificatives : </h5>
       <div *ngFor="let p of listPieces">
           <div class="row">
-            {{p.libelle}}
+            {{p.libelle}} 
             <div class="col" >
                   <div *ngIf="p.status != 'Ok' && p.dateCloture != null; else block"> <!-- IF-->
                       <button (click)="detailPiece(p.ident)" class="btn btn-danger float-right">X conforme</button>
                   </div>
                   <ng-template #block> <!-- ELSE-->
-                      <button (click)="detailPiece(p.ident)" *ngIf="p.status == 'À vérifier'" class="btn btn-outline-warning float-right">À vérifier</button>
-                      <button (click)="detailPiece(p.ident)" *ngIf="p.status == 'À valider'" class="btn btn-outline-success float-right">À valider </button>
-                      <button (click)="detailPiece(p.ident)" *ngIf="p.status == 'Ok'" class="btn btn-success float-right">Validée</button>
+                      <button (click)="detailPiece(p)" *ngIf="p.status == 'À vérifier'" class="btn btn-outline-warning float-right">À vérifier</button>
+                      <button (click)="detailPiece(p)" *ngIf="p.status == 'À valider'" class="btn btn-outline-success float-right">À valider </button>
+                      <button (click)="detailPiece(p)" *ngIf="p.status == 'Ok'" class="btn btn-success float-right">Validée</button>
                   </ng-template>
             </div>
           </div>

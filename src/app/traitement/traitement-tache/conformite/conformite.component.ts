@@ -17,7 +17,7 @@ export class ConformiteComponent implements OnInit {
     private route: ActivatedRoute, 
     public toastr: ToastrService) {}
 
-  tache: Tache;
+  piece: Tache;
   private idSubscription: Subscription;
   public motifBoolean = false;
 
@@ -27,7 +27,7 @@ export class ConformiteComponent implements OnInit {
   dropdownSettings = {};
   ngOnInit(){
       this.idSubscription = this.route.params.subscribe((params: any) => {
-        this.tache = this.tacheService.getTacheById(+params.id);
+        this.piece = this.tacheService.getPieceById(+params.piece);
       });
       this.dropdownList = [
                             {"id": 1, "itemName":"CRM non conforme"},
@@ -51,22 +51,22 @@ export class ConformiteComponent implements OnInit {
   conforme() {
     this.motifBoolean = false;
     this.selectedItems = [];
-    if (this.tache.dateCloture == null) {
-      if (this.tache.status === Status.A_VERIFIER) {
+    if (this.piece.dateCloture == null) {
+      if (this.piece.status === Status.A_VERIFIER) {
       if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
         //this.docSuivant();
-        this.tacheService.updateStatusAndGroupe(this.tache.ident);
+        this.tacheService.updateStatusAndGroupe(this.piece.ident);
         this.toastr.success('Le status de la tache a été modifier en <b>À VALIDER</b>', '', {enableHtml: true});
       }
 
-    } else if (this.tache.status === Status.A_VALIDER) {
+    } else if (this.piece.status === Status.A_VALIDER) {
       if (confirm('Confirmez-vous la conformité de ce document ?')) {
-        this.tache = this.tacheService.setDateClotureAndStatus(this.tache.ident);
+        this.piece = this.tacheService.setDateClotureAndStatus(this.piece.ident);
         this.toastr.success('La tâche a été <b>fermée</b>', '', {enableHtml: true});
       }
     }
   } else {
-      this.toastr.success('La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.tache.dateCloture), '', {enableHtml: true});
+      this.toastr.success('La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture), '', {enableHtml: true});
     }
   }
   /*
@@ -74,12 +74,12 @@ export class ConformiteComponent implements OnInit {
     Message de cloture obligtoire
   */
   nonConforme() {
-    if (this.tache.dateCloture == null) {
+    if (this.piece.dateCloture == null) {
       if (this.motifBoolean) {
         
         if (this.selectedItems.length > 0) {
           
-          this.tacheService.closeTacheNonConforme(this.tache.ident, this.recuperationMotif());
+          this.tacheService.closeTacheNonConforme(this.piece.ident, this.recuperationMotif());
           //this.docSuivant();
           this.toastr.success('La tâche a été fermé');
           this.selectedItems = [];
@@ -92,7 +92,7 @@ export class ConformiteComponent implements OnInit {
         this.motifBoolean = true;
       }
     } else {
-      this.toastr.error('Aucune action possible : La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.tache.dateCloture));
+      this.toastr.error('Aucune action possible : La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture));
     }
     
   }
@@ -112,12 +112,12 @@ export class ConformiteComponent implements OnInit {
     }
   }*/
 
-  goToTacheDetails(id) {
+  /*goToTacheDetails(id) {
     this.router.navigate(['/TraitementTache', id]);
   }
   goToDashboard() {
     this.router.navigate(['/gestionBO']);
-  }
+  }*/
 
   private alertShow(alert, msg) {
     alert.style.display = 'block';

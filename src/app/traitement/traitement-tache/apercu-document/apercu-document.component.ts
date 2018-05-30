@@ -12,23 +12,28 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class ApercuDocumentComponent implements OnInit {
 
-  tache: Tache;
+  piece: Tache;
   private idSubscription: Subscription;
   constructor(private tacheService: TacheService,
               private route: ActivatedRoute, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
     this.idSubscription = this.route.params.subscribe((params: any) => {
-      this.tache = this.tacheService.getTacheById(+params.id);
-      document.getElementById('divPdf').innerHTML = 
-      '<object data="'+ this.tache.urlDocument +'" width="100%" height="800px" type="application/pdf"></object>'  
+      if( params.piece != null) {
+          this.piece = this.tacheService.getPieceById(+params.piece);
+          document.getElementById('divPdf').innerHTML = 
+          '<object data="'+ this.piece.urlDocument +'" width="100%" height="800px" type="application/pdf"></object>' ;
+      }
     });
   }
 
   // transformation URL
-  urlSafe() {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.tache.urlDocument);
-  }
+  /*urlSafe() {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.piece.urlDocument);
+  }*/
 
 }

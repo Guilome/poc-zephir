@@ -1,30 +1,33 @@
-<!-- IF -->
-<div class="align-middle" xmlns="" *ngIf="tache.status != 'À valider'">
 
-    <button type="button" title="Conforme" [disabled]="tache.dateCloture != null" class="btn btn-success btn-circle fa fa-check fa-4x" (click)="conforme()">  </button>
-    <button type="button" title="Non conforme" [disabled]="tache.dateCloture != null" class="btn btn-danger btn-circle fa fa-times  fa-4x" (click)="nonConforme()">  </button>
+<div *ngIf="piece != null">
+  <!-- IF -->
+  <div class="align-middle" xmlns="" *ngIf="piece.status != 'À valider'">
 
-    <h5>Motif de non conformité : </h5>
+      <button type="button" title="Conforme" [disabled]="piece.dateCloture != null" class="btn btn-success btn-circle fa fa-check fa-4x" (click)="conforme()">  </button>
+      <button type="button" title="Non conforme" [disabled]="piece.dateCloture != null" class="btn btn-danger btn-circle fa fa-times  fa-4x" (click)="nonConforme()">  </button>
 
-    <angular2-multiselect [data]="dropdownList"
-                          [(ngModel)]="selectedItems" 
-                          [settings]="dropdownSettings" *ngIf="motifBoolean" >
-    </angular2-multiselect>
+      <h5>Motif de non conformité : </h5>
 
-    <!--// liste des motifs -->
-    <ul *ngIf="tache.message != null">
-      <li *ngFor="let s of tache.message|split:'.'">{{s}}</li>
-    </ul>
+      <angular2-multiselect [data]="dropdownList"
+                            [(ngModel)]="selectedItems" 
+                            [settings]="dropdownSettings" *ngIf="motifBoolean" >
+      </angular2-multiselect>
+
+      <!--// liste des motifs -->
+      <ul *ngIf="piece.message != null">
+        <li *ngFor="let s of piece.message|split:'.'">{{s}}</li>
+      </ul>
 
 
-    <div id="buttom-content" >
-      <!--button type="button" class="btn btn-primary" style="border-radius: 8px;margin-top: 10px;" (click)="docSuivant()"> Documment suivant > </button-->
-      <button type="button" class="btn btn-primary" style="border-radius: 8px; margin-top: 10px;" (click)="goToDashboard()"> Terminer </button>
-    </div>
+      <!--div id="buttom-content" >
+        <button type="button" class="btn btn-primary" style="border-radius: 8px;margin-top: 10px;" (click)="docSuivant()"> Documment suivant > </button>
+        <button type="button" class="btn btn-primary" style="border-radius: 8px; margin-top: 10px;" (click)="goToDashboard()"> Terminer </button>
+      </div-->
 
-</div>
+  </div>
 
-<!-- ELSE -->
-<div *ngIf="tache.status === 'À valider'">
-  <app-information-conducteur style="font-size: 0.7em" ></app-information-conducteur>
+  <!-- ELSE -->
+  <div *ngIf="piece.status === 'À valider'">
+    <app-information-conducteur style="font-size: 0.7em" ></app-information-conducteur>
+  </div>
 </div>

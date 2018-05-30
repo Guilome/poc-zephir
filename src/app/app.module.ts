@@ -65,7 +65,7 @@ const appRoutes: Routes = [
   { path: 'Accueil', component: AccueilComponent},
   { path: 'AffecterTache', component: DonnerTacheComponent},
   { path: 'PrendreTache', component: PrendreTacheComponent},
-  { path: 'GestionGroupe/:id', component: VisuSuperviseurComponent},
+  { path: 'GestionGroupe/', component: VisuSuperviseurComponent},
 
   { path: '**', redirectTo: 'Accueil'}
 ];

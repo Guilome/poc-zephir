@@ -1,23 +1,27 @@
+<div *ngIf="piece != null">
 
-<h3>{{tache.libelle}} - <a href="#">{{tache.context.contrat.numero}}</a> <i class="fa fa-info-circle" [popover]="myPopover"></i> </h3>
-
-<!--iframe [src]="urlSafe()" width="100%" height="800px"></iframe-->
-
-<!--object [data]=" urlSafe()" width="100%" height="800px" type="application/pdf">
-  Aucun document trouvé
-  <p>Votre navigateur ne supporte pas les pdfs. Vous pouvez le visuliser en cliquant  <a href="{{tache.urlDocument}}">ici.</a>.</p>
-
-</object-->
-<!--pdf-viewer src="/{{tache.urlDocument}}" width="100%" height="800px">
-  Aucun document trouvé
-  <p>Votre navigateur ne supporte pas les pdfs. Vous pouvez le visuliser en cliquant  <a href="{{tache.urlDocument}}">ici.</a>.</p>
-  </pdf-viewer-->
-<div id="divPdf"></div>
-
+  <h3>{{piece.libelle}} - <a href="#">{{piece.context.contrat.numero}}</a> <i class="fa fa-info-circle" [popover]="myPopover"></i> </h3>
   <popover-content #myPopover
-                   title="Informations contrat"
-                   [closeOnClickOutside]="true">
+                  title="Informations contrat"
+                  [closeOnClickOutside]="true">
     <div class="container">
       <app-detail-tache></app-detail-tache>
     </div>
   </popover-content>
+
+</div>
+  <!--iframe [src]="urlSafe()" width="100%" height="800px"></iframe-->
+
+  <!--object [data]=" urlSafe()" width="100%" height="800px" type="application/pdf">
+    Aucun document trouvé
+    <p>Votre navigateur ne supporte pas les pdfs. Vous pouvez le visuliser en cliquant  <a href="{{tache.urlDocument}}">ici.</a>.</p>
+
+  </object-->
+  <!--pdf-viewer src="/{{tache.urlDocument}}" width="100%" height="800px">
+    Aucun document trouvé
+    <p>Votre navigateur ne supporte pas les pdfs. Vous pouvez le visuliser en cliquant  <a href="{{tache.urlDocument}}">ici.</a>.</p>
+    </pdf-viewer-->
+
+ <div id="divPdf"></div>
+
+

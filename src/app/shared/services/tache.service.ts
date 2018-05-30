@@ -49,6 +49,10 @@ export class TacheService {
   getTacheById(id: number) {
     return this.listTaches.find(t => t.ident === id);
   }
+  getPieceById(id: number) {
+    console.log(id);
+    return this.listTaches.find(t => t.ident === 1001022 && t.nature == Nature.PIECE);
+  }
 
   /**
    * set la date de cloture et modifie le status en "OK"

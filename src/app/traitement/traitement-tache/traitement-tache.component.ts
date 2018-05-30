@@ -23,17 +23,13 @@ export class TraitementTacheComponent implements OnInit {
 
   ngOnInit() {
 
-    this.route.queryParams.subscribe((params: Params) => {
-      console.log(params);
-    });
-
     this.route.params.subscribe((params: any) => {
-      const tache = this.tacheService.getTacheById(+params.id);
+      //const tache = this.tacheService.getPieceById(+params.id);
       console.log(params);
       // liste des pieces :
       this.listPieces = this.tacheService.getPiecesByIdContext(+params.id);
       // list des actions métiers 
-      this.actionMetierService.getByContext(tache.context).subscribe(data => this.listActionsMetier = data);
+      this.actionMetierService.getAllByIdContext(+params.id).subscribe(data => this.listActionsMetier = data);
       // Status 
       let idLabelStatus = document.getElementById('idLabelStatus');
       idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
@@ -49,8 +45,9 @@ export class TraitementTacheComponent implements OnInit {
     });
   }
 
-  detailPiece(ident: number) {
-    this.router.navigate(['/TraitementTache/'+ident]);
+  detailPiece(piece: Tache) {
+    this.router.navigate(['/TraitementTache', { id: piece.context.ident, idPiece: piece.ident }]);
+    //this.router.navigate(['/TraitementTache/'+ident+';idPiece='+ident]);
   }
 
 

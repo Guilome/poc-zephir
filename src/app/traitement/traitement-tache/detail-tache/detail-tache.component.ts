@@ -22,14 +22,17 @@ export class DetailTacheComponent implements OnInit {
 
   ngOnInit() {
     this.idSubscription = this.route.params.subscribe((params: any) => {
-      this.tache = this.tacheService.getTacheById(+params.id);
+      if(params.idPiece != null){
+        this.tache = this.tacheService.getTacheById(+params.idPiece);
+      }
     });
 
+    /* TITRE 
     if ( this.tache.status.toLowerCase() === 'à vérifier') {
       this.titreService.updateTitre('Tâche de vérification');
     } else if ( this.tache.status.toLowerCase() === 'à valider' ) {
       this.titreService.updateTitre('Tâche de validation');
-    }
+    }*/
   }
 
 }
