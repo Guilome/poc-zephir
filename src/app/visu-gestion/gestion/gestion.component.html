@@ -142,7 +142,7 @@
           <tbody>
             <tr *ngFor="let groupe of groupes">
               <ng-container *ngIf="permission(profil); else elseBlock">
-                <a class="text-white" routerLink="/GestionGroupe/{{groupe.ident}}">{{groupe.libelle}}</a>
+                  <th scope="row"><a class="text-white" routerLink="/GestionGroupe/{{groupe.ident}}">{{groupe.libelle}}</a></th>
               </ng-container>
               <ng-template #elseBlock>
                 <th scope="row">{{groupe.libelle}}</th>
