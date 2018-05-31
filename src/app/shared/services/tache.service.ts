@@ -54,6 +54,10 @@ export class TacheService {
     return this.listTaches.find(t => t.ident === id && t.nature == Nature.PIECE);
   }
 
+  getDossierById(id: number) {
+    return this.listTaches.find(t => t.ident === id && t.nature == Nature.DOSSIER);
+  }
+
   /**
    * set la date de cloture et modifie le status en "OK"
    * @param {number} idTache
@@ -115,6 +119,26 @@ export class TacheService {
     console.log(this.getTacheById(idTache).status)
   }
 
+  /**
+   * Fermeture du dossier
+   */
+  closeDossier(idDossier: number){
+    let dossier = this.getDossierById(idDossier)
+    this.listTaches.forEach( t => {
+      if (t.ident == idDossier) {
+        t.status = Status.OK
+        t.dateCloture = new Date()
+      }
+    })
+  }
+
+  /**
+   * Annulation du dossier
+   */
+  annulerDossier(idDossier: number){
+    
+  }
+  
   /**
    * renvoie l'id de la tache suivante en fonction de son status et de l'utilisateur
    * @param {number} idTache

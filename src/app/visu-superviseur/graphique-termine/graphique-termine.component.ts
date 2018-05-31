@@ -52,7 +52,7 @@ export class GraphiqueTermineComponent implements OnInit {
   }
 
   private monGroupe() {
-    this.getDossierTermine(this.groupe.code, null)
+    this.getDossierTermine(this.groupe.code, null, null)
     this.UpdateCanvas();
   }
 
@@ -101,24 +101,28 @@ export class GraphiqueTermineComponent implements OnInit {
     Chart.scaleService.updateScaleDefaults('linear', {
       ticks: {
           min: 0,
-          max: 30,
+          max: 25,
           stepSize: 1
       }
     })
   }
 
-  private getDossierTermine(codeGroupe: Code, date:Date){
-    if(date == null){
+  private getDossierTermine(codeGroupe: Code, date:string, semaine: number[]){
+    if (date == null && semaine == null) {
+      console.log("j'entre la");      
       this.tacheService.listerTaches().subscribe(data => this.dossiersTermine = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
       this.dossiersTermine = this.dossiersTermine.filter(tache => tache.dateCloture != null && tache.nature == Nature.DOSSIER)   
-      console.log(this.dossiersTermine);
-      this.dossiersTermine.filter(d => d.dateCloture.toLocaleDateString() === this.dateJour.toLocaleDateString()).forEach(d => console.log(d.dateCloture.toLocaleDateString()))
-    } else {
+    } else if (date != null && semaine == null) {
+      console.log("ou la");      
       this.tacheService.listerTaches().subscribe(data => this.dossiersTermine = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
-      console.log(this.dossiersTermine)
-      this.dossiersTermine = this.dossiersTermine.filter(tache => tache.nature == Nature.DOSSIER && tache.dateCloture != null && tache.dateCloture.toLocaleDateString() === date.toLocaleDateString())   
-      console.log(this.dossiersTermine);
-      this.dossiersTermine.filter(d => d.dateCloture.toLocaleDateString() === this.dateJour.toLocaleDateString()).forEach(d => console.log(d.dateCloture.toLocaleDateString()))
+      this.dossiersTermine = this.dossiersTermine.
+      filter(tache => tache.nature == Nature.DOSSIER && tache.dateCloture != null && tache.dateCloture.toLocaleDateString().includes(date))   
+    } else if (semaine != null && date == null) {
+      console.log("ou encore ici");      
+      this.tacheService.listerTaches().subscribe(data => this.dossiersTermine = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
+      this.dossiersTermine = this.dossiersTermine.
+      filter(tache => tache.nature == Nature.DOSSIER && tache.dateCloture != null && semaine[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < semaine[1])
+      console.log(this.dossiersTermine);         
     }
     this.refreshMapTermine(this.dossiersTermine)
   }
@@ -135,12 +139,21 @@ export class GraphiqueTermineComponent implements OnInit {
   }
   
   private trierJour(){
-    console.log(this.dateJour.toLocaleDateString());    
-    this.getDossierTermine(this.groupe.code, this.dateJour)
+    this.getDossierTermine(this.groupe.code, this.dateJour.toLocaleDateString(), null)
     this.UpdateCanvas()
   }
   private trierSemaine(){
+    let day = this.dateJour.getDate()
+    let day7 = day - 7
+    let semaine = [day7, day]
+    console.log(day);
+    console.log(day7);  
+    this.getDossierTermine(this.groupe.code, null, semaine)
+    this.UpdateCanvas()   
   }
   private trierMois(){
+    let month ='0'+ (this.dateJour.getMonth() + 1)
+    this.getDossierTermine(this.groupe.code, month, null)
+    this.UpdateCanvas() 
   }
 }

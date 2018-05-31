@@ -42,6 +42,11 @@
   <div *ngFor="let act of listActionsMetier">
     <div class="row"><span tooltip="{{act.message}}"  >{{act.libelle}}</span></div>
   </div>
+  <div class="row">
+    <input class="col-12 btn btn-success" type="button" value="Valider" (click)="valider()"/>
+    <input class="col-12 btn btn-success mt-1" type="button" value="Valider avec modification"(click)="validerModif()"/>
+    <input class="col-12 btn btn-danger mt-1" type="button" value="Refuser"(click)="refuser()"/>
+  </div>
   </div>
   <!-- END left screnn-->
 

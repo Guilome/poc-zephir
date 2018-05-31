@@ -13,6 +13,7 @@ import { ActionMetierService } from '../../shared/services/action-metier.service
 export class TraitementTacheComponent implements OnInit {
 
   showDetail = true;
+  idDossier: number
   listPieces = [];
   listActionsMetier= [];
 
@@ -50,12 +51,21 @@ export class TraitementTacheComponent implements OnInit {
     if(element != null) {
       element.classList.remove('bg-row')
     }
-    a.classList.add('bg-row');
-    
+    a.classList.add('bg-row');   
+  }
+
+  valider() {
+    this.listPieces.forEach( lP => {
+      this.idDossier = lP.idTacheMere
+    })
+    this.tacheService.closeDossier(this.idDossier)
+  }
+
+  validerModif() {
 
   }
 
+  refuser() {
 
-
-
+  }
 }
