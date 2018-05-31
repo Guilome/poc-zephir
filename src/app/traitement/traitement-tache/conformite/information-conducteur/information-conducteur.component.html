@@ -1,78 +1,79 @@
-<h2>Informations Conducteur</h2>
-
-<div class="form-group">
-  <div class="row">
-    <div class="col-5">
-      <label for="numero">Numéro :</label>
-      <input type="text" class="form-control" id="numero" maxlength="15" value="P012345678">
-    </div>
-    <div class="col-3">
-      <label class="control-label" for="crm">CRM :</label>
-      <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crm" value="{{currentCRM}}" #crm>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-5">
-      <label class="control-label" for="categorie">Catégorie :</label>
-      <input type="text" class="form-control" id="categorie" value="B">
-    </div>
-    <div class="col-7">
-
-      <div class="row">
-      <div  class="col-md-4">
-        <label for="resp100">Resp. 100%</label>
-        <input type="number" class="form-control" step="1" min="0" max="100" id="resp100" value="0">
+<fieldset id="fieldset1">
+<legend>Informations Conducteur</legend>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-5">
+        <label for="numero">Numéro :</label>
+        <input type="text" class="form-control" id="numero" maxlength="15" value="P012345678">
       </div>
-      <div  class="col-md-4">
-        <label for="resp50">Resp. 50%</label>
-        <input type="number" class="form-control" step="1" min="0" max="100" id="resp50" value="0">
-      </div>
-      <div  class="col-md-4">
-        <label for="resp0">Resp. 0%</label>
-        <input type="number" class="form-control" step="1" min="0" max="100" id="resp0" value="0">
+      <div class="col-3">
+        <label class="control-label" for="crmElementId">CRM :</label>
+        <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crmElementId" value="{{currentCRM}}" #crm>
       </div>
     </div>
+    <div class="row">
+      <div class="col-5">
+        <label class="control-label" for="categorie">Catégorie :</label>
+        <input type="text" class="form-control" id="categorie" value="B">
+      </div>
+      <div class="col-7">
 
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-5">
-      <label class="control-label" for="date2delivrance">Date de délivrance :</label>
-      <input type="date" class="form-control" id="date2delivrance" value="{{currentDate2delivrance}}" #date2delivrance>
-    </div>
-    <div class="col-md-7" >
-      <div class="row">
-        <div  class="col-md-6" >
-          <label class="control-label" for="crm">Vol et incendie :</label>
-          <input type="number" class="form-control" step="0.01" min="0" max="100" id="vei" value="0">
+        <div class="row">
+        <div  class="col-md-4">
+          <label for="resp100">Resp. 100%</label>
+          <input type="number" class="form-control" step="1" min="0" max="100" id="resp100" value="0">
         </div>
-        <div  class="col-md-6">
-          <label class="control-label" for="crm">Bris de glace :</label>
-          <input type="number" class="form-control" step="0.01" min="0" max="100" id="bdg" value="0">
+        <div  class="col-md-4">
+          <label for="resp50">Resp. 50%</label>
+          <input type="number" class="form-control" step="1" min="0" max="100" id="resp50" value="0">
         </div>
-    </div>
-  </div>
+        <div  class="col-md-4">
+          <label for="resp0">Resp. 0%</label>
+          <input type="number" class="form-control" step="1" min="0" max="100" id="resp0" value="0">
+        </div>
+      </div>
 
-  </div>
-  <div class="row">
-    <div class="col-5">
-      <label class="control-label" for="departement">Département :</label>
-      <input type="number" class="form-control" id="departement" value="34">
+      </div>
     </div>
-    <div class="col-7">
+
+    <div class="row">
+      <div class="col-5">
+        <label class="control-label" for="date2delivrance">Date de délivrance :</label>
+        <input type="date" class="form-control" id="date2delivrance" value="{{currentDate2delivrance}}" #date2delivrance>
+      </div>
+      <div class="col-md-7" >
+        <div class="row">
+          <div  class="col-md-6" >
+            <label class="control-label" for="crm">Vol et incendie :</label>
+            <input type="number" class="form-control" step="0.01" min="0" max="100" id="vei" value="0">
+          </div>
+          <div  class="col-md-6">
+            <label class="control-label" for="crm">Bris de glace :</label>
+            <input type="number" class="form-control" step="0.01" min="0" max="100" id="bdg" value="0">
+          </div>
+      </div>
+    </div>
 
     </div>
-  </div>
-  <div class="row">
-    <div class="col-4">
-      <label class="control-label" for="prefecture">Préfecture :</label>
-      <input type="text" class="form-control" id="prefecture" value="HERAULT">
+    <div class="row">
+      <div class="col-5">
+        <label class="control-label" for="departement">Département :</label>
+        <input type="number" class="form-control" id="departement" value="34">
+      </div>
+      <div class="col-7">
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <label class="control-label" for="prefecture">Préfecture :</label>
+        <input type="text" class="form-control" id="prefecture" value="HERAULT">
+      </div>
     </div>
   </div>
-</div>
-
-<h2>Informations Véhicule</h2>
+</fieldset>
+<fieldset id="fieldset2">
+  <legend>Informations Véhicule</legend>
   <div class="form-group">
     <div class="row">
       <div class="col-sm-6">
@@ -113,12 +114,18 @@
       </div>
     </div>
   </div>
-<!-- 25/05/2018 -->
+
 <br>
 <div class="row float-right" >
+  <div class="col">
     <button type="button" class="btn btn-outline-warning" style="border-radius: 8px;" (click)="refused(RefusedModal)"> Refuser </button>
+  </div><div class="col">
+
     <button type="button" class="btn btn-outline-success" style="border-radius: 8px;" (click)="validate(crm,date2delivrance, validateModal)"> Valider </button>
+  </div>
 </div>
+</fieldset>
+
 <!-- The Modal REFUSER -->
 <ng-template #RefusedModal>
    <div id="info" style="border: 1px solid gainsboro;">

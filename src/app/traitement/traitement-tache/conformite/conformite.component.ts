@@ -61,7 +61,7 @@ export class ConformiteComponent implements OnInit {
 
     } else if (this.piece.status === Status.A_VALIDER) {
       if (confirm('Confirmez-vous la conformité de ce document ?')) {
-        this.piece = this.tacheService.setDateClotureAndStatus(this.piece.ident);
+        this.piece = this.tacheService.closePieceConforme(this.piece.ident);
         this.toastr.success('La tâche a été <b>fermée</b>', '', {enableHtml: true});
       }
     }
@@ -81,12 +81,12 @@ export class ConformiteComponent implements OnInit {
         
         if (this.selectedItems.length > 0) {
           
-          this.tacheService.closeTacheNonConforme(this.piece.ident, this.recuperationMotif());
+          this.tacheService.closePieceNonConforme(this.piece.ident, this.recuperationMotif());
           //this.docSuivant();
           this.toastr.success('La tâche a été fermé');
           this.selectedItems = [];
           this.motifBoolean = false;
-          this.titleStatus()
+          this.titleStatus();
           
         } else {
           this.toastr.error('Veuillez renseigner le(s) motif(s)');
@@ -155,6 +155,15 @@ export class ConformiteComponent implements OnInit {
         idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
       }
     }
+  }
+
+  listMotifs(): string[] {
+    let lList = [];
+    const taille = this.piece.message.split('.').length - 1;
+    for ( let i = 0 ; i < taille ; i++ ) {
+      lList.push(this.piece.message.split('.')[i]);
+    }
+    return lList;
   }
 
 }

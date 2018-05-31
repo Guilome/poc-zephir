@@ -59,14 +59,27 @@ export class TacheService {
    * @param {number} idTache
    * @returns {Tache}
    */
-  setDateClotureAndStatus(idTache: number): Tache {
-    this.getTacheById(idTache).status = Status.OK;
-    return this.setDateCloture(idTache);
+  closePieceConforme(idTache: number): Tache {
+    const p = this.getPieceById(idTache);
+    p.status = Status.OK;
+    p.dateCloture  = new Date();
+    return p;
   }
-  private setDateCloture(idTache: number): Tache {
+  /**
+   * le status reste "à vérifier"
+   * si le status est "à valider" => il revient sur "à vérifier"
+   * @param idTache 
+   */
+  closePieceNonConforme(idTache: number, motif: string) {
+    const p = this.getTacheById(idTache);
+    p.message = motif;
+    p.status = Status.A_VERIFIER;
+    p.dateCloture = new Date();
+  }
+  /*private setDateCloture(idTache: number): Tache {
     this.getTacheById(idTache).dateCloture = new Date();
     return this.getTacheById(idTache);
-  }
+  }*/
 
   /**
    * Passer le status de "A_VERIFIER" à "A_VALIDER"
@@ -79,15 +92,26 @@ export class TacheService {
     tache.idGroupe = 2; // groupe validation ident : 2
   }
 
-  closeTacheNonConforme(idTache: number, motif: string) {
-    this.getTacheById(idTache).message = motif;
-    this.setDateCloture(idTache);
+  /**
+   * 
+   * @param idTache 
+   * @param motif 
+   */
+  closeTacheNonConforme(idTache: number, motif: string): Tache {
+    const p = this.getTacheById(idTache);
+    p.message = motif;
+    p.dateCloture = new Date();
+
+    return p;
   }
+  /**
+   * Fermeture de la Piece après validation 
+   * @param idTache 
+   */
   closeTacheConforme(idTache: number){
-    const tache = this.getTacheById(idTache);
+    const tache = this.getPieceById(idTache);
     tache.status = Status.OK;
     tache.dateCloture = new Date();
-    tache.idGroupe = 2; // groupe validation ident : 2
     console.log(this.getTacheById(idTache).status)
   }
 
@@ -97,7 +121,7 @@ export class TacheService {
    * @param {number} idUser
    * @returns {number}
    */
-  nextId(idTache: number, idUser: number): number {
+  /*nextId(idTache: number, idUser: number): number {
 
     const tache = this.getTacheById(idTache)
     const myTacheslist = this.listTaches.filter(t => t.idUtilisateur === idUser && t.status === tache.status).sort((obj1, obj2) => obj1.priorite - obj2.priorite);
@@ -108,16 +132,15 @@ export class TacheService {
     } else {
       return null;
     }
-  }
+  }*/
 
   private create_100_DossiersClotures(){
     for (let i = 500 ; i < 600 ; i++) {
         const lTache = new Tache(Nature.DOSSIER);
         lTache.ident = i;
-        const c = new Contrat(65065+i,'SOLUTIO')
-        c.numero = 'S140581'+ i;
-        const context = new Context(999020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
-        lTache.context = context;
+        const c = new Contrat(450020+i,'SOLUTIO')
+        c.numero = 'S140510'+ i;
+        lTache.context = new Context(330010+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);;
         lTache.status = Status.A_VERIFIER;
         lTache.idGroupe = 1;
         lTache.priorite = 5;
@@ -133,24 +156,17 @@ export class TacheService {
     for (let i = 0; i < 15; i++) {
       const lTache = new Tache(Nature.DOSSIER);
       lTache.ident = 1000020+i;
-      const c = new Contrat(7475065+i,'SOLUTIO')
+      const c = new Contrat(740001+i,'SOLUTIO');
       c.numero = 'S140581'+ i;
-      const context = new Context(1000020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
-      lTache.context = context;
+      const context = 
+      lTache.context = new Context(100020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
       lTache.status = Status.A_VERIFIER;
       lTache.idGroupe = 1;
       lTache.priorite = 5;
       lTache.dateLimite = new Date('06/15/2018');
-      if (i < 4) { // 4 taches pour current user
-        lTache.idUtilisateur = this.UtilisateurService.getUserById(1).ident;
-      } else if (i < 7) {
-        lTache.idUtilisateur = this.UtilisateurService.getUserById(2).ident;
-      } else if (i < 9) {
-        lTache.idUtilisateur = this.UtilisateurService.getUserById(3).ident;
-      } else if (i < 13) {
-        lTache.idUtilisateur = this.UtilisateurService.getUserById(4).ident;
-      }
-      // 3 dossiers non affectés 
+      lTache.dateCreation = new Date();
+      lTache.idUtilisateur = null;
+
       this.listTaches.push(lTache);
       this.create3Pieces(lTache);
     }
@@ -159,12 +175,14 @@ export class TacheService {
     for (let i = 0; i < 3; i++) {
       const lPiece = new Tache(Nature.PIECE);
       lPiece.status = Status.A_VERIFIER;      
-      lPiece.ident = this.listTaches.length + 20000 ;
+      lPiece.ident = this.listTaches.length + 70000 ;
       lPiece.idTacheMere = dossier_199.ident;
       lPiece.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i];
       lPiece.priorite = [5, 3, 6][i];
       lPiece.urlDocument = ['assets/pdf/CG.pdf','assets/pdf/PDC.pdf','assets/pdf/RI.pdf'][i];
       lPiece.context = dossier_199.context;
+      lPiece.dateLimite = dossier_199.dateLimite
+      lPiece.dateCreation = new Date();
       this.listTaches.push(lPiece);
     }
   }
@@ -238,8 +256,9 @@ export class TacheService {
     return false;
   }
 
+
   public getPiecesByContext(context: Context): Tache[]{
-    return this.listTaches.filter(piece => piece.context == context)
+    return this.listTaches.filter(piece => piece.context == context && piece.nature == Nature.PIECE)
   }
 
   public getPiecesByIdContext(idContext: number): Tache[]{
