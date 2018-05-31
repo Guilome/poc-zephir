@@ -52,7 +52,7 @@ export class GraphiqueTermineComponent implements OnInit {
   }
 
   private monGroupe() {
-    this.getDossierTermine(this.groupe.code, null, null)
+    this.getDossierTermine(this.groupe.code, this.dateJour.getMonth().toString(), null)
     this.UpdateCanvas();
   }
 

@@ -4,6 +4,7 @@ import {ActivatedRoute, Router, Params} from '@angular/router';
 import {TacheService} from '../../shared/services/tache.service';
 import {NgForm} from '@angular/forms';
 import { ActionMetierService } from '../../shared/services/action-metier.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-traitement-tache',
@@ -20,7 +21,8 @@ export class TraitementTacheComponent implements OnInit {
   constructor(private tacheService: TacheService,
               private actionMetierService: ActionMetierService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router, 
+              public toastr: ToastrService) { }
 
   ngOnInit() {
 
@@ -68,8 +70,10 @@ export class TraitementTacheComponent implements OnInit {
   valider() {
     this.listPieces.forEach( lP => {
       this.idDossier = lP.idTacheMere
-    })
+    })    
     this.tacheService.closeDossier(this.idDossier)
+    this.toastr.success("Le dossier a été validé")
+    this.router.navigate(['/gestionBO']);
   }
 
   validerModif() {
@@ -77,6 +81,11 @@ export class TraitementTacheComponent implements OnInit {
   }
 
   refuser() {
-
+    this.listPieces.forEach( lP => {
+      this.idDossier = lP.idTacheMere
+    })
+    this.tacheService.annulerDossier(this.idDossier)
+    this.toastr.warning("Le dossier a été refusé")
+    this.router.navigate(['/gestionBO']);
   }
 }

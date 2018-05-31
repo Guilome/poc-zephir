@@ -136,7 +136,13 @@ export class TacheService {
    * Annulation du dossier
    */
   annulerDossier(idDossier: number){
-    
+    let dossier = this.getDossierById(idDossier)
+    this.listTaches.forEach( t => {
+      if (t.ident == idDossier) {
+        t.status = Status.A_VERIFIER
+        t.dateCloture = new Date()
+      }
+    })
   }
   
   /**
