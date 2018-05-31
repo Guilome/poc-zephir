@@ -43,10 +43,18 @@ export class TraitementTacheComponent implements OnInit {
     });
   }
 
-  detailPiece(piece: Tache) {
+  detailPiece(piece: Tache,a) {
     this.router.navigate(['/TraitementTache', { id: piece.context.ident, piece: piece.ident }]);
     //this.router.navigate(['/TraitementTache/'+ident+';idPiece='+ident]);
+    const element = document.getElementsByClassName('bg-row')[0];
+    if(element != null) {
+      element.classList.remove('bg-row')
+    }
+    a.classList.add('bg-row');
+    
+
   }
+
 
 
 

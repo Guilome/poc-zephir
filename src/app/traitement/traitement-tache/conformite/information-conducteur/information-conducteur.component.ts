@@ -29,8 +29,8 @@ export class InformationConducteurComponent implements OnInit {
     this.currentCRM = 0.68;
     this.currentDate2delivrance = '2000-01-01';
     this.route.params.subscribe(data => {
-      this.currentTache = this.tacheService.getTacheById(+data['id']);
-     
+      this.currentTache = this.tacheService.getPieceById(+data.piece);
+      console.log(this.currentTache);
     });
 
   }
@@ -52,7 +52,7 @@ export class InformationConducteurComponent implements OnInit {
   demandeSansEffet(){
 
     this.actionMetierService.create(this.currentTache);
-    this.toastr.success('Une demande "SANS-EFFET" a été creé');
+    this.toastr.success('Une demande "SANS-EFFET" a été creé.');
   }
   refused(modal){
     this.currentModal = this.modalService.open(modal,  { size: 'lg', backdropClass: 'light-blue-backdrop', centered: true });
@@ -60,10 +60,13 @@ export class InformationConducteurComponent implements OnInit {
 
   validate(crm, date2delivrance, modal) {
     if (this.ifChangement(crm, date2delivrance)) {
-      this.currentModal = this.modalService.open(modal,  { size: 'lg', backdropClass: 'light-blue-backdrop', centered: true });
+      this.currentModal = this.modalService.open(modal,  { size: 'lg', centered: true });
     } else {
       this.tacheService.closeTacheConforme(this.currentTache.ident);
       this.titleStatus();
+      (<HTMLInputElement>document.getElementById('fieldset1')).disabled = true;
+      (<HTMLInputElement>document.getElementById('fieldset2')).disabled = true;
+      this.toastr.success('La piece a été validée.');
     }
   }
   closeModal(){
@@ -85,17 +88,18 @@ export class InformationConducteurComponent implements OnInit {
     }
   }
 
-  DemandeAvt(crm, date2delivrance){
+  DemandeAvt(){
+    const crm = +(<HTMLInputElement>document.getElementById('crmElementId')).value;
+    const date2delivrance = (<HTMLInputElement>document.getElementById('date2delivrance')).value;
     this.currentTache.message = ' ';
-    if(crm.value != this.currentCRM) {
-      this.currentTache.message += crm.value + '. '; 
-      this.currentCRM = crm.value;
+    if(crm != this.currentCRM) {
+      this.currentTache.message += 'CRM : '+ crm + '.\n'; 
     }
-    if (date2delivrance.value != this.currentDate2delivrance) {
-      this.currentTache.message += date2delivrance.value + '. ';
-      this.currentDate2delivrance = date2delivrance.value;
+    if (date2delivrance != this.currentDate2delivrance) {
+      this.currentTache.message += "Date de Délivrance : " + date2delivrance + '.\n';
     }
     this.actionMetierService.create(this.currentTache);
+    this.closeModal();
     this.toastr.success('Une demande d\'avenant a été creé');
   }
   /*private docSuivant() {

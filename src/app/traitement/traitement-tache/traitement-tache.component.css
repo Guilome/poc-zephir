@@ -1,3 +1,10 @@
 .row{
   margin-top: 50px;
 }
+a:hover {
+  background-color: lightgrey;
+}
+
+.bg-row {
+    background-color: lightgray;
+  }

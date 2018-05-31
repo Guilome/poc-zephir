@@ -23,6 +23,7 @@ export class ActionMetierService {
 
     const a = new Tache(Nature.TACHE);
     a.ident = tache.ident;
+    a.message = tache.message;
     a.idUtilisateur = null;
     a.idGroupe = tache.idGroupe;
     a.context = tache.context;

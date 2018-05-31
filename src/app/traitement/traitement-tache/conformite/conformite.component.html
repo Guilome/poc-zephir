@@ -3,10 +3,10 @@
   <!-- IF -->
   <div class="align-middle" xmlns="" *ngIf="piece.status != 'À valider'">
 
-      <button type="button" title="Conforme" [disabled]="piece.dateCloture != null" class="btn btn-success btn-circle fa fa-check fa-4x" (click)="conforme()">  </button>
-      <button type="button" title="Non conforme" [disabled]="piece.dateCloture != null" class="btn btn-danger btn-circle fa fa-times  fa-4x" (click)="nonConforme()">  </button>
+      <button type="button" title="Conforme" [disabled]="piece.dateCloture != null" class="btn btn-success btn-circle fa fa-check" (click)="conforme()">  </button>
+      <button type="button" title="Non conforme" [disabled]="piece.dateCloture != null" class="btn btn-danger btn-circle fa fa-times" (click)="nonConforme()">  </button>
 
-      <h5>Motif de non conformité : </h5>
+      <h5 *ngIf="motifBoolean">Motif de non conformité : </h5>
 
       <angular2-multiselect [data]="dropdownList"
                             [(ngModel)]="selectedItems" 
@@ -15,7 +15,7 @@
 
       <!--// liste des motifs -->
       <ul *ngIf="piece.message != null">
-        <li *ngFor="let s of piece.message|split:'.'">{{s}}</li>
+        <li *ngFor="let s of listMotifs()">{{s}}</li>
       </ul>
 
 
