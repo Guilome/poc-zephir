@@ -144,6 +144,7 @@ export class TacheService {
         lTache.status = Status.A_VERIFIER;
         lTache.idGroupe = 1;
         lTache.priorite = 5;
+        lTache.code = "199_AFN";
         const date = '05/' + (i%31) + '/2018';
         lTache.dateCloture = new Date(date);
         const idUser = (i%4) + 1;
@@ -163,6 +164,7 @@ export class TacheService {
       lTache.status = Status.A_VERIFIER;
       lTache.idGroupe = 1;
       lTache.priorite = 5;
+      lTache.code = "199_AFN";
       lTache.dateLimite = new Date('06/15/2018');
       lTache.dateCreation = new Date();
       lTache.idUtilisateur = null;

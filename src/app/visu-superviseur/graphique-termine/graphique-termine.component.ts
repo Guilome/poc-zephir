@@ -25,13 +25,12 @@ export class GraphiqueTermineComponent implements OnInit {
   context: any;
   public c: Chart;
   private colors = [
-    'grey',
-    'cyan',
-    'red',
-    'blue',
-    'green',
-    'Purple',
-    'yellow'
+    'DodgerBlue',
+    'Tan',
+    'lightblue',
+    'lightgreen',
+    'Orchid',
+    'PaleGoldenRod'
   ];
   // map groupe key/value
   dataGroupe: Map<string, number>;
@@ -101,18 +100,12 @@ export class GraphiqueTermineComponent implements OnInit {
 
   private refreshMapTermine(lesTaches: Tache[]) {
     // liste des gestionnaires : Initialisation
-    this.mapSubjectTermine.set('Non Affectées', 0);
     let gestionnaires = this.utilService.getAll().filter(g => g.profil != Profil.DIRECTEUR).forEach(g => this.mapSubjectTermine.set( g.nom+' '+g.prenom, 0))
     for (const t of lesTaches) {
-      if (t.idUtilisateur != null) {
-        let gestionnaire = this.utilService.getUserById(t.idUtilisateur)
-        const key = gestionnaire.nom+' '+gestionnaire.prenom;
-        const sum = this.mapSubjectTermine.get(key);
-        this.mapSubjectTermine.set(key,  sum + 1);
-      } else {
-        const sum = this.mapSubjectTermine.get('Non Affectées');
-        this.mapSubjectTermine.set('Non Affectées', sum + 1);
-      }
+      let gestionnaire = this.utilService.getUserById(t.idUtilisateur)
+      const key = gestionnaire.nom+' '+gestionnaire.prenom;
+      const sum = this.mapSubjectTermine.get(key);
+      this.mapSubjectTermine.set(key,  sum + 1);
     }
   }
 }

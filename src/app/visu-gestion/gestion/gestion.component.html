@@ -32,40 +32,6 @@
       </ng-container>
       <!-- /END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT -->      
 
-
-      <!-- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES --- BEGIN TACHES ---  BEGIN TECHES -->
-      
-        <table *ngIf="tacheBoolean" class="table table-striped">
-          <thead>
-          <tr>
-            <th scope="col">Priorité</th>
-            <th scope="col">Libellé</th>
-            <th scope="col">Date</th>
-            <th scope="col">Intermédiaire</th>
-            <th scope="col">Client</th>
-            <th scope="col">Numéro Contrat</th>
-            <th scope="col">État</th>
-            <th>Action</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let tache of taches">
-            <ng-container *ngIf="recuperMestaches(tache)">
-              <th scope="row">{{tache.priorite}}</th>
-              <td>{{tache.libelle}}</td>
-              <td>{{tache.dateLimite|date: 'MM/dd/yyyy' }}</td>
-              <td>{{tache.context.nomAppelIntermediaire}}</td>
-              <td>{{tache.context.nomAppelClient}}</td>
-              <td>{{tache.context.contrat.numero}}</td>
-              <td>{{tache.status}}</td>
-              <td> <a routerLink="/TraitementTache/{{tache.ident}}"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
-            </ng-container>
-          </tr>
-          </tbody>
-        </table>
-      
-      <!-- /END TACHES --- END TECHES --- END TACHES --- END TACHES --- END TACHES --- END TACHES --- END TECHES -->
-
       <!--BEGIN ACTION METIER // BEGIN ACTION METIER // BEGIN ACTION METIER // BEGIN ACTION METIER // BEGIN ACTION METIER // -->
       <ng-container *ngIf="actionMetiers">
         <table class="table table-striped">

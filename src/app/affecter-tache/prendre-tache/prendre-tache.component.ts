@@ -13,10 +13,10 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class PrendreTacheComponent implements OnInit {
 
-  taches: Tache[] = []
+  dossiers: Tache[] = []
   idGestionnaire: number
 
-  constructor(public tacheService: TacheService, public userService: UtilisateurService, private router: Router, private toastr: ToastrService) { }
+  constructor(private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.idGestionnaire = parseInt(localStorage.getItem('USER'))
@@ -24,17 +24,17 @@ export class PrendreTacheComponent implements OnInit {
 
   traiterTache(tabTache: Tache[]){
     console.log(tabTache);    
-    this.taches = tabTache
+    this.dossiers = tabTache
   }
 
   affecterTacheGestionnaire(){   
-    if (this.taches.length == 0){
-      this.toastr.error("Veuillez selectionner des tâches")
+    if (this.dossiers.length == 0){
+      this.toastr.error("Veuillez selectionner un/des dossier(s)")
     }
     else {
-      this.taches.forEach(tache => {
-        console.log(tache);    
-        tache.idUtilisateur = this.idGestionnaire
+      this.dossiers.forEach(dossier => {
+        console.log(dossier);    
+        dossier.idUtilisateur = this.idGestionnaire
       });    
     }
     this.router.navigate(['gestionBO'])

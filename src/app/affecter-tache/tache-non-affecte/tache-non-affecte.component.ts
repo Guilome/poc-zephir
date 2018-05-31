@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { TacheService } from '../../shared/services/tache.service';
-import { Tache } from '../../shared/domain/Tache';
+import { Tache, Nature } from '../../shared/domain/Tache';
 import { LowerCasePipe } from '@angular/common';
 
 @Component({
@@ -10,14 +10,14 @@ import { LowerCasePipe } from '@angular/common';
 })
 export class TacheNonAffecteComponent implements OnInit {
 
-  lesTaches:Tache[]
+  lesDossiers:Tache[]
   allChecked: Boolean
-  taches:Tache[] = []
+  dossiers:Tache[] = []
   @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
-  collectTache = []
+  collectDossier = []
 
   constructor(public tacheService: TacheService) {
-    this.tacheService.listerTaches().subscribe(data => this.lesTaches = data)
+    this.tacheService.listerTaches().subscribe(data => this.lesDossiers = data)
     this.trierListe()
   }
 
@@ -25,61 +25,62 @@ export class TacheNonAffecteComponent implements OnInit {
   }  
 
   trierListe() {
-    this.lesTaches = this.lesTaches.filter(t => t.idUtilisateur == null)
+    this.lesDossiers = this.lesDossiers.filter(t => t.idUtilisateur == null && t.nature === Nature.DOSSIER)
   }
 
   //Retourne les tâches non affectées et selectionnées
   return(){   
 
-    if (this.collectTache.length < 7) {
+    if (this.collectDossier.length < 7) {
       var collectInput=document.getElementsByTagName('input')      
       for (let i = 0; i < collectInput.length; i++) {
         if(collectInput[i].type === "checkbox"){
-          if (collectInput[i].name === "tache" && collectInput[i].id != "allTache" && collectInput[i].id != "allGest"){
-            this.collectTache.push(collectInput[i])            
+          if (collectInput[i].name === "dossiers" && collectInput[i].id != "allDossier" && collectInput[i].id != "allGest"){
+            this.collectDossier.push(collectInput[i])            
           }
         }
       }
     }
 
     //Rempli la liste des tâches selectionnées
-    this.collectTache.forEach(tache => {
+    this.collectDossier.forEach(tache => {
       if(tache.checked === true){
-        this.lesTaches.forEach(t => { 
+        this.lesDossiers.forEach(t => { 
           if (t.ident == tache.id) {    
-            if (this.taches.indexOf(t) === -1) {
-              this.taches.push(t)                      
+            if (this.dossiers.indexOf(t) === -1) {
+              this.dossiers.push(t)                      
             }   
           }
         });
       }
       else{
-        if (this.taches.indexOf(tache) != -1) {      
-          this.taches.splice(this.taches.indexOf(tache), 1)
+        if (this.dossiers.indexOf(tache) != -1) {      
+          this.dossiers.splice(this.dossiers.indexOf(tache), 1)
         }
       }      
     });
-    this.tacheAssigner.emit(this.taches)
+    this.tacheAssigner.emit(this.dossiers)
   }
 
   // Retourne l'ID de toutes les tâches non affectées
   returnAll(){
     //Rempli la liste de l'ID de toute les tâches
-    if (this.taches.length < 7) {
-      this.taches = []
-      this.lesTaches.forEach(tache => {
-        this.taches.push(tache)
+    if (this.dossiers.length < 7) {
+      this.dossiers = []
+      this.lesDossiers.forEach(tache => {
+        this.dossiers.push(tache)
+        console.log(tache.libelle)        
       });
     }
-    this.tacheAssigner.emit(this.taches)
+    this.tacheAssigner.emit(this.dossiers)
   }
 
-  isAllTaches():Boolean {
+  isAllDossiers():Boolean {
 
     var collectInput = document.getElementsByTagName('input');
   
     for (let i = 0; i < collectInput.length; i++) {
-      if (collectInput[i].name === "tache" && collectInput[i].id != "allTache" && collectInput[i].id != "allGest") {
+      if (collectInput[i].name === "dossiers" && collectInput[i].id == "allDossier" && collectInput[i].id != "allGest") {
         if (!collectInput[i].checked)
           return false;
       }

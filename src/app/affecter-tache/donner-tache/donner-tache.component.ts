@@ -14,20 +14,17 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class DonnerTacheComponent implements OnInit {
 
-  taches: Tache[] = []
+  dossiers: Tache[] = []
   gestionnaires: Utilisateur[] = []
-  lesTaches:Tache[]
   lesGestionnaires: Utilisateur[]
 
-  constructor(public tacheService: TacheService, public userService: UtilisateurService, private route: Router, private toastr: ToastrService) { }
+  constructor(public tacheService: TacheService,private route: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.lesGestionnaires = this.userService.getAll()    
-    this.tacheService.listerTaches().subscribe(data => this.lesTaches = data)
   }
 
   traiterTache(tabTache: Tache[]){
-    this.taches = tabTache
+    this.dossiers = tabTache
   }
 
   traiterGestionnaire(tabGest: Utilisateur[]){
@@ -35,23 +32,19 @@ export class DonnerTacheComponent implements OnInit {
   }
 
   affecterTacheGestionnaire(){   
-    if (this.gestionnaires.length == this.lesGestionnaires.length && this.taches.length == this.lesTaches.length) {
-      console.log("test");
-      
-    }
-    if (this.gestionnaires.length == 0 && this.taches.length == 0){
-      this.toastr.error("Veuillez selectionner des tâches ou un gestionnaire")
+    if (this.gestionnaires.length == 0 && this.dossiers.length == 0){
+      this.toastr.error("Veuillez selectionner des dossiers ou un gestionnaire")
     }
     else {
       if (this.gestionnaires.length == 1) {
-        this.taches.forEach(tache => { 
+        this.dossiers.forEach(dossier => { 
           this.gestionnaires.forEach(g => {
-            tache.idUtilisateur = g.ident
+            dossier.idUtilisateur = g.ident
           });
         });    
       }
       else {
-        this.tacheService.dispatcherGestionnaire(this.gestionnaires, this.taches)
+        this.tacheService.dispatcherGestionnaire(this.gestionnaires, this.dossiers)
       }
       this.route.navigate(['/GestionGroupe/1'])
     }    

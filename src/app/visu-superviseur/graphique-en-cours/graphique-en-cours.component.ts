@@ -20,19 +20,18 @@ export class GraphiqueEnCoursComponent implements OnInit {
   mapSubjectEnCours: Map<string, number> = new Map();
 
   lesGestionnaires: Utilisateur[]
-  tachesEnCours = [] 
-  lesContrats: Contrat[]
+  dossiersEnCours = [] 
   groupe :Groupe
   context: any;
   public c: Chart;
   private colors = [
     'grey',
-    'cyan',
-    'red',
-    'blue',
-    'green',
-    'Purple',
-    'yellow'
+    'DodgerBlue',
+    'Tan',
+    'lightblue',
+    'lightgreen',
+    'Orchid',
+    'PaleGoldenRod'
   ];
   // map groupe key/value
   dataGroupe: Map<string, number>;
@@ -50,7 +49,7 @@ export class GraphiqueEnCoursComponent implements OnInit {
   }
 
   private monGroupe() {
-    this.getDossierEnCours(Code.VERIFICATION)
+    this.groupeService.getDossierEnCours(Code.VERIFICATION).subscribe(data => this.mapSubjectEnCours = data);
     this.UpdateCanvas();    
   }
 
@@ -59,9 +58,9 @@ export class GraphiqueEnCoursComponent implements OnInit {
       this.createCanvas();
     } else {
       this.c.data = {
-        labels: Array.from(this.dataGroupe.keys()),
+        labels: Array.from(this.mapSubjectEnCours.keys()),
         datasets: [{
-          data: Array.from(this.dataGroupe.values()),
+          data: Array.from(this.mapSubjectEnCours.values()),
           backgroundColor: this.colors
         }]
       };
@@ -92,27 +91,7 @@ export class GraphiqueEnCoursComponent implements OnInit {
       });
     }
   }
-
-  private getDossierEnCours(codeGroupe: Code) {
-    this.tacheService.listerTaches().subscribe(data => this.tachesEnCours = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
-    this.tachesEnCours = this.tachesEnCours.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER)
-    this.refreshMapEnCours(this.tachesEnCours);
-  }
-
-  private refreshMapEnCours(lesTaches: Tache[]) {
-    // liste des gestionnaires : Initialisation
-    this.mapSubjectEnCours.set('Non Affectées', 0);
-    this.lesGestionnaires.forEach(g => this.mapSubjectEnCours.set( g.nom+' '+g.prenom, 0))
-    for (const t of lesTaches) {
-      if (t.idUtilisateur != null) {
-        let gestionnaire = this.utilService.getUserById(t.idUtilisateur)
-        const key = gestionnaire.nom+' '+gestionnaire.prenom;
-        const sum = this.mapSubjectEnCours.get(key);
-        this.mapSubjectEnCours.set(key,  sum + 1);
-      } else {
-        const sum = this.mapSubjectEnCours.get('Non Affectées');
-        this.mapSubjectEnCours.set('Non Affectées', sum + 1);
-      }
-    }
-  }
 }
+
+
+ 
