@@ -44,6 +44,17 @@ export class TraitementTacheComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    this.route.params.subscribe((params: any) => {
+      
+      const element = document.getElementsByClassName('bg-row')[0];
+      if(element != null) {
+        element.classList.remove('bg-row')
+      }
+      document.getElementById('link'+ params.piece).classList.add('bg-row');
+    });
+  }
+
   detailPiece(piece: Tache,a) {
     this.router.navigate(['/TraitementTache', { id: piece.context.ident, piece: piece.ident }]);
     //this.router.navigate(['/TraitementTache/'+ident+';idPiece='+ident]);
@@ -52,7 +63,7 @@ export class TraitementTacheComponent implements OnInit {
       element.classList.remove('bg-row')
     }
     a.classList.add('bg-row');   
-  }
+  }    
 
   valider() {
     this.listPieces.forEach( lP => {

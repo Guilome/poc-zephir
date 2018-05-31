@@ -6,14 +6,18 @@
       <button type="button" title="Conforme" [disabled]="piece.dateCloture != null" class="btn btn-success btn-circle fa fa-check" (click)="conforme()">  </button>
       <button type="button" title="Non conforme" [disabled]="piece.dateCloture != null" class="btn btn-danger btn-circle fa fa-times" (click)="nonConforme()">  </button>
 
-      <h5 *ngIf="motifBoolean">Motif de non conformité : </h5>
+      <div *ngIf="motifBoolean">
+          <h5>Motif de non conformité : </h5>
 
-      <angular2-multiselect [data]="dropdownList"
-                            [(ngModel)]="selectedItems" 
-                            [settings]="dropdownSettings" *ngIf="motifBoolean" >
-      </angular2-multiselect>
-
-      <!--// liste des motifs -->
+          <angular2-multiselect [data]="dropdownList"
+                                [(ngModel)]="selectedItems" 
+                                [settings]="dropdownSettings">
+          </angular2-multiselect>
+          <div class="float-right" id="buttom-valider">
+          <button class="bte btn-outline-primary" (click)="valider()" >Valider</button>
+        </div>
+        </div>
+        <!--// liste des motifs -->
       <ul *ngIf="piece.message != null">
         <li *ngFor="let s of listMotifs()">{{s}}</li>
       </ul>

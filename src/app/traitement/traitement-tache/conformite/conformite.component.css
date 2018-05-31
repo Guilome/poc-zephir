@@ -12,6 +12,9 @@
   bottom: 0;
   right: 0;
 }
+#buttom-valider {
+  margin-top:  20px;
+}
 
 .align-middle {
   text-align: center;
