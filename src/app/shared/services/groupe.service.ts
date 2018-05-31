@@ -5,7 +5,6 @@ import {Tache, Nature} from '../domain/Tache';
 import {BehaviorSubject} from '../../../../node_modules/rxjs';
 import { UtilisateurService } from './utilisateur.service';
 import { Utilisateur, Profil } from '../domain/Utilisateur';
-import { ContratService } from './contrat.service';
 import { Contrat } from '../domain/contrat';
 
 @Injectable()
@@ -43,7 +42,6 @@ export class GroupeService {
     this.tacheService.listerTaches().subscribe(data => this.dossiersEnCours = data.filter(t => t.idGroupe = this.getIdGroupeByCode(codeGroupe)));
     this.dossiersEnCours = this.dossiersEnCours.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER)
     this.refreshMapEnCours()
-
     return this.mapEnCours
   }
 
@@ -113,17 +111,17 @@ export class GroupeService {
 
   public dispatcher(codeGroupe: Code) {
     this.tacheService.dispatcher(codeGroupe);
-    this.refreshMapEnCours();
+    this.getDossierEnCours(codeGroupe);
   }
 
   public corbeille(codeGroupe: Code) {
     this.tacheService.corbeille(codeGroupe);
-    this.refreshMapEnCours();
+    this.getDossierEnCours(codeGroupe);
   }
 
   public corbeilleUser(): boolean {
     const ret = this.tacheService.corbeilleUser();
-    this.refreshMap();
+    this.refreshMapEnCours();
     return ret;
   }
 }

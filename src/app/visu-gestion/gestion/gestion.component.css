@@ -1,6 +1,7 @@
 a{
   cursor: pointer;
   text-decoration: none;
+  color : black;
 }
 u {
   cursor: help;
@@ -32,4 +33,8 @@ div.bg-groupe{
 .del {
   text-decoration: line-through;
   color: silver;
+}
+.card-body {
+  background-color: white;
+  color : black;
 }

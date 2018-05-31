@@ -1,66 +1,10 @@
 <div *ngIf="ifConnexion()">
 <div class="row">
-    <div class="card text-center mt-5 col-6">
-        <div class="card-header">
-            Dossier en cours
-        </div>
-        <div class="card-body">
-            <graphique-en-cours></graphique-en-cours>
-        </div>
-        <div class="card-footer">
-            <div class="btn-group btn-group" role="group" aria-label="Basic example">
-                <a routerLink="/AffecterTache" class="btn btn-primary" role="button">Dispatcher</a>
-                <button class="btn btn-secondary btn-info" (click)="dispatcher()">Dispatch auto</button>
-                <button class="btn btn-secondary btn-danger" (click)="corbeille()">Corbeille</button>
-            </div>
-        </div>
+    <div class="col-6">
+        <graphique-en-cours></graphique-en-cours>
     </div>
-
-    <div class="card text-center mt-5 col-6">
-        <div class="card-header">
-            Dossier Terminé
-        </div>
-        <div class="card-body">
-            <graphique-termine></graphique-termine>
-        </div>
-        <div class="card-footer">
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                 <!-- Boutton radio du jour -->
-                <ng-container *ngIf="moisB == false; else elseBlock">
-                        <label class="btn btn-info">
-                                <input type="radio" name="options" id="jour"> Jour
-                            </label>
-                </ng-container>
-                <ng-template #elseBlock>
-                        <label class="btn btn-primary active">
-                                <input type="radio" name="options" id="jour" checked> Jour
-                            </label>
-                </ng-template>
-                <!-- Boutton radio du semaines -->
-                <ng-container *ngIf="semaineB == false; else elseBlock">
-                        <label class="btn btn-info">
-                                <input type="radio" name="options" id="semaine"> Semaine
-                            </label>
-                </ng-container>
-                <ng-template #elseBlock>
-                        <label class="btn btn-primary active">
-                                <input type="radio" name="options" id="semaine" checked> Semaine
-                            </label>
-                </ng-template>
-                <!-- Boutton radio du mois -->
-                <ng-container *ngIf="moisB == false; else elseBlock">
-                        <label class="btn btn-info">
-                                <input type="radio" name="options" id="mois"> Mois
-                            </label>
-                </ng-container>
-                <ng-template #elseBlock>
-                        <label class="btn btn-primary active">
-                                <input type="radio" name="options" id="mois" checked> Mois
-                            </label>
-                </ng-template>
-            </div>
-        </div>
+    <div class="col-6">
+        <graphique-termine></graphique-termine>
     </div>
-</div>
 </div>
 

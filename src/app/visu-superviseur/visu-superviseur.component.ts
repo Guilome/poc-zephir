@@ -12,16 +12,7 @@ import { Tache } from '../shared/domain/Tache';
 })
 export class VisuSuperviseurComponent implements OnInit {
 
-  dossiers: Tache[]
-  idGroupe: number
-  groupe: Groupe
-  jourB: Boolean
-  semaineB: Boolean
-  moisB: Boolean = true
-
-  constructor(private route: Router, private activeRoute: ActivatedRoute, private groupeService: GroupeService, private tacheService: TacheService) { 
-    this.idGroupe = parseInt(activeRoute.snapshot.paramMap.get("id"))
-    this.groupe = groupeService.getGroupeById(this.idGroupe)
+  constructor(private route: Router) { 
   }
 
   ngOnInit() {
@@ -33,15 +24,4 @@ export class VisuSuperviseurComponent implements OnInit {
     return localStorage.getItem('USER') != null;
   }
 
-  corbeille() {    
-    this.groupeService.corbeille(this.groupe.code)
-  }
-
-  dispatcher() {
-    this.groupeService.dispatcher(this.groupe.code);
-  }
-
-  vueBoutton(){
-    
-  }
 }

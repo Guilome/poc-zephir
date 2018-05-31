@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {Chart} from 'chart.js';
 import { Code, Groupe } from '../../shared/domain/groupe';
 import { GroupeService } from '../../shared/services/groupe.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TacheService } from '../../shared/services/tache.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
-import { ContratService } from '../../shared/services/contrat.service';
 import { Contrat } from '../../shared/domain/contrat';
 import { Nature, Tache } from '../../shared/domain/Tache';
 
@@ -22,16 +21,17 @@ export class GraphiqueEnCoursComponent implements OnInit {
   lesGestionnaires: Utilisateur[]
   dossiersEnCours = [] 
   groupe :Groupe
+  idGroupe: number
   context: any;
   public c: Chart;
   private colors = [
-    'grey',
-    'DodgerBlue',
-    'Tan',
-    'lightblue',
-    'lightgreen',
-    'Orchid',
-    'PaleGoldenRod'
+    '#808080',
+    '#1E90FF',
+    '#D2B48C',
+    '#ADD8E6',
+    '#90EE90',
+    '#DA70D6',
+    '#EEE8AA'
   ];
   // map groupe key/value
   dataGroupe: Map<string, number>;
@@ -40,16 +40,18 @@ export class GraphiqueEnCoursComponent implements OnInit {
               private router: Router, 
               private groupeService: GroupeService, 
               private utilService: UtilisateurService,
-              private contratService: ContratService) { }
+              private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.idGroupe = parseInt(this.activeRoute.snapshot.paramMap.get("id"))
+    this.groupe = this.groupeService.getGroupeById(this.idGroupe)
     this.context = document.getElementById('chartPie');
     this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil != Profil.DIRECTEUR)
     this.monGroupe();
   }
 
   private monGroupe() {
-    this.groupeService.getDossierEnCours(Code.VERIFICATION).subscribe(data => this.mapSubjectEnCours = data);
+    this.groupeService.getDossierEnCours(this.groupe.code).subscribe(data => this.mapSubjectEnCours = data);
     this.UpdateCanvas();    
   }
 
@@ -91,6 +93,16 @@ export class GraphiqueEnCoursComponent implements OnInit {
       });
     }
   }
+  private corbeille() {    
+    this.groupeService.corbeille(this.groupe.code)
+    this.UpdateCanvas()    
+  }
+
+  private dispatcher() {
+    this.groupeService.dispatcher(this.groupe.code);
+    this.UpdateCanvas()
+  }
+
 }
 
 

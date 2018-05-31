@@ -1,5 +1,15 @@
-<div class="mt-5 row">
-  <div class="col-12">
+<div class="card text-center mt-5">
+  <div class="card-header">
+    Dossiers Terminés
+  </div>
+  <div class="card-body">
     <canvas id="chartBar"></canvas>
+  </div>
+  <div class="card-footer">
+    <div class="btn-group btn-group" role="group" aria-label="Basic example">
+        <button class="btn btn-info" (click)="trierJour()">Jour</button>
+      <button class="btn btn-info" (click)="trierSemaine()">Semaine</button>
+      <button class="btn btn-info" (click)="trierMois()">Mois</button>
+    </div>
   </div>
 </div>

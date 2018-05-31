@@ -10,36 +10,33 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let dossier of dossiers">
-      <th scope="row"><i class="fa fa-plus fa-lg" (click)="toggleChildren(dossier.ident)"></i></th>
-      <td>
-        {{dossier.context.contrat.numero}}
-        <ng-container *ngFor="let dp of dossierPieces">
-          <table class="table table-striped mt-2" *ngIf="dp.bool && dp.dossier == dossier.ident ">
-            <thead>
-              <tr>
-                <th scope="col">ident</th>
-                <th scope="col">Priorité</th>
-                <th scope="col">Code</th>
-                <th scope="col">Statut</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let piece of dp.pieces">
-                <th scope="row">{{piece.ident}}</th>
-                <td>{{piece.priorite}}</td>
-                <td>{{piece.code}}</td>
-                <td>{{piece.status}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </ng-container>
-      </td>
-      <td>{{dossier.context.nomAppelClient}}</td>
-      <td>{{dossier.context.nomAppelIntermediaire}}</td>
-      <td>{{dossier.context.contrat.etatContrat}}</td>
-      <td> <a (click)="traiterPieces(dossier.context.ident, dossier.ident)"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
-    </tr>     
+      <tr *ngFor="let dossier of dossiers">
+        <th scope="row"><a (click)="toggleChildren(dossier.ident)"><i class="fa fa-plus fa-lg"></i></a></th>
+        <td>{{dossier.context.contrat.numero}}
+          <ng-container *ngFor="let dp of dossierPieces">
+            <table class="table table-striped mt-5" *ngIf="dp.bool && dp.dossier == dossier.ident">
+              <thead>
+                <tr>
+                  <th scope="col">Priorité</th>
+                  <th scope="col">Libellé</th>
+                  <th scope="col">Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let piece of dp.pieces">
+                  <td scope="row">{{piece.priorite}}</td>
+                  <td>{{piece.libelle}}</td>
+                  <td>{{piece.status}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container> 
+        </td>        
+        <td>{{dossier.context.nomAppelClient}}</td>
+        <td>{{dossier.context.nomAppelIntermediaire}}</td>
+        <td>{{dossier.context.contrat.etatContrat}}</td>
+        <td> <a (click)="traiterPieces(dossier.context.ident, dossier.ident)"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
+      </tr> 
   </tbody>    
 </table>
 

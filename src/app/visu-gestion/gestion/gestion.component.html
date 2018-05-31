@@ -27,7 +27,7 @@
       
 
       <!-- BEGIN CONTRAT --- BEGIN CONTRAT --- BEGIN CONTRAT --- BEGIN CONTRAT --- BEGIN CONTRAT --- BEGIN CONTRAT ---  BEGIN CONTRAT -->
-      <ng-container *ngIf="contratBoolean">
+      <ng-container *ngIf="dossierBoolean">
           <table-tree-contrat></table-tree-contrat>
       </ng-container>
       <!-- /END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT --- END CONTRAT -->      
@@ -108,7 +108,7 @@
           <tbody>
             <tr *ngFor="let groupe of groupes">
               <ng-container *ngIf="permission(profil); else elseBlock">
-                  <th scope="row"><a class="text-white" routerLink="/GestionGroupe/{{groupe.ident}}">{{groupe.libelle}}</a></th>
+                  <th scope="row"><a class="" routerLink="/GestionGroupe/{{groupe.ident}}">{{groupe.libelle}}</a></th>
               </ng-container>
               <ng-template #elseBlock>
                 <th scope="row">{{groupe.libelle}}</th>

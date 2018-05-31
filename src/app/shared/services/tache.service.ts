@@ -35,7 +35,7 @@ export class TacheService {
 
   listerTaches(): Observable<Tache[]> {
 
-    return this.tacheSubject.asObservable();
+    return this.tacheSubject;
   }
 
   addTache(tache: Tache) {
@@ -122,7 +122,7 @@ export class TacheService {
         lTache.idGroupe = 1;
         lTache.priorite = 5;
         lTache.code = "199_AFN";
-        const date = '05/' + (i%31) + '/2018';
+        const date = '05/' + ((i%31) + 1) + '/2018';
         lTache.dateCloture = new Date(date);
         const idUser = (i%4) + 1;
         lTache.idUtilisateur = this.UtilisateurService.getUserById(idUser).ident;
@@ -210,7 +210,7 @@ export class TacheService {
   ]
   public dispatcher(codeGroupe: Code) {
     const tailleGestionnaires =  this.UtilisateurService.getAll().filter(u => u.profil != Profil.DIRECTEUR).length;
-    this.listTaches.filter(tt => tt.idUtilisateur == null)
+    this.listTaches.filter(tt => tt.idUtilisateur == null && tt.dateCloture == null && tt.nature == Nature.DOSSIER)
       .forEach( ( tache , i) => {
       tache.idUtilisateur = this.UtilisateurService.getUserByIndex(i % tailleGestionnaires).ident;
       });
@@ -219,21 +219,20 @@ export class TacheService {
 
   public dispatcherGestionnaire(utilisateurs: Utilisateur[], taches: Tache[]){
     const tailleGestionnaires =  utilisateurs.length;
-    taches.forEach( ( tache , i) => {
+    taches.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER).forEach( ( tache , i) => {
       tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
     });
   }
 
   public corbeille(codeGroupe: Code) {
-    this.listTaches.forEach(tache => tache.idUtilisateur = null);
+    this.listTaches.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER).forEach(tache => tache.idUtilisateur = null);
     this.tacheSubject.next(this.listTaches);
-
   }
 
   public corbeilleUser(): boolean {
     const userId = parseInt(localStorage.getItem('USER'), 10);
     if(userId != null) {
-      this.listTaches.filter(tache => tache.idUtilisateur === userId).forEach(tache => tache.idUtilisateur = null);
+      this.listTaches.filter(tache => tache.idUtilisateur === userId && tache.dateCloture == null && tache.nature == Nature.DOSSIER).forEach(tache => tache.idUtilisateur = null);
       this.tacheSubject.next(this.listTaches);
       return true;
     }

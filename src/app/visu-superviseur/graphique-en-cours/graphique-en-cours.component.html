@@ -1,5 +1,15 @@
-<div class="mt-5 row">
-  <div class="col-12">
-      <canvas id="chartPie"></canvas>
+<div class="card text-center mt-5">
+  <div class="card-header">
+    Dossiers en cours
+  </div>
+  <div class="card-body">
+    <canvas id="chartPie"></canvas>
+  </div>
+  <div class="card-footer">
+    <div class="btn-group btn-group" role="group" aria-label="Basic example">
+      <a routerLink="/AffecterTache" class="btn btn-primary" role="button">Dispatcher</a>
+      <button class="btn btn-info" (click)="dispatcher()">Dispatch auto</button>
+      <button class="btn btn-danger" (click)="corbeille()">Corbeille</button>
+    </div>
   </div>
 </div>

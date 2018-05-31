@@ -1,6 +1,9 @@
-.color-header {
-    background-color: #6C2D2C;
+.card {
+    background-color: #17a2b8;
 }
-.color-card {
-    background-color: #9F4636;
+.card-body {
+    background-color: white;
+}
+.card-header {
+    color : white;
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Contrat} from '../../shared/domain/contrat';
-import { ContratService } from '../../shared/services/contrat.service';
 import { Tache, Nature } from '../../shared/domain/Tache';
 import { TacheService } from '../../shared/services/tache.service';
 import { Router } from '@angular/router';
@@ -18,7 +17,7 @@ export class TableTreeContratComponent implements OnInit {
   idCurrentUser;
   firstIdent;
 
-  constructor(public contratService: ContratService, private tacheService: TacheService, private route: Router) {
+  constructor(private tacheService: TacheService, private route: Router) {
     this.idCurrentUser = parseInt(localStorage.getItem('USER'));
     this.tacheService.listerTaches().subscribe(data => this.taches = data)
     this.dossiers = this.taches.filter( d => d.nature === Nature.DOSSIER && d.idUtilisateur === this.idCurrentUser && d.dateCloture == null)

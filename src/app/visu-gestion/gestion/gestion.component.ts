@@ -10,7 +10,6 @@ import {ToastrService} from 'ngx-toastr';
 import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { ActionMetierService } from '../../shared/services/action-metier.service';
-import { ContratService } from '../../shared/services/contrat.service';
 import { Contrat } from '../../shared/domain/contrat';
 
 @Component({
@@ -44,7 +43,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
   noteBoolean = false;
   groupeBoolean = false;
   actionMetier = false;
-  contratBoolean = false
+  dossierBoolean = false
 
   // Liste :
   taches: Tache[];
@@ -77,8 +76,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
               private groupeService: GroupeService,
               private toastr: ToastrService,
               private utilService: UtilisateurService,
-              private actionMetierService: ActionMetierService,
-              public contratService: ContratService) {
+              private actionMetierService: ActionMetierService) {
 
   }
 
@@ -105,8 +103,8 @@ export class GestionComponent implements OnInit, AfterViewInit {
       // récupération des données :
       this.noteService.listerNotes().subscribe(data => this.taches = data);
     } else if (this.titre === 'Dossier pièce justificative') {
-      this.contratBoolean = true;        
-      this.contrats = this.contratService.getContratByIdUtilisateur(this.idCurrentUser)     
+      this.mesDossiers()
+      this.dossierBoolean = true;        
       } else {
       this.numId = Math.floor(Math.random() * (999999 - 100000)) + 100000;
     }
@@ -144,7 +142,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
     }
   }
   prendreTache() {
-    if(this.tacheBoolean) {
+    if(this.dossierBoolean) {
       this.router.navigate(['/PrendreTache'])
     }
   }
@@ -171,7 +169,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private mesTaches() {
+  private mesDossiers() {
     this.calendar = true;
     this.chart = true;
     this.refresh = true;
