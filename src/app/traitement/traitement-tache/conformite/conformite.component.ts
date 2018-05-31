@@ -78,19 +78,6 @@ export class ConformiteComponent implements OnInit {
   nonConforme() {
     if (this.piece.dateCloture == null) {
       if (this.motifBoolean) {
-        
-        if (this.selectedItems.length > 0) {
-          
-          this.tacheService.closePieceNonConforme(this.piece.ident, this.recuperationMotif());
-          //this.docSuivant();
-          this.toastr.success('La tâche a été fermé');
-          this.selectedItems = [];
-          this.motifBoolean = false;
-          this.titleStatus();
-          
-        } else {
-          this.toastr.error('Veuillez renseigner le(s) motif(s)');
-        }
       } else {
         this.motifBoolean = true;
       }
@@ -98,6 +85,41 @@ export class ConformiteComponent implements OnInit {
       this.toastr.error('Aucune action possible : La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture));
     }
     
+  }
+  valider() {
+    if (this.selectedItems.length > 0) {
+          
+      this.tacheService.closePieceNonConforme(this.piece.ident, this.recuperationMotif());
+      this.toastr.success('La tâche a été fermé');
+      this.selectedItems = [];
+      this.motifBoolean = false;
+      this.titleStatus();
+      this.docSuivant();
+    } else {
+      this.toastr.error('Veuillez renseigner le(s) motif(s)');
+    }
+  }
+
+  private docSuivant() {
+
+    let idNext = 0;
+    let boolTmp: boolean = false
+    this.tacheService.getPiecesByContext(this.piece.context).forEach((val, index) => {
+      if(boolTmp){
+        idNext = val.ident;
+        boolTmp = false;
+      }    
+      if (val.ident == this.piece.ident){
+            boolTmp = true; 
+          }
+
+    });
+
+    if (idNext == null || this.piece.ident === idNext ) {
+      this.router.navigate(['/gestionBO']);
+    } else {
+      this.router.navigate(['/TraitementTache', { id: this.piece.context.ident, piece: idNext }]);
+    }
   }
 
   /*

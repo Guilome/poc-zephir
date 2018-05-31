@@ -15,7 +15,7 @@
 
 
       
-          <a class="nav-link" (click)="detailPiece(p,a)" routerLinkActive="active" *ngFor="let p of listPieces" #a>
+          <a class="nav-link" (click)="detailPiece(p,a)" routerLinkActive="active" *ngFor="let p of listPieces"  [attr.id]="'link'+p.ident" #a>
               <div >
                   <div class="row">
                     {{p.libelle}}

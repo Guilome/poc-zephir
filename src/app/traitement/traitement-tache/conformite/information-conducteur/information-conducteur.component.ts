@@ -53,6 +53,7 @@ export class InformationConducteurComponent implements OnInit {
 
     this.actionMetierService.create(this.currentTache);
     this.toastr.success('Une demande "SANS-EFFET" a été creé.');
+    this.docSuivant();
   }
   refused(modal){
     this.currentModal = this.modalService.open(modal,  { size: 'lg', backdropClass: 'light-blue-backdrop', centered: true });
@@ -67,6 +68,7 @@ export class InformationConducteurComponent implements OnInit {
       (<HTMLInputElement>document.getElementById('fieldset1')).disabled = true;
       (<HTMLInputElement>document.getElementById('fieldset2')).disabled = true;
       this.toastr.success('La piece a été validée.');
+      this.docSuivant();
     }
   }
   closeModal(){
@@ -101,16 +103,28 @@ export class InformationConducteurComponent implements OnInit {
     this.actionMetierService.create(this.currentTache);
     this.closeModal();
     this.toastr.success('Une demande d\'avenant a été creé');
-  }
-  /*private docSuivant() {
+    this.docSuivant();
 
-    const idNext = this.tacheService.nextId(this.currentTache.ident, parseInt(localStorage.getItem('USER'), 10));
+  }
+  private docSuivant() {
+
+    let idNext = 0;
+    let boolTmp: boolean = false
+    this.tacheService.getPiecesByContext(this.currentTache.context).forEach((val, index) => {
+      if(boolTmp){
+        idNext = val.ident;
+        boolTmp = false;
+      }    
+      if (val.ident == this.currentTache.ident){
+            boolTmp = true; 
+          }
+
+    });
+
     if (idNext == null || this.currentTache.ident === idNext ) {
       this.router.navigate(['/gestionBO']);
     } else {
-
-      this.router.navigate(['/TraitementTache', idNext]);
-
+      this.router.navigate(['/TraitementTache', { id: this.currentTache.context.ident, piece: idNext }]);
     }
-  }*/
+  }
 }
