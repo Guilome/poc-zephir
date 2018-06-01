@@ -19,7 +19,7 @@ export class ActionMetierService {
     return this.actionMetierSubject;
   }
 
-  create(tache: Tache) {
+  private create(tache: Tache, code: string) {
 
     const a = new Tache(Nature.TACHE);
     a.ident = tache.ident;
@@ -27,13 +27,19 @@ export class ActionMetierService {
     a.idUtilisateur = null;
     a.idGroupe = tache.idGroupe;
     a.context = tache.context;
-    a.code = 'SANS_EFFET';
+    a.code = code;
     a.dateCreation = new Date();
     a.priorite = 1;
     this.listActionMetier.push(a);
     this.actionMetierSubject.next(this.listActionMetier.filter(act => act.context == tache.context));
   }
 
+  createDemandeAvt(tache: Tache) {
+    this.create(tache, 'AVENANT');
+  }
+  createSansEffet(tache: Tache){
+    this.create(tache, 'SANS_EFFET');
+  }
 
   constructor() { 
     const contrat1 = new Contrat(7543663,'SOLUTIO');

@@ -51,7 +51,7 @@ export class InformationConducteurComponent implements OnInit {
    */
   demandeSansEffet(){
 
-    this.actionMetierService.create(this.currentTache);
+    this.actionMetierService.createSansEffet(this.currentTache);
     this.toastr.success('Une demande "SANS-EFFET" a été creé.');
     this.docSuivant();
   }
@@ -100,9 +100,9 @@ export class InformationConducteurComponent implements OnInit {
     if (date2delivrance != this.currentDate2delivrance) {
       this.currentTache.message += "Date de Délivrance : " + date2delivrance + '.\n';
     }
-    this.actionMetierService.create(this.currentTache);
+    this.actionMetierService.createDemandeAvt(this.currentTache);
     this.closeModal();
-    this.toastr.success('Une demande d\'avenant a été creé');
+    this.toastr.success('Une demande d\'avenant a été créée');
     this.docSuivant();
 
   }
