@@ -102,7 +102,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
       this.noteBoolean = true;
       // récupération des données :
       this.noteService.listerNotes().subscribe(data => this.taches = data);
-    } else if (this.titre === 'Dossier pièce justificative') {
+    } else if (this.titre === 'Dossier pièces justificatives') {
       this.mesDossiers()
       this.dossierBoolean = true;        
       } else {
@@ -188,6 +188,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
   }
 
   private mesNotes() {
+    this.file = true;
     this.eye = true;
     this.refresh = true;
     this.trash = true;

@@ -280,7 +280,7 @@ export class TacheService {
   public corbeilleUser(): boolean {
     const userId = parseInt(localStorage.getItem('USER'), 10);
     if(userId != null) {
-      this.listTaches.filter(tache => tache.idUtilisateur === userId && tache.dateCloture == null && tache.nature == Nature.DOSSIER).forEach(tache => tache.idUtilisateur = null);
+      this.listTaches.filter(tache => tache.idUtilisateur === userId && tache.nature == Nature.DOSSIER).forEach(tache => tache.idUtilisateur = null);
       this.tacheSubject.next(this.listTaches);
       return true;
     }

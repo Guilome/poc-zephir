@@ -19,8 +19,9 @@ export class TableTreeContratComponent implements OnInit {
 
   constructor(private tacheService: TacheService, private route: Router) {
     this.idCurrentUser = parseInt(localStorage.getItem('USER'));
-    this.tacheService.listerTaches().subscribe(data => this.taches = data)
-    this.dossiers = this.taches.filter( d => d.nature === Nature.DOSSIER && d.idUtilisateur === this.idCurrentUser && d.dateCloture == null)
+    this.tacheService.listerTaches().subscribe(data => { this.taches = data;
+      this.dossiers = data.filter( d => d.nature === Nature.DOSSIER && d.idUtilisateur === this.idCurrentUser && d.dateCloture == null)
+     } )
   }
 
   ngOnInit() {    

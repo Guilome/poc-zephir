@@ -76,10 +76,6 @@ export class TraitementTacheComponent implements OnInit {
     this.router.navigate(['/gestionBO']);
   }
 
-  validerModif() {
-
-  }
-
   refuser() {
     this.listPieces.forEach( lP => {
       this.idDossier = lP.idTacheMere
