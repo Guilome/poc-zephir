@@ -54,6 +54,7 @@ export class InformationConducteurComponent implements OnInit {
     this.actionMetierService.createSansEffet(this.currentTache);
     this.toastr.success('Une demande "SANS-EFFET" a été creé.');
     this.docSuivant();
+    this.closeModal();
   }
   refused(modal){
     this.currentModal = this.modalService.open(modal,  { size: 'lg', backdropClass: 'light-blue-backdrop', centered: true });
