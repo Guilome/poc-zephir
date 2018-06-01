@@ -52,7 +52,7 @@
               <ng-container *ngIf="recuperMestaches(actM)">
                 <th scope="row">{{actM.priorite}}</th>
                 <td>{{actM.libelle}}</td>
-                <td>{{actM.dateCreation| date: 'MM/dd/yyyy' }}</td>
+                <td>{{actM.dateCreation| date: 'dd/MM/yyyy' }}</td>
                 <td>{{actM.context.nomAppelIntermediaire}}</td>
                 <td>{{actM.context.nomAppelClient}}</td>
                 <td>{{actM.context.contrat.numero}}</td>
@@ -83,7 +83,7 @@
               <th scope="row">{{note.nature}}</th>
               <td>{{note.code}}</td>
               <td>  <span tooltip="{{note.message}}"  >...</span>  </td>
-              <td>{{note.dateLimite | date: 'MM/dd/yyyy' }}</td>
+              <td>{{note.dateLimite | date: 'dd/MM/yyyy' }}</td>
               <td align="center">
                 <a (click)="ouvrirNote(note.ident)"><i *ngIf="note.status == 'Ok'" class="fa fa-check-square-o fa-lg"  title="Re-ouvrir"></i></a>
                 <a (click)="fermerNote(note.ident)"><i *ngIf="note.status != 'Ok'"class="fa fa-square-o fa-lg"  title="Fermer"></i></a>
