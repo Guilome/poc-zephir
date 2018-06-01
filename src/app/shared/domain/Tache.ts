@@ -13,8 +13,8 @@ export class Tache {
     .set('ATT_RI','Relevé d\'information')
     .set('ATT_MANDAT', 'Mandat de prélèvement')
     .set('DEV', 'Devis à valider')
-    .set('DEV_AFN','Devis d\'AFN')
-    .set('DEV_AVT','Devis d\'avenant')
+    .set('DEV_AFN','Devis à concrétiser en AFN')
+    .set('DEV_AVT','Devis d\'avenant à valider')
     .set('RESIL','Demande de résiliation')
     .set('SANS_EFFET','Demande de sans effet')
     .set('199_AFN', 'Dossier 199');
