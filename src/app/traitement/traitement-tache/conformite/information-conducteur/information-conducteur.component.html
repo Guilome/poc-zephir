@@ -129,7 +129,7 @@
 <!-- The Modal REFUSER -->
 <ng-template #RefusedModal>
    <div id="info" style="border: 1px solid gainsboro;">
-      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <button type="button" class="close" (click)="closeModal()">&times;</button>
             <h3>Risque refusé</h3>
       </div>
 
@@ -147,6 +147,8 @@
 <!-- The Modal  VALDER -->
 <ng-template #validateModal>
     <div id="info" style="border: 1px solid gainsboro;" *ngIf="ifChangement(crm, date2delivrance)">
+        <button type="button" class="close" (click)="closeModal()">&times;</button>
+
           <h3>Vous avez effectué les modifications suivantes : </h3>
           <p style="align-content: center;text-align: center;" *ngIf="currentCRM != crm.value" >CRM : {{currentCRM}} <i class="fa fa-arrow-right"></i> {{crm.value}}</p>
           <p style="align-content: center;text-align: center;" *ngIf="currentDate2delivrance != date2delivrance.value" >Date d'obtention du permis : {{currentDate2delivrance| date: 'dd/MM/yyyy'}} <i class="fa fa-arrow-right"></i> {{date2delivrance.value| date: 'dd/MM/yyyy'}}</p>
