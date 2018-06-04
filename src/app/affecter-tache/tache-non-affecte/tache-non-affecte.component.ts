@@ -13,6 +13,7 @@ export class TacheNonAffecteComponent implements OnInit {
   lesDossiers:Tache[]
   allChecked: Boolean
   dossiers:Tache[] = []
+  checkboxDossier: boolean;
   @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
   collectDossier = []
 

@@ -11,6 +11,7 @@ export class GestionnaireComponent implements OnInit {
   lesGestionnaires: Utilisateur[]
   allChecked: Boolean
   gestionnaires:Utilisateur[] = []
+  checkboxGest: boolean;
   @Output() gestionnaireAssigner:EventEmitter<Utilisateur[]> = new EventEmitter<Utilisateur[]>();
   collectGestionnaire = []
 
