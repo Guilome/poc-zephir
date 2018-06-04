@@ -177,7 +177,9 @@ export class TacheService {
         lTache.code = "199_AFN";
         const date = '05/' + ((i%31) + 1) + '/2018';
         lTache.dateCloture = new Date(date);
-        const idUser = (i%4) + 1;
+        const idUser = ((Math.floor(Math.random() * (999999 - 100000)) + 100000) % 5 ) + 1;
+        console.log(idUser);
+        
         lTache.idUtilisateur = this.UtilisateurService.getUserById(idUser).ident;
         lTache.status = Status.OK;
         this.listTaches.push(lTache);
