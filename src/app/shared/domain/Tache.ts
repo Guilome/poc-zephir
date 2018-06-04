@@ -26,6 +26,7 @@ export class Tache {
     this.message = null;
     this.idUtilisateurCloture = null;
     this.idUtilisateurVerification = null;
+    this.motifNonConformite = null;
   }
 
   public ident: number;
@@ -61,12 +62,12 @@ export class Tache {
     let statut: string;
     // PIECE
     if (this.nature === Nature.PIECE){
-        if ( this.message != null) {
-          return Status.NON_CONFORME;
-        } else if (this.idUtilisateurVerification != null && this.message != null){
+      
+        if ( this.motifNonConformite != null ) {
+         return Status.NON_CONFORME;
+        } else if (this.idUtilisateurVerification != null){
             return Status.A_VALIDER;
         } else if (this.dateReception == null) {
-          console.log('NULL');
           return Status.EN_ATTENTE;
         }
         return Status.A_VERIFIER;

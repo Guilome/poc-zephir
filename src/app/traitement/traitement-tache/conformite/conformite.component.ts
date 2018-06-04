@@ -55,6 +55,7 @@ export class ConformiteComponent implements OnInit {
       if (this.piece.status === Status.A_VERIFIER) {
       if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
         //this.docSuivant();
+        
         this.tacheService.updateStatusAndGroupe(this.piece.ident);
         this.toastr.success('Le status de la tache a été modifier en <b>À VALIDER</b>', '', {enableHtml: true});
       }

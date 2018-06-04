@@ -68,6 +68,7 @@ export class TacheService {
     //p.status = Status.OK;
     p.dateVerification  = new Date();
     p.idUtilisateurVerification = p.idUtilisateur;
+    
     return p;
   }
   /**
@@ -98,7 +99,9 @@ export class TacheService {
     //tache.status = Status.A_VALIDER;
     tache.idGroupe = 2; // groupe validation ident : 2
     tache.dateVerification = new Date();
+    tache.idUtilisateur = parseInt(localStorage.getItem('USER'));
     tache.idUtilisateurVerification = tache.idUtilisateur;
+
   }
 
   /**
