@@ -59,14 +59,15 @@ export class TacheService {
   }
 
   /**
-   * set la date de cloture et modifie le status en "OK"
+   * set la date de cloture de vérification et set l'id de l'utilisateur vérificateur
    * @param {number} idTache
    * @returns {Tache}
    */
   closePieceConforme(idTache: number): Tache {
     const p = this.getPieceById(idTache);
-    p.status = Status.OK;
-    p.dateCloture  = new Date();
+    //p.status = Status.OK;
+    p.dateVerification  = new Date();
+    p.idUtilisateurVerification = p.idUtilisateur;
     return p;
   }
   /**
@@ -77,7 +78,7 @@ export class TacheService {
   closePieceNonConforme(idTache: number, motif: string) {
     const p = this.getTacheById(idTache);
     p.message = motif;
-    p.status = Status.A_VERIFIER;
+    //p.status = Status.A_VERIFIER;
     p.dateCloture = new Date();
   }
   /*private setDateCloture(idTache: number): Tache {
@@ -88,12 +89,16 @@ export class TacheService {
   /**
    * Passer le status de "A_VERIFIER" à "A_VALIDER"
    * la pièce est affectée au groupe "Validation"
+   * la date de vérification est affecté à la date et heure du jour.
+   * l'id Utilisateur est affecté à l'utilisateur de vérification.
    * @param {number} idTache
    */
   updateStatusAndGroupe(idTache: number) {
     const tache = this.getTacheById(idTache);
-    tache.status = Status.A_VALIDER;
+    //tache.status = Status.A_VALIDER;
     tache.idGroupe = 2; // groupe validation ident : 2
+    tache.dateVerification = new Date();
+    tache.idUtilisateurVerification = tache.idUtilisateur;
   }
 
   /**
@@ -114,9 +119,9 @@ export class TacheService {
    */
   closeTacheConforme(idTache: number){
     const tache = this.getPieceById(idTache);
-    tache.status = Status.OK;
+    //tache.status = Status.OK;
+    tache.idUtilisateurVerification = tache.idUtilisateur;
     tache.dateCloture = new Date();
-    console.log(this.getTacheById(idTache).status)
   }
 
   /**
@@ -126,7 +131,7 @@ export class TacheService {
     let dossier = this.getDossierById(idDossier)
     this.listTaches.forEach( t => {
       if (t.ident == idDossier) {
-        t.status = Status.OK
+        //t.status = Status.OK
         t.dateCloture = new Date()
       }
     })
@@ -139,7 +144,7 @@ export class TacheService {
     let dossier = this.getDossierById(idDossier)
     this.listTaches.forEach( t => {
       if (t.ident == idDossier) {
-        t.status = Status.A_VERIFIER
+        //t.status = Status.A_VERIFIER
         t.dateCloture = new Date()
       }
     })
@@ -171,17 +176,20 @@ export class TacheService {
         const c = new Contrat(450020+i,'SOLUTIO')
         c.numero = 'S140510'+ i;
         lTache.context = new Context(330010+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);;
-        lTache.status = Status.A_VERIFIER;
+        //lTache.status = Status.A_VERIFIER;
         lTache.idGroupe = 1;
-        lTache.priorite = 5;
+        lTache.priorite = (i%10) + 1;
         lTache.code = "199_AFN";
         const date = '05/' + ((i%31) + 1) + '/2018';
         lTache.dateCloture = new Date(date);
+        lTache.dateCreation  = new Date('05/01/2018');
+        lTache.dateReception = new Date('05/01/2018');
         const idUser = ((Math.floor(Math.random() * (999999 - 100000)) + 100000) % 5 ) + 1;
-        console.log(idUser);
         
         lTache.idUtilisateur = this.UtilisateurService.getUserById(idUser).ident;
-        lTache.status = Status.OK;
+        lTache.idUtilisateurVerification = this.UtilisateurService.getUserById(idUser).ident;
+        lTache.idUtilisateurCloture = this.UtilisateurService.getUserById(idUser).ident;
+        //lTache.status = Status.OK;
         this.listTaches.push(lTache);
     }
   }
@@ -193,7 +201,7 @@ export class TacheService {
       c.numero = 'S140581'+ i;
       const context = 
       lTache.context = new Context(100020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
-      lTache.status = Status.A_VERIFIER;
+      //lTache.status = Status.A_VERIFIER;
       lTache.idGroupe = 1;
       lTache.priorite = 5;
       lTache.code = "199_AFN";
@@ -208,7 +216,7 @@ export class TacheService {
   private create3Pieces(dossier_199: Tache) {
     for (let i = 0; i < 3; i++) {
       const lPiece = new Tache(Nature.PIECE);
-      lPiece.status = Status.A_VERIFIER;      
+      //lPiece.status = Status.A_VERIFIER;      
       lPiece.ident = this.listTaches.length + 70000 ;
       lPiece.idTacheMere = dossier_199.ident;
       lPiece.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i];
@@ -217,6 +225,8 @@ export class TacheService {
       lPiece.context = dossier_199.context;
       lPiece.dateLimite = dossier_199.dateLimite
       lPiece.dateCreation = new Date();
+      lPiece.dateReception = new Date();
+      
       this.listTaches.push(lPiece);
     }
   }
