@@ -17,10 +17,14 @@ export class DonnerTacheComponent implements OnInit {
   dossiers: Tache[] = []
   gestionnaires: Utilisateur[] = []
   lesGestionnaires: Utilisateur[]
+  idGroupe: number
 
   constructor(public tacheService: TacheService,private route: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
+    console.log(this.idGroupe);
+    
   }
 
   traiterTache(tabTache: Tache[]){

@@ -93,7 +93,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
       this.utilisateur = this.utilService.getUserById(this.idCurrentUser)
       this.profil = this.utilisateur.profil
       this.groupes = this.groupeService.getAll()
-      this.groupes = this.groupes.filter(f => f.utilisateurs.includes(this.utilisateur)) 
+      this.groupes = this.groupes.filter(f => f.utilisateurs.indexOf(this.utilisateur) != -1) 
       this.groupeBoolean = true;
       this.numId = 3;
     } else if (this.titre === 'Mes Notes') {
@@ -134,10 +134,10 @@ export class GestionComponent implements OnInit, AfterViewInit {
       this.boolDateCloture = !this.boolDateCloture;
       if ( this.boolDateCloture ) {
         eye.classList.add('del');
-        eye.title = 'Cacher mes notes terminées';
+        eye.title = 'Cacher mes notes terminée';
       } else {
         eye.classList.remove('del');
-        eye.title = 'Voir mes notes terminées';
+        eye.title = 'Voir mes notes terminée';
       }
     }
   }
@@ -164,7 +164,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
 
   }
   supprimerNote(idNote: number) {
-    if (confirm('Confirmez-vous la suppression définitive de cette note ?')) {
+    if (confirm('Confirmer-vous la suppression définitive de cette note ?')) {
       this.noteService.removeNote(idNote);
     }
   }
@@ -228,7 +228,7 @@ export class GestionComponent implements OnInit, AfterViewInit {
    */
   userCorbeille() {
     if ( this.groupeService.corbeilleUser() ) {
-      this.toastr.success('Vos dossiers ont été remis dans la corbeille');
+      this.toastr.success('Vos taches ont été misent à la corbeille');
     }
   }
 

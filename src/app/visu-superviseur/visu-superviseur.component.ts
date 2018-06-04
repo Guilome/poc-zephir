@@ -12,15 +12,19 @@ import { Tache } from '../shared/domain/Tache';
 })
 export class VisuSuperviseurComponent implements OnInit {
 
-  constructor(private route: Router) { 
+  idGroupe: number
+
+  constructor(private route: Router, private activeRoute: ActivatedRoute) { 
   }
 
   ngOnInit() {
+    this.idGroupe = parseInt(this.activeRoute.snapshot.paramMap.get("id"))
   }
 
   ifConnexion(): boolean {
     if (this.route.url === '/Connexion')
-      return true;
+      return true;    
+    localStorage.setItem("GROUPE", this.idGroupe.toString());
     return localStorage.getItem('USER') != null;
   }
 
