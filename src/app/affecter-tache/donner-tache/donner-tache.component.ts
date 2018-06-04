@@ -23,7 +23,6 @@ export class DonnerTacheComponent implements OnInit {
 
   ngOnInit() {
     this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
-    console.log(this.idGroupe);
     
   }
 

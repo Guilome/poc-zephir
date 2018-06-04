@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../../shared/services/groupe.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Tache, Nature } from '../../shared/domain/Tache';
+import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'graphique-termine',
@@ -17,12 +18,40 @@ export class GraphiqueTermineComponent implements OnInit {
 
   mapSubjectTermine: Map<string, number> = new Map();
 
-  dateJour:Date = new Date("05-31-2018")
+
+  dateJour:Date = new Date("05-10-2018")
   lesGestionnaires: Utilisateur[]
   dossiersTermine:Tache[] = []
   groupe :Groupe
   idGroupe: number
   context: any;
+
+  //Tableau gestion tri date
+  daysTab: any[] = [
+    {key:0, value:"Sunday"},
+    {key:1, value:"Monday"},
+    {key:2, value:"Tuesday"},
+    {key:3, value:"Wednesday"},
+    {key:4, value:"Thursday"},
+    {key:5, value:"Friday"},
+    {key:6, value:"Saturday"}
+  ]
+
+  monthsTab: any[] = [
+    {key:0, value:"January", maxDay:31},
+    {key:1, value:"February", maxDay:29},
+    {key:2, value:"March", maxDay:31},
+    {key:3, value:"April", maxDay:30},
+    {key:4, value:"May", maxDay:31},
+    {key:5, value:"June", maxDay:30},
+    {key:6, value:"July", maxDay:31},
+    {key:7, value:"August", maxDay:31},
+    {key:8, value:"September", maxDay:30},
+    {key:9, value:"October", maxDay:31},
+    {key:10, value:"November", maxDay:30},
+    {key:11, value:"December", maxDay:31}
+  ]
+
   public c: Chart;
   private colors = [
     '#1E90FF',
@@ -52,7 +81,7 @@ export class GraphiqueTermineComponent implements OnInit {
   }
 
   private monGroupe() {
-    this.getDossierTermine(this.groupe.code, null, null)
+    this.trierMois()
     this.UpdateCanvas();
   }
 
@@ -66,8 +95,14 @@ export class GraphiqueTermineComponent implements OnInit {
           data: Array.from(this.mapSubjectTermine.values()),
           backgroundColor: this.colors
         }]
+        
       };
     }
+    Chart.scaleService.updateScaleDefaults('linear', {
+      ticks: {
+          min: 0
+      }
+    })
     this.c.update();
   }
 
@@ -89,6 +124,7 @@ export class GraphiqueTermineComponent implements OnInit {
           },
           layout: {
             padding: {
+              height : 100,
                 left: 10,
                 right: 0,
                 top: 0,
@@ -98,27 +134,13 @@ export class GraphiqueTermineComponent implements OnInit {
         }
       });
     }
-    Chart.scaleService.updateScaleDefaults('linear', {
-      ticks: {
-          min: 0,
-          max: 25,
-          stepSize: 1
-      }
-    })
   }
 
-  private getDossierTermine(codeGroupe: Code, date:string, semaine: number[]){
-    if (date == null && semaine == null) {
-      this.tacheService.listerTaches().subscribe(data => this.dossiersTermine = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
-      this.dossiersTermine = this.dossiersTermine.filter(tache => tache.dateCloture != null && tache.nature == Nature.DOSSIER)  
-    } else if (date != null && semaine == null) {
-      this.tacheService.listerTaches().subscribe(data => this.dossiersTermine = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
-      this.dossiersTermine = this.dossiersTermine.
-      filter(tache => tache.nature == Nature.DOSSIER && tache.dateCloture != null && tache.dateCloture.toLocaleDateString().includes(date))  
-    } else if (semaine != null && date == null) {     
-      this.tacheService.listerTaches().subscribe(data => this.dossiersTermine = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
-      this.dossiersTermine = this.dossiersTermine.
-      filter(tache => tache.nature == Nature.DOSSIER && tache.dateCloture != null && semaine[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < semaine[1])      
+  private getDossierTermine(codeGroupe: Code, typeTri: string, value: any){
+    if (typeTri === "day" || typeTri == "month") {
+      this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateCloture.toLocaleDateString().includes(value))  
+    } else if (typeTri == "week") {     
+      this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < value[1])      
     }
     this.refreshMapTermine(this.dossiersTermine)
   }
@@ -134,19 +156,40 @@ export class GraphiqueTermineComponent implements OnInit {
   }
   
   trierJour(){
-    this.getDossierTermine(this.groupe.code, this.dateJour.toLocaleDateString(), null)
+    this.getDossierTermine(this.groupe.code, "day", this.dateJour.toLocaleDateString())
     this.UpdateCanvas()
   }
   trierSemaine(){
-    let day = this.dateJour.getDate()
-    let day7 = day - 7
-    let semaine = [day7, day]
-    this.getDossierTermine(this.groupe.code, null, semaine)
-    this.UpdateCanvas()   
+    let day = this.dateJour.getDay()
+    console.log("day : " + day)    
+    let date = this.dateJour.getDate()
+    console.log("date : " + date)
+    let debutSemaine
+    let semaine
+    if (day == 1) { // Si le jour est lundi
+      this.getDossierTermine(this.groupe.code, "day", this.daysTab[day])
+      this.UpdateCanvas()
+    }
+    else { // jour autre que lundi
+      let difference = date - day 
+      console.log("difference (date - day) : "  + difference)      
+      if (difference < 0) {
+        let month = this.monthsTab[this.dateJour.getMonth()-1]
+        debutSemaine = month.maxDay + difference 
+        semaine = [debutSemaine.getDate(), date]
+      } else {
+        difference += 1
+        debutSemaine = new Date(this.dateJour.getFullYear(), this.dateJour.getMonth(), difference)
+        semaine = [debutSemaine.getDate(), date]
+      }
+    }     
+    this.getDossierTermine(this.groupe.code, "week", semaine)
+    this.UpdateCanvas()  
   }
   trierMois(){
     let month ='0'+ (this.dateJour.getMonth() + 1)    
-    this.getDossierTermine(this.groupe.code, month, null)
+    this.getDossierTermine(this.groupe.code, "month", month)
     this.UpdateCanvas() 
   }
+  
 }

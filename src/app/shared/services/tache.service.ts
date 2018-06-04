@@ -177,9 +177,7 @@ export class TacheService {
         lTache.code = "199_AFN";
         const date = '05/' + ((i%31) + 1) + '/2018';
         lTache.dateCloture = new Date(date);
-        const idUser = ((Math.floor(Math.random() * (999999 - 100000)) + 100000) % 5 ) + 1;
-        console.log(idUser);
-        
+        const idUser = ((Math.floor(Math.random() * (999999 - 100000)) + 100000) % 5 ) + 1;        
         lTache.idUtilisateur = this.UtilisateurService.getUserById(idUser).ident;
         lTache.status = Status.OK;
         this.listTaches.push(lTache);
@@ -298,5 +296,20 @@ export class TacheService {
     return this.listTaches.filter(piece => piece.context.ident == idContext && piece.nature == Nature.PIECE)
   }
 
+  public getDossierTermine(){
+    return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture != null)
   }
+
+  public getDossierEcours(){
+    return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture == null)
+  }
+
+  public getDossierTermineByUser(idUtilisateur: number){
+    return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture != null)
+  }
+
+  public getDossierEnCoursByUser(idUtilisateur: number){
+    return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture == null)
+  }
+}
 
