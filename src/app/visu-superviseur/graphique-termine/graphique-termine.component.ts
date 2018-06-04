@@ -111,23 +111,19 @@ export class GraphiqueTermineComponent implements OnInit {
     if (date == null && semaine == null) {
       this.tacheService.listerTaches().subscribe(data => this.dossiersTermine = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
       this.dossiersTermine = this.dossiersTermine.filter(tache => tache.dateCloture != null && tache.nature == Nature.DOSSIER)  
-      console.log(this.dossiersTermine);    
     } else if (date != null && semaine == null) {
       this.tacheService.listerTaches().subscribe(data => this.dossiersTermine = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
       this.dossiersTermine = this.dossiersTermine.
       filter(tache => tache.nature == Nature.DOSSIER && tache.dateCloture != null && tache.dateCloture.toLocaleDateString().includes(date))  
-      console.log(this.dossiersTermine);    
     } else if (semaine != null && date == null) {     
       this.tacheService.listerTaches().subscribe(data => this.dossiersTermine = data.filter(t => t.idGroupe = this.groupeService.getIdGroupeByCode(codeGroupe)));
       this.dossiersTermine = this.dossiersTermine.
-      filter(tache => tache.nature == Nature.DOSSIER && tache.dateCloture != null && semaine[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < semaine[1])
-      console.log(this.dossiersTermine);         
+      filter(tache => tache.nature == Nature.DOSSIER && tache.dateCloture != null && semaine[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < semaine[1])      
     }
     this.refreshMapTermine(this.dossiersTermine)
   }
 
   private refreshMapTermine(lesDossiers: Tache[]) {
-    // liste des gestionnaires : Initialisation
     this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
     for (const d of lesDossiers) {
       let gestionnaire = this.utilService.getUserById(d.idUtilisateur)
@@ -137,20 +133,18 @@ export class GraphiqueTermineComponent implements OnInit {
     }
   }
   
-  private trierJour(){
+  trierJour(){
     this.getDossierTermine(this.groupe.code, this.dateJour.toLocaleDateString(), null)
     this.UpdateCanvas()
   }
-  private trierSemaine(){
+  trierSemaine(){
     let day = this.dateJour.getDate()
     let day7 = day - 7
     let semaine = [day7, day]
-    console.log(day);
-    console.log(day7);  
     this.getDossierTermine(this.groupe.code, null, semaine)
     this.UpdateCanvas()   
   }
-  private trierMois(){
+  trierMois(){
     let month ='0'+ (this.dateJour.getMonth() + 1)    
     this.getDossierTermine(this.groupe.code, month, null)
     this.UpdateCanvas() 

@@ -93,12 +93,12 @@ export class GraphiqueEnCoursComponent implements OnInit {
       });
     }
   }
-  private corbeille() {    
+  corbeille() {    
     this.groupeService.corbeille(this.groupe.code)
     this.UpdateCanvas()    
   }
 
-  private dispatcher() {
+  dispatcher() {
     this.groupeService.dispatcher(this.groupe.code);
     this.UpdateCanvas()
   }
