@@ -311,5 +311,20 @@ export class TacheService {
     return this.listTaches.filter(piece => piece.context.ident == idContext && piece.nature == Nature.PIECE)
   }
 
+  public getDossierTermine(){
+    return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture != null)
   }
+
+  public getDossierEcours(){
+    return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture == null)
+  }
+
+  public getDossierTermineByUser(idUtilisateur: number){
+    return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture != null)
+  }
+
+  public getDossierEnCoursByUser(idUtilisateur: number){
+    return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture == null)
+  }
+}
 

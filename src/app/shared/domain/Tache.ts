@@ -37,20 +37,18 @@ export class Tache {
   public priorite: number;
   public dateCreation: Date;
   public dateLimite: Date; // format DD/MM/YYYY hh:mm
-  public dateReception: Date;
-  public dateVerification: Date;
   public dateCloture: Date; // format DD/MM/YYYY hh:mm
-
   //public status: Status;
   public urlDocument: string;
   public conformite: boolean;
   public motifNonConformite: string;
   public context: Context;
   public idTacheMere: number;
-
+  public idUtilisateurVerification: number;
+  public idUtilisateurCloture: number;
+  public dateReception: Date;
+  public dateVerification: Date;
   idUtilisateur: number;
-  idUtilisateurVerification: number;
-  idUtilisateurCloture: number;
   idGroupe: number;
 
   get libelle(): string {
@@ -59,19 +57,21 @@ export class Tache {
 
 
   get status(): string {
-    let statut: string;
     // PIECE
     if (this.nature === Nature.PIECE){
       
-        if ( this.motifNonConformite != null ) {
+      if (this.dateReception == null) {
+        return Status.EN_ATTENTE;
+      }else if ( this.motifNonConformite != null ) {
          return Status.NON_CONFORME;
-        } else if (this.idUtilisateurVerification != null){
+      
+      } else if (this.idUtilisateurVerification != null && this.dateCloture == null){
             return Status.A_VALIDER;
-        } else if (this.dateReception == null) {
-          return Status.EN_ATTENTE;
-        }
-        return Status.A_VERIFIER;
-    }
+      } else if (this.dateCloture != null) {
+        return Status.OK;
+      }        
+      return Status.A_VERIFIER;
+      }
     // NOTE deux statut : 'En attente'/ 'OK'
     if (this.nature === Nature.NOTE) {
 
@@ -100,6 +100,7 @@ export enum Status {
   EN_ATTENTE = 'En attente',
   OK = 'Ok',
   NON_CONFORME = 'Non conforme'
+
 }
 
 /*

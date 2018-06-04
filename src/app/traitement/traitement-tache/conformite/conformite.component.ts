@@ -73,6 +73,7 @@ export class ConformiteComponent implements OnInit {
 
   }
   /*
+    FERMER LA TACHE dans les deux étapes (à voir)
     Message de cloture obligtoire
   */
   nonConforme() {
@@ -144,12 +145,12 @@ export class ConformiteComponent implements OnInit {
     this.router.navigate(['/gestionBO']);
   }*/
 
-  /*private alertShow(alert, msg) {
+  private alertShow(alert, msg) {
     alert.style.display = 'block';
 
     alert.innerHTML = msg;
     setTimeout(function() {alert.style.display = 'none'; }, 4000);
-  }*/
+  }
 
   private formatDateDDmmYYYY(date: Date): string {
     return ('0' + (date.getDate() + 1)).slice(-2)  + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
