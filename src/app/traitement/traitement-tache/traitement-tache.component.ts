@@ -36,11 +36,11 @@ export class TraitementTacheComponent implements OnInit {
       idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
       for (let p of this.listPieces) {
         if(p.status === 'À vérifier') {
-          idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérfication</span>';
+          idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
           return;
         }
         if (p.status === 'À valider') {
-          idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
+          idLabelStatus.innerHTML = '<span style="color: #00b3ee">Validation</span>';
         }
       }
     });
