@@ -173,7 +173,7 @@ export class ConformiteComponent implements OnInit {
     idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
     for (let p of this.tacheService.getPiecesByIdContext(this.piece.context.ident)) {
       if(p.status === 'À vérifier') {
-        idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérfication</span>';
+        idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
         return;
       }
       if (p.status === 'À valider') {
