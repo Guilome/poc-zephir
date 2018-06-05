@@ -36,13 +36,15 @@ export class DonnerTacheComponent implements OnInit {
 
   affecterTacheGestionnaire(){   
     if (this.gestionnaires.length == 0 && this.dossiers.length == 0){
-      this.toastr.error("Veuillez selectionner des dossiers ou un gestionnaire")
+      this.toastr.error("Veuillez selectionner un ou des dossiers et/ou un ou des gestionnaires")
     }
     else {
       if (this.gestionnaires.length == 1) {
         this.dossiers.forEach(dossier => { 
           this.gestionnaires.forEach(g => {
             dossier.idUtilisateur = g.ident
+            let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
+            pieces.forEach(piece => piece.idUtilisateur = g.ident)
           });
         });    
       }

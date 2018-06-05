@@ -17,7 +17,7 @@ import { Contrat } from '../../shared/domain/contrat';
   templateUrl: './gestion.component.html',
   styleUrls: ['./gestion.component.css']
 })
-export class GestionComponent implements OnInit, AfterViewInit {
+export class GestionComponent implements OnInit {
 
   @Input() titre: string;
   @Input() card: string;
@@ -110,13 +110,6 @@ export class GestionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-    if (this.groupeBoolean) {
-      this.context = document.getElementById('chart');
-      this.mesGroupes();
-    }
-  }
-
   voirNoteTerminer(dateCloture: any): boolean {
     if ( dateCloture != null) {
       return this.boolDateCloture;
@@ -200,12 +193,6 @@ export class GestionComponent implements OnInit, AfterViewInit {
     }
 
     return pTache.dateCloture == null && pTache.idUtilisateur === this.idCurrentUser;
-  }
-
-  mesGroupes() {
-    this.groupeService.getAffectationTaches(Code.VERIFICATION).subscribe(data => {
-      this.dataGroupe = data;
-    });
   }
   
   /**

@@ -54,6 +54,10 @@ export class TacheService {
     return this.listTaches.find(t => t.ident === id && t.nature == Nature.PIECE);
   }
 
+  getPiecesByDossier(idDossier: number){
+    return this.listTaches.filter(t => t.nature == Nature.PIECE && t.idTacheMere === idDossier)
+  }
+
   getDossierById(id: number) {
     return this.listTaches.find(t => t.ident === id && t.nature == Nature.DOSSIER);
   }
@@ -326,6 +330,29 @@ export class TacheService {
 
   public getDossierEnCoursByUser(idUtilisateur: number){
     return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture == null)
+  }
+
+  public getStatutDossier(idDossier: number): Status{
+    let lesPieces = this.getPiecesByDossier(idDossier)
+    if (lesPieces.length == 0) {
+      return Status.EN_ATTENTE
+    } 
+    else {
+      if(lesPieces.filter(piece => piece.status == Status.A_VERIFIER).length > 0) {
+        return Status.A_VERIFIER
+      }
+      else if(lesPieces.filter(piece => piece.status == Status.A_VALIDER).length == 3) {
+        return Status.A_VALIDER
+      }
+      else if(lesPieces.filter(piece => piece.status == Status.OK).length == 3) {
+        return Status.OK
+      }
+      else if(lesPieces.filter(piece => piece.status == Status.A_VERIFIER).length == 0 && 
+              lesPieces.filter(piece => piece.status == Status.A_VALIDER).length > 0 && 
+              lesPieces.filter(piece => piece.status == Status.OK).length < 3) {
+        return Status.A_VALIDER
+      }
+    }
   }
 }
 
