@@ -128,7 +128,7 @@ export class TacheService {
   closeTacheConforme(idTache: number){
     const tache = this.getPieceById(idTache);
     //tache.status = Status.OK;
-    tache.idUtilisateurVerification = tache.idUtilisateur;
+    tache.idUtilisateurCloture = tache.idUtilisateur;
     tache.dateCloture = new Date();
   }
 

@@ -51,7 +51,7 @@ export class DonnerTacheComponent implements OnInit {
       else {
         this.tacheService.dispatcherGestionnaire(this.gestionnaires, this.dossiers)
       }
-      this.route.navigate(['/GestionGroupe/1'])
+      this.route.navigate(['/GestionGroupe/'+ this.idGroupe])
     }    
   }
 }

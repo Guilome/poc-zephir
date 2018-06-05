@@ -5,14 +5,14 @@
       <th scope="col">Numero</th>
       <th scope="col">Nom client</th>
       <th scope="col">Nom intermédiaire</th>
-      <th scope="col">État</th>
+      <th scope="col">Statut</th>
       <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
-      <tr *ngFor="let dossier of dossiers">
+      <tr *ngFor="let dossier of dossierAffichage">
         <th scope="row"><a (click)="toggleChildren(dossier.ident)"><i class="fa fa-plus fa-lg"></i></a></th>
-        <td>{{dossier.context.contrat.numero}}
+        <td>{{dossier.numContrat}}
           <ng-container *ngFor="let dp of dossierPieces">
             <table class="table table-striped mt-5" *ngIf="dp.bool && dp.dossier == dossier.ident">
               <thead>
@@ -32,11 +32,79 @@
             </table>
           </ng-container> 
         </td>        
-        <td>{{dossier.context.nomAppelClient}}</td>
-        <td>{{dossier.context.nomAppelIntermediaire}}</td>
-        <td>{{dossier.context.contrat.etatContrat}}</td>
-        <td> <a (click)="traiterPieces(dossier.context.ident, dossier.ident)"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a></td>
+        <td>{{dossier.nomClient}}</td>
+        <td>{{dossier.nomIntermediaire}}</td>
+        <td>{{dossier.status}}</td>
+        <td> 
+          <a (click)="traiterPieces(dossier.ident)"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a>
+          <a (click)="openModal(HistoriqueModal, dossier.ident)"> <i class="	fa fa-history fa-lg"  title="Historique"></i></a>
+        </td>
       </tr> 
   </tbody>    
 </table>
+<!-- The Modal HISTORIQUE -->
+<ng-template #HistoriqueModal>
+  <div id="info" style="border: 1px solid gainsboro;">
+    <h3 class="row justify-content-center">Statut du dossier : {{dossierStatut}}</h3>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Utilisateur</th>
+          <th scope="col">Pièce</th>
+          <th scope="col">Action</th>
+          <th scope="col">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4">DOSSIER EN ATTENTE</td>
+        </tr>
+        <ng-container *ngFor="let piece of lesPieces">
+          <tr>
+            <th scope="row"> / </th>
+            <td>{{piece.libelle}}</td>
+            <td>Reception de la pièce</td>
+            <td>{{piece.dateReception.toLocaleString()}}</td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="dossierStatut == 'À vérifier' || dossierStatut == 'À valider' || dossierStatut == 'Ok'">
+          <tr>
+            <td colspan="4">DOSSIER À VÉRIFIER</td>
+          </tr>
+          <ng-container *ngFor="let piece of lesPieces">
+            <tr *ngIf="piece.status == 'À valider' || piece.status == 'Ok'">
+              <th scope="row">{{getName(piece.idUtilisateurVerification)}}</th>
+              <td>{{piece.libelle}}</td>
+              <td>Vérification de la pièce</td>
+              <td>{{piece.dateVerification.toLocaleString()}}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="dossierStatut == 'À valider' || dossierStatut == 'Ok'">
+          <tr>
+            <td colspan="4">DOSSIER À VALIDER</td>
+          </tr>
+          <ng-container *ngFor="let piece of lesPieces">
+            <tr *ngIf="piece.status == 'Ok'">
+              <th scope="row">{{getName(piece.idUtilisateurCloture)}}</th>
+              <td>{{piece.libelle}}</td>
+              <td>Validation de la pièce</td>
+              <td>{{piece.dateCloture.toLocaleString()}}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="dossierStatut == 'Ok'">
+          <tr>
+            <td colspan="4">DOSSIER VALIDÉ</td>
+          </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="closeModal()">OK</button>
+  </div>
+</ng-template>
 

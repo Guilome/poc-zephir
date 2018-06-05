@@ -15,16 +15,18 @@ export class PrendreTacheComponent implements OnInit {
 
   dossiers: Tache[] = []
   idGestionnaire: number
+  gestionnaire: Utilisateur
 
-  constructor(private tacheService: TacheService,private router: Router, private toastr: ToastrService) { }
+  constructor(private utilService: UtilisateurService,private tacheService: TacheService,private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.idGestionnaire = parseInt(localStorage.getItem('USER'))
+    this.gestionnaire = this.utilService.getUserById(this.idGestionnaire)
+
   }
 
   traiterTache(tabTache: Tache[]){
-    console.log(tabTache);    
-    this.dossiers = tabTache
+    this.dossiers = tabTache   
   }
 
   affecterTacheGestionnaire(){   

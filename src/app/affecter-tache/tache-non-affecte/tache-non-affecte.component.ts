@@ -14,6 +14,7 @@ export class TacheNonAffecteComponent implements OnInit {
   allChecked: Boolean
   dossiers:Tache[] = []
   checkboxDossier: boolean;
+  idGroupe: number;
   @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
   collectDossier = []
 
@@ -23,6 +24,7 @@ export class TacheNonAffecteComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
   }  
 
   trierListe() {
