@@ -21,8 +21,12 @@ export class Tache {
 
   //
   constructor(public nature: Nature ) {
-    this.status = Status.EN_ATTENTE;
+    //this.status = Status.EN_ATTENTE;
     this.dateCloture = null;
+    this.message = null;
+    this.idUtilisateurCloture = null;
+    this.idUtilisateurVerification = null;
+    this.motifNonConformite = null;
   }
 
   public ident: number;
@@ -34,13 +38,16 @@ export class Tache {
   public dateCreation: Date;
   public dateLimite: Date; // format DD/MM/YYYY hh:mm
   public dateCloture: Date; // format DD/MM/YYYY hh:mm
-  public status: Status;
+  //public status: Status;
   public urlDocument: string;
   public conformite: boolean;
   public motifNonConformite: string;
   public context: Context;
   public idTacheMere: number;
-
+  public idUtilisateurVerification: number;
+  public idUtilisateurCloture: number;
+  public dateReception: Date;
+  public dateVerification: Date;
   idUtilisateur: number;
   idGroupe: number;
 
@@ -48,7 +55,36 @@ export class Tache {
     return Tache.libCode.get(this.code);
   }
 
-}
+
+  get status(): string {
+    // PIECE
+    if (this.nature === Nature.PIECE){
+      
+      if (this.dateReception == null) {
+        return Status.EN_ATTENTE;
+      }else if ( this.motifNonConformite != null ) {
+         return Status.NON_CONFORME;
+      
+      } else if (this.idUtilisateurVerification != null && this.dateCloture == null){
+            return Status.A_VALIDER;
+      } else if (this.dateCloture != null) {
+        return Status.OK;
+      }        
+      return Status.A_VERIFIER;
+      }
+    // NOTE deux statut : 'En attente'/ 'OK'
+    if (this.nature === Nature.NOTE) {
+
+      if (this.dateCloture != null) {
+        return Status.OK;
+      }
+      return Status.EN_ATTENTE;
+
+    }
+
+      return Status.EN_ATTENTE;
+    }
+  }
 
 
 export enum Nature {
@@ -62,7 +98,9 @@ export enum Status {
   A_VERIFIER = 'À vérifier',
   A_VALIDER  = 'À valider',
   EN_ATTENTE = 'En attente',
-  OK = 'Ok'
+  OK = 'Ok',
+  NON_CONFORME = 'Non conforme'
+
 }
 
 /*
