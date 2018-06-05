@@ -125,35 +125,6 @@ export class ConformiteComponent implements OnInit {
     }
   }
 
-  /*
-    les documents sont triés en fonction de leurs "ident" dès qu'on arrive au dernier ident la page bascule au DashBoard
-   */
-  /*docSuivant() {
-    console.log('ident :' + this.tache.ident);
-
-    const idNext = this.tacheService.nextId(this.tache.ident, parseInt(localStorage.getItem('USER'), 10));
-    if (idNext == null || this.tache.ident === idNext ) {
-      this.goToDashboard();
-    } else {
-
-      this.goToTacheDetails(idNext);
-    }
-  }*/
-
-  /*goToTacheDetails(id) {
-    this.router.navigate(['/TraitementTache', id]);
-  }
-  goToDashboard() {
-    this.router.navigate(['/gestionBO']);
-  }*/
-
-  private alertShow(alert, msg) {
-    alert.style.display = 'block';
-
-    alert.innerHTML = msg;
-    setTimeout(function() {alert.style.display = 'none'; }, 4000);
-  }
-
   private formatDateDDmmYYYY(date: Date): string {
     return ('0' + (date.getDate() + 1)).slice(-2)  + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
   }
