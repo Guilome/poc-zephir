@@ -54,6 +54,10 @@ export class TacheService {
     return this.listTaches.find(t => t.ident === id && t.nature == Nature.PIECE);
   }
 
+  getPiecesByDossier(idDossier: number){
+    return this.listTaches.filter(t => t.nature == Nature.PIECE && t.idTacheMere === idDossier)
+  }
+
   getDossierById(id: number) {
     return this.listTaches.find(t => t.ident === id && t.nature == Nature.DOSSIER);
   }
@@ -322,6 +326,10 @@ export class TacheService {
 
   public getDossierEnCoursByUser(idUtilisateur: number){
     return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture == null)
+  }
+
+  public getStatusDossier(){
+
   }
 }
 

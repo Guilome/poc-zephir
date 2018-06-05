@@ -45,34 +45,6 @@ export class GroupeService {
     return this.mapEnCours
   }
 
-  getAffectationTaches(codeGroupe: Code): BehaviorSubject<Map<string, number>> {
-    if (this.taches.length < 1) {
-      this.refreshTaches(codeGroupe);
-    }
-    this.refreshMap();
-
-    return this.mapSubject;
-  }
-
-  private refreshMap() {
-    const map = new Map<string, number>();
-    // liste des gestionnaires : Initialisation
-    map.set('Non Affectées', 0);
-    let gestionnaires = this.utilisateurService.getAll().filter(g => g.profil != Profil.DIRECTEUR).forEach(g => map.set( g.nom+' '+g.prenom, 0))
-    for (const t of this.taches) {
-      if (t.idUtilisateur != null) {
-        let gestionnaire = this.utilisateurService.getUserById(t.idUtilisateur)
-        const key = gestionnaire.nom+' '+gestionnaire.prenom;
-        const sum = map.get(key);
-        map.set(key,  sum + 1);
-      } else {
-        const sum = map.get('Non Affectées');
-        map.set('Non Affectées', sum + 1);
-      }
-    }
-    this.mapSubject.next(map);
-  }
-
   private refreshMapEnCours() {
     const map = new Map<string, number>();
     // liste des gestionnaires : Initialisation

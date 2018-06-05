@@ -16,7 +16,7 @@ export class PrendreTacheComponent implements OnInit {
   dossiers: Tache[] = []
   idGestionnaire: number
 
-  constructor(private router: Router, private toastr: ToastrService) { }
+  constructor(private tacheService: TacheService,private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.idGestionnaire = parseInt(localStorage.getItem('USER'))
@@ -33,8 +33,9 @@ export class PrendreTacheComponent implements OnInit {
     }
     else {
       this.dossiers.forEach(dossier => {
-        console.log(dossier);    
         dossier.idUtilisateur = this.idGestionnaire
+        let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
+        pieces.forEach(piece => piece.idUtilisateur = this.idGestionnaire)
       });    
     }
     this.router.navigate(['gestionBO'])
