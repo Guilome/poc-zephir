@@ -1,10 +1,10 @@
 
 <div *ngIf="piece != null">
   <!-- IF -->
-  <div class="align-middle" xmlns="" *ngIf="piece.status != 'À valider'">
+  <div class="align-middle" xmlns="" *ngIf="groupeVerification()">
 
-      <button type="button" title="Conforme" [disabled]="piece.dateCloture != null" class="btn btn-success btn-circle fa fa-check" (click)="conforme()">  </button>
-      <button type="button" title="Non conforme" [disabled]="piece.dateCloture != null" class="btn btn-danger btn-circle fa fa-times" (click)="nonConforme()">  </button>
+      <button type="button" title="Conforme" [disabled]="piece.dateVerification != null" class="btn btn-success btn-circle fa fa-check" (click)="conforme()">  </button>
+      <button type="button" title="Non conforme" [disabled]="piece.dateVerification != null" class="btn btn-danger btn-circle fa fa-times" (click)="nonConforme()">  </button>
 
       <div *ngIf="motifBoolean">
           <h5>Motif de non conformité : </h5>
@@ -17,10 +17,15 @@
           <button class="bte btn-outline-primary" (click)="valider()" >Valider</button>
         </div>
         </div>
-        <!--// liste des motifs -->
-      <ul *ngIf="piece.message != null">
+        <!--// liste des motifs Non conformité -->
+      <ul *ngIf="piece.motifNonConformite != null">
         <li *ngFor="let s of listMotifs()">{{s}}</li>
       </ul>
+
+      <!-- cas du vérification déjà faite -->
+      <div *ngIf="piece.dateVerification != null">
+        <p>Vérifié le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
+      </div>
 
 
       <!--div id="buttom-content" >
@@ -31,7 +36,15 @@
   </div>
 
   <!-- ELSE -->
-  <div *ngIf="piece.status === 'À valider'">
+  <div *ngIf="groupeValidation()">
     <app-information-conducteur style="font-size: 0.7em" ></app-information-conducteur>
   </div>
+
+  <div *ngIf="piece.dateVerification != null && piece.dateCloture!= null">
+    <br>
+    <p>Vérifié le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
+    <p>Validé le {{piece.datecloture | date: 'dd/MM/yyyy'}} par {{getNomValidation()}}</p>
+
+  </div>
+
 </div>

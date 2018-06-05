@@ -4,6 +4,8 @@ import {Tache, Status} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
 import {Subscription} from 'rxjs/Subscription';
 import {ToastrService} from 'ngx-toastr';
+import { GroupeService } from '../../../shared/services/groupe.service';
+import { UtilisateurService } from '../../../shared/services/utilisateur.service';
 
 @Component({
   selector: 'app-conformite',
@@ -15,17 +17,22 @@ export class ConformiteComponent implements OnInit {
   constructor(private router: Router, 
     private tacheService: TacheService, 
     private route: ActivatedRoute, 
-    public toastr: ToastrService) {}
+    public toastr: ToastrService,
+    private groupeService: GroupeService,
+    private utilisateurService: UtilisateurService) {}
 
   piece: Tache;
   private idSubscription: Subscription;
   public motifBoolean = false;
+
+  private idCurrentUser: number
 
   // multiplSelect
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
   ngOnInit(){
+      this.idCurrentUser = +localStorage.getItem('USER');
       this.idSubscription = this.route.params.subscribe((params: any) => {
         this.piece = this.tacheService.getPieceById(+params.piece);
       });
@@ -141,14 +148,25 @@ export class ConformiteComponent implements OnInit {
   private titleStatus() {
     // Status 
     let idLabelStatus = document.getElementById('idLabelStatus');
+    let bVerification: boolean = false;
     idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
     for (let p of this.tacheService.getPiecesByIdContext(this.piece.context.ident)) {
       if(p.status === 'À vérifier') {
         idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
+        bVerification = true;
         return;
       }
       if (p.status === 'À valider') {
         idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
+      }
+    }
+    // le status du dossier est toujours en vérification car une des pièces est à vérifier
+    if(!bVerification){
+      // Si l'utilisateur ne pas parti du groupe validation 
+      if( !this.groupeValidation()) {
+          // Passage du dossier à l'étape de validation 
+          this.tacheService.toEtapeValidation(this.piece.idTacheMere);
+          this.router.navigate(['/gestionBO']);
       }
     }
   }
@@ -160,6 +178,37 @@ export class ConformiteComponent implements OnInit {
       lList.push(this.piece.message.split('.')[i]);
     }
     return lList;
+  }
+
+  groupeVerification(): boolean {
+    if ( this.groupeService.isVerification(this.idCurrentUser)){
+        return true;//this.piece.status != 'À valider';
+    } 
+    return false;
+  }
+
+  /**
+   * retourne le nom de la personne qui a vérifié la piece
+   */
+  getNomVerification(): string {
+    return this.utilisateurService.getName(this.piece.idUtilisateurVerification);
+  }
+
+  /**
+   * return le nom de la personne qui a validé la piece
+   */
+  getNomValidation(): string {
+    return this.utilisateurService.getName(this.piece.idUtilisateurCloture);
+
+  }
+
+
+
+  groupeValidation(): boolean {
+    if ( this.groupeService.isValidation(this.idCurrentUser)){
+      return this.piece.status === 'À valider';
+  } 
+    return false;
   }
 
 }

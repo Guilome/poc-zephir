@@ -11,9 +11,6 @@ import {UtilisateurService} from './utilisateur.service';
 import { Contrat } from '../domain/contrat';
 import { Utilisateur, Profil } from '../domain/Utilisateur';
 
-//
-// AVENANT = Avenant
-// RESIL = Résiliation
 
 @Injectable()
 export class TacheService {
@@ -106,6 +103,9 @@ export class TacheService {
     tache.dateVerification = new Date();
     //tache.idUtilisateur = parseInt(localStorage.getItem('USER'));
     tache.idUtilisateurVerification = tache.idUtilisateur;
+
+    tache.idUtilisateur = null;
+
 
   }
 

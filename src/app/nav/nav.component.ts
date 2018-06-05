@@ -18,7 +18,7 @@ export class NavComponent implements OnInit {
 
   ifConnexion(): boolean {
     if (localStorage.getItem('USER') != null) {
-      this.userName = this.userService.getName(localStorage.getItem('USER'))
+      this.userName = this.userService.getName(+localStorage.getItem('USER'))
       this.connexionBoolean = true;
       return true;
     }

@@ -96,4 +96,16 @@ export class GroupeService {
     this.refreshMapEnCours();
     return ret;
   }
+
+  public isVerification(idUser: number): boolean {
+    const idVerif = this.getIdGroupeByCode(Code.VERIFICATION);
+    const user = this.utilisateurService.getUserById(idUser);
+    return idVerif == user.idGroupe;
+  }
+
+  public isValidation(idUser: number): boolean {
+    const idVerif = this.getIdGroupeByCode(Code.VALIDATION);
+    const user = this.utilisateurService.getUserById(idUser);
+    return idVerif == user.idGroupe;
+  }
 }

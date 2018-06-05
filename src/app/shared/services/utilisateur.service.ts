@@ -11,12 +11,12 @@ export class UtilisateurService {
   constructor() {
 
     const listUsers = [];
-    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille', Profil.GESTIONNAIRE));
-    listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	Profil.GESTIONNAIRE));
-    listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	Profil.GESTIONNAIRE));
-    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	Profil.GESTIONNAIRE));
-    listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	Profil.SUPERVISEUR));
-    listUsers.push(new Utilisateur(6,	'BOYER',	'Eric',	Profil.DIRECTEUR));
+    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille', Profil.GESTIONNAIRE,1));
+    listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	Profil.GESTIONNAIRE,2));
+    listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	Profil.GESTIONNAIRE,1));
+    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	Profil.GESTIONNAIRE,1));
+    listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	Profil.SUPERVISEUR,2));
+    listUsers.push(new Utilisateur(6,	'BOYER',	'Eric',	Profil.DIRECTEUR,2));
 
 
     this.usersSubject.next(listUsers);
@@ -26,8 +26,8 @@ export class UtilisateurService {
     return this.usersSubject.getValue();
   }
 
-  getName(name: string) {
-    return this.getUserById(parseInt(name, 10)).nom;
+  getName(idUser: number) {
+    return this.getUserById(idUser).nom;
   }
 
   getProfil(profil: Profil) {
