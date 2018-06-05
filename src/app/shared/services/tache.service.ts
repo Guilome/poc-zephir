@@ -10,6 +10,7 @@ import {t} from '@angular/core/src/render3';
 import {UtilisateurService} from './utilisateur.service';
 import { Contrat } from '../domain/contrat';
 import { Utilisateur, Profil } from '../domain/Utilisateur';
+import { STATUS_CODES } from 'http';
 
 //
 // AVENANT = Avenant
@@ -331,8 +332,27 @@ export class TacheService {
     return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture == null)
   }
 
-  public getStatusDossier(){
-
+  public getStatutDossier(idDossier: number): Status{
+    let lesPieces = this.getPiecesByDossier(idDossier)
+    if (lesPieces.length == 0) {
+      return Status.EN_ATTENTE
+    } 
+    else {
+      if(lesPieces.filter(piece => piece.status == Status.A_VERIFIER).length > 0) {
+        return Status.A_VERIFIER
+      }
+      else if(lesPieces.filter(piece => piece.status == Status.A_VALIDER).length == 3) {
+        return Status.A_VALIDER
+      }
+      else if(lesPieces.filter(piece => piece.status == Status.OK).length == 3) {
+        return Status.OK
+      }
+      else if(lesPieces.filter(piece => piece.status == Status.A_VERIFIER).length == 0 && 
+              lesPieces.filter(piece => piece.status == Status.A_VALIDER).length > 0 && 
+              lesPieces.filter(piece => piece.status == Status.OK).length < 3) {
+        return Status.A_VALIDER
+      }
+    }
   }
 }
 
