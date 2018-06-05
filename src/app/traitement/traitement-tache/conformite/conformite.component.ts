@@ -56,8 +56,10 @@ export class ConformiteComponent implements OnInit {
       if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
         //this.docSuivant();
         
-        this.tacheService.updateStatusAndGroupe(this.piece.ident);
-        this.toastr.success('Le status de la tache a été modifier en <b>À VALIDER</b>', '', {enableHtml: true});
+        this.tacheService.toEtapeValidation(this.piece.ident);
+        //this.toastr.success('Le status de la tache a été modifier en <b>À VALIDER</b>', '', {enableHtml: true});
+        this.toastr.success('La pièce a été affectée à la bannette  <b>VALIDATION</b>', '', {enableHtml: true});
+
       }
 
     } else if (this.piece.status === Status.A_VALIDER) {

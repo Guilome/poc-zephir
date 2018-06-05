@@ -73,14 +73,15 @@ export class TacheService {
   }
   /**
    * le status reste "à vérifier"
-   * si le status est "à valider" => il revient sur "à vérifier"
+   * Ajout de la date de vérification et de cloture
    * @param idTache 
    */
-  closePieceNonConforme(idTache: number, motif: string) {
+  closePieceNonConforme(idTache: number, motifNonConformite: string) {
     const p = this.getTacheById(idTache);
-    p.message = motif;
+    p.motifNonConformite = motifNonConformite;
     //p.status = Status.A_VERIFIER;
     p.dateCloture = new Date();
+    p.dateVerification = p.dateCloture;
   }
   /*private setDateCloture(idTache: number): Tache {
     this.getTacheById(idTache).dateCloture = new Date();
@@ -94,12 +95,12 @@ export class TacheService {
    * l'id Utilisateur est affecté à l'utilisateur de vérification.
    * @param {number} idTache
    */
-  updateStatusAndGroupe(idTache: number) {
+  toEtapeValidation(idTache: number) {
     const tache = this.getTacheById(idTache);
-    //tache.status = Status.A_VALIDER;
+    //appel web service pour récupérer l'id du groupe validation 
     tache.idGroupe = 2; // groupe validation ident : 2
     tache.dateVerification = new Date();
-    tache.idUtilisateur = parseInt(localStorage.getItem('USER'));
+    //tache.idUtilisateur = parseInt(localStorage.getItem('USER'));
     tache.idUtilisateurVerification = tache.idUtilisateur;
 
   }
