@@ -137,46 +137,9 @@ export class TacheService {
    */
   closeDossier(idDossier: number){
     let dossier = this.getDossierById(idDossier)
-    this.listTaches.forEach( t => {
-      if (t.ident == idDossier) {
-        //t.status = Status.OK
-        t.dateCloture = new Date()
-      }
-    })
-  }
-
-  /**
-   * Annulation du dossier
-   */
-  annulerDossier(idDossier: number){
-    let dossier = this.getDossierById(idDossier)
-    this.listTaches.forEach( t => {
-      if (t.ident == idDossier) {
-        //t.status = Status.A_VERIFIER
-        t.dateCloture = new Date()
-      }
-    })
+    dossier.dateCloture = new Date()
   }
   
-  /**
-   * renvoie l'id de la tache suivante en fonction de son status et de l'utilisateur
-   * @param {number} idTache
-   * @param {number} idUser
-   * @returns {number}
-   */
-  /*nextId(idTache: number, idUser: number): number {
-
-    const tache = this.getTacheById(idTache)
-    const myTacheslist = this.listTaches.filter(t => t.idUtilisateur === idUser && t.status === tache.status).sort((obj1, obj2) => obj1.priorite - obj2.priorite);
-    const nextIndex = (myTacheslist.findIndex( t => t.ident === idTache ) + 1) % myTacheslist.length;
-    const nextTache = myTacheslist.find(( t, i) => i === nextIndex );
-    if (nextTache != null) {
-      return nextTache.ident;
-    } else {
-      return null;
-    }
-  }*/
-
   private create_100_DossiersClotures(){
     for (let i = 500 ; i < 600 ; i++) {
         const lTache = new Tache(Nature.DOSSIER);
@@ -184,7 +147,6 @@ export class TacheService {
         const c = new Contrat(450020+i,'SOLUTIO')
         c.numero = 'S140510'+ i;
         lTache.context = new Context(330010+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);;
-        //lTache.status = Status.A_VERIFIER;
         lTache.idGroupe = 1;
         lTache.priorite = (i%10) + 1;
         lTache.code = "199_AFN";
@@ -197,7 +159,6 @@ export class TacheService {
         lTache.idUtilisateur = this.UtilisateurService.getUserById(idUser).ident;
         lTache.idUtilisateurVerification = this.UtilisateurService.getUserById(idUser).ident;
         lTache.idUtilisateurCloture = this.UtilisateurService.getUserById(idUser).ident;
-        //lTache.status = Status.OK;
         this.listTaches.push(lTache);
     }
   }
@@ -209,7 +170,6 @@ export class TacheService {
       c.numero = 'S140581'+ i;
       const context = 
       lTache.context = new Context(100020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
-      //lTache.status = Status.A_VERIFIER;
       lTache.idGroupe = 1;
       lTache.priorite = 5;
       lTache.code = "199_AFN";
@@ -223,8 +183,7 @@ export class TacheService {
   }
   private create3Pieces(dossier_199: Tache) {
     for (let i = 0; i < 3; i++) {
-      const lPiece = new Tache(Nature.PIECE);
-      //lPiece.status = Status.A_VERIFIER;      
+      const lPiece = new Tache(Nature.PIECE);  
       lPiece.ident = this.listTaches.length + 70000 ;
       lPiece.idTacheMere = dossier_199.ident;
       lPiece.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i];
@@ -314,6 +273,10 @@ export class TacheService {
 
   public getPiecesByIdContext(idContext: number): Tache[]{
     return this.listTaches.filter(piece => piece.context.ident == idContext && piece.nature == Nature.PIECE)
+  }
+
+  public getDossierByIdContext(idContext: number): Tache{
+    return this.listTaches.find(dossier => dossier.context.ident == idContext && dossier.nature == Nature.DOSSIER)
   }
 
   public getDossierTermine(){

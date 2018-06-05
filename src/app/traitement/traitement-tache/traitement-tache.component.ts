@@ -14,7 +14,7 @@ import {ToastrService} from 'ngx-toastr';
 export class TraitementTacheComponent implements OnInit {
 
   showDetail = true;
-  idDossier: number
+  dossier: Tache
   listPieces = [];
   listActionsMetier= [];
 
@@ -25,21 +25,21 @@ export class TraitementTacheComponent implements OnInit {
               public toastr: ToastrService) { }
 
   ngOnInit() {
-
     this.route.params.subscribe((params: any) => {
       // liste des pieces :
       this.listPieces = this.tacheService.getPiecesByIdContext(+params.id);
       // list des actions métiers 
       this.actionMetierService.getAllByIdContext(+params.id).subscribe(data => this.listActionsMetier = data);
       // Status 
+      this.dossier = this.tacheService.getDossierByIdContext(+params.id)
       let idLabelStatus = document.getElementById('idLabelStatus');
       idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
       for (let p of this.listPieces) {
-        if(p.status === 'À vérifier') {
+        if(this.tacheService.getStatutDossier(this.dossier.ident) === 'À vérifier') {
           idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
           return;
         }
-        if (p.status === 'À valider') {
+        if (this.tacheService.getStatutDossier(this.dossier.ident) === 'À valider') {
           idLabelStatus.innerHTML = '<span style="color: #00b3ee">Validation</span>';
         }
       }
@@ -67,20 +67,14 @@ export class TraitementTacheComponent implements OnInit {
     a.classList.add('bg-row');   
   }    
 
-  valider() {
-    this.listPieces.forEach( lP => {
-      this.idDossier = lP.idTacheMere
-    })    
-    this.tacheService.closeDossier(this.idDossier)
+  valider() {  
+    this.tacheService.closeDossier(this.dossier.ident)
     this.toastr.success("Le dossier a été validé")
     this.router.navigate(['/gestionBO']);
   }
 
   refuser() {
-    this.listPieces.forEach( lP => {
-      this.idDossier = lP.idTacheMere
-    })
-    this.tacheService.annulerDossier(this.idDossier)
+    this.tacheService.closeDossier(this.dossier.ident)
     this.toastr.warning("Le dossier a été refusé")
     this.router.navigate(['/gestionBO']);
   }
