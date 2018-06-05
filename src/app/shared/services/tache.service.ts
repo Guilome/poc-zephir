@@ -10,7 +10,6 @@ import {t} from '@angular/core/src/render3';
 import {UtilisateurService} from './utilisateur.service';
 import { Contrat } from '../domain/contrat';
 import { Utilisateur, Profil } from '../domain/Utilisateur';
-import { STATUS_CODES } from 'http';
 
 //
 // AVENANT = Avenant
