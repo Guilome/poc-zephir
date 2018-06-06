@@ -5,6 +5,7 @@ import { TacheService } from '../../shared/services/tache.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Router } from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
+import { TitreService } from '../../shared/services/titre.service';
 
 @Component({
   selector: 'app-prendre-tache',
@@ -17,9 +18,14 @@ export class PrendreTacheComponent implements OnInit {
   idGestionnaire: number
   gestionnaire: Utilisateur
 
-  constructor(private utilService: UtilisateurService,private tacheService: TacheService,private router: Router, private toastr: ToastrService) { }
+  constructor(private utilService: UtilisateurService,
+              private tacheService: TacheService,
+              private router: Router, 
+              private toastr: ToastrService, 
+              private titreService: TitreService) { }
 
   ngOnInit() {
+    this.titreService.updateTitre("S'attribuer une tâche")
     this.idGestionnaire = parseInt(localStorage.getItem('USER'))
     this.gestionnaire = this.utilService.getUserById(this.idGestionnaire)
 

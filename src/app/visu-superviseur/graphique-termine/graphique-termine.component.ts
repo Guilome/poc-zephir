@@ -136,12 +136,22 @@ export class GraphiqueTermineComponent implements OnInit {
   }
 
   private getDossierTermine(codeGroupe: Code, typeTri: string, value: any){
-    if (typeTri === "day" || typeTri == "month") {
-      this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateCloture.toLocaleDateString().includes(value))  
-    } else if (typeTri == "week") {     
-      this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < value[1])      
+    if (this.groupeService.getGroupeById(this.idGroupe).code == Code.VERIFICATION) {
+      if (typeTri === "day" || typeTri == "month") {
+        this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateVerification.toLocaleDateString().includes(value))  
+      } else if (typeTri == "week") {     
+        this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateVerification.getDate() && tache.dateVerification.getDate() < value[1])      
+      }
+      this.refreshMapTermine(this.dossiersTermine.filter(d => d.idGroupe == this.idGroupe))
     }
-    this.refreshMapTermine(this.dossiersTermine.filter(d => d.idGroupe == this.idGroupe))
+    else {
+      if (typeTri === "day" || typeTri == "month") {
+        this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateCloture.toLocaleDateString().includes(value))  
+      } else if (typeTri == "week") {     
+        this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < value[1])      
+      }
+      this.refreshMapTermine(this.dossiersTermine.filter(d => d.idGroupe == this.idGroupe))
+    }
   }
 
   private refreshMapTermine(lesDossiers: Tache[]) {

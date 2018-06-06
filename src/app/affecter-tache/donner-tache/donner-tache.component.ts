@@ -6,6 +6,7 @@ import { Utilisateur } from '../../shared/domain/Utilisateur';
 import { log } from 'util';
 import { Router } from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
+import { TitreService } from '../../shared/services/titre.service';
 
 @Component({
   selector: 'donner-tache',
@@ -19,11 +20,11 @@ export class DonnerTacheComponent implements OnInit {
   lesGestionnaires: Utilisateur[]
   idGroupe: number
 
-  constructor(public tacheService: TacheService,private route: Router, private toastr: ToastrService) { }
+  constructor(public tacheService: TacheService,private route: Router, private toastr: ToastrService, private titreService: TitreService) { }
 
   ngOnInit() {
     this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
-    
+    this.titreService.updateTitre("Repartir les tâches")    
   }
 
   traiterTache(tabTache: Tache[]){
