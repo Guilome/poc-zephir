@@ -19,6 +19,11 @@ export class ActionMetierService {
     return this.actionMetierSubject;
   }
 
+  /**
+   * 
+   * @param tache 
+   * @param code 
+   */
   private create(tache: Tache, code: string) {
 
     const a = new Tache(Nature.TACHE);

@@ -116,7 +116,7 @@ export class TacheService {
    */
   closeTacheNonConforme(idTache: number, motif: string): Tache {
     const p = this.getTacheById(idTache);
-    p.message = motif;
+    p.motifNonConformite = motif;
     p.dateCloture = new Date();
 
     return p;

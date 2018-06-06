@@ -173,9 +173,9 @@ export class ConformiteComponent implements OnInit {
 
   listMotifs(): string[] {
     let lList = [];
-    const taille = this.piece.message.split('.').length - 1;
+    const taille = this.piece.motifNonConformite.split('.').length - 1;
     for ( let i = 0 ; i < taille ; i++ ) {
-      lList.push(this.piece.message.split('.')[i]);
+      lList.push(this.piece.motifNonConformite.split('.')[i]);
     }
     return lList;
   }
