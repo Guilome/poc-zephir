@@ -8,7 +8,7 @@
       <table class="table table-borderless">
         <tbody>
           <tr *ngFor="let dossier of lesDossiers">
-            <td>{{dossier.context.contrat.numero}}({{dossier.code}})  {{statutDossier(dossier.ident)}}<!--{{dossier.status | lowercase}} --> </td>
+            <td>{{dossier.context.contrat.numero}}({{dossier.code}})  {{statutDossier(dossier.ident)}}</td>
             <td><input type="checkbox" id="{{dossier.ident}}" [checked]="checkboxDossier" name="dossiers" (change)="return()"></td>
           </tr>
         </tbody>

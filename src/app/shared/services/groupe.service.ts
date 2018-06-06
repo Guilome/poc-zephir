@@ -63,14 +63,6 @@ export class GroupeService {
   }
 
   /**
-   * actualise la liste de taches en fonction du groupe donné en paramétre
-   * @param {Code} codeGroupe
-   */
-  private refreshTaches(codeGroupe: Code) {
-    this.tacheService.listerTaches().subscribe(data => this.taches = data.filter(t => t.idGroupe = this.getIdGroupeByCode(codeGroupe)));
-  }
-
-  /**
    * return l'id du groupe en fonction du code entré en paramétre
    * @param {Code} code
    * @returns {number}
@@ -80,19 +72,42 @@ export class GroupeService {
   }
 
   public dispatcher(codeGroupe: Code) {
-    this.tacheService.dispatcher(codeGroupe);
+    const tailleGestionnaires =  this.utilisateurService.getAll().filter(u => u.profil != Profil.DIRECTEUR && u.idGroupe == this.getIdGroupeByCode(codeGroupe)).length;
+    let list;
+    this.tacheService.listerTaches().subscribe(t => list = t)
+    list.filter(tt => tt.idUtilisateur == null && tt.dateCloture == null && tt.nature == Nature.DOSSIER).forEach( ( tache , i) => {
+      tache.idUtilisateur = this.getUtilisateurByGroupe(this.getIdGroupeByCode(codeGroupe))[i % tailleGestionnaires].ident
+    });
+    this.tacheService.nextListSubject(list);
     this.getDossierEnCours(codeGroupe);
   }
 
-  public corbeille(codeGroupe: Code) {
-    this.tacheService.corbeille(codeGroupe);
+  public dispatcherGestionnaire(utilisateurs: Utilisateur[], taches: Tache[]){
+    const tailleGestionnaires =  utilisateurs.length;
+    taches.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER).forEach( ( tache , i) => {
+      tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
+    });
+  }
+
+  public corbeille(codeGroupe: Code) {  
+    let list;
+    this.tacheService.listerTaches().subscribe(t => list = t)
+    list.filter(tache => tache.dateCloture == null).forEach(tache => tache.idUtilisateur = null);
+    this.tacheService.nextListSubject(list);
     this.getDossierEnCours(codeGroupe);
   }
 
   public corbeilleUser(idGroupe: number): boolean {
-    const ret = this.tacheService.corbeilleUser();
+    let list;
+    const userId = +localStorage.getItem('USER');
+    if(userId != null) {
+      this.tacheService.listerTaches().subscribe(t => list = t)
+      list.filter(tache => tache.idUtilisateur === userId).forEach(tache => tache.idUtilisateur = null);
+      this.tacheService.nextListSubject(list);
+      return true;
+    }
     this.refreshMapEnCours(idGroupe);
-    return ret;
+    return false;
   }
 
   public isVerification(idUser: number): boolean {

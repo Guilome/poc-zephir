@@ -36,15 +36,15 @@ export class TacheNonAffecteComponent implements OnInit {
     /* S'il appartient à aucun de ces deux groupes il verra tous les dossiers */
     const idUser = +localStorage.getItem('USER');
     if ( this.groupeService.isVerification(idUser)){
-      this.lesDossiers = this.lesDossiers.filter(dos => this.tacheService.getStatutDossier(dos.ident) == 'À vérifier');
+      this.lesDossiers = this.lesDossiers.filter(dos => this.statutDossier(dos.ident) == 'À vérifier');
     } else if (this.groupeService.isValidation(idUser)){
-      this.lesDossiers = this.lesDossiers.filter(dos => this.tacheService.getStatutDossier(dos.ident) == 'À valider');
+      this.lesDossiers = this.lesDossiers.filter(dos => this.statutDossier(dos.ident) == 'À valider');
     }
   }
 
   //Retourne les tâches non affectées et selectionnées
   return(){   
-
+    this.dossiers = []
     if (this.collectDossier.length < 7) {
       var collectInput=document.getElementsByTagName('input')      
       for (let i = 0; i < collectInput.length; i++) {
@@ -78,14 +78,18 @@ export class TacheNonAffecteComponent implements OnInit {
 
   // Retourne l'ID de toutes les tâches non affectées
   returnAll(){
-    //Rempli la liste de l'ID de toute les tâches
-    if (this.dossiers.length < 7) {
-      this.dossiers = []
-      this.lesDossiers.forEach(tache => {
-        this.dossiers.push(tache)
-        console.log(tache.libelle)        
-      });
+    if ((<HTMLInputElement> document.getElementById('allDossier')).checked) {
+      //Rempli la liste de l'ID de toute les tâches
+      if (this.dossiers.length < 7) {
+        this.dossiers = []
+        this.lesDossiers.forEach(tache => {
+          this.dossiers.push(tache)
+        });
+      }
     }
+    else {
+      this.dossiers = []
+    }  
     this.tacheAssigner.emit(this.dossiers)
   }
 

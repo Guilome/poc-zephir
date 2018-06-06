@@ -7,6 +7,7 @@ import { log } from 'util';
 import { Router } from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import { TitreService } from '../../shared/services/titre.service';
+import { GroupeService } from '../../shared/services/groupe.service';
 
 @Component({
   selector: 'donner-tache',
@@ -20,7 +21,11 @@ export class DonnerTacheComponent implements OnInit {
   lesGestionnaires: Utilisateur[]
   idGroupe: number
 
-  constructor(public tacheService: TacheService,private route: Router, private toastr: ToastrService, private titreService: TitreService) { }
+  constructor(private tacheService: TacheService,
+              private route: Router, 
+              private toastr: ToastrService, 
+              private titreService: TitreService, 
+              private groupeService: GroupeService) { }
 
   ngOnInit() {
     this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
@@ -50,7 +55,7 @@ export class DonnerTacheComponent implements OnInit {
         });    
       }
       else {
-        this.tacheService.dispatcherGestionnaire(this.gestionnaires, this.dossiers)
+        this.groupeService.dispatcherGestionnaire(this.gestionnaires, this.dossiers)
       }
       this.route.navigate(['/GestionGroupe/'+ this.idGroupe])
     }    

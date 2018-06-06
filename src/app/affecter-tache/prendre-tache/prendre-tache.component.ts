@@ -44,8 +44,8 @@ export class PrendreTacheComponent implements OnInit {
         dossier.idUtilisateur = this.idGestionnaire
         let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
         pieces.forEach(piece => piece.idUtilisateur = this.idGestionnaire)
-      });    
+      });   
+      this.router.navigate(['gestionBO']) 
     }
-    this.router.navigate(['gestionBO'])
   }
 }

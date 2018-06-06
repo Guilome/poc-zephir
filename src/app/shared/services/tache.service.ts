@@ -35,12 +35,18 @@ export class TacheService {
     return this.tacheSubject;
   }
 
+  /** Permet l'ajout d'une liste a tacheSubject
+   * 
+   * @param list 
+   */
+  nextListSubject(list: any){
+    this.tacheSubject.next(list)
+  }
+
   addTache(tache: Tache) {
     tache.ident = this.listTaches[(this.listTaches.length - 1)].ident + 1;
     this.listTaches.push(tache);
     this.tacheSubject.next(this.listTaches);
-
-
   }
 
   getTacheById(id: number) {
@@ -66,7 +72,6 @@ export class TacheService {
    */
   closePieceConforme(idTache: number): Tache {
     const p = this.getPieceById(idTache);
-    //p.status = Status.OK;
     p.dateVerification  = new Date();
     p.idUtilisateurVerification = p.idUtilisateur;
     
@@ -80,14 +85,10 @@ export class TacheService {
   closePieceNonConforme(idTache: number, motifNonConformite: string) {
     const p = this.getTacheById(idTache);
     p.motifNonConformite = motifNonConformite;
-    //p.status = Status.A_VERIFIER;
     p.dateCloture = new Date();
     p.dateVerification = p.dateCloture;
   }
-  /*private setDateCloture(idTache: number): Tache {
-    this.getTacheById(idTache).dateCloture = new Date();
-    return this.getTacheById(idTache);
-  }*/
+
 
   /**
    * Passer le status de "A_VERIFIER" à "A_VALIDER"
@@ -98,10 +99,9 @@ export class TacheService {
    */
   toEtapeValidation(idTache: number) {
     const tache = this.getTacheById(idTache);
-    //appel web service pour récupérer l'id du groupe validation 
-    tache.idGroupe = 2; // groupe validation ident : 2
+    //appel web service pour récupérer l'id du groupe validati on
+    tache.idGroupe = 2;
     tache.dateVerification = new Date();
-    //tache.idUtilisateur = parseInt(localStorage.getItem('USER'));
     tache.idUtilisateurVerification = tache.idUtilisateur;
 
     tache.idUtilisateur = null;
@@ -127,7 +127,6 @@ export class TacheService {
    */
   closeTacheConforme(idTache: number){
     const tache = this.getPieceById(idTache);
-    //tache.status = Status.OK;
     tache.idUtilisateurCloture = tache.idUtilisateur;
     tache.dateCloture = new Date();
   }
@@ -147,7 +146,6 @@ export class TacheService {
         const c = new Contrat(450020+i,'SOLUTIO')
         c.numero = 'S140510'+ i;
         lTache.context = new Context(330010+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
-        lTache.idGroupe = 1;
         lTache.priorite = (i%10) + 1;
         lTache.code = "199_AFN";
         const date = '05/' + ((i%31) + 1) + '/2018';
@@ -157,9 +155,8 @@ export class TacheService {
         lTache.dateReception = new Date('05/01/2018');
         const idUser = ((Math.floor(Math.random() * (999999 - 100000)) + 100000) % 6 ) + 1;
         
-        lTache.idUtilisateur = this.UtilisateurService.getUserById(idUser).ident;
-        lTache.idUtilisateurVerification = this.UtilisateurService.getUserById(idUser).ident;
-        lTache.idUtilisateurCloture = this.UtilisateurService.getUserById(idUser).ident;
+        lTache.idUtilisateurVerification = [1, 4, 6][i % 3];
+        lTache.idUtilisateurCloture = [2, 3, 5][i % 3];
         this.listTaches.push(lTache);
     }
   }
@@ -236,37 +233,6 @@ export class TacheService {
           'ASSUR INVEST',
           'H/ZEPHIR ASSURANCES'
   ]
-  public dispatcher(codeGroupe: Code) {
-    const tailleGestionnaires =  this.UtilisateurService.getAll().filter(u => u.profil != Profil.DIRECTEUR).length;
-    this.listTaches.filter(tt => tt.idUtilisateur == null && tt.dateCloture == null && tt.nature == Nature.DOSSIER)
-      .forEach( ( tache , i) => {
-      tache.idUtilisateur = this.UtilisateurService.getUserByIndex(i % tailleGestionnaires).ident;
-      });
-    this.tacheSubject.next(this.listTaches);
-  }
-
-  public dispatcherGestionnaire(utilisateurs: Utilisateur[], taches: Tache[]){
-    const tailleGestionnaires =  utilisateurs.length;
-    taches.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER).forEach( ( tache , i) => {
-      tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
-    });
-  }
-
-  public corbeille(codeGroupe: Code) {
-    this.listTaches.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER).forEach(tache => tache.idUtilisateur = null);
-    this.tacheSubject.next(this.listTaches);
-  }
-
-  public corbeilleUser(): boolean {
-    const userId = parseInt(localStorage.getItem('USER'), 10);
-    if(userId != null) {
-      this.listTaches.filter(tache => tache.idUtilisateur === userId && tache.nature == Nature.DOSSIER).forEach(tache => tache.idUtilisateur = null);
-      this.tacheSubject.next(this.listTaches);
-      return true;
-    }
-    return false;
-  }
-
 
   public getPiecesByContext(context: Context): Tache[]{
     return this.listTaches.filter(piece => piece.context == context && piece.nature == Nature.PIECE)
@@ -284,7 +250,7 @@ export class TacheService {
     return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture != null)
   }
 
-  public getDossierEcours(){
+  public getDossierEncours(){
     return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture == null)
   }
 

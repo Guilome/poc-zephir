@@ -25,20 +25,21 @@ export class TableTreeContratComponent implements OnInit {
 
   constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService, private route: Router, private modalService: NgbModal) {
     this.idCurrentUser = parseInt(localStorage.getItem('USER'));
-    this.tacheService.listerTaches().subscribe(data => { 
+    this.tacheService.listerTaches().subscribe(data => {       
       this.dossiers = data.filter( d => d.nature === Nature.DOSSIER && d.idUtilisateur === this.idCurrentUser && d.dateCloture == null)
+      this.dossierAffichage = []
+      this.dossiers.forEach(dossier => {
+        this.dossierAffichage.push({ident: dossier.ident, numContrat: dossier.context.contrat.numero, 
+                                    nomClient: dossier.context.nomAppelClient, nomIntermediaire: dossier.context.nomAppelIntermediaire, 
+                                    status: this.tacheService.getStatutDossier(dossier.ident)})
+        this.lesPieces = this.tacheService.getPiecesByDossier(dossier.ident)
+        this.dossierPieces.push({bool:false, dossier: dossier.ident, pieces: this.lesPieces})   
+      })
      })
   }
 
   ngOnInit() {    
-    this.dossiers.forEach(dossier => {
-      this.dossierAffichage.push({ident: dossier.ident, numContrat: dossier.context.contrat.numero, 
-                                  nomClient: dossier.context.nomAppelClient, nomIntermediaire: dossier.context.nomAppelIntermediaire, 
-                                  status: this.tacheService.getStatutDossier(dossier.ident)})
-      //this.idContext = dossier.context.ident 
-      this.lesPieces = this.tacheService.getPiecesByDossier(dossier.ident)
-      this.dossierPieces.push({bool:false, dossier: dossier.ident, pieces: this.lesPieces})   
-    })
+    
   }
 
   toggleChildren(idTacheMere: number){           

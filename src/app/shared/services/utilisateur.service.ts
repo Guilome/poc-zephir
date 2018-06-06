@@ -11,18 +11,13 @@ export class UtilisateurService {
   constructor() {
 
     const listUsers = [];
-    listUsers.push(new Utilisateur(1,	'BOYER',	'Eric',	Profil.DIRECTEUR,2));
-    listUsers.push(new Utilisateur(2,	'DUPONT',	'Camille', Profil.GESTIONNAIRE,1));
-    listUsers.push(new Utilisateur(3,	'BARBIER',	'Cédric',	Profil.GESTIONNAIRE,2));
-    listUsers.push(new Utilisateur(4,	'MOREAU',	'Dominique',	Profil.GESTIONNAIRE,2));
-    listUsers.push(new Utilisateur(5,	'FOURNIER',	'Martine',	Profil.GESTIONNAIRE,1));
-    listUsers.push(new Utilisateur(6,	'ROUSSEAU',	'Laurence',	Profil.SUPERVISEUR,2));
-    listUsers.push(new Utilisateur(7,	'VOLTAIRE',	'Louis',	Profil.SUPERVISEUR,1));
-    listUsers.push(new Utilisateur(8,	'TOUSSAINT',	'Charles',	Profil.GESTIONNAIRE,3));
-    listUsers.push(new Utilisateur(9,	'GERMAIN',	'Irène',	Profil.GESTIONNAIRE,3));
-    listUsers.push(new Utilisateur(10, 'ISIDORE',	'Paul',	Profil.SUPERVISEUR,3));
-
-
+    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille', Profil.GESTIONNAIRE,1));
+    listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	Profil.GESTIONNAIRE,2));
+    listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	Profil.GESTIONNAIRE,2));
+    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	Profil.GESTIONNAIRE,1));
+    listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	Profil.SUPERVISEUR,2));
+    listUsers.push(new Utilisateur(6,	'VOLTAIRE',	'Louis',	Profil.SUPERVISEUR,1));
+    listUsers.push(new Utilisateur(7,	'BOYER',	'Eric',	Profil.DIRECTEUR,2));
     this.usersSubject.next(listUsers);
   }
 
@@ -32,10 +27,6 @@ export class UtilisateurService {
 
   getName(idUser: number) {
     return this.getUserById(idUser).nom;
-  }
-
-  getProfil(profil: Profil) {
-    return this.getUserById(parseInt(profil, 10)).profil;
   }
 
   public getUserById(ident: number) {
@@ -51,5 +42,7 @@ export class UtilisateurService {
     }
     return null;
   }
+
+  
 
 }

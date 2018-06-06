@@ -83,6 +83,7 @@ export class GestionComponent implements OnInit {
 
   ngOnInit() {
     this.idCurrentUser = parseInt(localStorage.getItem('USER'));
+    this.utilisateur = this.utilService.getUserById(this.idCurrentUser)
 
     if (this.titre === 'Actions métier') {
       this.mesActionsMetier();
@@ -90,7 +91,6 @@ export class GestionComponent implements OnInit {
       this.actionMetier = true;
       this.numId = 2;
     } else if (this.titre === 'Mes groupes') {
-      this.utilisateur = this.utilService.getUserById(this.idCurrentUser)
       this.profil = this.utilisateur.profil
       this.groupes = this.groupeService.getAll().filter( g => g.ident == this.utilisateur.idGroupe)
       this.groupeBoolean = true;
@@ -212,7 +212,7 @@ export class GestionComponent implements OnInit {
   /**
    * Les tâches qui sont affectées à l'utilisateur courant seront misent en corbeille
    */
-  userCorbeille() {
+  userCorbeille() {    
     if ( this.groupeService.corbeilleUser(this.utilisateur.idGroupe) ) {
       this.toastr.success('Vos taches ont été misent à la corbeille');
     }

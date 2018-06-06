@@ -142,7 +142,8 @@ export class GraphiqueTermineComponent implements OnInit {
       } else if (typeTri == "week") {     
         this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateVerification.getDate() && tache.dateVerification.getDate() < value[1])      
       }
-      this.refreshMapTermine(this.dossiersTermine.filter(d => d.idGroupe == this.idGroupe))
+      
+      this.refreshMapTermine(this.dossiersTermine)
     }
     else {
       if (typeTri === "day" || typeTri == "month") {
@@ -150,18 +151,32 @@ export class GraphiqueTermineComponent implements OnInit {
       } else if (typeTri == "week") {     
         this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < value[1])      
       }
-      this.refreshMapTermine(this.dossiersTermine.filter(d => d.idGroupe == this.idGroupe))
+      
+      this.refreshMapTermine(this.dossiersTermine)
     }
   }
 
   private refreshMapTermine(lesDossiers: Tache[]) {
-    this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
-    for (const d of lesDossiers) {
-      let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateur)[0];
-      if (gestionnaire.idGroupe == this.idGroupe) {
-        const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
-        const sum = this.mapSubjectTermine.get(key);
-        this.mapSubjectTermine.set(key,  sum + 1);
+    if (this.groupeService.getGroupeById(this.idGroupe).code == Code.VERIFICATION) {
+      this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
+      for (const d of lesDossiers) {    
+        let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurVerification)[0];
+        if (gestionnaire.idGroupe == this.idGroupe) {
+          const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
+          const sum = this.mapSubjectTermine.get(key);
+          this.mapSubjectTermine.set(key,  sum + 1);
+        }
+      }
+    }
+    else {
+      this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
+      for (const d of lesDossiers) {    
+        let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurCloture)[0];
+        if (gestionnaire.idGroupe == this.idGroupe) {
+          const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
+          const sum = this.mapSubjectTermine.get(key);
+          this.mapSubjectTermine.set(key,  sum + 1);
+        }
       }
     }
   }
