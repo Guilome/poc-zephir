@@ -9,49 +9,58 @@
   <div  class="col-3">
     <h4>Statut : <label id="idLabelStatus" ></label> </h4>
 
-    <h5>Pièces justificatives : </h5>
-    <div class="nav flex-column nav-pills ">
+    <div *ngIf="dossier != null">
+        <h5>Pièces justificatives : </h5>
+        <div class="nav flex-column nav-pills ">
+          
+              <a class="nav-link" (click)="detailPiece(p,a)" routerLinkActive="active" *ngFor="let p of listPieces"  [attr.id]="'link'+p.ident" #a>
+                  <div >
+                      <div class="row">
+                        {{p.libelle}}
+                        <div class="col" >
+                              <div *ngIf="p.status != 'Ok' && p.dateCloture != null; else block"> <!-- IF-->
+                                  <span (click)="detailPiece(p.ident)" class="badge badge-danger float-right">Non conforme</span>
+                              </div>
+                              <ng-template #block> <!-- ELSE-->
+                                  <span  *ngIf="p.status == 'À vérifier'" class="badge badge-warning float-right">À vérifier</span>
+                                  <span  *ngIf="p.status == 'À valider'" class="badge badge-info float-right">À valider </span>
+                                  <span  *ngIf="p.status == 'Ok'" class="badge badge-success float-right">Validée</span>
+                              </ng-template>
+                        </div>
+                      </div>
+                </div>
+              </a>
+
+          </div>
 
 
-
-      
-          <a class="nav-link" (click)="detailPiece(p,a)" routerLinkActive="active" *ngFor="let p of listPieces"  [attr.id]="'link'+p.ident" #a>
-              <div >
-                  <div class="row">
-                    {{p.libelle}}
-                    <div class="col" >
-                          <div *ngIf="p.status != 'Ok' && p.dateCloture != null; else block"> <!-- IF-->
-                              <span (click)="detailPiece(p.ident)" class="badge badge-danger float-right">Non conforme</span>
-                          </div>
-                          <ng-template #block> <!-- ELSE-->
-                              <span  *ngIf="p.status == 'À vérifier'" class="badge badge-warning float-right">À vérifier</span>
-                              <span  *ngIf="p.status == 'À valider'" class="badge badge-info float-right">À valider </span>
-                              <span  *ngIf="p.status == 'Ok'" class="badge badge-success float-right">Validée</span>
-                          </ng-template>
-                    </div>
-                  </div>
-            </div>
-          </a>
-
+      <div class="row">
+        <h5>Actions Métier : </h5>
       </div>
-
-
-  <div class="row">
-    <h5>Actions Métier : </h5>
-  </div>
-  <div *ngFor="let act of listActionsMetier">
-    <div class="row"><span tooltip="{{act.message}}"  >{{act.libelle}}</span></div>
-  </div>
-  <div class="row">
-    <input class="col-12 btn btn-success" type="button" value="Valider" (click)="valider()"/>
-    <input class="col-12 btn btn-danger mt-1" type="button" value="Refuser"(click)="refuser()"/>
-  </div>
+      <div *ngFor="let act of listActionsMetier">
+        <div class="row"><span tooltip="{{act.message}}"  >{{act.libelle}}</span></div>
+      </div>
+      <div class="row">
+        <input class="col-12 btn btn-success" type="button" value="Valider" (click)="valider()"/>
+        <input class="col-12 btn btn-danger mt-1" type="button" value="Refuser"(click)="refuser()"/>
+      </div>
+    </div>
   </div>
   <!-- END left screnn-->
 
-  <div class="col-5">
+  <!-- begin DOCUMENT -->
+  <!-- Vérification -->
+
+  <div *ngIf="getDossierStatut() === 'À vérifier'" class="col-7">
+      <app-apercu-document></app-apercu-document>
+  </div>
+
+  <!-- Validation -->
+  <div  *ngIf="getDossierStatut() === 'À valider'" class="col-5">
     <app-apercu-document></app-apercu-document>
   </div>
+
+  <!-- end DOCUMENT-->
 
   <div class="col" id="idContentRight">
     <app-conformite ></app-conformite>

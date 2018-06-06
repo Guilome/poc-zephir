@@ -20,7 +20,7 @@ export class TableTreeContratComponent implements OnInit {
   dossierStatut: Status
   idCurrentUser;
   firstIdent;
-  idContext
+  //idContext
   private currentModal:NgbModalRef;
 
   constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService, private route: Router, private modalService: NgbModal) {
@@ -35,7 +35,7 @@ export class TableTreeContratComponent implements OnInit {
       this.dossierAffichage.push({ident: dossier.ident, numContrat: dossier.context.contrat.numero, 
                                   nomClient: dossier.context.nomAppelClient, nomIntermediaire: dossier.context.nomAppelIntermediaire, 
                                   status: this.tacheService.getStatutDossier(dossier.ident)})
-      this.idContext = dossier.context.ident 
+      //this.idContext = dossier.context.ident 
       this.lesPieces = this.tacheService.getPiecesByDossier(dossier.ident)
       this.dossierPieces.push({bool:false, dossier: dossier.ident, pieces: this.lesPieces})   
     })
@@ -55,7 +55,8 @@ export class TableTreeContratComponent implements OnInit {
         this.firstIdent = dp.pieces[0].ident
       }
     })
-    this.route.navigate(['/TraitementTache', { id: this.idContext, piece: this.firstIdent}])
+    const dossier = this.tacheService.getDossierById(idDossier);
+    this.route.navigate(['/TraitementTache', { id: dossier.context.ident, piece: this.firstIdent}])
   }
 
   openModal(modal, idDossier){

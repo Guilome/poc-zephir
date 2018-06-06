@@ -275,8 +275,8 @@ export class TacheService {
     return this.listTaches.filter(piece => piece.context.ident == idContext && piece.nature == Nature.PIECE)
   }
 
-  public getDossierByIdContext(idContext: number): Tache{
-    return this.listTaches.find(dossier => dossier.context.ident == idContext && dossier.nature == Nature.DOSSIER)
+  public getDossierByIdContext(idContext: number, userId: number): Tache{
+    return this.listTaches.find(dossier => dossier.context.ident == idContext && dossier.nature == Nature.DOSSIER && dossier.idUtilisateur == userId)
   }
 
   public getDossierTermine(){

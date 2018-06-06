@@ -1,14 +1,14 @@
 <div ng-app="app">
   <div class="card">
     <div class="card-header">
-      Taches 
+      Taches ({{lesDossiers.length}})
       <input class="mt-2 float-right" type="checkbox" id="allDossier" [checked]="isAllDossiers()" name="dossiers" (change)="checkboxDossier = !checkboxDossier; returnAll()">
     </div>
     <div class="card-body">
       <table class="table table-borderless">
         <tbody>
           <tr *ngFor="let dossier of lesDossiers">
-            <td>{{dossier.context.contrat.numero}}({{dossier.code}})  {{dossier.status | lowercase}}</td>
+            <td>{{dossier.context.contrat.numero}}({{dossier.code}})  {{statutDossier(dossier.ident)}}<!--{{dossier.status | lowercase}} --> </td>
             <td><input type="checkbox" id="{{dossier.ident}}" [checked]="checkboxDossier" name="dossiers" (change)="return()"></td>
           </tr>
         </tbody>

@@ -2,6 +2,8 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { TacheService } from '../../shared/services/tache.service';
 import { Tache, Nature } from '../../shared/domain/Tache';
 import { LowerCasePipe } from '@angular/common';
+import { UtilisateurService } from '../../shared/services/utilisateur.service';
+import { GroupeService } from '../../shared/services/groupe.service';
 
 @Component({
   selector: 'app-tache-non-affecte',
@@ -18,7 +20,9 @@ export class TacheNonAffecteComponent implements OnInit {
   @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
   collectDossier = []
 
-  constructor(public tacheService: TacheService) {
+  constructor(private  tacheService: TacheService,
+              private utilisateurService: UtilisateurService,
+              private groupeService: GroupeService) {
     this.tacheService.listerTaches().subscribe(data => this.lesDossiers = data)
     this.trierListe()
   }
@@ -28,7 +32,14 @@ export class TacheNonAffecteComponent implements OnInit {
   }  
 
   trierListe() {
-    this.lesDossiers = this.lesDossiers.filter(t => t.idUtilisateur == null && t.nature === Nature.DOSSIER)
+    this.lesDossiers = this.lesDossiers.filter(t => t.idUtilisateur == null && t.nature === Nature.DOSSIER);
+    /* S'il appartient à aucun de ces deux groupes il verra tous les dossiers */
+    const idUser = +localStorage.getItem('USER');
+    if ( this.groupeService.isVerification(idUser)){
+      this.lesDossiers = this.lesDossiers.filter(dos => this.tacheService.getStatutDossier(dos.ident) == 'À vérifier');
+    } else if (this.groupeService.isValidation(idUser)){
+      this.lesDossiers = this.lesDossiers.filter(dos => this.tacheService.getStatutDossier(dos.ident) == 'À valider');
+    }
   }
 
   //Retourne les tâches non affectées et selectionnées
@@ -89,6 +100,10 @@ export class TacheNonAffecteComponent implements OnInit {
       }
     }  
     return true;
+  }
+
+  statutDossier(idDossier: number): string {
+    return this.tacheService.getStatutDossier(idDossier);
   }
 }
 

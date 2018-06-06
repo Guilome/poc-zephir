@@ -65,8 +65,8 @@ export class ConformiteComponent implements OnInit {
         
         this.tacheService.toEtapeValidation(this.piece.ident);
         //this.toastr.success('Le status de la tache a été modifier en <b>À VALIDER</b>', '', {enableHtml: true});
-        this.toastr.success('La pièce a été affectée à la bannette  <b>VALIDATION</b>', '', {enableHtml: true});
-
+        this.toastr.success('La pièce a été <b>vérifiée</b>', '', {enableHtml: true});
+        this.docSuivant();
       }
 
     } else if (this.piece.status === Status.A_VALIDER) {
@@ -160,9 +160,9 @@ export class ConformiteComponent implements OnInit {
         idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
       }
     }
-    // le status du dossier est toujours en vérification car une des pièces est à vérifier
+    // le status du dossier est toujours en vérification, car une des pièces est au statut "à vérifier"
     if(!bVerification){
-      // Si l'utilisateur ne pas parti du groupe validation 
+      // Si l'utilisateur ne fait pas parti du groupe validation 
       if( !this.groupeValidation()) {
           // Passage du dossier à l'étape de validation 
           this.tacheService.toEtapeValidation(this.piece.idTacheMere);

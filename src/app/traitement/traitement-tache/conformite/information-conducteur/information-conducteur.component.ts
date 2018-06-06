@@ -66,8 +66,8 @@ export class InformationConducteurComponent implements OnInit {
     } else {
       this.tacheService.closeTacheConforme(this.currentTache.ident);
       this.titleStatus();
-      (<HTMLInputElement>document.getElementById('fieldset1')).disabled = true;
-      (<HTMLInputElement>document.getElementById('fieldset2')).disabled = true;
+      //(<HTMLInputElement>document.getElementById('fieldset1')).disabled = true;
+      //(<HTMLInputElement>document.getElementById('fieldset2')).disabled = true;
       this.toastr.success('La piece a été validée.');
       this.docSuivant();
     }

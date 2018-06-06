@@ -31,17 +31,24 @@ export class TraitementTacheComponent implements OnInit {
       // list des actions métiers 
       this.actionMetierService.getAllByIdContext(+params.id).subscribe(data => this.listActionsMetier = data);
       // Status 
-      this.dossier = this.tacheService.getDossierByIdContext(+params.id)
+      this.dossier = this.tacheService.getDossierByIdContext(+params.id, +localStorage.getItem('USER'))
+      
       let idLabelStatus = document.getElementById('idLabelStatus');
       idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-      for (let p of this.listPieces) {
-        if(this.tacheService.getStatutDossier(this.dossier.ident) === 'À vérifier') {
-          idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
-          return;
+      if (this.dossier != null){
+        console.log(this.dossier.ident);
+        
+        for (let p of this.listPieces) {
+          if(this.tacheService.getStatutDossier(this.dossier.ident) === 'À vérifier') {
+            idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
+            return;
+          }
+          if (this.tacheService.getStatutDossier(this.dossier.ident) === 'À valider') {
+            idLabelStatus.innerHTML = '<span style="color: #00b3ee">Validation</span>';
+          }
         }
-        if (this.tacheService.getStatutDossier(this.dossier.ident) === 'À valider') {
-          idLabelStatus.innerHTML = '<span style="color: #00b3ee">Validation</span>';
-        }
+      } else {
+        idLabelStatus.innerHTML = '<span style="color: red">Dossier non existant</span>'
       }
     });
   }
@@ -77,5 +84,9 @@ export class TraitementTacheComponent implements OnInit {
     this.tacheService.closeDossier(this.dossier.ident)
     this.toastr.warning("Le dossier a été refusé")
     this.router.navigate(['/gestionBO']);
+  }
+
+  getDossierStatut(): string {
+    return this.tacheService.getStatutDossier(this.dossier.ident);
   }
 }
