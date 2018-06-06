@@ -1,5 +1,5 @@
 .row{
-  margin-top: 50px;
+  margin-top: 20px;
 }
 a:hover {
   background-color: lightgrey;
@@ -7,5 +7,5 @@ a:hover {
 
 .bg-row {
     background-color: lightgray;
-    border-right:20px solid darkgray;
+    border-right:10px solid darkgray;
   }

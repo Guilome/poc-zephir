@@ -1,15 +1,15 @@
-<ng-template *ngIf="ifConnexion()">
-  <div id="myNav" class="overlay margin10" >
-    <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
-    <div class="overlay-content">
-      <a href="#">Recherche Personne</a>
-      <a href="#">Recherche Contrat</a>
-      <a href="#">Recherche Sinistre</a>
-      <a href="#">Nouveau devis</a>
-      <a href="#">Nouveau Sinistre</a>
-      <a href="#">Comptabilité technique</a>
-      <a href="#">Transverse</a>
-    </div>
-  </div>
-  <span style="font-size:30px;cursor:pointer" (click)="openNav()"> <h2>&#9776; {{titre}} </h2></span>
-</ng-template>
+  <div *ngIf="ifConnexion()" >
+      <div id="myNav" class="overlay" >
+        <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+        <div class="overlay-content">
+          <a href="#">Recherche Personne</a>
+          <a href="#">Recherche Contrat</a>
+          <a href="#">Recherche Sinistre</a>
+          <a href="#">Nouveau devis</a>
+          <a href="#">Nouveau Sinistre</a>
+          <a href="#">Comptabilité technique</a>
+          <a href="#">Transverse</a>
+        </div>
+      </div>
+      <span style="font-size:30px;cursor:pointer" (click)="openNav()"> <h2>&#9776; {{titre}} </h2></span>
+</div>

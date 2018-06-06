@@ -14,7 +14,6 @@
         <div class="nav flex-column nav-pills ">
           
               <a class="nav-link" (click)="detailPiece(p,a)" routerLinkActive="active" *ngFor="let p of listPieces"  [attr.id]="'link'+p.ident" #a>
-                  <div >
                       <div class="row">
                         {{p.libelle}}
                         <div class="col" >
@@ -28,38 +27,39 @@
                               </ng-template>
                         </div>
                       </div>
-                </div>
               </a>
 
           </div>
 
 
-      <div class="row">
-        <h5>Actions Métier : </h5>
-      </div>
-      <div *ngFor="let act of listActionsMetier">
-        <div class="row"><span tooltip="{{act.message}}"  >{{act.libelle}}</span></div>
-      </div>
-      <div class="row">
+          <div *ngIf="listActionsMetier.length > 0 ">
+              <div class="row" >
+                <h5>Actions Métier : </h5>
+              </div>
+              <div *ngFor="let act of listActionsMetier">
+                <div class="row"><span tooltip="{{act.message}}"  >{{act.libelle}}</span></div>
+              </div>
+          </div>  
+
+      <div class="row"  *ngIf="getDossierStatut() === 'À valider'">
         <input class="col-12 btn btn-success" type="button" value="Valider" (click)="valider()"/>
         <input class="col-12 btn btn-danger mt-1" type="button" value="Refuser"(click)="refuser()"/>
       </div>
+
     </div>
   </div>
   <!-- END left screnn-->
 
   <!-- begin DOCUMENT -->
-  <!-- Vérification -->
+    <!-- Vérification -->
+    <div *ngIf="getDossierStatut() === 'À vérifier'" class="col-7">
+        <app-apercu-document></app-apercu-document>
+    </div>
 
-  <div *ngIf="getDossierStatut() === 'À vérifier'" class="col-7">
+    <!-- Validation -->
+    <div  *ngIf="getDossierStatut() === 'À valider'" class="col-5">
       <app-apercu-document></app-apercu-document>
-  </div>
-
-  <!-- Validation -->
-  <div  *ngIf="getDossierStatut() === 'À valider'" class="col-5">
-    <app-apercu-document></app-apercu-document>
-  </div>
-
+    </div>
   <!-- end DOCUMENT-->
 
   <div class="col" id="idContentRight">
