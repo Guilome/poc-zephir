@@ -92,8 +92,7 @@ export class GestionComponent implements OnInit {
     } else if (this.titre === 'Mes groupes') {
       this.utilisateur = this.utilService.getUserById(this.idCurrentUser)
       this.profil = this.utilisateur.profil
-      this.groupes = this.groupeService.getAll()
-      this.groupes = this.groupes.filter(f => f.utilisateurs.indexOf(this.utilisateur) != -1) 
+      this.groupes = this.groupeService.getAll().filter( g => g.ident == this.utilisateur.idGroupe)
       this.groupeBoolean = true;
       this.numId = 3;
     } else if (this.titre === 'Mes Notes') {
@@ -214,7 +213,7 @@ export class GestionComponent implements OnInit {
    * Les tâches qui sont affectées à l'utilisateur courant seront misent en corbeille
    */
   userCorbeille() {
-    if ( this.groupeService.corbeilleUser() ) {
+    if ( this.groupeService.corbeilleUser(this.utilisateur.idGroupe) ) {
       this.toastr.success('Vos taches ont été misent à la corbeille');
     }
   }

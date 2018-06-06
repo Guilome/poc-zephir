@@ -8,6 +8,7 @@ import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
 })
 export class GestionnaireComponent implements OnInit {
 
+  idGroupe: number
   lesGestionnaires: Utilisateur[]
   allChecked: Boolean
   gestionnaires:Utilisateur[] = []
@@ -19,13 +20,14 @@ export class GestionnaireComponent implements OnInit {
 
   }
 
-  ngOnInit() {    
+  ngOnInit() {  
+    this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
     this.lesGestionnaires = this.GestionnaireService.getAll() 
     this.trierListe()   
   }
 
   trierListe() {
-    this.lesGestionnaires = this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR)
+    this.lesGestionnaires = this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR && g.idGroupe == this.idGroupe)
   }
 
   //Retourne les gestionnaires selectionnés

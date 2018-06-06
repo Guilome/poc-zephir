@@ -20,13 +20,11 @@ export class GroupeService {
   utilisateurs = []
 
   constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {
-    
-    this.utilisateurs = utilisateurService.getAll().filter(u => u.profil != Profil.DIRECTEUR)
-    
-    this.groupes.push(new Groupe(1, Code.VERIFICATION, this.utilisateurs));
-    this.groupes.push(new Groupe(2, Code.VALIDATION, []));
-    this.groupes.push(new Groupe(3, Code.AVENANT, []));
-    this.groupes.push(new Groupe(4, Code.SOUSCRIPTION, []));
+      
+    this.groupes.push(new Groupe(1, Code.VERIFICATION));
+    this.groupes.push(new Groupe(2, Code.VALIDATION));
+    this.groupes.push(new Groupe(3, Code.AVENANT));
+    this.groupes.push(new Groupe(4, Code.SOUSCRIPTION));
 
   }
 
@@ -39,17 +37,17 @@ export class GroupeService {
   }
 
   getDossierEnCours(codeGroupe: Code): BehaviorSubject<Map<string, number>>{
-    this.tacheService.listerTaches().subscribe(data => this.dossiersEnCours = data.filter(t => t.idGroupe = this.getIdGroupeByCode(codeGroupe)));
+    this.tacheService.listerTaches().subscribe(data => this.dossiersEnCours = data.filter(t => t.idGroupe == this.getIdGroupeByCode(codeGroupe)));
     this.dossiersEnCours = this.dossiersEnCours.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER)
-    this.refreshMapEnCours()
+    this.refreshMapEnCours(this.getIdGroupeByCode(codeGroupe))
     return this.mapEnCours
   }
 
-  private refreshMapEnCours() {
+  private refreshMapEnCours(idGroupe: number) {
     const map = new Map<string, number>();
     // liste des gestionnaires : Initialisation
     map.set('Non Affectées', 0);
-    let gestionnaires = this.utilisateurService.getAll().filter(g => g.profil != Profil.DIRECTEUR).forEach(g => map.set( g.nom+' '+g.prenom, 0))
+    let gestionnaires = this.getUtilisateurByGroupe(idGroupe).filter(g => g.profil != Profil.DIRECTEUR).forEach(g => map.set( g.nom+' '+g.prenom, 0))
     for (const t of this.dossiersEnCours) {
       if (t.idUtilisateur != null) {
         let gestionnaire = this.utilisateurService.getUserById(t.idUtilisateur)
@@ -91,9 +89,9 @@ export class GroupeService {
     this.getDossierEnCours(codeGroupe);
   }
 
-  public corbeilleUser(): boolean {
+  public corbeilleUser(idGroupe: number): boolean {
     const ret = this.tacheService.corbeilleUser();
-    this.refreshMapEnCours();
+    this.refreshMapEnCours(idGroupe);
     return ret;
   }
 
@@ -108,4 +106,13 @@ export class GroupeService {
     const user = this.utilisateurService.getUserById(idUser);
     return idVerif == user.idGroupe;
   }
+  
+  /** Recupère la liste des utilisateurs dont l'id du groupe est passé en paramètre
+   * 
+   * @param idGroupe 
+   */
+  public getUtilisateurByGroupe(idGroupe: number){
+    return this.utilisateurService.getAll().filter(utilisateur => utilisateur.idGroupe === idGroupe)
+  }
+
 }

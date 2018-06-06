@@ -46,7 +46,6 @@ export class GraphiqueEnCoursComponent implements OnInit {
     this.idGroupe = parseInt(this.activeRoute.snapshot.paramMap.get("id"))
     this.groupe = this.groupeService.getGroupeById(this.idGroupe)
     this.context = document.getElementById('chartPie');
-    this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil != Profil.DIRECTEUR)
     this.monGroupe();
   }
 

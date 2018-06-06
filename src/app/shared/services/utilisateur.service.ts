@@ -16,7 +16,8 @@ export class UtilisateurService {
     listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	Profil.GESTIONNAIRE,1));
     listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	Profil.GESTIONNAIRE,1));
     listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	Profil.SUPERVISEUR,2));
-    listUsers.push(new Utilisateur(6,	'BOYER',	'Eric',	Profil.DIRECTEUR,2));
+    listUsers.push(new Utilisateur(6,	'VOLTAIRE',	'Eric',	Profil.SUPERVISEUR,1));
+    listUsers.push(new Utilisateur(7,	'BOYER',	'Eric',	Profil.DIRECTEUR,2));
 
 
     this.usersSubject.next(listUsers);

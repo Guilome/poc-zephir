@@ -82,7 +82,6 @@ export class GraphiqueTermineComponent implements OnInit {
 
   private monGroupe() {
     this.trierMois()
-    this.UpdateCanvas();
   }
 
   private  UpdateCanvas() {
@@ -142,16 +141,18 @@ export class GraphiqueTermineComponent implements OnInit {
     } else if (typeTri == "week") {     
       this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < value[1])      
     }
-    this.refreshMapTermine(this.dossiersTermine)
+    this.refreshMapTermine(this.dossiersTermine.filter(d => d.idGroupe == this.idGroupe))
   }
 
   private refreshMapTermine(lesDossiers: Tache[]) {
-    this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
+    this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
     for (const d of lesDossiers) {
-      let gestionnaire = this.utilService.getUserById(d.idUtilisateur)
-      const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
-      const sum = this.mapSubjectTermine.get(key);
-      this.mapSubjectTermine.set(key,  sum + 1);
+      let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateur)[0];
+      if (gestionnaire.idGroupe == this.idGroupe) {
+        const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
+        const sum = this.mapSubjectTermine.get(key);
+        this.mapSubjectTermine.set(key,  sum + 1);
+      }
     }
   }
   

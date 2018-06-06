@@ -19,12 +19,12 @@ export class VisuSuperviseurComponent implements OnInit {
 
   ngOnInit() {
     this.idGroupe = parseInt(this.activeRoute.snapshot.paramMap.get("id"))
+    localStorage.setItem("GROUPE", this.idGroupe.toString());
   }
 
   ifConnexion(): boolean {
     if (this.route.url === '/Connexion')
       return true;    
-    localStorage.setItem("GROUPE", this.idGroupe.toString());
     return localStorage.getItem('USER') != null;
   }
 
