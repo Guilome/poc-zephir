@@ -22,6 +22,27 @@ export class TacheService {
     if (length < 1) {
       this.create15Dossiers();
       this.create_100_DossiersClotures();
+      /// begin TMP
+      const lTache = new Tache(Nature.DOSSIER);
+      lTache.ident = 1000019;
+      const c = new Contrat(740000,'SOLUTIO');
+      c.numero = 'S140580';
+      const context = 
+      lTache.context = new Context(100019, this.nomApl[0], this.nomInter[0], c);
+      lTache.idGroupe = 1;
+      lTache.priorite = 5;
+      lTache.code = "199_AFN";
+      lTache.dateLimite = new Date('06/15/2018');
+      lTache.dateCreation = new Date();
+      lTache.idUtilisateur = 5; // Rousseau
+
+      this.listTaches.push(lTache);
+      this.create3PiecesTMP(lTache);
+
+      /// end TMP
+
+
+
       this.tacheSubject.next(this.listTaches);
     }
   }
@@ -217,6 +238,25 @@ export class TacheService {
       this.listTaches.push(lPiece);
     }
   }
+  private create3PiecesTMP(dossier_199: Tache) {
+    for (let i = 0; i < 3; i++) {
+      const lPiece = new Tache(Nature.PIECE);  
+      lPiece.ident = this.listTaches.length + 70000 ;
+      lPiece.idTacheMere = dossier_199.ident;
+      lPiece.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i];
+      lPiece.priorite = [5, 3, 6][i];
+      lPiece.urlDocument = ['assets/pdf/CG.pdf','assets/pdf/PDC.pdf','assets/pdf/RI.pdf'][i];
+      lPiece.context = dossier_199.context;
+      lPiece.dateLimite = dossier_199.dateLimite
+      lPiece.dateCreation = new Date();
+      lPiece.dateReception = new Date();
+      lPiece.dateVerification = new Date();
+      lPiece.idUtilisateurVerification = dossier_199.idUtilisateur;
+      
+      this.listTaches.push(lPiece);
+    }
+
+  }
   createPiece(code: Code, dossier: Tache) {
     // Appel Web service pour la génération de de l'identifiant
     const lPiece =  new Tache(Nature.PIECE);
@@ -341,7 +381,6 @@ export class TacheService {
     lNote.context = tacheMere.context;
     lNote.dateCreation = new Date();
     lNote.idUtilisateur = tacheMere.idUtilisateur;
-    console.log(lNote.idUtilisateur);
     
     this.listTaches.push(lNote);
     this.tacheSubject.next(this.listTaches);

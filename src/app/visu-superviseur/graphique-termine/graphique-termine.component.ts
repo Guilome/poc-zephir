@@ -187,9 +187,7 @@ export class GraphiqueTermineComponent implements OnInit {
   }
   trierSemaine(){
     let day = this.dateJour.getDay()
-    console.log("day : " + day)    
     let date = this.dateJour.getDate()
-    console.log("date : " + date)
     let debutSemaine
     let semaine
     if (day == 1) { // Si le jour est lundi
@@ -198,7 +196,6 @@ export class GraphiqueTermineComponent implements OnInit {
     }
     else { // jour autre que lundi
       let difference = date - day 
-      console.log("difference (date - day) : "  + difference)      
       if (difference < 0) {
         let month = this.monthsTab[this.dateJour.getMonth()-1]
         debutSemaine = month.maxDay + difference 
