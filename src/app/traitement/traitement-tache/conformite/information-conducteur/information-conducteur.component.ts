@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { TacheService } from '../../../../shared/services/tache.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TraitementTacheComponent } from '../../traitement-tache.component';
+import { Modification, Code } from '../../../../shared/domain/modification';
+import { ModificationService } from '../../../../shared/services/modification.service';
 
 @Component({
   selector: 'app-information-conducteur',
@@ -14,36 +16,35 @@ import { TraitementTacheComponent } from '../../traitement-tache.component';
 })
 export class InformationConducteurComponent implements OnInit {
 
-  public currentCRM = 0.68;
-  public currentDate2delivrance = '2000-01-01';
+  public currentCRM
+  public currentCRM2
   currentTache: Tache;
+  change: boolean
 
   constructor(private actionMetierService: ActionMetierService,
               private tacheService: TacheService,
+              private modifService: ModificationService,
               private route: ActivatedRoute,
               private router: Router,
               private toastr: ToastrService) { }
 
   ngOnInit() {
     this.currentCRM = 0.68;
-    this.currentDate2delivrance = '2000-01-01';
+    this.currentCRM2 = 0.5
     this.route.params.subscribe(data => {
       this.currentTache = this.tacheService.getPieceById(+data.piece);
     });
 
   }
-  ngAfterViewInit() {
-    this.currentCRM = 0.68;
-    this.currentDate2delivrance = '2000-01-01';
-  }
 
-  ifChangement(crm, date2delivrance):boolean {
-    if(crm.value != this.currentCRM || date2delivrance.value != this.currentDate2delivrance) {
-      return true;
+  ifChangement() {
+    const crm = parseFloat((<HTMLInputElement>document.getElementById('crm')).value)    
+    const crm2 = parseFloat((<HTMLInputElement>document.getElementById('crm2')).value)
+    if(crm != this.currentCRM || crm2 != this.currentCRM2) {
+      this.change = true    
+      //this.DemandeAvt(crm, crm2)
     }
-    return false;
   }
-
   /**
    * Création automatique d'une action métier
    */
@@ -76,7 +77,7 @@ export class InformationConducteurComponent implements OnInit {
     if(crm != this.currentCRM) {
       this.currentTache.message += 'CRM : '+ crm + '.\n'; 
     }
-    if (date2delivrance != this.currentDate2delivrance) {
+    if (date2delivrance != null) {
       this.currentTache.message += "Date de Délivrance : " + date2delivrance + '.\n';
     }
     this.actionMetierService.createDemandeAvt(this.currentTache);

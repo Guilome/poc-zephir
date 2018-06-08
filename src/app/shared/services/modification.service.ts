@@ -3,7 +3,7 @@ import { Modification } from '../domain/modification';
 import { BehaviorSubject } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
+import { TacheService } from './tache.service';
 
 @Injectable()
 export class ModificationService {
@@ -13,13 +13,13 @@ export class ModificationService {
   modificationSubject: BehaviorSubject<Modification[]> = new BehaviorSubject([]);
 
 
-  constructor() { }
+  constructor(private tacheService: TacheService) { }
 
   listerModication(): Observable<Modification[]> {
     return this.modificationSubject;
   }
 
-  public getModificationById(idModif: number){
+  public getModificationById(idModif: number): Modification{
     if (this.listModifications.length == 0) {
       return null
     }
@@ -37,6 +37,9 @@ export class ModificationService {
     }
   }
 
+  public getModificationByDossier(idDossier: number): Modification[]{
+    return this.listModifications.filter(modif => this.tacheService.getPieceById(modif.idTache).idTacheMere == idDossier)
+  }
   addModification(modif: Modification) {
     if (this.listModifications.length == 0) {
       modif.ident = 1

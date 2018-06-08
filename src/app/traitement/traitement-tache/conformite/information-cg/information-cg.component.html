@@ -4,37 +4,37 @@
     <div class="row">
       <div class="col-sm-6">
         <label for="marque">Marque :</label>
-        <input type="text" class="form-control" id="marque" value="{{currentMarque}}" (change)="ifChangement()" #marque>
+        <input type="text" class="form-control" id="marque" value="{{currentMarque}}" (onblur)="ifChangement()" #marque>
       </div>
       <div class="col-sm-6">
           <label class="control-label" for="crm">Immatriculation :</label>
-          <input type="text" class="form-control" id="immat" value="AB-123-CP">
+          <input type="text" class="form-control" id="immat" value="{{currentImmat}}" (onblur)="ifChangement()" #immat>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-5">
         <label class="control-label" for="modele">Modele :</label>
-        <input type="text" class="form-control" id="modele" value="{{currentModele}}" (change)="ifChangement()" #modele>
+        <input type="text" class="form-control" id="modele" value="{{currentModele}}" (onblur)="ifChangement()" #modele>
       </div>
       <div class="col-sm-7">
         <label class="control-label" for="mec">Mise en circulation :</label>
-        <input type="date" class="form-control" id="mec" value="2018-01-01">
+        <input type="date" class="form-control" id="mec" value="{{currentMEC}}" (onblur)="ifChangement()" #mec>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-6">
         <label class="control-label" for="designation">Désignation :</label>
-        <input type="text" class="form-control" id="designation">
+        <input type="text" class="form-control" id="designation" value="{{currentDesignation}}" (onblur)="ifChangement()" #designation>
       </div>
       <div class="col-sm-6">
           <label class="control-label" for="mda">Mode d'acquisition :</label>
-          <input type="text" class="form-control" id="mda">
+          <input type="text" class="form-control" id="mda" value="{{currentMDA}}" (onblur)="ifChangement()" #mda>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-7 offset-5">
           <label class="control-label" for="dateAcquisition">Date d'acquisition :</label>
-          <input type="date" class="form-control" id="dateAcquisition" value="2018-01-01">
+          <input type="date" class="form-control" id="dateAcquisition" value="{{currentDA}}" (onblur)="ifChangement()" #dateAcquisition>
       </div>
     </div>
   </div>
@@ -52,7 +52,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let modif of lesModifsCG">
-                <th scope="row"><button class="btn btn-danger btn-circle fa fa-times" type="submit" (click)="annulerModification(modif.ident)"></button></th>
+                <th scope="row"><button class="btn btn-danger btn-circle fa fa-trash" type="submit" (click)="annulerModification(modif.ident)"></button></th>
                 <td>{{modif.donnee}} : {{modif.valeurAvant}} -> {{modif.valeurApres}}</td>
               </tr>
             </tbody>
