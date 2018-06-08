@@ -28,12 +28,12 @@ export class ModificationService {
     }
   }
 
-  public getModificationByPiece(idPiece: number){
+  public getModificationByPiece(idPiece: number): any{
     if (this.listModifications.length == 0) {
-      return this.listModifications
+      return false;
     }
     else {
-      return this.listModifications.filter(m => m.idTache == idPiece)
+      return this.listModifications.filter(m => m.idTache == idPiece);
     }
   }
 

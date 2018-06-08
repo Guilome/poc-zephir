@@ -20,11 +20,9 @@ export class ApercuDocumentComponent implements OnInit {
 
   ngOnInit() {
     this.idSubscription = this.route.params.subscribe((params: any) => {
-      console.log('URL DOC : ' +  params.piece )
       if( params.piece != null) {
           const idPiece = +params.piece;
           this.piece = this.tacheService.getPieceById(idPiece);
-          console.log('URL DOC : ' + this.piece.urlDocument)
 
       }
     });
@@ -32,7 +30,6 @@ export class ApercuDocumentComponent implements OnInit {
 
   ngAfterViewInit() {
     this.idSubscription = this.route.params.subscribe((params: any) => {
-      console.log(this.piece);
       
       if (this.piece.urlDocument != null) {
         document.getElementById('divPdf').innerHTML = '<object data="'

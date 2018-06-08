@@ -35,8 +35,6 @@ export class EditTacheComponent implements OnInit {
 
   onSubmit(form: NgForm) {
 
-    console.log(form.value);
-
     const numeroContrat = form.value['numeroContrat'];
     const code = form.value['code'];
     const dateLimite = form.value['dateLimite'];

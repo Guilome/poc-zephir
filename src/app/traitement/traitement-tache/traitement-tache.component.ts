@@ -26,7 +26,7 @@ export class TraitementTacheComponent implements OnInit {
   selectedItems = [];
   dropdownSettings = {};
   currentModal: NgbModalRef;
-
+  statutDossier: string;
   constructor(private tacheService: TacheService,
               private actionMetierService: ActionMetierService,
               private route: ActivatedRoute,
@@ -54,6 +54,10 @@ export class TraitementTacheComponent implements OnInit {
       }
 
     });
+    if ( this.dossier != null) {
+        this.statutDossier = this.tacheService.getStatutDossier(this.dossier.ident);
+    }
+
     // Multiple select piece complementaire :
     this.piecesComplementaires = [
       {"id": 'ATT_CI', "itemName":"Carte d'identité"},
@@ -78,31 +82,38 @@ export class TraitementTacheComponent implements OnInit {
             element.classList.remove('bg-row')
           }
           document.getElementById('link'+ params.piece).classList.add('bg-row');
+          document.getElementById('span'+ params.piece).classList.add('spanStatus');
         }
-        if ( this.dossier != null) {
-          const idLabelStatus = document.getElementById('idLabelStatus');
-          idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-                if(this.tacheService.getStatutDossier(this.dossier.ident) === 'À vérifier' || this.tacheService.getStatutDossier(this.dossier.ident) === 'En attente' )  {
-                    console.log('Erreur : ' + this.tacheService.getStatutDossier(this.dossier.ident));
-                    idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
-                  } else if (this.tacheService.getStatutDossier(this.dossier.ident) === 'À valider') {
-                    idLabelStatus.innerHTML = '<span style="color: #00b3ee">Validation</span>';
-                  } 
-               else {
-                  idLabelStatus.innerHTML = '<span style="color: red">Dossier non existant</span>';
-                }
-          }
+
     });
+
+    if ( this.dossier != null) {
+      const idLabelStatus = document.getElementById('idLabelStatus');
+      idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
+            if(this.tacheService.getStatutDossier(this.dossier.ident) === 'À vérifier' || this.tacheService.getStatutDossier(this.dossier.ident) === 'En attente' )  {
+                idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
+              } else if (this.tacheService.getStatutDossier(this.dossier.ident) === 'À valider') {
+                idLabelStatus.innerHTML = '<span style="color: #00b3ee">Validation</span>';
+              } 
+           else {
+              idLabelStatus.innerHTML = '<span style="color: red">Dossier non existant</span>';
+            }
+      }
   }
 
-  detailPiece(piece: Tache,a) {
+  detailPiece(piece: Tache,a, sp) {
     this.router.navigate(['/TraitementTache', { id: piece.context.ident, piece: piece.ident }]);
     //this.router.navigate(['/TraitementTache/'+ident+';idPiece='+ident]);
     const element = document.getElementsByClassName('bg-row')[0];
     if(element != null) {
-      element.classList.remove('bg-row')
+      element.classList.remove('bg-row');
+      for (let i = 0 ; i <document.getElementsByClassName('spanStatus').length ; i++ ){
+          const ele = document.getElementsByClassName('spanStatus')[i];
+          ele.innerHTML = '<span class="badge badge-success float-right">Visualisée</span>';
+      }
     }
-    a.classList.add('bg-row');   
+    a.classList.add('bg-row');
+    sp.classList.add('spanStatus');
   }    
 
   valider() {  
@@ -119,7 +130,7 @@ export class TraitementTacheComponent implements OnInit {
 
   getDossierStatut(): string {
     if ( this.dossier != null){
-      return this.tacheService.getStatutDossier(this.dossier.ident);
+      return this.statutDossier;
     }
     return '';
   }

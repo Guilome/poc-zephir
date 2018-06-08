@@ -32,8 +32,6 @@ export class NouvelleNoteComponent implements OnInit {
   }
 
   onSubmit(form: NgForm, msg: any) {
-    console.log( form.value['message']); // undefined
-
     this.noteService.addNote(form.value['code'], form.value['groupe'], msg.value, form.value['dateLimite']);
     this.router.navigate(['/gestionBO']);
   }

@@ -16,12 +16,12 @@
         </h5>
         <div class="nav flex-column nav-pills ">
           
-              <a class="nav-link" (click)="detailPiece(p,a)" routerLinkActive="active" *ngFor="let p of listPieces"  [attr.id]="'link'+p.ident" #a>
+              <a class="nav-link" (click)="detailPiece(p,a,sp)" routerLinkActive="active" *ngFor="let p of listPieces"  [attr.id]="'link'+p.ident" #a>
                       <div class="row">
                         {{p.libelle}} 
-                        <div class="col" >
+                        <div class="col"  [attr.id]="'span'+p.ident" #sp >
                               <div *ngIf="p.status != 'Ok' && p.dateCloture != null; else block"> <!-- IF-->
-                                  <span (click)="detailPiece(p.ident)" class="badge badge-danger float-right">Non conforme</span>
+                                  <span class="badge badge-danger float-right">Non conforme</span>
                               </div>
                               <ng-template #block> <!-- ELSE-->
                                   <span  *ngIf="p.status == 'À vérifier'" class="badge badge-warning float-right">À vérifier</span>
