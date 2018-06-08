@@ -39,7 +39,6 @@ export class InformationCgComponent implements OnInit {
     this.route.params.subscribe(data => {
     this.currentTache = this.tacheService.getPieceById(+data.piece);
     });
-    this.chargerListeModif();    
     this.setInputValue();
   }
 
@@ -63,7 +62,7 @@ export class InformationCgComponent implements OnInit {
 
   DemandeAvt(marque : string, immat: string, modele: string, mec: string, designation:string, mda: string, da: string){
     let mecDate = new Date(mec).toLocaleDateString();
-    let maDate = new Date(da).toLocaleDateString();
+    let daDate = new Date(da).toLocaleDateString();
     this.currentTache.message = ' ';
     if(marque != this.currentMarque) {
       this.currentTache.message += 'Marque : '+ marque + '.\n'; 
@@ -72,9 +71,9 @@ export class InformationCgComponent implements OnInit {
       this.modifService.addModification(modifCG)
     }
     else if (immat != this.currentImmat) {
-      this.currentTache.message += "Modèle : " + modele + '.\n';
-      let modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
-      this.currentModele = modele
+      this.currentTache.message += "Immatriculation : " + immat + '.\n';
+      let modifCG = new Modification(this.currentTache.ident,Donnee.IMMATRICULATION_VEHICULE, this.currentImmat, immat)
+      this.currentImmat = immat
       this.modifService.addModification(modifCG)
     }
     else if (modele != this.currentModele) {
@@ -84,61 +83,34 @@ export class InformationCgComponent implements OnInit {
       this.modifService.addModification(modifCG)
     }
     else if (mecDate != this.currentMEC.toLocaleDateString()) {
-      this.currentTache.message += "Modèle : " + modele + '.\n';
-      let modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
-      this.currentModele = modele
+      this.currentTache.message += "Mise en circulation : " + mec + '.\n';
+      let modifCG = new Modification(this.currentTache.ident,Donnee.MEC_VEHICULE, this.currentMEC.toLocaleDateString("en-US"), mec)
+      this.currentMEC = new Date(mecDate)
       this.modifService.addModification(modifCG)
     }
     else if (designation != this.currentDesignation) {
       this.currentTache.message += "Modèle : " + modele + '.\n';
-      let modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
-      this.currentModele = modele
+      let modifCG = new Modification(this.currentTache.ident,Donnee.DESIGNATION_VEHICULE, this.currentDesignation, designation)
+      this.currentDesignation = designation
       this.modifService.addModification(modifCG)
     }
     else if (mda != this.currentMDA) {
       this.currentTache.message += "Modèle : " + modele + '.\n';
-      let modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
-      this.currentModele = modele
+      let modifCG = new Modification(this.currentTache.ident,Donnee.MA_VEHICULE, this.currentMDA, mda)
+      this.currentMDA = mda
       this.modifService.addModification(modifCG)
     }
-    else if (maDate != this.currentDA.toLocaleDateString()) {
+    else if (daDate != this.currentDA.toLocaleDateString()) {
       this.currentTache.message += "Modèle : " + modele + '.\n';
-      let modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
-      this.currentModele = modele
+      let modifCG = new Modification(this.currentTache.ident,Donnee.DA_VEHICULE, this.currentDA.toLocaleDateString("en-US"), da)
+      this.currentDA = new Date(daDate)
       this.modifService.addModification(modifCG)
     }
-
-    this.chargerListeModif()
-    this.actionMetierService.createDemandeAvt(this.currentTache);
+    this.actionMetierService.createDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
     this.toastr.success('Une demande d\'avenant a été créée');
   }
 
-  private chargerListeModif(){
-    this.lesModifsCG = this.modifService.getModificationByPiece(this.currentTache.ident)
-  }
 
-  private annulerModification(idModif: number) {
-    let replaceMarque = (<HTMLInputElement>document.getElementById('marque'))
-    let replaceImmat = (<HTMLInputElement>document.getElementById('immat'))
-    let replaceModele = (<HTMLInputElement>document.getElementById('modele'))
-    let replaceMEC = (<HTMLInputElement>document.getElementById('mec'))
-    let replaceDesignation = (<HTMLInputElement>document.getElementById('designation'))
-    let replaceMDA = (<HTMLInputElement>document.getElementById('mda'))
-    let replaceDateAcquisition = (<HTMLInputElement>document.getElementById('dateAcquisition'))
-    let modif = this.modifService.getModificationById(idModif)
-    if (modif.donnee == Donnee.MARQUE_VEHICULE) {
-      replaceMarque.value = modif.valeurAvant
-    }
-    else {
-      replaceModele.value = modif.valeurAvant
-    }
-    this.actionMetierService.supprimerActionMetier(this.actionMetierService.getById(modif.idTache))
-    this.modifService.supprimerModif(modif)
-    if (this.lesModifsCG.length == 0) {
-      this.change = false
-    }
-    this.chargerListeModif()    
-  }
 
   private setInputValue(){
     this.currentMarque = "BMW";
