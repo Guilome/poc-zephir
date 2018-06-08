@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TacheService } from '../../../../shared/services/tache.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TraitementTacheComponent } from '../../traitement-tache.component';
-import { Modification, Code } from '../../../../shared/domain/modification';
+import { Modification, Donnee } from '../../../../shared/domain/modification';
 import { ModificationService } from '../../../../shared/services/modification.service';
 
 @Component({
