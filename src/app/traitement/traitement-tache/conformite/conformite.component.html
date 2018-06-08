@@ -1,7 +1,7 @@
 
 <div *ngIf="piece != null">
   <!-- IF -->
-  <div class="align-middle" xmlns="" *ngIf="groupeVerification()">
+  <div class="align-middle" xmlns="" *ngIf="groupeVerification() && piece.urlDocument != null">
 
       <button type="button" title="Conforme" [disabled]="piece.dateVerification != null" class="btn btn-success btn-circle fa fa-check" (click)="conforme()">  </button>
       <button type="button" title="Non conforme" [disabled]="piece.dateVerification != null" class="btn btn-danger btn-circle fa fa-times" (click)="nonConforme()">  </button>

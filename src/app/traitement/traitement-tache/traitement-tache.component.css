@@ -9,3 +9,13 @@ a:hover {
     background-color: lightgray;
     border-right:10px solid darkgray;
   }
+
+  .btn-circle {
+    width: 20px; /*30*/
+    height: 20px; /*30*/
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+  }

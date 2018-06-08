@@ -17,7 +17,9 @@ export class Tache {
     .set('DEV_AVT','Devis d\'avenant à valider')
     .set('RESIL','Demande de résiliation')
     .set('SANS_EFFET','Demande de sans effet')
-    .set('199_AFN', 'Dossier 199');
+    .set('199_AFN', 'Dossier 199')
+    .set('ATT_CI', 'Carte d\'identié')
+    .set('ATT_MDP', 'Mandat de prélèvement');
 
   //
   constructor(public nature: Nature ) {
