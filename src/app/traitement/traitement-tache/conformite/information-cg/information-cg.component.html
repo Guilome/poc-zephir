@@ -1,0 +1,62 @@
+<fieldset id="fieldsetCarteGrise">
+  <legend>Informations Véhicule</legend>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-sm-6">
+        <label for="marque">Marque :</label>
+        <input type="text" class="form-control" id="marque" value="{{currentMarque}}" (change)="ifChangement()" #marque>
+      </div>
+      <div class="col-sm-6">
+          <label class="control-label" for="crm">Immatriculation :</label>
+          <input type="text" class="form-control" id="immat" value="AB-123-CP">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-5">
+        <label class="control-label" for="modele">Modele :</label>
+        <input type="text" class="form-control" id="modele" value="{{currentModele}}" (change)="ifChangement()" #modele>
+      </div>
+      <div class="col-sm-7">
+        <label class="control-label" for="mec">Mise en circulation :</label>
+        <input type="date" class="form-control" id="mec" value="2018-01-01">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <label class="control-label" for="designation">Désignation :</label>
+        <input type="text" class="form-control" id="designation">
+      </div>
+      <div class="col-sm-6">
+          <label class="control-label" for="mda">Mode d'acquisition :</label>
+          <input type="text" class="form-control" id="mda">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7 offset-5">
+          <label class="control-label" for="dateAcquisition">Date d'acquisition :</label>
+          <input type="date" class="form-control" id="dateAcquisition" value="2018-01-01">
+      </div>
+    </div>
+  </div>
+</fieldset>
+<div *ngIf="change || lesModifsCG.length > 0">
+  <div class="card border-danger mb-3">
+    <div class="card-body">
+      <p>Modification en cours :</p>
+        <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let modif of lesModifsCG">
+                <th scope="row"><button class="btn btn-danger btn-circle fa fa-times" type="submit" (click)="annulerModification(modif.ident)"></button></th>
+                <td>{{modif.donnee}} : {{modif.valeurAvant}} -> {{modif.valeurApres}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+</div>

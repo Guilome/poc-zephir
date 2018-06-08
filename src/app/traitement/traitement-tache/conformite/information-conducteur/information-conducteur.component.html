@@ -1,171 +1,49 @@
-<fieldset id="fieldset1">
-<legend>Informations Conducteur</legend>
+<fieldset id="fieldsetConducteur">
+  <legend>Informations Conducteur</legend>
   <div class="form-group">
-    <div class="row">
-      <div class="col-5">
-        <label for="numero">Numéro :</label>
-        <input type="text" class="form-control" id="numero" maxlength="15" value="P012345678">
-      </div>
-      <div class="col-3">
-        <label class="control-label" for="crmElementId">CRM :</label>
-        <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crmElementId" value="{{currentCRM}}" #crm>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-5">
-        <label class="control-label" for="categorie">Catégorie :</label>
-        <input type="text" class="form-control" id="categorie" value="B">
-      </div>
-      <div class="col-7">
-
-        <div class="row">
-        <div  class="col-md-4">
-          <label for="resp100">Resp. 100%</label>
-          <input type="number" class="form-control" step="1" min="0" max="100" id="resp100" value="0">
-        </div>
-        <div  class="col-md-4">
-          <label for="resp50">Resp. 50%</label>
-          <input type="number" class="form-control" step="1" min="0" max="100" id="resp50" value="0">
-        </div>
-        <div  class="col-md-4">
-          <label for="resp0">Resp. 0%</label>
-          <input type="number" class="form-control" step="1" min="0" max="100" id="resp0" value="0">
-        </div>
-      </div>
-
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-5">
-        <label class="control-label" for="date2delivrance">Date de délivrance :</label>
-        <input type="date" class="form-control" id="date2delivrance" value="{{currentDate2delivrance}}" #date2delivrance>
-      </div>
-      <div class="col-md-7" >
-        <div class="row">
-          <div  class="col-md-6" >
-            <label class="control-label" for="crm">Vol et incendie :</label>
-            <input type="number" class="form-control" step="0.01" min="0" max="100" id="vei" value="0">
-          </div>
-          <div  class="col-md-6">
-            <label class="control-label" for="crm">Bris de glace :</label>
-            <input type="number" class="form-control" step="0.01" min="0" max="100" id="bdg" value="0">
-          </div>
-      </div>
-    </div>
-
-    </div>
-    <div class="row">
-      <div class="col-5">
-        <label class="control-label" for="departement">Département :</label>
-        <input type="number" class="form-control" id="departement" value="34">
-      </div>
-      <div class="col-7">
-
-      </div>
-    </div>
     <div class="row">
       <div class="col-4">
-        <label class="control-label" for="prefecture">Préfecture :</label>
-        <input type="text" class="form-control" id="prefecture" value="HERAULT">
-      </div>
-    </div>
-  </div>
-</fieldset>
-<fieldset id="fieldset2">
-  <legend>Informations Véhicule</legend>
-  <div class="form-group">
-    <div class="row">
-      <div class="col-sm-6">
-        <label for="marque">Marque :</label>
-        <input type="text" class="form-control" id="marque" value="BMW">
-      </div>
-      <div class="col-sm-6">
-          <label class="control-label" for="crm">Immatriculation :</label>
-          <input type="text" class="form-control" id="immat" value="RT-123-44">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <label class="control-label" for="modele">Modele :</label>
-        <input type="text" class="form-control" id="modele" value="SERIE 3">
-      </div>
-      <div class="col-sm-6">
-        <label class="control-label" for="mec">Mise en circulation :</label>
-        <input type="date" class="form-control" id="mec" value="2018-01-01">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <label class="control-label" for="designation">Désignation :</label>
-        <input type="text" class="form-control" id="designation">
-      </div>
-      <div class="col-sm-6">
-          <label class="control-label" for="mda">Mode d'acquisition :</label>
-          <input type="text" class="form-control" id="mda">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-      </div>
-      <div class="col-sm-6">
-          <label class="control-label" for="dateAcquisition">Date d'acquisition :</label>
-          <input type="date" class="form-control" id="dateAcquisition" value="2018-01-01">
-      </div>
-    </div>
-  </div>
-
-<br>
-<div class="row float-right" >
-  <div class="col">
-    <button type="button" class="btn btn-outline-warning" style="border-radius: 8px;" (click)="refused(RefusedModal)"> Refuser </button>
-  </div><div class="col">
-
-    <button type="button" class="btn btn-outline-success" style="border-radius: 8px;" (click)="validate(crm,date2delivrance, validateModal)"> Valider </button>
-  </div>
-</div>
-</fieldset>
-
-<!-- The Modal REFUSER -->
-<ng-template #RefusedModal>
-   <div id="info" style="border: 1px solid gainsboro;">
-      <button type="button" class="close" (click)="closeModal()">&times;</button>
-            <h3>Risque refusé</h3>
-      </div>
-
-          <div class="link-modal" id="linkmodal"> 
-            <button type="button" class="btn btn-outline-secondary" (click)="demandeSansEffet()" data-dismiss="modal"> Demande de sans-effet sur le contrat  </button>
-          </div>
-          <div class="link-modal" id="linkmodal">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" > Réaliser un sans-effet sur le contrat  </button>
-            </div>
-      <div class="modal-footer">
-          <button type="button" class="btn btn-danger" (click)="closeModal()">Annuler</button>
+        <div class="row">
+          <label class="control-label" for="crmElementId">CRM :</label>
+          <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crmElementId" value="{{currentCRM}}" #crm>
         </div>
-
-</ng-template>
-<!-- The Modal  VALDER -->
-<ng-template #validateModal>
-    <div id="info" style="border: 1px solid gainsboro;" *ngIf="ifChangement(crm, date2delivrance)">
-        <button type="button" class="close" (click)="closeModal()">&times;</button>
-
-          <h3>Vous avez effectué les modifications suivantes : </h3>
-          <p style="align-content: center;text-align: center;" *ngIf="currentCRM != crm.value" >CRM : {{currentCRM}} <i class="fa fa-arrow-right"></i> {{crm.value}}</p>
-          <p style="align-content: center;text-align: center;" *ngIf="currentDate2delivrance != date2delivrance.value" >Date d'obtention du permis : {{currentDate2delivrance| date: 'dd/MM/yyyy'}} <i class="fa fa-arrow-right"></i> {{date2delivrance.value| date: 'dd/MM/yyyy'}}</p>
-    </div>
-    <div class="link-modal">
-      <button type="button" class="btn btn-outline-secondary"  (click)="DemandeAvt()"> Demande d’avenant  </button>
+        <div class="row">
+          <label class="control-label" for="crm2ElementId">Deuxième CRM :</label>
+          <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crm2ElementId" value="{{currentCRM}}" #crm2>
+        </div>
+        <div class="row">
+          <label class="control-label" for="dateCrm05">Date d'obtention CRM 0,50 :</label>
+          <input type="date" class="form-control" step="0.01" min="0.5" max="1" id="dateCrm05" value="">
+        </div>
       </div>
-    <div class="link-modal">
-        <button type="button" class="btn btn-outline-secondary" style="text-align:center;"> Réaliser un devis d’avenant </button>
+      <div class="col-8">
+        <div class="row">
+          <div class="col-md-4">
+            <label for="resp100">Resp.100%</label>
+            <input type="number" class="form-control" step="1" min="0" max="100" id="resp100" value="0">
+          </div>
+          <div class="col-md-4">
+            <label for="resp50">Resp.50%</label>
+            <input type="number" class="form-control" step="1" min="0" max="100" id="resp50" value="0">
+          </div>
+          <div class="col-md-4">
+            <label for="resp0">Resp.0%</label>
+            <input type="number" class="form-control" step="1" min="0" max="100" id="resp0" value="0">
+          </div>
+        </div>
+        <div class="row">
+          <label for="vei">Vol et incendie :</label>
+          <input type="number" class="form-control" step="0.01" min="0" max="100" id="vei" value="0">
+        </div>
+        <div class="row">
+          <label for="bdg">Bris de glace :</label>
+          <input type="number" class="form-control" step="0.01" min="0" max="100" id="bdg" value="0">
+        </div>
+        <div  class="row">
+          <label for="sta">Stationnement :</label>
+          <input type="number" class="form-control" step="0.01" min="0" max="100" id="sta" value="0">
+        </div>
+      </div>
     </div>
-    <div class="link-modal">
-        <button type="button" class="btn btn-outline-secondary" >Réaliser un avenant </button>
   </div>
-  <div class="modal-footer" style="border: 1px solid gainsboro;">
-    <button type="button" class="btn btn-danger" (click)="closeModal()">Annuler</button>
-  </div>
-
-</ng-template>
-
-
+</fieldset>

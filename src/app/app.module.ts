@@ -46,6 +46,9 @@ import { GraphiqueTermineComponent } from './visu-superviseur/graphique-termine/
 import { SplitPipe } from './shared/pipe/split.pipe';
 import { TableTreeContratComponent } from './visu-gestion/table-tree-contrat/table-tree-contrat.component';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { InformationCgComponent } from './traitement/traitement-tache/conformite/information-cg/information-cg.component';
+import { InformationPcComponent } from './traitement/traitement-tache/conformite/information-pc/information-pc.component';
+import { ModificationService } from './shared/services/modification.service';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -99,7 +102,9 @@ const appRoutes: Routes = [
     GraphiqueEnCoursComponent,
     SplitPipe,
     TableTreeContratComponent,
-    GraphiqueTermineComponent
+    GraphiqueTermineComponent,
+    InformationCgComponent,
+    InformationPcComponent
   ],
   imports: [
     BrowserModule,
@@ -119,6 +124,7 @@ const appRoutes: Routes = [
               TitreService, 
               UtilisateurService, 
               ActionMetierService, 
+              ModificationService,
               NgbActiveModal
           ],
   bootstrap: [AppComponent]

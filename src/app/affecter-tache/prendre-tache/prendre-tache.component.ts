@@ -25,7 +25,7 @@ export class PrendreTacheComponent implements OnInit {
               private titreService: TitreService) { }
 
   ngOnInit() {
-    this.titreService.updateTitre("S'attribuer une tâche")
+    this.titreService.updateTitre("S'attribuer un dossier")
     this.idGestionnaire = parseInt(localStorage.getItem('USER'))
     this.gestionnaire = this.utilService.getUserById(this.idGestionnaire)
 

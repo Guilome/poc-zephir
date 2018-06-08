@@ -17,13 +17,12 @@ export class InformationConducteurComponent implements OnInit {
   public currentCRM = 0.68;
   public currentDate2delivrance = '2000-01-01';
   currentTache: Tache;
-  private currentModal:NgbModalRef;
+
   constructor(private actionMetierService: ActionMetierService,
               private tacheService: TacheService,
               private route: ActivatedRoute,
               private router: Router,
-              private toastr: ToastrService,
-              private modalService: NgbModal) { }
+              private toastr: ToastrService) { }
 
   ngOnInit() {
     this.currentCRM = 0.68;
@@ -54,26 +53,6 @@ export class InformationConducteurComponent implements OnInit {
     this.actionMetierService.createSansEffet(this.currentTache);
     this.toastr.success('Une demande "SANS-EFFET" a été creé.');
     this.docSuivant();
-    this.closeModal();
-  }
-  refused(modal){
-    this.currentModal = this.modalService.open(modal,  { size: 'lg', backdropClass: 'light-blue-backdrop', centered: true });
-  }
-
-  validate(crm, date2delivrance, modal) {
-    if (this.ifChangement(crm, date2delivrance)) {
-      this.currentModal = this.modalService.open(modal,  { size: 'lg', centered: true });
-    } else {
-      this.tacheService.closeTacheConforme(this.currentTache.ident);
-      this.titleStatus();
-      //(<HTMLInputElement>document.getElementById('fieldset1')).disabled = true;
-      //(<HTMLInputElement>document.getElementById('fieldset2')).disabled = true;
-      this.toastr.success('La piece a été validée.');
-      this.docSuivant();
-    }
-  }
-  closeModal(){
-    this.currentModal.close();
   }
 
   private titleStatus() {
@@ -102,11 +81,10 @@ export class InformationConducteurComponent implements OnInit {
       this.currentTache.message += "Date de Délivrance : " + date2delivrance + '.\n';
     }
     this.actionMetierService.createDemandeAvt(this.currentTache);
-    this.closeModal();
     this.toastr.success('Une demande d\'avenant a été créée');
     this.docSuivant();
-
   }
+
   private docSuivant() {
 
     let idNext = 0;

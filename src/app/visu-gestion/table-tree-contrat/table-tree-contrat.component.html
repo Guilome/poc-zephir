@@ -10,28 +10,10 @@
     </tr>
   </thead>
   <tbody>
-      <tr *ngFor="let dossier of dossierAffichage">
+    <ng-container *ngFor="let dossier of dossierAffichage">
+      <tr>
         <th scope="row"><a (click)="toggleChildren(dossier.ident)"><i class="fa fa-plus fa-lg"></i></a></th>
-        <td>{{dossier.numContrat}}
-          <ng-container *ngFor="let dp of dossierPieces">
-            <table class="table table-striped mt-5" *ngIf="dp.bool && dp.dossier == dossier.ident">
-              <thead>
-                <tr>
-                  <th scope="col">Priorité</th>
-                  <th scope="col">Libellé</th>
-                  <th scope="col">Statut</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let piece of dp.pieces">
-                  <td scope="row">{{piece.priorite}}</td>
-                  <td>{{piece.libelle}}</td>
-                  <td>{{piece.status}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </ng-container> 
-        </td>        
+        <td>{{dossier.numContrat}}</td>        
         <td>{{dossier.nomClient}}</td>
         <td>{{dossier.nomIntermediaire}}</td>
         <td>{{dossier.status}}</td>
@@ -40,8 +22,26 @@
           <a (click)="openModal(HistoriqueModal, dossier.ident)"> <i class="	fa fa-history fa-lg"  title="Historique"></i></a>
         </td>
       </tr> 
+      <ng-container *ngFor="let dp of dossierPieces">
+        <ng-container class="table table-striped mt-5" *ngIf="dp.bool && dp.dossier == dossier.ident">
+          <tr>
+            <th colspan="1"></th>
+            <th colspan="1">Priorité</th>
+            <th colspan="1">Libellé</th>
+            <th colspan="1">Statut</th>
+          </tr>
+          <tr *ngFor="let piece of dp.pieces">
+            <th colspan="1"></th>
+            <td colspan="1">{{piece.priorite}}</td>
+            <td colspan="1">{{piece.libelle}}</td>
+            <td colspan="1">{{piece.status}}</td>
+          </tr>
+        </ng-container>
+      </ng-container> 
+    </ng-container>
   </tbody>    
 </table>
+
 <!-- The Modal HISTORIQUE -->
 <ng-template #HistoriqueModal>
   <div id="info" style="border: 1px solid gainsboro;">

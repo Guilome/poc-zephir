@@ -202,13 +202,19 @@ export class ConformiteComponent implements OnInit {
 
   }
 
-
-
   groupeValidation(): boolean {
     if ( this.groupeService.isValidation(this.idCurrentUser)){
       return this.piece.status === 'À valider';
   } 
     return false;
+  }
+
+  /**
+   * Envoie une relance qui correspond au papier en train d'être valider
+   * @param type 
+   */
+  renouvelerDemande(type: string){
+    
   }
 
 }

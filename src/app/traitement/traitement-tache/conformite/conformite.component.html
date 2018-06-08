@@ -1,50 +1,66 @@
-
 <div *ngIf="piece != null">
   <!-- IF -->
   <div class="align-middle" xmlns="" *ngIf="groupeVerification()">
 
-      <button type="button" title="Conforme" [disabled]="piece.dateVerification != null" class="btn btn-success btn-circle fa fa-check" (click)="conforme()">  </button>
-      <button type="button" title="Non conforme" [disabled]="piece.dateVerification != null" class="btn btn-danger btn-circle fa fa-times" (click)="nonConforme()">  </button>
+    <button type="button" title="Conforme" [disabled]="piece.dateVerification != null" 
+      class="btn btn-success btn-circle fa fa-check" (click)="conforme()">  
+    </button>
 
-      <div *ngIf="motifBoolean">
-          <h5>Motif de non conformité : </h5>
+    <button type="button" title="Non conforme" [disabled]="piece.dateVerification != null" 
+      class="btn btn-danger btn-circle fa fa-times" (click)="nonConforme()">  
+    </button>
 
-          <angular2-multiselect [data]="dropdownList"
-                                [(ngModel)]="selectedItems" 
-                                [settings]="dropdownSettings">
-          </angular2-multiselect>
-          <div class="float-right" id="buttom-valider">
-          <button class="bte btn-outline-primary" (click)="valider()" >Valider</button>
-        </div>
-        </div>
-        <!--// liste des motifs Non conformité -->
-      <ul *ngIf="piece.motifNonConformite != null">
-        <li *ngFor="let s of listMotifs()">{{s}}</li>
-      </ul>
-
-      <!-- cas du vérification déjà faite -->
-      <div *ngIf="piece.dateVerification != null">
-        <p>Vérifié le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
+    <div *ngIf="motifBoolean">
+      <h5>Motif de non conformité : </h5>
+      <angular2-multiselect [data]="dropdownList"
+                            [(ngModel)]="selectedItems" 
+                            [settings]="dropdownSettings">
+      </angular2-multiselect>
+      <div class="float-right" id="buttom-valider">
+        <button class="bte btn-outline-primary" (click)="valider()" >
+          Valider
+        </button>
       </div>
+    </div>
+    <!--// liste des motifs Non conformité -->
+    <ul *ngIf="piece.motifNonConformite != null">
+      <li *ngFor="let s of listMotifs()">{{s}}</li>
+    </ul>
+    <!-- cas du vérification déjà faite -->
+    <div *ngIf="piece.dateVerification != null">
+      <p>Vérifié le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
+    </div>
+  </div>
+<!-- ELSE -->
 
-
-      <!--div id="buttom-content" >
-        <button type="button" class="btn btn-primary" style="border-radius: 8px;margin-top: 10px;" (click)="docSuivant()"> Documment suivant > </button>
-        <button type="button" class="btn btn-primary" style="border-radius: 8px; margin-top: 10px;" (click)="goToDashboard()"> Terminer </button>
-      </div-->
-
+<!--Information du RI-->
+  <div *ngIf="groupeValidation() && piece.libelle === 'Relevé d\'information'">
+    <app-information-conducteur style="font-size: 0.7em" ></app-information-conducteur>
+    <button type="button" class="btn btn-primary btn-demande" (click)="renouvelerDemande('RI')"> 
+      Renouveler demande RI 
+    </button>
   </div>
 
-  <!-- ELSE -->
-  <div *ngIf="groupeValidation()">
-    <app-information-conducteur style="font-size: 0.7em" ></app-information-conducteur>
+<!--Information du CG-->
+  <div *ngIf="groupeValidation() && piece.libelle === 'Carte grise'">
+    <app-information-cg style="font-size: 0.7em" ></app-information-cg>
+    <button type="button" class="btn btn-primary btn-demande" (click)="renouvelerDemande('CG')" value="Renouveler demande CG">
+      Renouveler demande CG 
+    </button>
+  </div>
+
+<!--Information du PC-->
+  <div *ngIf="groupeValidation() && piece.libelle === 'Permis de conduire'">
+    <app-information-pc style="font-size: 0.7em" ></app-information-pc>
+    <button type="button" class="btn btn-primary btn-demande" (click)="renouvelerDemande('PC')"> 
+      Renouveler demande PC 
+    </button>
   </div>
 
   <div *ngIf="piece.dateVerification != null && piece.dateCloture!= null">
     <br>
     <p>Vérifié le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
     <p>Validé le {{piece.datecloture | date: 'dd/MM/yyyy'}} par {{getNomValidation()}}</p>
-
   </div>
 
 </div>

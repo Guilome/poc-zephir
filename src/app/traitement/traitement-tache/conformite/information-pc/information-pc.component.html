@@ -1,0 +1,56 @@
+<fieldset id="fieldsetPermis">
+  <legend>Informations Permis de conduire</legend>
+  <div class="form-group">
+    <div class="row">
+      <div>
+        <label for="numero">Numéro :</label>
+        <input type="text" class="form-control" id="numero" maxlength="15" value="P012345678">
+      </div>
+    </div> 
+    <div class="row">
+      <div>
+        <label for="categorie">Catégorie :</label>
+        <input type="text" class="form-control" id="categorie" maxlength="15" value="B">
+      </div>
+    </div> 
+    <div class="row">
+      <div>
+        <label class="control-label" for="date2delivrance">Date de délivrance :</label>
+        <input type="date" class="form-control" id="date2delivrance" (change)="ifChangement()" #date>
+      </div>    
+    </div>
+    <div class="row">
+      <div>
+        <label class="control-label" for="departement">Département :</label>
+        <input type="number" class="form-control" id="departement" value="34">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label class="control-label" for="prefecture">Préfecture :</label>
+        <input type="text" class="form-control" id="prefecture" value="HERAULT">
+      </div>
+    </div>
+  </div>
+</fieldset>
+<div *ngIf="change || lesModifsPC.length > 0">
+  <div class="card border-danger mb-3">
+    <div class="card-body">
+      <p>Modification en cours :</p>
+        <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let modif of lesModifsPC">
+                <th scope="row"><button class="btn btn-danger btn-circle fa fa-times" type="submit" (click)="annulerModification(modif.ident)"></button></th>
+                <td>{{modif.donnee}} : {{modif.valeurAvant}} -> {{modif.valeurApres}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+</div>

@@ -20,10 +20,13 @@ export class TableTreeContratComponent implements OnInit {
   dossierStatut: Status
   idCurrentUser;
   firstIdent;
-  //idContext
   private currentModal:NgbModalRef;
 
-  constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService, private route: Router, private modalService: NgbModal) {
+  constructor(private tacheService: TacheService, 
+              private utilisateurService: UtilisateurService, 
+              private route: Router, 
+              private modalService: NgbModal) {
+    
     this.idCurrentUser = parseInt(localStorage.getItem('USER'));
     this.tacheService.listerTaches().subscribe(data => {       
       this.dossiers = data.filter( d => d.nature === Nature.DOSSIER && d.idUtilisateur === this.idCurrentUser && d.dateCloture == null)

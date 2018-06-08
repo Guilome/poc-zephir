@@ -572,4 +572,9 @@ export class ActionMetierService {
   public getAll(): Tache[]{
     return this.listActionMetier;
   }
+
+  public supprimerActionMetier(actionMetier: Tache){
+    this.listActionMetier.splice(this.listActionMetier.indexOf(actionMetier), 1)
+    this.getAllByIdContext(actionMetier.context.ident)
+  }
 }
