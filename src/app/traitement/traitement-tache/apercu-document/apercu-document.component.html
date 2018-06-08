@@ -1,6 +1,6 @@
 <div *ngIf="piece != null">
 
-  <h3>{{piece.libelle}} - <a href="#">{{piece.context.contrat.numero}}</a> <i class="fa fa-info-circle" [popover]="myPopover"></i> </h3>
+  <h3>{{piece.libelle}} <i class="fa fa-info-circle" [popover]="myPopover"></i> </h3>
   <popover-content #myPopover
                   title="Informations contrat"
                   [closeOnClickOutside]="true">

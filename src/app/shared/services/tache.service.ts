@@ -30,8 +30,10 @@ export class TacheService {
   // données en mémoire
   tacheSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
 
-  listerTaches(): Observable<Tache[]> {
+  
 
+
+  listerTaches(): Observable<Tache[]> {
     return this.tacheSubject;
   }
 
@@ -49,19 +51,39 @@ export class TacheService {
     this.tacheSubject.next(this.listTaches);
   }
 
-  getTacheById(id: number) {
+  getTacheById(id: number): Tache {
     return this.listTaches.find(t => t.ident === id);
   }
 
-  getPieceById(id: number) {
+  /**
+   * retourne une pièce en fonction de son id
+   * @param id 
+   */
+  getPieceById(id: number): Tache {
     return this.listTaches.find(t => t.ident === id && t.nature == Nature.PIECE);
   }
 
-  getPiecesByDossier(idDossier: number){
-    return this.listTaches.filter(t => t.nature == Nature.PIECE && t.idTacheMere === idDossier)
+  /**
+   * Retourne la liste de pièces en fonction de l'ID du dossier (199), trié par priorité.
+   * @param idDossier 
+   */
+  getPiecesByDossier(idDossier: number): Tache[]{
+    return this.listTaches.filter(t => t.nature == Nature.PIECE && t.idTacheMere === idDossier).sort(this.trieByPriorite)
   }
 
-  getDossierById(id: number) {
+  /**
+   * Retourne la liste de note en fonction de l'ID du dossier (199)
+   * @param idDossier 
+   */
+  getNotesByDossier(idDossier: number): Tache[]{
+    return this.listTaches.filter(t => t.nature == Nature.NOTE && t.idTacheMere === idDossier)
+  }
+
+  /**
+   * retourne un dossier (199) en fonction de son ID
+   * @param id 
+   */
+  getDossierById(id: number): Tache {
     return this.listTaches.find(t => t.ident === id && t.nature == Nature.DOSSIER);
   }
 
@@ -195,6 +217,22 @@ export class TacheService {
       this.listTaches.push(lPiece);
     }
   }
+  createPiece(code: Code, dossier: Tache) {
+    // Appel Web service pour la génération de de l'identifiant
+    const lPiece =  new Tache(Nature.PIECE);
+    lPiece.code = code;
+    lPiece.dateCreation = new Date();
+    lPiece.ident =  Math.floor(Math.random() * (999999 - 100000));
+    lPiece.idTacheMere = dossier.ident;
+    lPiece.context = dossier.context;
+    lPiece.dateLimite = dossier.dateLimite
+    lPiece.dateCreation = new Date();
+    lPiece.priorite = 3;
+    this.listTaches.push(lPiece);
+
+    this.tacheSubject.next(this.listTaches);
+  }
+
   private nomInter = [
             'ROUQUETTE FREDERIC'
             ,'ROUQUETTE FREDERIC'
@@ -234,12 +272,22 @@ export class TacheService {
           'H/ZEPHIR ASSURANCES'
   ]
 
-  public getPiecesByContext(context: Context): Tache[]{
-    return this.listTaches.filter(piece => piece.context == context && piece.nature == Nature.PIECE)
+  private trieByPriorite = (p1,p2) => {
+    if ( p1.priorite == p2.priorite )
+        return 0;
+    else if  (p1.priorite < p2.priorite) 
+        return -1;
+      else
+    return 1;
   }
+  /*private getPiecesByContext(context: Context): Tache[]{
+    return this.listTaches.filter(piece => piece.context == context && piece.nature == Nature.PIECE)
+    .sort(this.trieByPriorite);
+  }*/
 
   public getPiecesByIdContext(idContext: number): Tache[]{
     return this.listTaches.filter(piece => piece.context.ident == idContext && piece.nature == Nature.PIECE)
+    .sort(this.trieByPriorite);
   }
 
   public getDossierByIdContext(idContext: number, userId: number): Tache{
@@ -266,23 +314,37 @@ export class TacheService {
     let lesPieces = this.getPiecesByDossier(idDossier)
     if (lesPieces.length == 0) {
       return Status.EN_ATTENTE
-    } 
-    else {
-      if(lesPieces.filter(piece => piece.status == Status.A_VERIFIER).length > 0) {
-        return Status.A_VERIFIER
+    }  else {
+      for (let p of lesPieces) {
+        if(p.status === 'En attente' )  {
+           return Status.EN_ATTENTE;
+        }
       }
-      else if(lesPieces.filter(piece => piece.status == Status.A_VALIDER).length == 3) {
-        return Status.A_VALIDER
+      for (let p of lesPieces) {
+        if(p.status === 'À vérifier' )  {
+          return Status.A_VERIFIER;
+        }
       }
-      else if(lesPieces.filter(piece => piece.status == Status.OK).length == 3) {
-        return Status.OK
-      }
-      else if(lesPieces.filter(piece => piece.status == Status.A_VERIFIER).length == 0 && 
-              lesPieces.filter(piece => piece.status == Status.A_VALIDER).length > 0 && 
-              lesPieces.filter(piece => piece.status == Status.OK).length < 3) {
-        return Status.A_VALIDER
+      for (let p of lesPieces) {
+        if(p.status === 'À valider' )  {
+          return Status.A_VALIDER;
+        }
       }
     }
+      return Status.OK 
+  }
+
+  public createNote(tacheMere: Tache, message: string) {
+    const lNote = new Tache(Nature.NOTE);
+    lNote.idTacheMere = tacheMere.ident;
+    lNote.message = message;
+    lNote.context = tacheMere.context;
+    lNote.dateCreation = new Date();
+    lNote.idUtilisateur = tacheMere.idUtilisateur;
+    console.log(lNote.idUtilisateur);
+    
+    this.listTaches.push(lNote);
+    this.tacheSubject.next(this.listTaches);
   }
 }
 

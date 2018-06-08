@@ -29,7 +29,6 @@ export class InformationConducteurComponent implements OnInit {
     this.currentDate2delivrance = '2000-01-01';
     this.route.params.subscribe(data => {
       this.currentTache = this.tacheService.getPieceById(+data.piece);
-      console.log(this.currentTache);
     });
 
   }
@@ -89,7 +88,7 @@ export class InformationConducteurComponent implements OnInit {
 
     let idNext = 0;
     let boolTmp: boolean = false
-    this.tacheService.getPiecesByContext(this.currentTache.context).forEach((val, index) => {
+    this.tacheService.getPiecesByIdContext(this.currentTache.context.ident).forEach((val, index) => {
       if(boolTmp){
         idNext = val.ident;
         boolTmp = false;

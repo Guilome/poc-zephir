@@ -61,10 +61,8 @@ export class ConformiteComponent implements OnInit {
     if (this.piece.dateCloture == null) {
       if (this.piece.status === Status.A_VERIFIER) {
       if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
-        //this.docSuivant();
         
         this.tacheService.toEtapeValidation(this.piece.ident);
-        //this.toastr.success('Le status de la tache a été modifier en <b>À VALIDER</b>', '', {enableHtml: true});
         this.toastr.success('La pièce a été <b>vérifiée</b>', '', {enableHtml: true});
         this.docSuivant();
       }
@@ -110,21 +108,21 @@ export class ConformiteComponent implements OnInit {
     }
   }
 
+  /**
+   * Cas de la Bannette vérification 
+   */
   private docSuivant() {
 
-    let idNext = 0;
+    let idNext = null;
     let boolTmp: boolean = false
-    this.tacheService.getPiecesByContext(this.piece.context).forEach((val, index) => {
-      if(boolTmp){
-        idNext = val.ident;
-        boolTmp = false;
-      }    
-      if (val.ident == this.piece.ident){
-            boolTmp = true; 
-          }
-
-    });
-
+  
+    for ( let val of this.tacheService.getPiecesByIdContext(this.piece.context.ident)) {
+         if(val.status != 'À valider' ) {
+             idNext = val.ident;
+            break;
+         } 
+     }
+       
     if (idNext == null || this.piece.ident === idNext ) {
       this.router.navigate(['/gestionBO']);
     } else {
@@ -151,10 +149,10 @@ export class ConformiteComponent implements OnInit {
     let bVerification: boolean = false;
     idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
     for (let p of this.tacheService.getPiecesByIdContext(this.piece.context.ident)) {
-      if(p.status === 'À vérifier') {
+      if(p.status === 'À vérifier' ||  p.status === 'En attente') {
         idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
         bVerification = true;
-        return;
+        break;
       }
       if (p.status === 'À valider') {
         idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
@@ -164,7 +162,8 @@ export class ConformiteComponent implements OnInit {
     if(!bVerification){
       // Si l'utilisateur ne fait pas parti du groupe validation 
       if( !this.groupeValidation()) {
-          // Passage du dossier à l'étape de validation 
+          // Passage du dossier à l'étape de validation
+          this.toastr.success('Passage à la banette <b>VALIDATION</b>', '', {enableHtml: true}); 
           this.tacheService.toEtapeValidation(this.piece.idTacheMere);
           this.router.navigate(['/gestionBO']);
       }
