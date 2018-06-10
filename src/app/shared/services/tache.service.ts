@@ -27,7 +27,6 @@ export class TacheService {
       lTache.ident = 1000019;
       const c = new Contrat(740000,'SOLUTIO');
       c.numero = 'S140580';
-      const context = 
       lTache.context = new Context(100019, this.nomApl[0], this.nomInter[0], c);
       lTache.idGroupe = 1;
       lTache.priorite = 5;
@@ -35,6 +34,7 @@ export class TacheService {
       lTache.dateLimite = new Date('06/15/2018');
       lTache.dateCreation = new Date();
       lTache.idUtilisateur = 5; // Rousseau
+      lTache.idUtilisateurVerification = 2; // Dupont
 
       this.listTaches.push(lTache);
       this.create3PiecesTMP(lTache);
@@ -48,6 +48,7 @@ export class TacheService {
   }
 
   listTaches: Tache[] = [];
+  listTachesTmp: Tache[] = [];
   // données en mémoire
   tacheSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
 
@@ -130,6 +131,7 @@ export class TacheService {
     p.motifNonConformite = motifNonConformite;
     p.dateCloture = new Date();
     p.dateVerification = p.dateCloture;
+    p.idUtilisateurVerification = p.idUtilisateur;
   }
 
 
@@ -257,11 +259,12 @@ export class TacheService {
     }
 
   }
-  createPiece(code: Code, dossier: Tache) {
+  createPiece(code: Code, dossier: Tache) : Tache {
     // Appel Web service pour la génération de de l'identifiant
     const lPiece =  new Tache(Nature.PIECE);
     lPiece.code = code;
     lPiece.dateCreation = new Date();
+    // l'ident sera généré automatiquement via le serveur 
     lPiece.ident =  Math.floor(Math.random() * (999999 - 100000));
     lPiece.idTacheMere = dossier.ident;
     lPiece.context = dossier.context;
@@ -271,6 +274,37 @@ export class TacheService {
     this.listTaches.push(lPiece);
 
     this.tacheSubject.next(this.listTaches);
+    return lPiece;
+  }
+  /**
+   * Aucun appel web service
+   * les pièces créée seront stocké tomporairement 
+   * Si l'user valide le dossier ses pièces seront validées
+   */
+  public createPieceTemporaire(code: Code, dossier: Tache) {
+    const lPiece =  new Tache(Nature.PIECE);
+    lPiece.code = code;
+    lPiece.dateCreation = new Date();
+    lPiece.ident =  Math.floor(Math.random() * (999999 - 100000));
+    lPiece.idTacheMere = dossier.ident;
+    lPiece.context = dossier.context;
+    lPiece.dateLimite = dossier.dateLimite
+    lPiece.dateCreation = new Date();
+    lPiece.priorite = 3;
+    this.listTachesTmp.push(lPiece);
+    this.listTaches.push(lPiece);
+    this.tacheSubject.next(this.listTaches);
+  }
+
+  /**
+   * Permet de supprimer la liste des pièces stocké tomporairement
+   */
+  public removePiecesTemporaire() {
+    for (let pi of this.listTachesTmp) {
+      this.listTaches = this.listTaches.filter(piece => piece.ident != pi.ident)
+    }
+    this.tacheSubject.next(this.listTaches);
+    this.listTachesTmp = [];
   }
 
   private nomInter = [
