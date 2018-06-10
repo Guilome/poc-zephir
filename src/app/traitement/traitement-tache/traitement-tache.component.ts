@@ -116,10 +116,17 @@ export class TraitementTacheComponent implements OnInit {
     sp.classList.add('spanStatus');
   }    
 
+  /**
+   * Valider le dossier 
+   */
   valider() {  
-    this.tacheService.closeDossier(this.dossier.ident)
-    this.toastr.success("Le dossier a été validé");
-    // valider les piece en attente
+    if (this.tacheService.listPieceEnAttente.length > 0 ){
+      this.toastr.success("Le dossier a été déplacé à la banette Vérification");
+      this.tacheService.addPieceEnAttente(this.dossier);
+    } else {
+        this.tacheService.closeDossier(this.dossier.ident)
+        this.toastr.success("Le dossier a été validé");
+    }
     this.router.navigate(['/gestionBO']);
   }
 

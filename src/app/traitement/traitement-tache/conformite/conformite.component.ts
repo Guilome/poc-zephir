@@ -112,7 +112,7 @@ export class ConformiteComponent implements OnInit {
   }
 
   /**
-   * Cas de la Bannette vérification 
+   * Cas de la Banette vérification 
    */
   private docSuivant() {
 

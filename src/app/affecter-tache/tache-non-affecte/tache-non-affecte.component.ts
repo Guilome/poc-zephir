@@ -36,7 +36,10 @@ export class TacheNonAffecteComponent implements OnInit {
     /* S'il appartient à aucun de ces deux groupes il verra tous les dossiers */
     const idUser = +localStorage.getItem('USER');
     if ( this.groupeService.isVerification(idUser)){
-      this.lesDossiers = this.lesDossiers.filter(dos => this.statutDossier(dos.ident) == 'À vérifier');
+      this.lesDossiers = this.lesDossiers
+                        .filter(dos => 
+                                      this.statutDossier(dos.ident) == 'À vérifier' ||
+                                      this.statutDossier(dos.ident) == 'En attente');
     } else if (this.groupeService.isValidation(idUser)){
       this.lesDossiers = this.lesDossiers.filter(dos => this.statutDossier(dos.ident) == 'À valider');
     }

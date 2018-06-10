@@ -48,7 +48,7 @@ export class TacheService {
   }
 
   listTaches: Tache[] = [];
-  listTachesTmp: Tache[] = [];
+  listPieceEnAttente: Tache[] = [];
   // données en mémoire
   tacheSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
 
@@ -198,7 +198,6 @@ export class TacheService {
         lTache.dateVerification  = new Date('05/21/2018');
         lTache.dateCreation  = new Date('05/01/2018');
         lTache.dateReception = new Date('05/01/2018');
-        const idUser = ((Math.floor(Math.random() * (999999 - 100000)) + 100000) % 6 ) + 1;
         
         lTache.idUtilisateurVerification = [1, 4, 6][i % 3];
         lTache.idUtilisateurCloture = [2, 3, 5][i % 3];
@@ -211,7 +210,6 @@ export class TacheService {
       lTache.ident = 1000020+i;
       const c = new Contrat(740001+i,'SOLUTIO');
       c.numero = 'S140581'+ i;
-      const context = 
       lTache.context = new Context(100020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
       lTache.idGroupe = 1;
       lTache.priorite = 5;
@@ -291,7 +289,7 @@ export class TacheService {
     lPiece.dateLimite = dossier.dateLimite
     lPiece.dateCreation = new Date();
     lPiece.priorite = 3;
-    this.listTachesTmp.push(lPiece);
+    this.listPieceEnAttente.push(lPiece);
     this.listTaches.push(lPiece);
     this.tacheSubject.next(this.listTaches);
   }
@@ -300,11 +298,25 @@ export class TacheService {
    * Permet de supprimer la liste des pièces stocké tomporairement
    */
   public removePiecesTemporaire() {
-    for (let pi of this.listTachesTmp) {
+    for (let pi of this.listPieceEnAttente) {
       this.listTaches = this.listTaches.filter(piece => piece.ident != pi.ident)
     }
     this.tacheSubject.next(this.listTaches);
-    this.listTachesTmp = [];
+    this.listPieceEnAttente = [];
+  }
+
+  /**
+   * Permet d'ajouter la liste des pieces en attente 
+   * Appel web service à faire
+   */
+  addPieceEnAttente(dossier: Tache) {
+    for (const piece of this.listPieceEnAttente){
+      // les pieces existe déjà dans la list du service 
+      // appel web service 
+    }
+    this.listPieceEnAttente = [];
+    dossier.idUtilisateur = null;
+    dossier.dateVerification = null;
   }
 
   private nomInter = [
@@ -387,7 +399,7 @@ export class TacheService {
   public getStatutDossier(idDossier: number): Status{
     let lesPieces = this.getPiecesByDossier(idDossier)
     if (lesPieces.length == 0) {
-      return Status.EN_ATTENTE
+      return Status.OK
     }  else {
       for (let p of lesPieces) {
         if(p.status === 'En attente' )  {
