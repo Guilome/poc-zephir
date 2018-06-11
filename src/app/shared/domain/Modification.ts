@@ -1,18 +1,33 @@
 export class Modification {
     
   public ident: number;
-  public donnee: string;
 
-  constructor( public idTache: number, public code: Code, public valeurAvant: string, public valeurApres: string) {
-    this.donnee = this.code.valueOf();
+  constructor( public idTache: number, public donnee: Donnee, public valeurAvant: string, public valeurApres: string) {
+
   }
 }
 
-export enum Code {
-  CRM = 'Modification du CRM',
-  CRM2 = 'Modification du deuxiéme CRM',
-  DATE_PERMIS = 'Modification de la date du permis',
-  MARQUE_VEHICULE = 'Modification de la marque du véhicule',
-  MODELE_VEHICULE = 'Modification du modèle du véhicule'
+export enum Donnee {
+  MARQUE_VEHICULE,
+  MODELE_VEHICULE,
+  DESIGNATION_VEHICULE,
+  IMMATRICULATION_VEHICULE,
+  MEC_VEHICULE,
+  MA_VEHICULE,
+  DA_VEHICULE,
+  NUMEOR_PERMIS,
+  CATEGORIE_PERMIS,
+  DATE_PERMIS,
+  DEPARTEMENT_PERMIS,
+  PREFECTURE_PERMIS,
+  CRM_CONDUCTEUR, 
+  CRM2_CONDUCTEUR,
+  DOCRM05_CONDUCTEUR,
+  RESP100_CONDUCTEUR,
+  RESP50_CONDUCTEUR,
+  RESP0_CONDUCTEUR,
+  VI_CONDUCTEUR,
+  BDG_CONDUCTEUR,
+  STATIONNEMENT_CONDUCTEUR
 }
   

@@ -27,7 +27,6 @@ export class TacheService {
       lTache.ident = 1000019;
       const c = new Contrat(740000,'SOLUTIO');
       c.numero = 'S140580';
-      const context = 
       lTache.context = new Context(100019, this.nomApl[0], this.nomInter[0], c);
       lTache.idGroupe = 1;
       lTache.priorite = 5;
@@ -35,6 +34,7 @@ export class TacheService {
       lTache.dateLimite = new Date('06/15/2018');
       lTache.dateCreation = new Date();
       lTache.idUtilisateur = 5; // Rousseau
+      lTache.idUtilisateurVerification = 2; // Dupont
 
       this.listTaches.push(lTache);
       this.create3PiecesTMP(lTache);
@@ -48,6 +48,7 @@ export class TacheService {
   }
 
   listTaches: Tache[] = [];
+  listPieceEnAttente: Tache[] = [];
   // données en mémoire
   tacheSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
 
@@ -130,6 +131,7 @@ export class TacheService {
     p.motifNonConformite = motifNonConformite;
     p.dateCloture = new Date();
     p.dateVerification = p.dateCloture;
+    p.idUtilisateurVerification = p.idUtilisateur;
   }
 
 
@@ -196,7 +198,6 @@ export class TacheService {
         lTache.dateVerification  = new Date('05/21/2018');
         lTache.dateCreation  = new Date('05/01/2018');
         lTache.dateReception = new Date('05/01/2018');
-        const idUser = ((Math.floor(Math.random() * (999999 - 100000)) + 100000) % 6 ) + 1;
         
         lTache.idUtilisateurVerification = [1, 4, 6][i % 3];
         lTache.idUtilisateurCloture = [2, 3, 5][i % 3];
@@ -209,7 +210,6 @@ export class TacheService {
       lTache.ident = 1000020+i;
       const c = new Contrat(740001+i,'SOLUTIO');
       c.numero = 'S140581'+ i;
-      const context = 
       lTache.context = new Context(100020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
       lTache.idGroupe = 1;
       lTache.priorite = 5;
@@ -257,11 +257,12 @@ export class TacheService {
     }
 
   }
-  createPiece(code: Code, dossier: Tache) {
+  createPiece(code: Code, dossier: Tache) : Tache {
     // Appel Web service pour la génération de de l'identifiant
     const lPiece =  new Tache(Nature.PIECE);
     lPiece.code = code;
     lPiece.dateCreation = new Date();
+    // l'ident sera généré automatiquement via le serveur 
     lPiece.ident =  Math.floor(Math.random() * (999999 - 100000));
     lPiece.idTacheMere = dossier.ident;
     lPiece.context = dossier.context;
@@ -271,6 +272,51 @@ export class TacheService {
     this.listTaches.push(lPiece);
 
     this.tacheSubject.next(this.listTaches);
+    return lPiece;
+  }
+  /**
+   * Aucun appel web service
+   * les pièces créée seront stocké tomporairement 
+   * Si l'user valide le dossier ses pièces seront validées
+   */
+  public createPieceTemporaire(code: Code, dossier: Tache) {
+    const lPiece =  new Tache(Nature.PIECE);
+    lPiece.code = code;
+    lPiece.dateCreation = new Date();
+    lPiece.ident =  Math.floor(Math.random() * (999999 - 100000));
+    lPiece.idTacheMere = dossier.ident;
+    lPiece.context = dossier.context;
+    lPiece.dateLimite = dossier.dateLimite
+    lPiece.dateCreation = new Date();
+    lPiece.priorite = 3;
+    this.listPieceEnAttente.push(lPiece);
+    this.listTaches.push(lPiece);
+    this.tacheSubject.next(this.listTaches);
+  }
+
+  /**
+   * Permet de supprimer la liste des pièces stocké tomporairement
+   */
+  public removePiecesTemporaire() {
+    for (let pi of this.listPieceEnAttente) {
+      this.listTaches = this.listTaches.filter(piece => piece.ident != pi.ident)
+    }
+    this.tacheSubject.next(this.listTaches);
+    this.listPieceEnAttente = [];
+  }
+
+  /**
+   * Permet d'ajouter la liste des pieces en attente 
+   * Appel web service à faire
+   */
+  addPieceEnAttente(dossier: Tache) {
+    for (const piece of this.listPieceEnAttente){
+      // les pieces existe déjà dans la list du service 
+      // appel web service 
+    }
+    this.listPieceEnAttente = [];
+    dossier.idUtilisateur = null;
+    dossier.dateVerification = null;
   }
 
   private nomInter = [
@@ -353,7 +399,7 @@ export class TacheService {
   public getStatutDossier(idDossier: number): Status{
     let lesPieces = this.getPiecesByDossier(idDossier)
     if (lesPieces.length == 0) {
-      return Status.EN_ATTENTE
+      return Status.OK
     }  else {
       for (let p of lesPieces) {
         if(p.status === 'En attente' )  {

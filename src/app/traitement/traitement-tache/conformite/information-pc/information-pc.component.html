@@ -1,4 +1,4 @@
-<fieldset id="fieldsetPermis">
+<fieldset id="fieldsetPermis" class="border-info">
   <legend>Informations Permis de conduire</legend>
   <div class="form-group">
     <div class="row">
@@ -46,7 +46,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let modif of lesModifsPC">
-                <th scope="row"><button class="btn btn-danger btn-circle fa fa-times" type="submit" (click)="annulerModification(modif.ident)"></button></th>
+                <th scope="row"><button class="btn btn-danger btn-circle fa fa-trash" type="submit" (click)="annulerModification(modif.ident)"></button></th>
                 <td>{{modif.donnee}} : {{modif.valeurAvant}} -> {{modif.valeurApres}}</td>
               </tr>
             </tbody>

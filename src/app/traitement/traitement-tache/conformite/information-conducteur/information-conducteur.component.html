@@ -1,4 +1,4 @@
-<fieldset id="fieldsetConducteur">
+<fieldset id="fieldsetConducteur" class="border-info">
   <legend>Informations Conducteur</legend>
   <div class="form-group">
     <div class="row">
@@ -47,3 +47,24 @@
     </div>
   </div>
 </fieldset>
+<div *ngIf="change || lesModifsC.length > 0">
+  <div class="card border-danger mb-3">
+    <div class="card-body">
+      <p>Modification en cours :</p>
+        <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let modif of lesModifsC">
+                <th scope="row"><button class="btn btn-danger btn-circle fa fa-trash" type="submit" (click)="annulerModification(modif.ident)"></button></th>
+                <td>{{modif.donnee}} : {{modif.valeurAvant}} -> {{modif.valeurApres}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+</div>

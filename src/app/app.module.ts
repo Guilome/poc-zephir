@@ -49,6 +49,7 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InformationCgComponent } from './traitement/traitement-tache/conformite/information-cg/information-cg.component';
 import { InformationPcComponent } from './traitement/traitement-tache/conformite/information-pc/information-pc.component';
 import { ModificationService } from './shared/services/modification.service';
+import { VisualiserModificationComponent } from './traitement/traitement-tache/visualiser-modification/visualiser-modification.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -104,7 +105,8 @@ const appRoutes: Routes = [
     TableTreeContratComponent,
     GraphiqueTermineComponent,
     InformationCgComponent,
-    InformationPcComponent
+    InformationPcComponent,
+    VisualiserModificationComponent
   ],
   imports: [
     BrowserModule,

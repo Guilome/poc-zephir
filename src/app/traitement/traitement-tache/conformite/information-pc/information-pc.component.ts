@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Modification, Code } from '../../../../shared/domain/modification';
+import { Modification, Donnee } from '../../../../shared/domain/modification';
 import { Tache } from '../../../../shared/domain/Tache';
 import { ActionMetierService } from '../../../../shared/services/action-metier.service';
 import { TacheService } from '../../../../shared/services/tache.service';
@@ -37,8 +37,7 @@ export class InformationPcComponent implements OnInit {
 
   ifChangement() {
     const date = (<HTMLInputElement>document.getElementById('date2delivrance')).value    
-    console.log(date);    
-    if(date != this.currentDate.toISOString().slice(0,9)) {
+    if(date != this.currentDate.toISOString().slice(0,10)) {
       this.change = true    
       this.DemandeAvt(date)
     }
@@ -46,9 +45,9 @@ export class InformationPcComponent implements OnInit {
 
   DemandeAvt(date : string){
     this.currentTache.message = ' ';
-    if(date != this.currentDate.toISOString().slice(0,9)) {
-      this.currentTache.message += 'Marque : '+ date + '.\n'; 
-      let modifCG = new Modification(this.currentTache.ident,Code.MARQUE_VEHICULE, this.currentDate.toISOString().slice(0,9), date)
+    if(date != this.currentDate.toISOString().slice(0,10)) {
+      this.currentTache.message += 'Date : '+ date + '.\n'; 
+      let modifCG = new Modification(this.currentTache.ident,Donnee.DATE_PERMIS, this.currentDate.toISOString().slice(0,10), date)
       this.currentDate = new Date(date)
       this.modifService.addModification(modifCG)
     }
@@ -79,7 +78,7 @@ export class InformationPcComponent implements OnInit {
   private annulerModification(idModif: number) {
     let replaceDate = (<HTMLInputElement>document.getElementById('date2delivrance'))
     let modif = this.modifService.getModificationById(idModif)
-    if (modif.code == Code.DATE_PERMIS) {
+    if (modif.donnee == Donnee.DATE_PERMIS) {      
       replaceDate.value = modif.valeurAvant
     }
     this.actionMetierService.supprimerActionMetier(this.actionMetierService.getById(modif.idTache))
@@ -108,16 +107,22 @@ export class InformationPcComponent implements OnInit {
     
     if(this.lesModifsPC.length > 0){
       this.lesModifsPC.forEach( m => {
-        if (m.code == Code.DATE_PERMIS) {
+        if (m.donnee == Donnee.DATE_PERMIS) {
           this.currentDate = new Date(m .valeurApres);
+          (<HTMLInputElement>document.getElementById('date2delivrance')).value = this.currentDate.toDateString()
         }
       })
     }
     else {
       //Gestion date a afficher de base 
-      var date = new Date("2000-05-12T10:44:29+0100");
+      var date = new Date("05/01/2000");
       this.currentDate = date;
-      (<HTMLInputElement>document.getElementById('date2delivrance')).value = this.currentDate.toISOString().slice(0,9)
+      let s = date.getFullYear() + '-' + '0'+(date.getMonth() + 1) +  '-'+'0' +date.getDate(); 
+      (<HTMLInputElement>document.getElementById('date2delivrance')).value = s;
+      console.log(date.getFullYear()) 
+      console.log(date.getMonth() + 1) 
+      console.log(date.getDate())
+      
     }
   }
 }

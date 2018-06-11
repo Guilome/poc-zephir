@@ -97,6 +97,9 @@ export class ConformiteComponent implements OnInit {
     }
     
   }
+  /**
+   * Valider la non conformité 
+   */
   valider() {
     if (this.selectedItems.length > 0) {
           
@@ -112,20 +115,20 @@ export class ConformiteComponent implements OnInit {
   }
 
   /**
-   * Cas de la Bannette vérification 
+   * Cas de la Banette vérification 
    */
   private docSuivant() {
 
     let idNext = null;
-    let boolTmp: boolean = false
-    for ( let val of this.tacheService.getPiecesByDossier(this.dossier.ident)) {
+  
+    for ( let val of this.tacheService.getPiecesByIdContext(this.piece.context.ident)) {
          if(val.status != 'À valider' ) {
              idNext = val.ident;
             break;
          } 
      }
        
-    if (idNext == null || this.piece.ident === idNext ) {
+    if (idNext == null) {
       this.router.navigate(['/gestionBO']);
     } else {
       this.router.navigate(['/TraitementTache', { id: this.piece.context.ident, piece: idNext }]);
