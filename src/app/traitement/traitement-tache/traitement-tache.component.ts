@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tache} from '../../shared/domain/Tache';
+import {Tache, Nature} from '../../shared/domain/Tache';
 import {ActivatedRoute, Router, Params} from '@angular/router';
 import {TacheService} from '../../shared/services/tache.service';
 import {NgForm} from '@angular/forms';
@@ -49,7 +49,7 @@ export class TraitementTacheComponent implements OnInit {
           this.tacheService.listerTaches()
           .subscribe(data => {
                               this.listNotes = this.tacheService.getNotesByDossier(this.dossier.ident);
-                              this.listPieces = this.tacheService.getPiecesByIdContext(+params.id);
+                              this.listPieces = this.tacheService.getPiecesByDossier(this.dossier.ident);
                             });
       }
 
@@ -109,7 +109,9 @@ export class TraitementTacheComponent implements OnInit {
       element.classList.remove('bg-row');
       for (let i = 0 ; i <document.getElementsByClassName('spanStatus').length ; i++ ){
           const ele = document.getElementsByClassName('spanStatus')[i];
-          ele.innerHTML = '<span class="badge badge-success float-right">Visualisée</span>';
+          if (ele.innerHTML.toString().indexOf('En attente') < 0){
+             ele.innerHTML = '<span class="badge badge-success float-right">Visualisée</span>';
+          }
       }
     }
     a.classList.add('bg-row');
@@ -161,6 +163,9 @@ export class TraitementTacheComponent implements OnInit {
         if(confirm('Confirmez-vous la demande de cette/ces pièce(s) ?\n' + lPices )){ 
           for (let val of this.selectedItems){
               this.tacheService.createPiece(val.id, this.dossier);
+              /*const piece = new Tache(Nature.PIECE);
+              piece.code = val.id;
+              this.listPieces.push(piece);*/
           }
           this.currentModal.close();
       }

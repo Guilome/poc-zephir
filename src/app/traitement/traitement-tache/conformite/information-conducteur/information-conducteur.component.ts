@@ -58,7 +58,7 @@ export class InformationConducteurComponent implements OnInit {
     // Status 
     let idLabelStatus = document.getElementById('idLabelStatus');
     idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-    for (let p of this.tacheService.getPiecesByIdContext(this.currentTache.context.ident)) {
+    for (let p of this.tacheService.getPiecesByDossier(this.currentTache.idTacheMere)) {
       if(p.status === 'À vérifier') {
         idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérfication</span>';
         return;
@@ -88,7 +88,7 @@ export class InformationConducteurComponent implements OnInit {
 
     let idNext = 0;
     let boolTmp: boolean = false
-    this.tacheService.getPiecesByIdContext(this.currentTache.context.ident).forEach((val, index) => {
+    this.tacheService.getPiecesByDossier(this.currentTache.idTacheMere).forEach((val, index) => {
       if(boolTmp){
         idNext = val.ident;
         boolTmp = false;

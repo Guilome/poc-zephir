@@ -26,6 +26,7 @@ export class ConformiteComponent implements OnInit {
   public motifBoolean = false;
 
   private idCurrentUser: number
+  private dossier: Tache;
 
   // multiplSelect
   dropdownList = [];
@@ -36,6 +37,8 @@ export class ConformiteComponent implements OnInit {
       this.idSubscription = this.route.params.subscribe((params: any) => {
         this.piece = this.tacheService.getPieceById(+params.piece);
       });
+      this.dossier = this.tacheService.getDossierByIdContext(this.piece.context.ident, this.idCurrentUser);
+
       this.dropdownList = [
                             {"id": 1, "itemName":"CRM non conforme"},
                             {"id": 2, "itemName":"Véhicule interdit à la souscription"}
@@ -115,8 +118,7 @@ export class ConformiteComponent implements OnInit {
 
     let idNext = null;
     let boolTmp: boolean = false
-  
-    for ( let val of this.tacheService.getPiecesByIdContext(this.piece.context.ident)) {
+    for ( let val of this.tacheService.getPiecesByDossier(this.dossier.ident)) {
          if(val.status != 'À valider' ) {
              idNext = val.ident;
             break;
@@ -148,7 +150,7 @@ export class ConformiteComponent implements OnInit {
     let idLabelStatus = document.getElementById('idLabelStatus');
     let bVerification: boolean = false;
     idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-    for (let p of this.tacheService.getPiecesByIdContext(this.piece.context.ident)) {
+    for (let p of this.tacheService.getPiecesByDossier(this.dossier.ident)) {
       if(p.status === 'À vérifier' ||  p.status === 'En attente') {
         idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
         bVerification = true;

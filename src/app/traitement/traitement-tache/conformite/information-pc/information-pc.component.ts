@@ -61,7 +61,7 @@ export class InformationPcComponent implements OnInit {
     // Status 
     let idLabelStatus = document.getElementById('idLabelStatus');
     idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-    for (let p of this.tacheService.getPiecesByIdContext(this.currentTache.context.ident)) {
+    for (let p of this.tacheService.getPiecesByDossier(this.currentTache.idTacheMere)) {
       if(p.status === 'À vérifier') {
         idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérfication</span>';
         return;
