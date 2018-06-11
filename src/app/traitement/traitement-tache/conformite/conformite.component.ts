@@ -74,7 +74,6 @@ export class ConformiteComponent implements OnInit {
       if (confirm('Confirmez-vous la conformité de ce document ?')) {
         this.piece = this.tacheService.closePieceConforme(this.piece.ident);
         this.toastr.success('La tâche a été <b>fermée</b>', '', {enableHtml: true});
-        this.tacheService.demandeNouvellePiece(this.piece);
       }
     }
   } else {
