@@ -119,9 +119,6 @@ export class InformationPcComponent implements OnInit {
       this.currentDate = date;
       let s = date.getFullYear() + '-' + '0'+(date.getMonth() + 1) +  '-'+'0' +date.getDate(); 
       (<HTMLInputElement>document.getElementById('date2delivrance')).value = s;
-      console.log(date.getFullYear()) 
-      console.log(date.getMonth() + 1) 
-      console.log(date.getDate())
       
     }
   }

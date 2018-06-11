@@ -6,6 +6,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {ToastrService} from 'ngx-toastr';
 import { GroupeService } from '../../../shared/services/groupe.service';
 import { UtilisateurService } from '../../../shared/services/utilisateur.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-conformite',
@@ -19,7 +20,8 @@ export class ConformiteComponent implements OnInit {
     private route: ActivatedRoute, 
     public toastr: ToastrService,
     private groupeService: GroupeService,
-    private utilisateurService: UtilisateurService) {}
+    private utilisateurService: UtilisateurService,
+    private modalService: NgbModal) {}
 
   piece: Tache;
   private idSubscription: Subscription;
@@ -28,17 +30,27 @@ export class ConformiteComponent implements OnInit {
   private idCurrentUser: number
   private dossier: Tache;
 
+  currentModal: NgbModalRef;
   // multiplSelect
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
+  motifselected = [];
+  motifsData: any;
   ngOnInit(){
+    this.motifsData = [
+      {"id": 'ATT_CI', "itemName":"Non visible"},
+      {"id": 'ATT_MDP', "itemName":"CRM non conforme"}
+    ];
+    this.motifselected = [];
+
       this.idCurrentUser = +localStorage.getItem('USER');
       this.idSubscription = this.route.params.subscribe((params: any) => {
         this.piece = this.tacheService.getPieceById(+params.piece);
       });
-      this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere);
-
+      if (this.piece != null) {
+          this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere);
+      }
       this.dropdownList = [
                             {"id": 1, "itemName":"CRM non conforme"},
                             {"id": 2, "itemName":"Véhicule interdit à la souscription"}
@@ -165,9 +177,14 @@ export class ConformiteComponent implements OnInit {
       // Si l'utilisateur ne fait pas parti du groupe validation 
       if( !this.groupeValidation()) {
           // Passage du dossier à l'étape de validation
-          this.toastr.success('Passage à la bannette <b>VALIDATION</b>', '', {enableHtml: true}); 
-          this.tacheService.toEtapeValidation(this.dossier.ident);
+          if (this.tacheService.getStatutDossier(this.dossier.ident) === 'En attente'){
+            this.toastr.success('Dossier passé   <b>En attente</b>', '', {enableHtml: true}); 
+          }else {
+            this.toastr.success('Passage à la bannette <b>VALIDATION</b>', '', {enableHtml: true}); 
+            this.tacheService.toEtapeValidation(this.dossier.ident);
+          }
           this.router.navigate(['/gestionBO']);
+
       }
     }
   }
@@ -212,10 +229,27 @@ export class ConformiteComponent implements OnInit {
 
   /**
    * Envoie une relance qui correspond au papier en train d'être valider
-   * @param type 
+   *  
    */
-  renouvelerDemande(type: string){
-    
+  renouvelerDemande(content: any){
+    this.currentModal = this.modalService.open(content, { size : 'lg', centered : true, backdrop: 'static' });
+   // 
+  }
+  /**
+   * Demander une nouvelle pièces avec les motifs de non conformiité.
+   */
+  demanderNouvellePiece() {
+    if ( this.motifselected.length > 0){
+    this.tacheService.createPieceTemporaire(this.piece.code, this.dossier);
+    // cloture de la pièce NON CONFORME/
+    this.tacheService.closePieceNonConforme(this.piece.ident, this.motifselected.join('\n'));
+
+    this.toastr.success('Demande de rounouvellement effectuée');
+    this.currentModal.close();
+
+    }else {
+      this.toastr.error('Veuillez sélectionner un ou plkusieurs motif(s)');
+    }
   }
 
 }

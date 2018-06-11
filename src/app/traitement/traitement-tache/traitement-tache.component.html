@@ -38,9 +38,26 @@
           <h5>Note : 
               <button type="button" title="Ajouter une note au dossier" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModalSm(modalAjoutDeNote)">  </button>
           </h5>
-          <div *ngFor="let note of listNotes">
-              <div class="row"><span tooltip="{{note.message}}"  >{{note.nature}} de {{getNomUtilisateur(note)}}</span></div>
+          <div class="nav flex-column nav-pills ">
+          
+            <div *ngFor="let n of listNotes" > 
+              <a class="nav-link" (click)="detailPiece(n,a)" [popover]="myPopover" routerLinkActive="active"  [attr.id]="'link'+n.ident" #a>
+                      <div class="row">
+                          {{n.nature}} de {{getNomUtilisateur(n)}}
+                      </div>
+
+              </a>
+              <popover-content #myPopover
+              placement="right"
+              [animation]="true"
+              [closeOnClickOutside]="true" >
+                <div class="container">
+                  {{n.message}}
+                </div>
+              </popover-content>
             </div>
+          </div>
+
             <!-- end NOTE-->
 
           <!-- begin  ACTION METIER-->
@@ -101,7 +118,7 @@
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" (click)="c('Close click')">Annuler</button>
-              <button type="button" class="btn btn-outline-primary" (click)="DemanderPiece()" >Enregistrer</button>
+          <button type="button" class="btn btn-outline-primary" (click)="DemanderPiece()" >Enregistrer</button>
       </div>
 
 </ng-template>

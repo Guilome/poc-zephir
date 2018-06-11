@@ -85,6 +85,14 @@ export class TacheService {
     return this.listTaches.find(t => t.ident === id && t.nature == Nature.PIECE);
   }
 
+    /**
+   * retourne une note en fonction de son id
+   * @param id 
+   */
+  getNoteById(id: number): Tache {
+    return this.listTaches.find(t => t.ident === id && t.nature == Nature.NOTE);
+  }
+
   /**
    * Retourne la liste de pièces en fonction de l'ID du dossier (199), trié par priorité.
    * @param idDossier 
@@ -279,7 +287,7 @@ export class TacheService {
    * les pièces créée seront stocké tomporairement 
    * Si l'user valide le dossier ses pièces seront validées
    */
-  public createPieceTemporaire(code: Code, dossier: Tache) {
+  public createPieceTemporaire(code: string, dossier: Tache) {
     const lPiece =  new Tache(Nature.PIECE);
     lPiece.code = code;
     lPiece.dateCreation = new Date();
@@ -404,12 +412,12 @@ export class TacheService {
    * @param idDossier 
    */
   public getStatutDossier(idDossier: number): Status{
-    let lesPieces = this.getPiecesByDossier(idDossier)
+    let lesPieces = this.getPiecesByDossier(idDossier).filter(pi => pi.dateCloture == null)
     if (lesPieces.length == 0) {
       return Status.OK// pour le jeu de test sinon le dossier est en attente
     }  else {
       for (let p of lesPieces) {
-        if(p.status === 'À vérifier' )  {
+        if(p.status === 'À vérifier' )  { 
           return Status.A_VERIFIER;
         }
       }
@@ -429,6 +437,7 @@ export class TacheService {
 
   public createNote(tacheMere: Tache, message: string) {
     const lNote = new Tache(Nature.NOTE);
+    lNote.ident = Math.floor(Math.random() * (999999 - 100000));
     lNote.idTacheMere = tacheMere.ident;
     lNote.message = message;
     lNote.context = tacheMere.context;
@@ -451,6 +460,10 @@ export class TacheService {
     lPiece.priorite = 3;
     this.listTaches.push(lPiece);
     this.tacheSubject.next(this.listTaches);
+  }
+
+  isPiece(idTache: number): boolean {
+    return this.getTacheById(idTache).nature === Nature.PIECE;
   }
 }
 

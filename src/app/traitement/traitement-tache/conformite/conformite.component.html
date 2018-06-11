@@ -23,6 +23,9 @@
       </div>
     </div>
     <!--// liste des motifs Non conformité -->
+    <div *ngIf="piece.motifNonConformite != null">
+        <p>déclarée non conforme le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
+      </div>
     <ul *ngIf="piece.motifNonConformite != null">
       <li *ngFor="let s of listMotifs()">{{s}}</li>
     </ul>
@@ -30,16 +33,14 @@
     <div *ngIf="piece.dateVerification != null && piece.motifNonConformite == null">
       <p>Vérifiée le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
     </div>
-    <div *ngIf="piece.motifNonConformite != null">
-        <p>déclarée non conforme le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
-      </div>
+
   </div>
 <!-- ELSE -->
 
 <!--Information du RI-->
   <div *ngIf="groupeValidation() && piece.libelle === 'Relevé d\'information'">
     <app-information-conducteur style="font-size: 0.7em" ></app-information-conducteur>
-    <button type="button" class="btn btn-primary btn-demande" (click)="renouvelerDemande('RI')"> 
+    <button type="button" class="btn btn-primary btn-demande" (click)="renouvelerDemande(modalRenouvellement)"> 
       Renouveler demande RI 
     </button>
   </div>
@@ -47,7 +48,7 @@
 <!--Information du CG-->
   <div *ngIf="groupeValidation() && piece.libelle === 'Carte grise'">
     <app-information-cg style="font-size: 0.7em" ></app-information-cg>
-    <button type="button" class="btn btn-primary btn-demande" (click)="renouvelerDemande('CG')" value="Renouveler demande CG">
+    <button type="button" class="btn btn-primary btn-demande" (click)="renouvelerDemande(modalRenouvellement)" value="Renouveler demande CG">
       Renouveler demande CG 
     </button>
   </div>
@@ -55,11 +56,11 @@
 <!--Information du PC-->
   <div *ngIf="groupeValidation() && piece.libelle === 'Permis de conduire'">
     <app-information-pc style="font-size: 0.7em" ></app-information-pc>
-    <button type="button" class="btn btn-primary btn-demande" (click)="renouvelerDemande('PC')"> 
+    <button type="button" class="btn btn-primary btn-demande" (click)="renouvelerDemande(modalRenouvellement)"> 
       Renouveler demande PC 
     </button>
   </div>
-
+ 
   <!--div *ngIf="piece.dateVerification != null && piece.dateCloture!= null">
     <br>
     <p>Vérifié le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
@@ -67,3 +68,24 @@
   </div-->
 
 </div>
+<!-- Modal motif de renouvellement de la pièce -->
+<ng-template #modalRenouvellement let-c="close" let-d="dismiss">
+
+    <div class="modal-header" >
+        <h4 class="modal-title">Demande de renouvellement </h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <angular2-multiselect [data]="motifsData"
+                                [(ngModel)]="motifselected">
+          </angular2-multiselect>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-light" (click)="c('Close click')">Annuler</button>
+          <button type="button" class="btn btn-outline-primary" (click)="demanderNouvellePiece()" >Demander</button>
+
+      </div>
+
+</ng-template>

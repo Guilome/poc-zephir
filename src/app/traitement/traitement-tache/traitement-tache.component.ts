@@ -82,7 +82,9 @@ export class TraitementTacheComponent implements OnInit {
             element.classList.remove('bg-row')
           }
           document.getElementById('link'+ params.piece).classList.add('bg-row');
-          document.getElementById('span'+ params.piece).classList.add('spanStatus');
+          if ( this.tacheService.isPiece(+params.piece)){
+            document.getElementById('span'+ params.piece).classList.add('spanStatus');
+          }
         }
 
     });
@@ -110,11 +112,13 @@ export class TraitementTacheComponent implements OnInit {
         if (this.tacheService.getStatutDossier(this.dossier.ident) != 'À vérifier') {
            for (let i = 0 ; i <document.getElementsByClassName('spanStatus').length ; i++ ){
                 const ele = document.getElementsByClassName('spanStatus')[i];
-                if (ele.innerHTML.toString().indexOf('En attente') < 0){
+                
+                if (ele.innerHTML.toString().indexOf('À valider') > 0){
                     ele.innerHTML = '<span class="badge badge-success float-right">Visualisée</span>';
                 }
            }
-           sp.classList.add('spanStatus');
+           if (sp != null)
+            sp.classList.add('spanStatus');
         } 
     }
     a.classList.add('bg-row');
