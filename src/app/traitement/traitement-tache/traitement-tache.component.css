@@ -19,3 +19,8 @@ a:hover {
     line-height: 1.428571429;
     border-radius: 15px;
   }
+  
+  .textarea {
+    width: 300px;
+    height: 200px;
+  }

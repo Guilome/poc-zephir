@@ -438,5 +438,19 @@ export class TacheService {
     this.listTaches.push(lNote);
     this.tacheSubject.next(this.listTaches);
   }
+
+  demandeNouvellePiece(piece: Tache) {
+    const lPiece = new Tache(Nature.PIECE);
+    lPiece.code = piece.code;
+    lPiece.dateCreation = new Date();
+    lPiece.ident =  Math.floor(Math.random() * (999999 - 100000));
+    lPiece.idTacheMere = piece.idTacheMere;
+    lPiece.context = piece.context;
+    lPiece.dateLimite = piece.dateLimite
+    lPiece.dateCreation = new Date();
+    lPiece.priorite = 3;
+    this.listTaches.push(lPiece);
+    this.tacheSubject.next(this.listTaches);
+  }
 }
 

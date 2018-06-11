@@ -128,7 +128,7 @@ export class TraitementTacheComponent implements OnInit {
       if ( this.tacheService.getStatutDossier(this.dossier.ident) === 'En attente'){
         this.toastr.success("Le dossier a été mis <b>En attente</b>",'', {enableHtml: true});
       }else {
-        this.toastr.success("Le dossier a été déplacé à la banette <b>Vérification</b>",'', {enableHtml: true});
+        this.toastr.success("Le dossier a été déplacé à la bannette <b>Vérification</b>",'', {enableHtml: true});
       }
       this.tacheService.addPieceEnAttente(this.dossier);
     } else {
@@ -160,7 +160,7 @@ export class TraitementTacheComponent implements OnInit {
   
   }
   openModalSm(content: any) {
-    this.currentModal = this.modalService.open(content, { size : 'sm', 
+    this.currentModal = this.modalService.open(content, { size : 'lg', 
                                       centered : true });
   
   }
@@ -192,8 +192,8 @@ export class TraitementTacheComponent implements OnInit {
       // traitement 
       this.tacheService.createNote(this.dossier, message.value);
       this.currentModal.close();
-    }else {
-      this.toastr.error('Veuillez rensigner la note')
+    } else {
+      this.toastr.error('Veuillez rensigner une note')
     }
   }
 

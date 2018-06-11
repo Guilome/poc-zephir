@@ -27,9 +27,12 @@
       <li *ngFor="let s of listMotifs()">{{s}}</li>
     </ul>
     <!-- cas du vérification déjà faite -->
-    <div *ngIf="piece.dateVerification != null">
-      <p>Vérifié le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
+    <div *ngIf="piece.dateVerification != null && piece.motifNonConformite == null">
+      <p>Vérifiée le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
     </div>
+    <div *ngIf="piece.motifNonConformite != null">
+        <p>déclarée non conforme le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
+      </div>
   </div>
 <!-- ELSE -->
 
@@ -57,10 +60,10 @@
     </button>
   </div>
 
-  <div *ngIf="piece.dateVerification != null && piece.dateCloture!= null">
+  <!--div *ngIf="piece.dateVerification != null && piece.dateCloture!= null">
     <br>
     <p>Vérifié le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
     <p>Validé le {{piece.datecloture | date: 'dd/MM/yyyy'}} par {{getNomValidation()}}</p>
-  </div>
+  </div-->
 
 </div>

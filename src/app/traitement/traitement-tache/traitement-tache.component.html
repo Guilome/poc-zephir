@@ -8,11 +8,11 @@
   <!-- BEGIN left screnn-->
   <div  class="col-3">
     <h4>Contrat <a href="/#">{{dossier.context.contrat.numero}} </a></h4>
-    <h4>Banette : <label id="idLabelStatus" ></label> </h4>
+    <h4>Bannette : <label id="idLabelStatus" ></label> </h4>
 
     <div *ngIf="dossier != null">
         <h5>Pièces justificatives :     
-           <button type="button" title="Demande de pièces complémentaire" class="btn btn-info btn-circle fa fa-plus" (click)="openModalLg(modalDmdeDePiece)">  </button>
+           <button type="button" title="Demande de pièces complémentaires" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModalLg(modalDmdeDePiece)">  </button>
         </h5>
         <div class="nav flex-column nav-pills ">
           
@@ -36,7 +36,7 @@
           </div>
           <!-- begin  NOTE-->
           <h5>Note : 
-              <button type="button" title="Demande de pièces complémentaire" class="btn btn-info btn-circle fa fa-plus" (click)="openModalSm(modalAjoutDeNote)">  </button>
+              <button type="button" title="Ajouter une note au dossier" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModalSm(modalAjoutDeNote)">  </button>
           </h5>
           <div *ngFor="let note of listNotes">
               <div class="row"><span tooltip="{{note.message}}"  >{{note.nature}} de {{getNomUtilisateur(note)}}</span></div>
@@ -117,10 +117,10 @@
         </button>
       </div>
       <div class="modal-body">
-          <dir class="row ">
-              <textarea placeholder="Message..." #msg></textarea>
+          <div class="row justify-content-md-center">
+              <textarea class="textarea" placeholder="Message..." #msg></textarea>
               <button type="button" class="btn btn-outline-primary" style="margin-right: 10px" (click)="AjouterNote(msg)" >Ajouter</button>
-          </dir>
+          </div>
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-light" (click)="c('Close click')">Annuler</button>

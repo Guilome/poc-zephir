@@ -37,7 +37,7 @@ export class ConformiteComponent implements OnInit {
       this.idSubscription = this.route.params.subscribe((params: any) => {
         this.piece = this.tacheService.getPieceById(+params.piece);
       });
-      this.dossier = this.tacheService.getDossierByIdContext(this.piece.context.ident, this.idCurrentUser);
+      this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere);
 
       this.dropdownList = [
                             {"id": 1, "itemName":"CRM non conforme"},
@@ -74,6 +74,7 @@ export class ConformiteComponent implements OnInit {
       if (confirm('Confirmez-vous la conformité de ce document ?')) {
         this.piece = this.tacheService.closePieceConforme(this.piece.ident);
         this.toastr.success('La tâche a été <b>fermée</b>', '', {enableHtml: true});
+        this.tacheService.demandeNouvellePiece(this.piece);
       }
     }
   } else {
@@ -82,20 +83,16 @@ export class ConformiteComponent implements OnInit {
     this.titleStatus()
 
   }
-  /*
-    FERMER LA TACHE dans les deux étapes (à voir)
-    Message de cloture obligtoire
-  */
+  /**
+   * Affichage de la liste NON CONFRMITEE
+   */
   nonConforme() {
     if (this.piece.dateCloture == null) {
       if (this.motifBoolean) {
       } else {
         this.motifBoolean = true;
       }
-    } else {
-      this.toastr.error('Aucune action possible : La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture));
     }
-    
   }
   /**
    * Valider la non conformité 
@@ -104,10 +101,11 @@ export class ConformiteComponent implements OnInit {
     if (this.selectedItems.length > 0) {
           
       this.tacheService.closePieceNonConforme(this.piece.ident, this.recuperationMotif());
+      // création auto d'un nouvelle piece en attente :
+      this.tacheService.demandeNouvellePiece(this.piece);
       this.toastr.success('La tâche a été fermé');
       this.selectedItems = [];
       this.motifBoolean = false;
-      this.titleStatus();
       this.docSuivant();
     } else {
       this.toastr.error('Veuillez renseigner le(s) motif(s)');
@@ -115,7 +113,7 @@ export class ConformiteComponent implements OnInit {
   }
 
   /**
-   * Cas de la Banette vérification 
+   * Cas de la Bannette vérification 
    */
   private docSuivant() {
 
@@ -154,7 +152,7 @@ export class ConformiteComponent implements OnInit {
     let bVerification: boolean = false;
     idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
     for (let p of this.tacheService.getPiecesByDossier(this.dossier.ident)) {
-      if(p.status === 'À vérifier' ||  p.status === 'En attente') {
+      if(this.tacheService.getStatutDossier(this.dossier.ident) === 'À vérifier') {
         idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
         bVerification = true;
         break;
@@ -168,8 +166,8 @@ export class ConformiteComponent implements OnInit {
       // Si l'utilisateur ne fait pas parti du groupe validation 
       if( !this.groupeValidation()) {
           // Passage du dossier à l'étape de validation
-          this.toastr.success('Passage à la banette <b>VALIDATION</b>', '', {enableHtml: true}); 
-          this.tacheService.toEtapeValidation(this.piece.idTacheMere);
+          this.toastr.success('Passage à la bannette <b>VALIDATION</b>', '', {enableHtml: true}); 
+          this.tacheService.toEtapeValidation(this.dossier.ident);
           this.router.navigate(['/gestionBO']);
       }
     }
