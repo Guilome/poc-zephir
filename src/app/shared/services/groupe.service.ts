@@ -101,7 +101,10 @@ export class GroupeService {
     let list;
     const userId = +localStorage.getItem('USER');
     if(userId != null) {
-      this.tacheService.listerTaches().subscribe(t => list = t)
+      this.tacheService.listerTaches().subscribe(t => list = t);
+      if (list.filter(tache => tache.idUtilisateur === userId).length == 0 ){
+        return false;
+      }
       list.filter(tache => tache.idUtilisateur === userId).forEach(tache => tache.idUtilisateur = null);
       this.tacheService.nextListSubject(list);
       return true;

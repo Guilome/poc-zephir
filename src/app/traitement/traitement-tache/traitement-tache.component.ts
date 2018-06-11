@@ -106,16 +106,18 @@ export class TraitementTacheComponent implements OnInit {
     //this.router.navigate(['/TraitementTache/'+ident+';idPiece='+ident]);
     const element = document.getElementsByClassName('bg-row')[0];
     if(element != null) {
-      element.classList.remove('bg-row');
-      for (let i = 0 ; i <document.getElementsByClassName('spanStatus').length ; i++ ){
-          const ele = document.getElementsByClassName('spanStatus')[i];
-          if (ele.innerHTML.toString().indexOf('En attente') < 0){
-             ele.innerHTML = '<span class="badge badge-success float-right">Visualisée</span>';
-          }
-      }
+        element.classList.remove('bg-row');
+        if (this.tacheService.getStatutDossier(this.dossier.ident) != 'À vérifier') {
+           for (let i = 0 ; i <document.getElementsByClassName('spanStatus').length ; i++ ){
+                const ele = document.getElementsByClassName('spanStatus')[i];
+                if (ele.innerHTML.toString().indexOf('En attente') < 0){
+                    ele.innerHTML = '<span class="badge badge-success float-right">Visualisée</span>';
+                }
+           }
+           sp.classList.add('spanStatus');
+        } 
     }
     a.classList.add('bg-row');
-    sp.classList.add('spanStatus');
   }    
 
   /**
@@ -123,7 +125,11 @@ export class TraitementTacheComponent implements OnInit {
    */
   valider() {  
     if (this.tacheService.listPieceEnAttente.length > 0 ){
-      this.toastr.success("Le dossier a été déplacé à la banette Vérification");
+      if ( this.tacheService.getStatutDossier(this.dossier.ident) === 'En attente'){
+        this.toastr.success("Le dossier a été mis <b>En attente</b>",'', {enableHtml: true});
+      }else {
+        this.toastr.success("Le dossier a été déplacé à la banette <b>Vérification</b>",'', {enableHtml: true});
+      }
       this.tacheService.addPieceEnAttente(this.dossier);
     } else {
         this.tacheService.closeDossier(this.dossier.ident)

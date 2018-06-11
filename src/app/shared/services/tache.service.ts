@@ -34,7 +34,7 @@ export class TacheService {
       lTache.dateLimite = new Date('06/15/2018');
       lTache.dateCreation = new Date();
       lTache.idUtilisateur = 5; // Rousseau
-      lTache.idUtilisateurVerification = 2; // Dupont
+      lTache.idUtilisateurVerification = 1; // Dupont
 
       this.listTaches.push(lTache);
       this.create3PiecesTMP(lTache);
@@ -251,7 +251,7 @@ export class TacheService {
       lPiece.dateCreation = new Date();
       lPiece.dateReception = new Date();
       lPiece.dateVerification = new Date();
-      lPiece.idUtilisateurVerification = dossier_199.idUtilisateur;
+      lPiece.idUtilisateurVerification = 1;// Dupont
       
       this.listTaches.push(lPiece);
     }
@@ -396,19 +396,26 @@ export class TacheService {
     return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture == null)
   }
 
+  /**
+   * "en attente" si aucune pièce est reçu.
+   * "à vérifier" si une/plusieurs pîèce est à vérifiée.
+   * "à valider" si toute les pièce sont à valider. 
+   * 
+   * @param idDossier 
+   */
   public getStatutDossier(idDossier: number): Status{
     let lesPieces = this.getPiecesByDossier(idDossier)
     if (lesPieces.length == 0) {
-      return Status.OK
+      return Status.OK// pour le jeu de test sinon le dossier est en attente
     }  else {
-      for (let p of lesPieces) {
-        if(p.status === 'En attente' )  {
-           return Status.EN_ATTENTE;
-        }
-      }
       for (let p of lesPieces) {
         if(p.status === 'À vérifier' )  {
           return Status.A_VERIFIER;
+        }
+      }
+      for (let p of lesPieces) {
+        if(p.status === 'En attente' )  {
+           return Status.EN_ATTENTE;
         }
       }
       for (let p of lesPieces) {

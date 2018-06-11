@@ -38,8 +38,7 @@ export class TacheNonAffecteComponent implements OnInit {
     if ( this.groupeService.isVerification(idUser)){
       this.lesDossiers = this.lesDossiers
                         .filter(dos => 
-                                      this.statutDossier(dos.ident) == 'À vérifier' ||
-                                      this.statutDossier(dos.ident) == 'En attente');
+                                      this.statutDossier(dos.ident) == 'À vérifier');
     } else if (this.groupeService.isValidation(idUser)){
       this.lesDossiers = this.lesDossiers.filter(dos => this.statutDossier(dos.ident) == 'À valider');
     }

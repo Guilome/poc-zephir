@@ -97,12 +97,11 @@
                                 [(ngModel)]="selectedItems" 
                                 [settings]="dropdownSettings">
           </angular2-multiselect>
-          <dir class="row float-right ">
-              <button type="button" class="btn btn-outline-primary" style="margin-right: 10px" (click)="DemanderPiece()" >Enregistrer</button>
-            </dir>
+
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-light" (click)="c('Close click')">Annuler</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="c('Close click')">Annuler</button>
+              <button type="button" class="btn btn-outline-primary" (click)="DemanderPiece()" >Enregistrer</button>
       </div>
 
 </ng-template>

@@ -116,12 +116,8 @@ export class GestionComponent implements OnInit {
     return true;
   }
   visualiser(eye) {
-    // TACHES
-    if (this.tacheBoolean) {
-      alert('Hello ! ' + this.titre);
-    }
     // NOTES
-    else if (this.noteBoolean) {
+    if (this.noteBoolean) {
 
       this.boolDateCloture = !this.boolDateCloture;
       if ( this.boolDateCloture ) {
@@ -215,6 +211,8 @@ export class GestionComponent implements OnInit {
   userCorbeille() {    
     if ( this.groupeService.corbeilleUser(this.utilisateur.idGroupe) ) {
       this.toastr.success('Vos taches ont été misent à la corbeille');
+    }else {
+      this.toastr.warning('Votre liste de tache est vide');
     }
   }
 
