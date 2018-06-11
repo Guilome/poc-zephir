@@ -20,7 +20,7 @@
                       <div class="row">
                         {{p.libelle}} 
                         <div class="col"  [attr.id]="'span'+p.ident" #sp >
-                              <div *ngIf="p.status != 'Ok' && p.dateCloture != null; else block"> <!-- IF-->
+                              <div *ngIf="p.motifNonConformite != null; else block"> <!-- IF-->
                                   <span class="badge badge-danger float-right">Non conforme</span>
                               </div>
                               <ng-template #block> <!-- ELSE-->

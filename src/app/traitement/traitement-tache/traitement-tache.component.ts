@@ -116,9 +116,17 @@ export class TraitementTacheComponent implements OnInit {
     sp.classList.add('spanStatus');
   }    
 
+  /**
+   * Valider le dossier 
+   */
   valider() {  
-    this.tacheService.closeDossier(this.dossier.ident)
-    this.toastr.success("Le dossier a été validé")
+    if (this.tacheService.listPieceEnAttente.length > 0 ){
+      this.toastr.success("Le dossier a été déplacé à la banette Vérification");
+      this.tacheService.addPieceEnAttente(this.dossier);
+    } else {
+        this.tacheService.closeDossier(this.dossier.ident)
+        this.toastr.success("Le dossier a été validé");
+    }
     this.router.navigate(['/gestionBO']);
   }
 
@@ -151,16 +159,16 @@ export class TraitementTacheComponent implements OnInit {
 
   DemanderPiece() {
 
-    let lPices = '';
+    let lPieces = '';
     for (let val of this.selectedItems){
-      lPices += val.itemName + '\n';
+      lPieces += val.itemName + '\n';
     }
     if (this.selectedItems.length < 1){
       this.toastr.error('Veuillez sélectionner une ou plusieurs pièce(s)')
     }else {
-        if(confirm('Confirmez-vous la demande de cette/ces pièce(s) ?\n' + lPices )){ 
+        if(confirm('Confirmez-vous la demande de cette/ces pièce(s) ?\n' + lPieces )){ 
           for (let val of this.selectedItems){
-              this.tacheService.createPiece(val.id, this.dossier);
+              this.tacheService.createPieceTemporaire(val.id, this.dossier);
           }
           this.currentModal.close();
       }
