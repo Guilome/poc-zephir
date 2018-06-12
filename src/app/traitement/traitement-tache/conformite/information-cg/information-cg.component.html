@@ -18,7 +18,7 @@
       </div>
       <div class="col-sm-7">
         <label class="control-label" for="mec">Mise en circulation :</label>
-        <input type="date" class="form-control" id="mec" value="{{currentMEC}}" (onblur)="ifChangement()" #mec>
+        <input type="date" class="form-control" id="mec" (onblur)="ifChangement()" #mec>
       </div>
     </div>
     <div class="row">
@@ -34,7 +34,7 @@
     <div class="row">
       <div class="col-sm-7 offset-5">
           <label class="control-label" for="dateAcquisition">Date d'acquisition :</label>
-          <input type="date" class="form-control" id="dateAcquisition" value="{{currentDA}}" (onblur)="ifChangement()" #dateAcquisition>
+          <input type="date" class="form-control" id="dateAcquisition" (onblur)="ifChangement()" #dateAcquisition>
       </div>
     </div>
   </div>

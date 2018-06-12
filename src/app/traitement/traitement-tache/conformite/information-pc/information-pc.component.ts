@@ -14,7 +14,12 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class InformationPcComponent implements OnInit {
   
+  public currentNumero: string
+  public currentCategorie: string
   public currentDate: Date
+  public currentDepartement: string
+  public currentPrefecture: string
+
   public dateMax
   public lesModifsPC: Modification[] = []
   currentTache: Tache;
@@ -31,66 +36,86 @@ export class InformationPcComponent implements OnInit {
     this.route.params.subscribe(data => {
     this.currentTache = this.tacheService.getPieceById(+data.piece);
     });
-    this.chargerListeModif()   
-    this.inputDate()     
+    this.inputDate();
+    this.setInputValue();
   }
 
   ifChangement() {
+    const numero = (<HTMLInputElement>document.getElementById('numero')).value    
+    const categorie = (<HTMLInputElement>document.getElementById('categorie')).value    
     const date = (<HTMLInputElement>document.getElementById('date2delivrance')).value    
-    if(date != this.currentDate.toISOString().slice(0,10)) {
+    const departement = (<HTMLInputElement>document.getElementById('departement')).value    
+    const prefecture = (<HTMLInputElement>document.getElementById('prefecture')).value    
+    if(numero != this.currentNumero || categorie != this.currentCategorie || 
+      new Date(date).toLocaleDateString() != this.currentDate.toLocaleDateString() ||
+      departement != this.currentDepartement || prefecture != this.currentPrefecture) {
       this.change = true    
-      this.DemandeAvt(date)
+      this.DemandeAvt(numero, categorie, date, departement, prefecture)
     }
   }
 
-  DemandeAvt(date : string){
+  DemandeAvt(numero:string, categorie:string, date: string, departement: string, prefecture: string){
+    let delivranceDate = new Date(date).toLocaleDateString();
     this.currentTache.message = ' ';
-    if(date != this.currentDate.toISOString().slice(0,10)) {
-      this.currentTache.message += 'Date : '+ date + '.\n'; 
-      let modifCG = new Modification(this.currentTache.ident,Donnee.DATE_PERMIS, this.currentDate.toISOString().slice(0,10), date)
-      this.currentDate = new Date(date)
-      this.modifService.addModification(modifCG)
+    if(numero != this.currentNumero) {
+      this.currentTache.message += 'Numero : '+ numero + '.\n'; 
+      let modifPC = new Modification(this.currentTache.ident,Donnee.NUMERO_PERMIS, this.currentNumero, numero)
+      this.currentNumero = numero
+      this.modifService.addModification(modifPC)
+    } 
+    else if (categorie != this.currentCategorie) {
+      this.currentTache.message += "Carégorie : " + categorie + '.\n';
+      let modifPC = new Modification(this.currentTache.ident,Donnee.CATEGORIE_PERMIS, this.currentCategorie, categorie)
+      this.currentCategorie = categorie
+      this.modifService.addModification(modifPC)
     }
-    this.chargerListeModif()
-    this.actionMetierService.createDemandeAvt(this.currentTache);
+    else if (delivranceDate != this.currentDate.toLocaleDateString()) {
+      this.currentTache.message += "Date de délivrance : " + date + '.\n';
+      let modifPC = new Modification(this.currentTache.ident,Donnee.DATE_PERMIS, this.currentDate.toLocaleDateString("en-US"), date)
+      this.currentDate = new Date(date)
+      this.modifService.addModification(modifPC)
+    }
+    else if (departement != this.currentDepartement) {
+      this.currentTache.message += "Departement : " + departement + '.\n';
+      let modifPC = new Modification(this.currentTache.ident,Donnee.DEPARTEMENT_PERMIS, this.currentDepartement, departement)
+      this.currentDepartement = departement
+      this.modifService.addModification(modifPC)
+    }
+    else if (prefecture != this.currentPrefecture) {
+      this.currentTache.message += "Carégorie : " + categorie + '.\n';
+      let modifPC = new Modification(this.currentTache.ident,Donnee.PREFECTURE_PERMIS, this.currentPrefecture, prefecture)
+      this.currentPrefecture = prefecture
+      this.modifService.addModification(modifPC)
+    }
+    this.actionMetierService.createDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
     this.toastr.success('Une demande d\'avenant a été créée');
   }
 
-  private titleStatus() {
-    // Status 
-    let idLabelStatus = document.getElementById('idLabelStatus');
-    idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-    for (let p of this.tacheService.getPiecesByDossier(this.currentTache.idTacheMere)) {
-      if(p.status === 'À vérifier') {
-        idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérfication</span>';
-        return;
-      }
-      if (p.status === 'À valider') {
-        idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
-      }
+  private setInputValue(){
+    this.currentNumero = "P012345678";
+    this.currentCategorie = "B";
+    this.currentDepartement = "34";
+    this.currentPrefecture = "HERAULT";
+    //Changement par les valeurs de modification si existantes
+    if(this.lesModifsPC.length > 0){
+      this.lesModifsPC.forEach( m => {
+        if (m.donnee == Donnee.NUMERO_PERMIS) {
+          this.currentNumero = m .valeurApres;
+        }
+        else if (m.donnee == Donnee.CATEGORIE_PERMIS) {
+          this.currentCategorie = m.valeurApres;
+        }
+        else if (m.donnee == Donnee.PREFECTURE_PERMIS) {
+          this.currentPrefecture = m.valeurApres;
+        }
+        else if (m.donnee == Donnee.DEPARTEMENT_PERMIS) {
+          this.currentDepartement = m.valeurApres;
+        }
+      })
     }
-  }
-
-  private chargerListeModif(){
-    this.lesModifsPC = this.modifService.getModificationByPiece(this.currentTache.ident)
-  }
-
-  private annulerModification(idModif: number) {
-    let replaceDate = (<HTMLInputElement>document.getElementById('date2delivrance'))
-    let modif = this.modifService.getModificationById(idModif)
-    if (modif.donnee == Donnee.DATE_PERMIS) {      
-      replaceDate.value = modif.valeurAvant
-    }
-    this.actionMetierService.supprimerActionMetier(this.actionMetierService.getById(modif.idTache))
-    this.modifService.supprimerModif(modif)
-    if (this.lesModifsPC.length == 0) {
-      this.change = false
-    }
-    this.chargerListeModif()    
   }
 
   inputDate(){
-
     //Gestion date max
     var today = new Date();
     var dd: string= today.getDate().toString();
@@ -103,8 +128,7 @@ export class InformationPcComponent implements OnInit {
             mm='0'+mm;
         } 
     this.dateMax = yyyy+'-'+mm+'-'+dd;
-    (<HTMLInputElement>document.getElementById('date2delivrance')).setAttribute("max", this.dateMax);
-    
+    (<HTMLInputElement>document.getElementById('date2delivrance')).setAttribute("max", this.dateMax);    
     if(this.lesModifsPC.length > 0){
       this.lesModifsPC.forEach( m => {
         if (m.donnee == Donnee.DATE_PERMIS) {
@@ -120,6 +144,21 @@ export class InformationPcComponent implements OnInit {
       let s = date.getFullYear() + '-' + '0'+(date.getMonth() + 1) +  '-'+'0' +date.getDate(); 
       (<HTMLInputElement>document.getElementById('date2delivrance')).value = s;
       
+    }
+  }
+  
+  private titleStatus() {
+    // Status 
+    let idLabelStatus = document.getElementById('idLabelStatus');
+    idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
+    for (let p of this.tacheService.getPiecesByDossier(this.currentTache.idTacheMere)) {
+      if(p.status === 'À vérifier') {
+        idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérfication</span>';
+        return;
+      }
+      if (p.status === 'À valider') {
+        idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
+      }
     }
   }
 }

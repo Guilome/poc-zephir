@@ -259,6 +259,7 @@ export class TacheService {
       lPiece.dateCreation = new Date();
       lPiece.dateReception = new Date();
       lPiece.dateVerification = new Date();
+      lPiece.idUtilisateur = 5;
       lPiece.idUtilisateurVerification = 1;// Dupont
       
       this.listTaches.push(lPiece);
@@ -317,7 +318,7 @@ export class TacheService {
         this.getPieceById(pi.ident).dateCloture = null;
         
       }else {
-        this.listTaches = this.listTaches.filter(piece => piece.ident != pi.ident)
+        this.listTaches.splice(this.listTaches.indexOf(pi), 1)
       }
     }
     this.tacheSubject.next(this.listTaches);

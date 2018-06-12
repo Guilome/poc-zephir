@@ -16,9 +16,19 @@ import { ModificationService } from '../../../../shared/services/modification.se
 })
 export class InformationConducteurComponent implements OnInit {
 
-  public currentCRM
-  public currentCRM2
+  public currentCRM: string;
+  public currentCRM2: string;
+  public currentDateCRM05: Date;
+  public currentResp100: string;
+  public currentResp50: string;
+  public currentResp0: string;
+  public currentVolIncendie: string;
+  public currentBrisGlace: string;
+  public currentStationnement: string;
+
+  public dateMax
   currentTache: Tache;
+  public lesModifsC: Modification[] = []
   change: boolean
 
   constructor(private actionMetierService: ActionMetierService,
@@ -29,30 +39,104 @@ export class InformationConducteurComponent implements OnInit {
               private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.currentCRM = 0.68;
-    this.currentCRM2 = 0.5
     this.route.params.subscribe(data => {
       this.currentTache = this.tacheService.getPieceById(+data.piece);
     });
-
+    this.inputDate();
+    this.setInputValue();
   }
 
   ifChangement() {
-    const crm = parseFloat((<HTMLInputElement>document.getElementById('crm')).value)    
-    const crm2 = parseFloat((<HTMLInputElement>document.getElementById('crm2')).value)
-    if(crm != this.currentCRM || crm2 != this.currentCRM2) {
+    const crm = (<HTMLInputElement>document.getElementById('crm')).value 
+    const crm2 = (<HTMLInputElement>document.getElementById('crm2')).value
+    const dateCRM05 =  (<HTMLInputElement>document.getElementById('dateCrm05')).value
+    const resp100 = (<HTMLInputElement>document.getElementById('resp100')).value    
+    const resp50 = (<HTMLInputElement>document.getElementById('resp50')).value    
+    const resp0 = (<HTMLInputElement>document.getElementById('resp0')).value    
+    const volIncendie = (<HTMLInputElement>document.getElementById('vei')).value    
+    const brisDeGlace = (<HTMLInputElement>document.getElementById('bdg')).value    
+    const stationnement = (<HTMLInputElement>document.getElementById('sta')).value    
+    if(crm.toString() != this.currentCRM || crm2.toString() != this.currentCRM2 ||
+       new Date(dateCRM05).toLocaleDateString() != this.currentDateCRM05.toLocaleDateString() ||
+       resp100 != this.currentResp100 || resp50 != this.currentResp50 || resp0 != this.currentResp0 ||       
+       volIncendie != this.currentVolIncendie || brisDeGlace != this.currentBrisGlace ||
+       stationnement != this.currentStationnement) {
       this.change = true    
-      //this.DemandeAvt(crm, crm2)
+      this.DemandeAvt(crm, crm2, dateCRM05, resp100, resp50, resp0, volIncendie, brisDeGlace, stationnement)
     }
   }
-  /**
-   * Création automatique d'une action métier
-   */
-  demandeSansEffet(){
 
-    this.actionMetierService.createSansEffet(this.currentTache);
-    this.toastr.success('Une demande "SANS-EFFET" a été creé.');
-    this.docSuivant();
+  DemandeAvt(crm: string, crm2: string, dateCrm05: string, resp100: string, resp50: string, resp0: string, volIncendie: string, brisDeGlace: string, stationnement: string){
+    this.currentTache.message = ' ';
+    if(crm.toString() != this.currentCRM) {
+      this.currentTache.message += 'CRM : '+ crm + '.\n'; 
+    }
+    this.actionMetierService.createDemandeAvt(this.currentTache);
+    this.toastr.success('Une demande d\'avenant a été créée');
+  }
+
+  private setInputValue(){
+    this.currentCRM = "0.68";
+    this.currentCRM2 = "0.6";
+    this.currentResp100 = "0";
+    this.currentResp50 = "0";
+    this.currentResp0 = "0";
+    this.currentVolIncendie = "0";
+    this.currentBrisGlace = "0";
+    this.currentStationnement = "0";
+    //Changement par les valeurs de modification si existantes
+    if(this.lesModifsC.length > 0){
+      this.lesModifsC.forEach( m => {
+        if (m.donnee == Donnee.CRM_CONDUCTEUR) {
+          this.currentCRM = m .valeurApres;
+        }
+        else if (m.donnee == Donnee.CRM2_CONDUCTEUR) {
+          this.currentCRM2 = m.valeurApres;
+        }
+        else if (m.donnee == Donnee.RESP100_CONDUCTEUR) {
+          this.currentResp100 = m.valeurApres;
+        }
+        else if (m.donnee == Donnee.RESP50_CONDUCTEUR) {
+          this.currentResp50 = m.valeurApres;
+        }
+        else if (m.donnee == Donnee.RESP0_CONDUCTEUR) {
+          this.currentResp0 = m.valeurApres;
+        }
+        else if (m.donnee == Donnee.VI_CONDUCTEUR) {
+          this.currentVolIncendie = m.valeurApres;
+        }
+        else if (m.donnee == Donnee.BDG_CONDUCTEUR) {
+          this.currentBrisGlace = m.valeurApres;
+        }
+        else if (m.donnee == Donnee.STATIONNEMENT_CONDUCTEUR) {
+          this.currentStationnement = m.valeurApres;
+        }
+      })
+    }
+  }
+
+  inputDate(){
+    //Gestion date max
+    var today = new Date();
+    var dd: string= today.getDate().toString();
+    var mm: string = (today.getMonth()+1).toString();
+    var yyyy: string = today.getFullYear().toString();
+    if(parseInt(dd)<10){
+            dd='0'+dd;
+        } 
+        if(parseInt(mm)<10){
+            mm='0'+mm;
+        } 
+    this.dateMax = yyyy+'-'+mm+'-'+dd;
+    (<HTMLInputElement>document.getElementById('dateCrm05')).setAttribute("max", this.dateMax);    
+    if(this.lesModifsC.length > 0){
+      this.lesModifsC.forEach( m => {
+        if (m.donnee == Donnee.DATE_PERMIS) {
+          this.currentDateCRM05 = new Date(m .valeurApres);
+          (<HTMLInputElement>document.getElementById('dateCrm05')).value = this.currentDateCRM05.toDateString()
+        }
+      })
+    }
   }
 
   private titleStatus() {
@@ -67,43 +151,6 @@ export class InformationConducteurComponent implements OnInit {
       if (p.status === 'À valider') {
         idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
       }
-    }
-  }
-
-  DemandeAvt(){
-    const crm = +(<HTMLInputElement>document.getElementById('crmElementId')).value;
-    const date2delivrance = (<HTMLInputElement>document.getElementById('date2delivrance')).value;
-    this.currentTache.message = ' ';
-    if(crm != this.currentCRM) {
-      this.currentTache.message += 'CRM : '+ crm + '.\n'; 
-    }
-    if (date2delivrance != null) {
-      this.currentTache.message += "Date de Délivrance : " + date2delivrance + '.\n';
-    }
-    this.actionMetierService.createDemandeAvt(this.currentTache);
-    this.toastr.success('Une demande d\'avenant a été créée');
-    this.docSuivant();
-  }
-
-  private docSuivant() {
-
-    let idNext = 0;
-    let boolTmp: boolean = false
-    this.tacheService.getPiecesByDossier(this.currentTache.idTacheMere).forEach((val, index) => {
-      if(boolTmp){
-        idNext = val.ident;
-        boolTmp = false;
-      }    
-      if (val.ident == this.currentTache.ident){
-            boolTmp = true; 
-          }
-
-    });
-
-    if (idNext == null || this.currentTache.ident === idNext ) {
-      this.router.navigate(['/gestionBO']);
-    } else {
-      this.router.navigate(['/TraitementTache', { id: this.currentTache.context.ident, piece: idNext }]);
     }
   }
 }

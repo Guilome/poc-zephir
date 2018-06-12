@@ -14,7 +14,7 @@ import { ModificationService } from '../../../../shared/services/modification.se
 })
 export class InformationCgComponent implements OnInit {
 
-  //Donnee de base Form
+  //Champs du Form
   public currentMarque: string
   public currentImmat: string
   public currentModele: string
@@ -26,7 +26,8 @@ export class InformationCgComponent implements OnInit {
   public lesModifsCG: Modification[] = []
 
   currentTache: Tache;
-  change: boolean = false
+  change: boolean = false  
+  public dateMax
   
   constructor(private actionMetierService: ActionMetierService,
               private tacheService: TacheService,
@@ -39,6 +40,7 @@ export class InformationCgComponent implements OnInit {
     this.route.params.subscribe(data => {
     this.currentTache = this.tacheService.getPieceById(+data.piece);
     });
+    this.inputDate();
     this.setInputValue();
   }
 
@@ -85,7 +87,7 @@ export class InformationCgComponent implements OnInit {
     else if (mecDate != this.currentMEC.toLocaleDateString()) {
       this.currentTache.message += "Mise en circulation : " + mec + '.\n';
       let modifCG = new Modification(this.currentTache.ident,Donnee.MEC_VEHICULE, this.currentMEC.toLocaleDateString("en-US"), mec)
-      this.currentMEC = new Date(mecDate)
+      this.currentMEC = new Date(mec)
       this.modifService.addModification(modifCG)
     }
     else if (designation != this.currentDesignation) {
@@ -103,24 +105,20 @@ export class InformationCgComponent implements OnInit {
     else if (daDate != this.currentDA.toLocaleDateString()) {
       this.currentTache.message += "Modèle : " + modele + '.\n';
       let modifCG = new Modification(this.currentTache.ident,Donnee.DA_VEHICULE, this.currentDA.toLocaleDateString("en-US"), da)
-      this.currentDA = new Date(daDate)
+      this.currentDA = new Date(da)
       this.modifService.addModification(modifCG)
     }
     this.actionMetierService.createDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
     this.toastr.success('Une demande d\'avenant a été créée');
   }
 
-
-
   private setInputValue(){
     this.currentMarque = "BMW";
     this.currentImmat = "AB-123-CP";
     this.currentModele = "SERIE 3";
-    this.currentMEC = new Date('01/01/2018'); // FORMAT : mois/jours/annee
     this.currentDesignation = "";
     this.currentMDA ="";
-    this.currentDA = new Date('01/01/2018'); // FORMAT : mois/jours/annee
-    //Modification par les valeurs modificaiots si existantes
+    //Changement par les valeurs de modification si existantes
     if(this.lesModifsCG.length > 0){
       this.lesModifsCG.forEach( m => {
         if (m.donnee == Donnee.MARQUE_VEHICULE) {
@@ -132,19 +130,51 @@ export class InformationCgComponent implements OnInit {
         else if (m.donnee == Donnee.MODELE_VEHICULE) {
           this.currentModele = m.valeurApres;
         }
-        else if (m.donnee == Donnee.MEC_VEHICULE) {
-          this.currentMEC = new Date(m.valeurApres); // FORMAT : mois/jours/annee
-        }
         else if (m.donnee == Donnee.DESIGNATION_VEHICULE) {
           this.currentDesignation = m.valeurApres;
         }
         else if (m.donnee == Donnee.MA_VEHICULE) {
           this.currentMDA = m.valeurApres;
         }
-        else if (m.donnee == Donnee.DA_VEHICULE) {
-          this.currentDA = new Date(m.valeurApres);// FORMAT : mois/jours/annee
+      })
+    }
+  }
+
+  private inputDate(){
+    //Gestion date max
+    var today = new Date();
+    var dd: string= today.getDate().toString();
+    var mm: string = (today.getMonth()+1).toString();
+    var yyyy: string = today.getFullYear().toString();
+    if(parseInt(dd)<10){
+            dd='0'+dd;
+        } 
+        if(parseInt(mm)<10){
+            mm='0'+mm;
+        } 
+    this.dateMax = yyyy+'-'+mm+'-'+dd;    
+    (<HTMLInputElement>document.getElementById('mec')).setAttribute("max", this.dateMax);    
+    (<HTMLInputElement>document.getElementById('dateAcquisition')).setAttribute("max", this.dateMax);        
+    if(this.lesModifsCG.length > 0){
+      this.lesModifsCG.forEach( m => {
+        if (m.donnee == Donnee.MEC_VEHICULE) {
+          this.currentMEC = new Date(m .valeurApres);
+          (<HTMLInputElement>document.getElementById('mec')).value = this.currentMEC.toDateString()
+        }
+        else if(m.donnee == Donnee.DA_VEHICULE){
+          this.currentDA = new Date(m .valeurApres);
+          (<HTMLInputElement>document.getElementById('dateAcquisition')).value = this.currentDA.toDateString()
         }
       })
+    }
+    else {
+      //Gestion date a afficher de base 
+      var date = new Date("01/01/2018");// Format anglais : mois/jours/annee
+      this.currentMEC = date;
+      this.currentDA = date;
+      let s = date.getFullYear() + '-' + '0'+(date.getMonth() + 1) +  '-'+'0' +date.getDate();       
+      (<HTMLInputElement>document.getElementById('mec')).value = s;      
+      (<HTMLInputElement>document.getElementById('dateAcquisition')).value = s;      
     }
   }
   
