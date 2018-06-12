@@ -58,36 +58,31 @@ export class InformationPcComponent implements OnInit {
     let delivranceDate = new Date(date).toLocaleDateString();
     this.currentTache.message = ' ';
     if(numero != this.currentNumero) {
-      this.currentTache.message += 'Numero : '+ numero + '.\n'; 
       let modifPC = new Modification(this.currentTache.ident,Donnee.NUMERO_PERMIS, this.currentNumero, numero)
       this.currentNumero = numero
       this.modifService.addModification(modifPC)
     } 
     else if (categorie != this.currentCategorie) {
-      this.currentTache.message += "Carégorie : " + categorie + '.\n';
       let modifPC = new Modification(this.currentTache.ident,Donnee.CATEGORIE_PERMIS, this.currentCategorie, categorie)
       this.currentCategorie = categorie
       this.modifService.addModification(modifPC)
     }
     else if (delivranceDate != this.currentDate.toLocaleDateString()) {
-      this.currentTache.message += "Date de délivrance : " + date + '.\n';
       let modifPC = new Modification(this.currentTache.ident,Donnee.DATE_PERMIS, this.currentDate.toLocaleDateString("en-US"), date)
       this.currentDate = new Date(date)
       this.modifService.addModification(modifPC)
     }
     else if (departement != this.currentDepartement) {
-      this.currentTache.message += "Departement : " + departement + '.\n';
       let modifPC = new Modification(this.currentTache.ident,Donnee.DEPARTEMENT_PERMIS, this.currentDepartement, departement)
       this.currentDepartement = departement
       this.modifService.addModification(modifPC)
     }
     else if (prefecture != this.currentPrefecture) {
-      this.currentTache.message += "Carégorie : " + categorie + '.\n';
       let modifPC = new Modification(this.currentTache.ident,Donnee.PREFECTURE_PERMIS, this.currentPrefecture, prefecture)
       this.currentPrefecture = prefecture
       this.modifService.addModification(modifPC)
     }
-    this.actionMetierService.createDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+    this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));    
     this.toastr.success('Une demande d\'avenant a été créée');
   }
 

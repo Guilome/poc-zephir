@@ -76,7 +76,7 @@ export class TraitementTacheComponent implements OnInit {
 
   ngAfterViewInit() {
     this.route.params.subscribe((params: any) => {
-      if ( this.dossier != null){
+     /* if ( this.dossier != null){
           const element = document.getElementsByClassName('bg-row')[0];
           if(element != null) {
             element.classList.remove('bg-row')
@@ -85,7 +85,7 @@ export class TraitementTacheComponent implements OnInit {
           if ( this.tacheService.isPiece(+params.piece)){
             document.getElementById('span'+ params.piece).classList.add('spanStatus');
           }
-        }
+      }*/
 
     });
 

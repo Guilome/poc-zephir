@@ -4,6 +4,7 @@ import {TacheService} from '../../../shared/services/tache.service';
 import {ActivatedRoute} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Subscription} from 'rxjs/Subscription';
+import { ActionMetierService } from '../../../shared/services/action-metier.service';
 
 @Component({
   selector: 'app-apercu-document',
@@ -14,9 +15,13 @@ export class ApercuDocumentComponent implements OnInit {
 
   piece: Tache;
   note: Tache;
+  actionMetier: Tache;
   private idSubscription: Subscription;
+
   constructor(private tacheService: TacheService,
-              private route: ActivatedRoute, private sanitizer: DomSanitizer) {
+              private route: ActivatedRoute, 
+              private actionMetierService: ActionMetierService
+              ) {
   }
 
   ngOnInit() {
@@ -25,6 +30,7 @@ export class ApercuDocumentComponent implements OnInit {
           const idPiece = +params.piece;
           this.piece = this.tacheService.getPieceById(idPiece);
           this.note = this.tacheService.getNoteById(idPiece);
+          this.actionMetier = this.actionMetierService.getById(idPiece);
       }
     });
   }
@@ -41,13 +47,19 @@ export class ApercuDocumentComponent implements OnInit {
         }
     } else if (this.note != null ) {
       document.getElementById('divPdf').innerHTML = this.note.message;
+    } else if (this.actionMetier != null) {
+      document.getElementById('divPdf').innerHTML = '';
+      console.log(document.getElementById('divPdf'));
+      
+
     }
     });
 
   }
 
   // transformation URL
-  /*urlSafe() {
+  /*urlSafe() {//              private sanitizer: DomSanitizer
+
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.piece.urlDocument);
   }*/
 

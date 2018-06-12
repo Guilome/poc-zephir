@@ -67,48 +67,41 @@ export class InformationCgComponent implements OnInit {
     let daDate = new Date(da).toLocaleDateString();
     this.currentTache.message = ' ';
     if(marque != this.currentMarque) {
-      this.currentTache.message += 'Marque : '+ marque + '.\n'; 
       let modifCG = new Modification(this.currentTache.ident,Donnee.MARQUE_VEHICULE, this.currentMarque, marque)
       this.currentMarque = marque
       this.modifService.addModification(modifCG)
     }
     else if (immat != this.currentImmat) {
-      this.currentTache.message += "Immatriculation : " + immat + '.\n';
       let modifCG = new Modification(this.currentTache.ident,Donnee.IMMATRICULATION_VEHICULE, this.currentImmat, immat)
       this.currentImmat = immat
       this.modifService.addModification(modifCG)
     }
     else if (modele != this.currentModele) {
-      this.currentTache.message += "Modèle : " + modele + '.\n';
       let modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
       this.currentModele = modele
       this.modifService.addModification(modifCG)
     }
     else if (mecDate != this.currentMEC.toLocaleDateString()) {
-      this.currentTache.message += "Mise en circulation : " + mec + '.\n';
       let modifCG = new Modification(this.currentTache.ident,Donnee.MEC_VEHICULE, this.currentMEC.toLocaleDateString("en-US"), mec)
       this.currentMEC = new Date(mec)
       this.modifService.addModification(modifCG)
     }
     else if (designation != this.currentDesignation) {
-      this.currentTache.message += "Modèle : " + modele + '.\n';
       let modifCG = new Modification(this.currentTache.ident,Donnee.DESIGNATION_VEHICULE, this.currentDesignation, designation)
       this.currentDesignation = designation
       this.modifService.addModification(modifCG)
     }
     else if (mda != this.currentMDA) {
-      this.currentTache.message += "Modèle : " + modele + '.\n';
       let modifCG = new Modification(this.currentTache.ident,Donnee.MA_VEHICULE, this.currentMDA, mda)
       this.currentMDA = mda
       this.modifService.addModification(modifCG)
     }
     else if (daDate != this.currentDA.toLocaleDateString()) {
-      this.currentTache.message += "Modèle : " + modele + '.\n';
       let modifCG = new Modification(this.currentTache.ident,Donnee.DA_VEHICULE, this.currentDA.toLocaleDateString("en-US"), da)
       this.currentDA = new Date(da)
       this.modifService.addModification(modifCG)
     }
-    this.actionMetierService.createDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+    this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
     this.toastr.success('Une demande d\'avenant a été créée');
   }
 

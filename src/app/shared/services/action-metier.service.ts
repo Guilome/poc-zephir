@@ -25,25 +25,37 @@ export class ActionMetierService {
    * @param tache 
    * @param code 
    */
-  private create(tache: Tache, code: string) {
+  private create(dossier: Tache, code: string) {
 
     const a = new Tache(Nature.TACHE);
-    a.ident = tache.ident;
-    a.message = tache.message;
-    a.idUtilisateur = null;
-    a.idGroupe = tache.idGroupe;
-    a.context = tache.context;
+    a.ident =  Math.floor(Math.random() * (99999 - 10000));
+    a.idGroupe = dossier.idGroupe;
+    a.context = dossier.context;
     a.code = code;
     a.dateCreation = new Date();
     a.priorite = 1;
+    if ( dossier.nature === Nature.DOSSIER){
+        a.idUtilisateur = dossier.idUtilisateur;
+        a.idTacheMere = dossier.ident;
+    }
+
     this.listActionMetier.push(a);
     this.actionMetierTemporaire = a;
-    this.actionMetierSubject.next(this.listActionMetier.filter(act => act.context == tache.context));
+    this.actionMetierSubject.next(this.listActionMetier.filter(act => act.context == dossier.context));
   }
 
-  createDemandeAvt(tache: Tache) {
+  private createDemandeAvt(tache: Tache) {
     this.create(tache, 'AVENANT');
   }
+
+  updateDemandeAvt(tache: Tache) {
+    if (this.actionMetierTemporaire != null) {
+      this.actionMetierTemporaire.message = tache.message + '\n';
+    }else {
+      this.createDemandeAvt(tache);
+    }
+  }
+
   createSansEffet(tache: Tache){
     this.create(tache, 'SANS_EFFET');
   }
@@ -583,6 +595,7 @@ export class ActionMetierService {
   public supprimerActionMetierTemporaire() {
     if( this.actionMetierTemporaire != null) {
       this.supprimerActionMetier(this.actionMetierTemporaire);
+      this.actionMetierTemporaire = null;
     }
   }
 

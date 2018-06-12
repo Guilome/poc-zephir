@@ -61,15 +61,18 @@
             <!-- end NOTE-->
 
           <!-- begin  ACTION METIER-->
-
+              
           <div *ngIf="listActionsMetier.length > 0 ">
-              <div class="row" >
-                <h5>Actions Métier : </h5>
+                  <div class="row" >
+                    <h5>Actions Métier : </h5>
+                  </div>
+                  <div class="nav flex-column nav-pills ">
+
+                  <div *ngFor="let act of listActionsMetier">
+                    <div class="row"> <a class="nav-link" (click)="detailPiece(act,a)" #a>{{act.libelle}}</a></div>
+                  </div>
               </div>
-              <div *ngFor="let act of listActionsMetier">
-                <div class="row"><span tooltip="{{act.message}}"  >{{act.libelle}}</span></div>
-              </div>
-          </div>  
+            </div>  
           <!-- END  ACTION METIER-->
 
 

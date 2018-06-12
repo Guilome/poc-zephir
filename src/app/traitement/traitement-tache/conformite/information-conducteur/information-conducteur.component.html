@@ -5,43 +5,43 @@
       <div class="col-4">
         <div class="row">
           <label class="control-label" for="crmElementId">CRM :</label>
-          <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crmElementId" value="{{currentCRM}}" (onblur)="ifChangement()" #crm>
+          <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crmElementId" value="{{currentCRM}}" (blur)="ifChangement()" #crm>
         </div>
         <div class="row">
           <label class="control-label" for="crm2ElementId">Deuxième CRM :</label>
-          <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crm2ElementId" value="{{currentCRM2}}" (onblur)="ifChangement()" #crm2>
+          <input type="number" class="form-control" step="0.01" min="0.5" max="1" id="crm2ElementId" value="{{currentCRM2}}" (blur)="ifChangement()" #crm2>
         </div>
         <div class="row">
           <label class="control-label" for="dateCrm05">Date d'obtention CRM 0,50 :</label>
-          <input type="date" class="form-control" step="0.01" min="0.5" max="1" id="dateCrm05" (onblur)="ifChangement()" #datecrom05>
+          <input type="date" class="form-control" step="0.01" min="0.5" max="1" id="dateCrm05" (blur)="ifChangement()" #datecrom05>
         </div>
       </div>
       <div class="col-8">
         <div class="row">
           <div class="col-md-4">
             <label for="resp100">Resp.100%</label>
-            <input type="number" class="form-control" step="1" min="0" max="100" id="resp100" value="{{currentResp100}}" (onblur)="ifChangement()" #resp100>
+            <input type="number" class="form-control" step="1" min="0" max="100" id="resp100" value="{{currentResp100}}" (blur)="ifChangement()" #resp100>
           </div>
           <div class="col-md-4">
             <label for="resp50">Resp.50%</label>
-            <input type="number" class="form-control" step="1" min="0" max="100" id="resp50" value="{{currentResp50}}" (onblur)="ifChangement()" #resp50>
+            <input type="number" class="form-control" step="1" min="0" max="100" id="resp50" value="{{currentResp50}}" (blur)="ifChangement()" #resp50>
           </div>
           <div class="col-md-4">
             <label for="resp0">Resp.0%</label>
-            <input type="number" class="form-control" step="1" min="0" max="100" id="resp0" value="{{currentResp0}}" (onblur)="ifChangement()" #resp0>
+            <input type="number" class="form-control" step="1" min="0" max="100" id="resp0" value="{{currentResp0}}" (blur)="ifChangement()" #resp0>
           </div>
         </div>
         <div class="row">
           <label for="vei">Vol et incendie :</label>
-          <input type="number" class="form-control" step="0.01" min="0" max="100" id="vei" value="{{currentVolIncendie}}" (onblur)="ifChangement()" #vei>
+          <input type="number" class="form-control" step="0.01" min="0" max="100" id="vei" value="{{currentVolIncendie}}" (blur)="ifChangement()" #vei>
         </div>
         <div class="row">
           <label for="bdg">Bris de glace :</label>
-          <input type="number" class="form-control" step="0.01" min="0" max="100" id="bdg" value="{{currentBrisGlace}}" (onblur)="ifChangement()" #bdg>
+          <input type="number" class="form-control" step="0.01" min="0" max="100" id="bdg" value="{{currentBrisGlace}}" (blur)="ifChangement()" #bdg>
         </div>
         <div  class="row">
           <label for="sta">Stationnement :</label>
-          <input type="number" class="form-control" step="0.01" min="0" max="100" id="sta" value="{{currentStationnement}}" (onblur)="ifChangement()" #sta>
+          <input type="number" class="form-control" step="0.01" min="0" max="100" id="sta" value="{{currentStationnement}}" (blur)="ifChangement()" #sta>
         </div>
       </div>
     </div>

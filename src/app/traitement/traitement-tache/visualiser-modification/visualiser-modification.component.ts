@@ -27,7 +27,8 @@ export class VisualiserModificationComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(data => {
-    this.currentDossier = this.tacheService.getPieceById(+data.id);
+      const userId = +localStorage.getItem('USER');
+      this.currentDossier = this.tacheService.getDossierByIdContext(+data.id, userId);
     });
     this.chargerListeModif();    
   }
@@ -35,33 +36,14 @@ export class VisualiserModificationComponent implements OnInit {
   private chargerListeModif(){
     this.lesModifs = this.modifService.getModificationByDossier(this.currentDossier.ident)
   }
-
+  
   private annulerModification(idModif: number) {
-    let replaceMarque = (<HTMLInputElement>document.getElementById('marque'))
-    let replaceImmat = (<HTMLInputElement>document.getElementById('immat'))
-    let replaceModele = (<HTMLInputElement>document.getElementById('modele'))
-    let replaceMEC = (<HTMLInputElement>document.getElementById('mec'))
-    let replaceDesignation = (<HTMLInputElement>document.getElementById('designation'))
-    let replaceMDA = (<HTMLInputElement>document.getElementById('mda'))
-    let replaceDateAcquisition = (<HTMLInputElement>document.getElementById('dateAcquisition'))
     let modif = this.modifService.getModificationById(idModif)
-    if (modif.donnee == Donnee.MARQUE_VEHICULE) {
-      replaceMarque.value = modif.valeurAvant
-    }
-    else {
-      replaceModele.value = modif.valeurAvant
-    }
-    this.lesModifs.forEach(m => {
-      if (m.idTache) {
-        
-      }
-    })
     this.modifService.supprimerModif(modif)
     this.chargerListeModif()    
     if (this.lesModifs.length == 0) {      
       this.actionMetierService.supprimerActionMetier(this.actionMetierService.getById(this.currentDossier.ident))
     }
   }
-
-
+  
 }

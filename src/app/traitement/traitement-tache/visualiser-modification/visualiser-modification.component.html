@@ -9,7 +9,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let modif of lesModifsCG">
+          <tr *ngFor="let modif of lesModifs">
             <th scope="row"><button class="btn btn-danger btn-circle fa fa-trash" type="submit" (click)="annulerModification(modif.ident)"></button></th>
             <td>{{modif.donnee}} : {{modif.valeurAvant}} -> {{modif.valeurApres}}</td>
           </tr>
