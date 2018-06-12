@@ -67,9 +67,61 @@ export class InformationConducteurComponent implements OnInit {
   }
 
   DemandeAvt(crm: string, crm2: string, dateCrm05: string, resp100: string, resp50: string, resp0: string, volIncendie: string, brisDeGlace: string, stationnement: string){
+    let dateCRM = new Date(dateCrm05).toLocaleDateString();
     this.currentTache.message = ' ';
-    if(crm.toString() != this.currentCRM) {
+    if(crm != this.currentCRM) {
       this.currentTache.message += 'CRM : '+ crm + '.\n'; 
+      let modifC = new Modification(this.currentTache.ident,Donnee.CRM_CONDUCTEUR, this.currentCRM, crm)
+      this.currentCRM = crm
+      this.modifService.addModification(modifC)
+    }
+    else if (crm2 != this.currentCRM2) {
+      this.currentTache.message += "CRM2 : " + crm2 + '.\n';
+      let modifC = new Modification(this.currentTache.ident,Donnee.CRM2_CONDUCTEUR, this.currentCRM2, crm2)
+      this.currentCRM2 = crm2
+      this.modifService.addModification(modifC)
+    }
+    else if (dateCRM != this.currentDateCRM05.toLocaleDateString()) {
+      this.currentTache.message += "Date obtention CRM 0.5 : " + dateCRM + '.\n';
+      let modifC = new Modification(this.currentTache.ident,Donnee.DOCRM05_CONDUCTEUR, this.currentDateCRM05.toLocaleDateString("en-US"), dateCrm05)
+      this.currentDateCRM05 = new Date(dateCrm05)
+      this.modifService.addModification(modifC)
+    }
+    else if (resp100 != this.currentResp100) {
+      this.currentTache.message += "Responsabilité 100% : " + resp100 + '.\n';
+      let modifC = new Modification(this.currentTache.ident,Donnee.RESP100_CONDUCTEUR, this.currentResp100, resp100)
+      this.currentResp100 = resp100
+      this.modifService.addModification(modifC)
+    }
+    else if (resp50 != this.currentResp50) {
+      this.currentTache.message += "Responsabilité 50% : " + resp50 + '.\n';
+      let modifC = new Modification(this.currentTache.ident,Donnee.RESP50_CONDUCTEUR, this.currentResp50, resp50)
+      this.currentResp50 = resp50
+      this.modifService.addModification(modifC)
+    }
+    else if (resp0 != this.currentResp0) {
+      this.currentTache.message += "Responsabilité 0% : " + resp0 + '.\n';
+      let modifC = new Modification(this.currentTache.ident,Donnee.RESP0_CONDUCTEUR, this.currentResp0, resp0)
+      this.currentResp0 = resp0
+      this.modifService.addModification(modifC)
+    }
+    else if (volIncendie != this.currentVolIncendie) {
+      this.currentTache.message += "Vol et incendie : " + volIncendie + '.\n';
+      let modifC = new Modification(this.currentTache.ident,Donnee.VI_CONDUCTEUR, this.currentVolIncendie, volIncendie)
+      this.currentVolIncendie = volIncendie
+      this.modifService.addModification(modifC)
+    }
+    else if (brisDeGlace != this.currentBrisGlace) {
+      this.currentTache.message += "Bris de Glace : " + brisDeGlace + '.\n';
+      let modifC = new Modification(this.currentTache.ident,Donnee.BDG_CONDUCTEUR, this.currentBrisGlace, brisDeGlace)
+      this.currentBrisGlace = brisDeGlace
+      this.modifService.addModification(modifC)
+    }
+    else if (stationnement != this.currentStationnement) {
+      this.currentTache.message += "Stationnement : " + stationnement + '.\n';
+      let modifC = new Modification(this.currentTache.ident,Donnee.STATIONNEMENT_CONDUCTEUR, this.currentStationnement, stationnement)
+      this.currentStationnement = stationnement
+      this.modifService.addModification(modifC)
     }
     this.actionMetierService.createDemandeAvt(this.currentTache);
     this.toastr.success('Une demande d\'avenant a été créée');
