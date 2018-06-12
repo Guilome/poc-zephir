@@ -589,7 +589,7 @@ export class ActionMetierService {
 
   public supprimerActionMetier(actionMetier: Tache){
     this.listActionMetier.splice(this.listActionMetier.indexOf(actionMetier), 1)
-    this.getAllByIdContext(actionMetier.context.ident)
+    //this.getAllByIdContext(actionMetier.context.ident)
   }
 
   public supprimerActionMetierTemporaire() {
