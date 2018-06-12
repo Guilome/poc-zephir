@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ActionMetierService {
 
   listActionMetier = [];
+  actionMetierTemporaire: Tache;
 
   actionMetierSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
 
@@ -36,6 +37,7 @@ export class ActionMetierService {
     a.dateCreation = new Date();
     a.priorite = 1;
     this.listActionMetier.push(a);
+    this.actionMetierTemporaire = a;
     this.actionMetierSubject.next(this.listActionMetier.filter(act => act.context == tache.context));
   }
 
@@ -576,5 +578,18 @@ export class ActionMetierService {
   public supprimerActionMetier(actionMetier: Tache){
     this.listActionMetier.splice(this.listActionMetier.indexOf(actionMetier), 1)
     this.getAllByIdContext(actionMetier.context.ident)
+  }
+
+  public supprimerActionMetierTemporaire() {
+    if( this.actionMetierTemporaire != null) {
+      this.supprimerActionMetier(this.actionMetierTemporaire);
+    }
+  }
+
+  /**
+   * Appel web service
+   */
+  public confirmerAjoutActionMetier() {
+    this.actionMetierTemporaire = null;
   }
 }

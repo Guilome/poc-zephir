@@ -47,10 +47,10 @@ export class TacheService {
     }
   }
 
-  listTaches: Tache[] = [];
-  listPieceEnAttente: Tache[] = [];
+  private listTaches: Tache[] = [];
   // données en mémoire
-  tacheSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
+  private tacheSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
+  public listPieceEnAttente: Tache[] = [];
 
   
 
