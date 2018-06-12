@@ -131,6 +131,8 @@ export class TraitementTacheComponent implements OnInit {
     if (this.tacheService.listPieceEnAttente.length > 0 ){
       if ( this.tacheService.getStatutDossier(this.dossier.ident) === 'En attente'){
         this.toastr.success("Le dossier a été mis <b>En attente</b>",'', {enableHtml: true});
+        this.tacheService.delAffectation(this.dossier.ident);
+
       }else {
         this.toastr.success("Le dossier a été déplacé à la bannette <b>Vérification</b>",'', {enableHtml: true});
       }

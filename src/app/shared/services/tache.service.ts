@@ -265,7 +265,7 @@ export class TacheService {
     }
 
   }
-  createPiece(code: Code, dossier: Tache) : Tache {
+  createPiece(code: string, dossier: Tache) : Tache {
     // Appel Web service pour la génération de de l'identifiant
     const lPiece =  new Tache(Nature.PIECE);
     lPiece.code = code;
@@ -286,8 +286,9 @@ export class TacheService {
    * Aucun appel web service
    * les pièces créée seront stocké tomporairement 
    * Si l'user valide le dossier ses pièces seront validées
+   * La pièce est optionnel 
    */
-  public createPieceTemporaire(code: string, dossier: Tache) {
+  public createPieceTemporaire(code: string, dossier: Tache, piece?: Tache) {
     const lPiece =  new Tache(Nature.PIECE);
     lPiece.code = code;
     lPiece.dateCreation = new Date();
@@ -298,16 +299,26 @@ export class TacheService {
     lPiece.dateCreation = new Date();
     lPiece.priorite = 3;
     this.listPieceEnAttente.push(lPiece);
+    if (piece != null) {
+      this.listPieceEnAttente.push(piece);
+    }
     this.listTaches.push(lPiece);
     this.tacheSubject.next(this.listTaches);
   }
 
   /**
    * Permet de supprimer la liste des pièces stocké tomporairement
+   * Permet aussi d'annuler les modif effectuées sur une pièce
    */
   public removePiecesTemporaire() {
     for (let pi of this.listPieceEnAttente) {
-      this.listTaches = this.listTaches.filter(piece => piece.ident != pi.ident)
+      if(pi.motifNonConformite != null){
+        this.getPieceById(pi.ident).motifNonConformite = null;
+        this.getPieceById(pi.ident).dateCloture = null;
+        
+      }else {
+        this.listTaches = this.listTaches.filter(piece => piece.ident != pi.ident)
+      }
     }
     this.tacheSubject.next(this.listTaches);
     this.listPieceEnAttente = [];
@@ -464,6 +475,14 @@ export class TacheService {
 
   isPiece(idTache: number): boolean {
     return this.getTacheById(idTache).nature === Nature.PIECE;
+  }
+
+  /**
+   * Méthode appelée lors qu'un dossier est en attente de pièce 
+   * @param dossier 
+   */
+  delAffectation(id: number) {
+     this.getDossierById(id).idUtilisateur = null;
   }
 }
 

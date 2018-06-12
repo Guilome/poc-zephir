@@ -179,6 +179,8 @@ export class ConformiteComponent implements OnInit {
           // Passage du dossier à l'étape de validation
           if (this.tacheService.getStatutDossier(this.dossier.ident) === 'En attente'){
             this.toastr.success('Dossier passé   <b>En attente</b>', '', {enableHtml: true}); 
+            this.tacheService.delAffectation(this.dossier.ident);
+
           }else {
             this.toastr.success('Passage à la bannette <b>VALIDATION</b>', '', {enableHtml: true}); 
             this.tacheService.toEtapeValidation(this.dossier.ident);
@@ -240,7 +242,7 @@ export class ConformiteComponent implements OnInit {
    */
   demanderNouvellePiece() {
     if ( this.motifselected.length > 0){
-    this.tacheService.createPieceTemporaire(this.piece.code, this.dossier);
+    this.tacheService.createPieceTemporaire(this.piece.code, this.dossier, this.piece);
     // cloture de la pièce NON CONFORME/
     this.tacheService.closePieceNonConforme(this.piece.ident, this.motifselected.join('\n'));
 
