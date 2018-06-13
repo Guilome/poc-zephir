@@ -101,7 +101,9 @@ export class TraitementTacheComponent implements OnInit {
       }
   }
 
-  detailPiece(piece: Tache,a, sp) {
+  detailPiece(piece: Tache,a, sp?) {
+    console.log(piece.motifNonConformite);
+    
     this.router.navigate(['/TraitementTache', { id: piece.context.ident, piece: piece.ident }]);
     //this.router.navigate(['/TraitementTache/'+ident+';idPiece='+ident]);
     const element = document.getElementsByClassName('bg-row')[0];
@@ -110,9 +112,8 @@ export class TraitementTacheComponent implements OnInit {
         if (this.tacheService.getStatutDossier(this.dossier.ident) != 'À vérifier') {
            for (let i = 0 ; i <document.getElementsByClassName('spanStatus').length ; i++ ){
                 const ele = document.getElementsByClassName('spanStatus')[i];
-                
                 if (ele.innerHTML.toString().indexOf('À valider') > 0){
-                    ele.innerHTML = '<span class="badge badge-success float-right">Visualisée</span>';
+                       ele.innerHTML = '<span class="badge badge-success float-right">Visualisée</span>';
                 }
            }
            if (sp != null)

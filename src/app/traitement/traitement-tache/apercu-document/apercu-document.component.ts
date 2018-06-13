@@ -4,6 +4,7 @@ import {TacheService} from '../../../shared/services/tache.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import { ActionMetierService } from '../../../shared/services/action-metier.service';
+import { UtilisateurService } from '../../../shared/services/utilisateur.service';
 
 @Component({
   selector: 'app-apercu-document',
@@ -19,7 +20,8 @@ export class ApercuDocumentComponent implements OnInit {
 
   constructor(private tacheService: TacheService,
               private route: ActivatedRoute, 
-              private actionMetierService: ActionMetierService
+              private actionMetierService: ActionMetierService,
+              private utilisateurService: UtilisateurService
               ) {
   }
 
@@ -45,11 +47,9 @@ export class ApercuDocumentComponent implements OnInit {
           document.getElementById('divPdf').innerHTML = 'Pièce en attente de réception';
         }
     } else if (this.note != null ) {
-      document.getElementById('divPdf').innerHTML = this.note.message;
+      document.getElementById('divPdf').innerHTML = '';
     } else if (this.actionMetier != null) {
       document.getElementById('divPdf').innerHTML = '';
-      
-
     }
     });
 
@@ -60,5 +60,12 @@ export class ApercuDocumentComponent implements OnInit {
 
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.piece.urlDocument);
   }*/
+
+  /**
+   * retourn le nom de celui qui a émit la note 
+   */
+  public getName(): string{
+    return this.utilisateurService.getName(this.note.idUtilisateur);
+  }
 
 }
