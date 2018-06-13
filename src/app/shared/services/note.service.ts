@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import {Nature, Status, Tache} from '../domain/Tache';
+import {Nature, Tache} from '../domain/Tache';
 
 @Injectable()
 export class NoteService {

@@ -1,9 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Tache} from '../../../shared/domain/Tache';
 import {ActivatedRoute} from '@angular/router';
 import {TacheService} from '../../../shared/services/tache.service';
 import {Subscription} from 'rxjs/Subscription';
-import {TitreService} from '../../../shared/services/titre.service';
 
 @Component({
   selector: 'app-detail-tache',
@@ -16,8 +15,7 @@ export class DetailTacheComponent implements OnInit {
   private idSubscription: Subscription;
 
   constructor(private tacheService: TacheService,
-              private route: ActivatedRoute,
-              private titreService: TitreService) {
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {

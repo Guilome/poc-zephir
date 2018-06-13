@@ -2,20 +2,15 @@ import {Injectable} from '@angular/core';
 import {Nature, Status, Tache} from '../domain/Tache';
 import {Context} from '../domain/context';
 import { BehaviorSubject} from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import {GroupeService} from './groupe.service';
-import {Code} from '../domain/groupe';
-import {t} from '@angular/core/src/render3';
 import {UtilisateurService} from './utilisateur.service';
 import { Contrat } from '../domain/contrat';
-import { Utilisateur, Profil } from '../domain/Utilisateur';
 
 
 @Injectable()
 export class TacheService {
 
-  constructor(private UtilisateurService: UtilisateurService) {
+  constructor() {
 
     let length = 0;
     this.tacheSubject.subscribe(data => length = data.length);

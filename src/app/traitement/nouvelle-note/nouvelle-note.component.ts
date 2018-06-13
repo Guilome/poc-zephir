@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
-import {Nature, Tache} from '../../shared/domain/Tache';
-import {Context} from '../../shared/domain/context';
 import {NoteService} from '../../shared/services/note.service';
 import {Router} from '@angular/router';
 import {TitreService} from '../../shared/services/titre.service';

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Utilisateur, Profil} from '../domain/Utilisateur';
-import {Tache} from '../domain/Tache';
-import index from '@angular/cli/lib/cli';
 
 @Injectable()
 export class UtilisateurService {

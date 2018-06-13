@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Tache, Nature} from '../domain/Tache';
 import { Context } from '../domain/context';
-import { Contrat, NatureContrat, Fractionnement } from '../domain/contrat';
+import { Contrat, Fractionnement } from '../domain/contrat';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
@@ -589,7 +589,7 @@ export class ActionMetierService {
 
   public supprimerActionMetier(actionMetier: Tache){
     this.listActionMetier.splice(this.listActionMetier.indexOf(actionMetier), 1)
-    this.getAllByIdContext(actionMetier.context.ident)
+    //this.getAllByIdContext(actionMetier.context.ident)
   }
 
   public supprimerActionMetierTemporaire() {

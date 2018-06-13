@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Modification, Donnee } from '../../../shared/domain/modification';
+import { Modification } from '../../../shared/domain/modification';
 import { ModificationService } from '../../../shared/services/modification.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Tache } from '../../../shared/domain/Tache';
@@ -42,7 +42,9 @@ export class VisualiserModificationComponent implements OnInit {
     this.modifService.supprimerModif(modif)
     this.chargerListeModif()    
     if (this.lesModifs.length == 0) {      
-      this.actionMetierService.supprimerActionMetier(this.actionMetierService.getById(this.currentDossier.ident))
+      this.actionMetierService.supprimerActionMetierTemporaire();
+      let idContext = this.currentDossier.context.ident
+      this.router.navigate(['/TraitementTache', { id: this.currentDossier.context.ident, piece: modif.idTache }]);
     }
   }
   

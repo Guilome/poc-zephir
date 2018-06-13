@@ -4,8 +4,6 @@ import { Tache } from '../../../../shared/domain/Tache';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TacheService } from '../../../../shared/services/tache.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TraitementTacheComponent } from '../../traitement-tache.component';
 import { Modification, Donnee } from '../../../../shared/domain/modification';
 import { ModificationService } from '../../../../shared/services/modification.service';
 
@@ -35,7 +33,6 @@ export class InformationConducteurComponent implements OnInit {
               private tacheService: TacheService,
               private modifService: ModificationService,
               private route: ActivatedRoute,
-              private router: Router,
               private toastr: ToastrService) { }
 
   ngOnInit() {

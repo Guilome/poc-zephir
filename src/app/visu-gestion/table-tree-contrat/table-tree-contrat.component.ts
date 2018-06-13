@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Contrat} from '../../shared/domain/contrat';
 import { Tache, Nature, Status } from '../../shared/domain/Tache';
 import { TacheService } from '../../shared/services/tache.service';
 import { Router } from '@angular/router';

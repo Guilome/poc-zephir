@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 import {TacheService} from '../../shared/services/tache.service';
 import { Tache } from '../../shared/domain/Tache';
 import {NoteService} from '../../shared/services/note.service';
@@ -60,15 +60,6 @@ export class GestionComponent implements OnInit {
 
   context: any;
   public c: Chart;
-  private colors = [
-    'grey',
-    'cyan',
-    'red',
-    'blue',
-    'green',
-    'Purple',
-    'yellow'
-  ];
   // Contructor :
   constructor(public tacheService: TacheService,
               public noteService: NoteService,
