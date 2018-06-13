@@ -163,28 +163,6 @@ export class TacheService {
   }
 
   /**
-   * 
-   * @param idTache 
-   * @param motif 
-   */
-  closeTacheNonConforme(idTache: number, motif: string): Tache {
-    const p = this.getTacheById(idTache);
-    p.motifNonConformite = motif;
-    p.dateCloture = new Date();
-
-    return p;
-  }
-  /**
-   * Fermeture de la Piece après validation 
-   * @param idTache 
-   */
-  closeTacheConforme(idTache: number){
-    const tache = this.getPieceById(idTache);
-    tache.idUtilisateurCloture = tache.idUtilisateur;
-    tache.dateCloture = new Date();
-  }
-
-  /**
    * Fermeture du dossier
    */
   closeDossier(idDossier: number){
@@ -283,11 +261,15 @@ export class TacheService {
     this.tacheSubject.next(this.listTaches);
     return lPiece;
   }
+
   /**
-   * Aucun appel web service
+   *  Aucun appel web service
    * les pièces créée seront stocké tomporairement 
    * Si l'user valide le dossier ses pièces seront validées
    * La pièce est optionnel 
+   * @param code 
+   * @param dossier 
+   * @param piece 
    */
   public createPieceTemporaire(code: string, dossier: Tache, piece?: Tache) {
     const lPiece =  new Tache(Nature.PIECE);
@@ -480,9 +462,10 @@ export class TacheService {
 
   /**
    * Méthode appelée lors qu'un dossier est en attente de pièce 
+   * Supprime l'affection d'un dossier
    * @param dossier 
    */
-  delAffectation(id: number) {
+  public delAffectation(id: number) {
      this.getDossierById(id).idUtilisateur = null;
   }
 }
