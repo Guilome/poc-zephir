@@ -102,7 +102,6 @@ export class TraitementTacheComponent implements OnInit {
   }
 
   detailPiece(piece: Tache,a, sp?) {
-    console.log(piece.motifNonConformite);
     
     this.router.navigate(['/TraitementTache', { id: piece.context.ident, piece: piece.ident }]);
     //this.router.navigate(['/TraitementTache/'+ident+';idPiece='+ident]);
@@ -208,6 +207,21 @@ export class TraitementTacheComponent implements OnInit {
    */
   getNomUtilisateur(note: Tache): string  {
     return this.utilisateurService.getName(note.idUtilisateur);
+  }
+
+  ngOnDestroy($event:Event)	{
+    //confirm('Confirmation ?');
+    console.log(event)
+    event.preventDefault();
+    console.log('after...');
+    event.defaultPrevented;
+    console.log('after...2');
+    event.stopImmediatePropagation();
+    console.log('after...3');
+    event.stopPropagation();
+    console.log('after...4');
+
+
   }
 
 }
