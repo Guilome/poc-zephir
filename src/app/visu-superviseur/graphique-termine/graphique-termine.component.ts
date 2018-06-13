@@ -6,8 +6,7 @@ import { TacheService } from '../../shared/services/tache.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../../shared/services/groupe.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
-import { Tache, Nature } from '../../shared/domain/Tache';
-import { tick } from '@angular/core/testing';
+import { Tache } from '../../shared/domain/Tache';
 
 @Component({
   selector: 'graphique-termine',
@@ -65,7 +64,6 @@ export class GraphiqueTermineComponent implements OnInit {
   dataGroupe: Map<string, number>;
 
   constructor(public tacheService: TacheService, 
-              private router: Router, 
               private groupeService: GroupeService, 
               private utilService: UtilisateurService,
               private activeRoute: ActivatedRoute) {

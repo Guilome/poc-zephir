@@ -1,12 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Tache, Nature} from '../../shared/domain/Tache';
-import {ActivatedRoute, Router, Params} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Tache} from '../../shared/domain/Tache';
+import {ActivatedRoute, Router } from '@angular/router';
 import {TacheService} from '../../shared/services/tache.service';
-import {NgForm} from '@angular/forms';
 import { ActionMetierService } from '../../shared/services/action-metier.service';
 import {ToastrService} from 'ngx-toastr';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Code } from '../../shared/domain/groupe';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 
 @Component({

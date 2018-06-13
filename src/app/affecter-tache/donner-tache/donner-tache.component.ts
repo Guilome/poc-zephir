@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TacheService } from '../../shared/services/tache.service';
 import { Tache } from '../../shared/domain/Tache';
-import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Utilisateur } from '../../shared/domain/Utilisateur';
-import { log } from 'util';
 import { Router } from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import { TitreService } from '../../shared/services/titre.service';

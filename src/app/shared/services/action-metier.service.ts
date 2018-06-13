@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Tache, Nature} from '../domain/Tache';
 import { Context } from '../domain/context';
-import { Contrat, NatureContrat, Fractionnement } from '../domain/contrat';
+import { Contrat, Fractionnement } from '../domain/contrat';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()

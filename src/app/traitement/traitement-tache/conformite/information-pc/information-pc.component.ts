@@ -29,7 +29,6 @@ export class InformationPcComponent implements OnInit {
               private tacheService: TacheService,
               private route: ActivatedRoute,
               private modifService: ModificationService,
-              private router: Router,
               private toastr: ToastrService) { }
 
   ngOnInit() {

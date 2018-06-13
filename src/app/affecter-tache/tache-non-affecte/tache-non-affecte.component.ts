@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { TacheService } from '../../shared/services/tache.service';
 import { Tache, Nature } from '../../shared/domain/Tache';
-import { LowerCasePipe } from '@angular/common';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { GroupeService } from '../../shared/services/groupe.service';
 
@@ -21,7 +20,6 @@ export class TacheNonAffecteComponent implements OnInit {
   collectDossier = []
 
   constructor(private  tacheService: TacheService,
-              private utilisateurService: UtilisateurService,
               private groupeService: GroupeService) {
     this.tacheService.listerTaches().subscribe(data => this.lesDossiers = data)
     this.trierListe()

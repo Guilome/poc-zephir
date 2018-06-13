@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Modification } from '../domain/modification';
 import { BehaviorSubject } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { TacheService } from './tache.service';
 

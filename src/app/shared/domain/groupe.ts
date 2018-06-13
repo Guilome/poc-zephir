@@ -1,5 +1,3 @@
-import { Utilisateur } from "./Utilisateur";
-
 export class Groupe {
 
   public libelle: string;

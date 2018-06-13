@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {Chart} from 'chart.js';
 import {TitreService} from '../shared/services/titre.service';
 import {Router} from '@angular/router';
 import { TacheService } from '../shared/services/tache.service';

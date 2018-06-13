@@ -1,8 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Tache} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
 import {ActivatedRoute} from '@angular/router';
-import {DomSanitizer} from '@angular/platform-browser';
 import {Subscription} from 'rxjs/Subscription';
 import { ActionMetierService } from '../../../shared/services/action-metier.service';
 
