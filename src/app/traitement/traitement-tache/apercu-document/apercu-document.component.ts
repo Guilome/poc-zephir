@@ -48,7 +48,6 @@ export class ApercuDocumentComponent implements OnInit {
       document.getElementById('divPdf').innerHTML = this.note.message;
     } else if (this.actionMetier != null) {
       document.getElementById('divPdf').innerHTML = '';
-      console.log(document.getElementById('divPdf'));
       
 
     }
