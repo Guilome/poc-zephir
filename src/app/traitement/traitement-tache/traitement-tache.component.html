@@ -139,11 +139,11 @@
       <div class="modal-body">
           <div class="row justify-content-md-center">
               <textarea class="textarea" placeholder="Message..." #msg></textarea>
-              <button type="button" class="btn btn-outline-primary" style="margin-right: 10px" (click)="AjouterNote(msg)" >Ajouter</button>
           </div>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-light" (click)="c('Close click')">Annuler</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="c('Close click')">Annuler</button>
+          <button type="button" class="btn btn-outline-primary" (click)="AjouterNote(msg)" >Ajouter</button>
       </div>
 
 </ng-template>
