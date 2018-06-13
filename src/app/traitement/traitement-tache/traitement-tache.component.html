@@ -41,20 +41,12 @@
           <div class="nav flex-column nav-pills ">
           
             <div *ngFor="let n of listNotes" > 
-              <a class="nav-link" (click)="detailPiece(n,a)" [popover]="myPopover" routerLinkActive="active"  [attr.id]="'link'+n.ident" #a>
+              <a class="nav-link" (click)="detailPiece(n,a)" [attr.id]="'link'+n.ident" #a>
                       <div class="row">
                           {{n.nature}} de {{getNomUtilisateur(n)}}
                       </div>
 
               </a>
-              <popover-content #myPopover
-              placement="right"
-              [animation]="true"
-              [closeOnClickOutside]="true" >
-                <div class="container">
-                  {{n.message}}
-                </div>
-              </popover-content>
             </div>
           </div>
 

@@ -24,3 +24,15 @@
  <div id="divPdf"></div>
  <app-visualiser-modification *ngIf="this.actionMetier != null"></app-visualiser-modification>
 
+ <div *ngIf="note != null">
+    <div class="card border-primary mb-3">
+      <div class="card-body">
+          <h5 class="card-title">Note émise par {{getName()}} :</h5>
+          <table class="table table-borderless">
+            <tbody>
+                {{note.message}}
+            </tbody>
+          </table>
+      </div>
+    </div>
+</div>
