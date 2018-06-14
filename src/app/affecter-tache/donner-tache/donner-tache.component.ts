@@ -46,6 +46,7 @@ export class DonnerTacheComponent implements OnInit {
       if (this.gestionnaires.length == 1) {
         this.dossiers.forEach(dossier => { 
           this.gestionnaires.forEach(g => {
+            dossier.idGroupe = this.idGroupe
             dossier.idUtilisateur = g.ident
             let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
             pieces.forEach(piece => piece.idUtilisateur = g.ident)

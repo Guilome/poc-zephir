@@ -35,7 +35,7 @@ export class TableTreeContratComponent implements OnInit {
       this.dossiers.forEach(dossier => {
         this.lesPieces = this.tacheService.getPiecesByDossier(dossier.ident)
         this.dossierAffichage.push({ident: dossier.ident, numContrat: dossier.context.contrat.numero, codeDossier: dossier.code, produit: dossier.context.contrat.codeProduit,
-                                    nomClient: dossier.context.nomAppelClient, nomIntermediaire: dossier.context.nomAppelIntermediaire, bannette: this.groupeService.getGroupeById(dossier.idGroupe).libelle,
+                                    nomClient: dossier.context.nomAppelClient, nomIntermediaire: dossier.context.nomAppelIntermediaire, bannette: this.tacheService.getStatutDossier(dossier.ident),
                                     status: this.tacheService.getStatutDossier(dossier.ident), dateGedRec : dossier.dateReception.toLocaleDateString()})
         this.dossierPieces.push({bool:false, dossier: dossier.ident, pieces: this.lesPieces})   
       })

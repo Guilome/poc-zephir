@@ -42,6 +42,7 @@ export class PrendreTacheComponent implements OnInit {
     else {
       this.dossiers.forEach(dossier => {
         dossier.idUtilisateur = this.idGestionnaire
+        dossier.idGroupe = this.gestionnaire.idGroupe
         let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
         pieces.forEach(piece => piece.idUtilisateur = this.idGestionnaire)
       });   
