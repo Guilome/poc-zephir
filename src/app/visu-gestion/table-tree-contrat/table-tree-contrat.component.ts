@@ -35,8 +35,8 @@ export class TableTreeContratComponent implements OnInit {
       this.dossiers.forEach(dossier => {
         this.lesPieces = this.tacheService.getPiecesByDossier(dossier.ident)
         this.dossierAffichage.push({ident: dossier.ident, numContrat: dossier.context.contrat.numero, codeDossier: dossier.code, produit: dossier.context.contrat.codeProduit,
-                                    nomClient: dossier.context.nomAppelClient, nomIntermediaire: dossier.context.nomAppelIntermediaire, bannette: this.groupeService.getGroupeById(dossier.idGroupe).libelle,
-                                    status: this.tacheService.getStatutDossier(dossier.ident), dateGedRec : dossier.dateReception.toLocaleDateString()})
+                                    nomClient: dossier.context.nomAppelClient, nomIntermediaire: dossier.context.nomAppelIntermediaire,
+                                    status: this.tacheService.getStatutTache(dossier), dateGedRec : dossier.dateReception.toLocaleDateString()})
         this.dossierPieces.push({bool:false, dossier: dossier.ident, pieces: this.lesPieces})   
       })
      })
@@ -65,7 +65,7 @@ export class TableTreeContratComponent implements OnInit {
   }
 
   openModal(modal, idDossier){
-    this.dossierStatut = this.tacheService.getStatutDossier(idDossier)
+    this.dossierStatut = this.tacheService.getStatutTache(this.tacheService.getDossierById(idDossier))
     this.lesPieces = this.tacheService.getPiecesByDossier(idDossier)
     this.currentModal = this.modalService.open(modal,  { size: 'lg', backdropClass: 'light-blue-backdrop', centered: true });   
   }

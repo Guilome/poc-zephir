@@ -2,10 +2,13 @@
   <div class="card">
     <div class="card-header">
       Gestionnaires
-      <input class="mt-2 float-right" type="checkbox" id="allGest" [checked]="isAllGest()" name="gestionnaires" (change)="checkboxGest = !checkboxGest; returnAll()">
     </div>
     <div class="card-body">
       <table class="table table-borderless">
+        <thead>
+          <th>Nom/Prénom</th>
+          <th><input type="checkbox" id="allGest" [checked]="isAllGest()" name="gestionnaires" (change)="checkboxGest = !checkboxGest; returnAll()"></th>
+        </thead>
         <tbody>
           <tr *ngFor="let gestionnaire of lesGestionnaires">
             <td>{{gestionnaire.nom}} {{gestionnaire.prenom}}</td>

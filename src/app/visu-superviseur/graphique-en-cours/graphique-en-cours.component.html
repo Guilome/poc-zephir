@@ -1,11 +1,22 @@
 <div class="card text-center mt-5">
   <div class="card-header">
-    Dossiers en cours
+    Répartition {{titreCard}}
   </div>
-  <div class="card-body">
-    <canvas id="chartPie"></canvas>
+  <button type="button" class="btn btn-info btn-sm">Détails</button>
+  <div class="card-body">    
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownFiltre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Filtre
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownFiltre">
+        <a class="dropdown-item" id="ddGestionnaire" value="gestionnaire" (click)="graphGestionnaire()">Gestionnaire</a>
+        <a class="dropdown-item" id="ddStatut" value="statut" (click)="graphStatut()">Statut</a>
+        <a class="dropdown-item" id="ddProduit" value="produit" (click)="graphProduit()">Produit</a>
+      </div>
+    </div>
+    <canvas class="mt-3" id="chartPie"></canvas>
   </div>
-  <div class="card-footer">
+  <div class="card-footer" *ngIf="gestionnaire">
     <div class="btn-group btn-group" role="group" aria-label="Basic example">
       <a routerLink="/AffecterTache" class="btn btn-primary" role="button">Dispatcher</a>
       <button class="btn btn-info" (click)="dispatcher()">Dispatch auto</button>

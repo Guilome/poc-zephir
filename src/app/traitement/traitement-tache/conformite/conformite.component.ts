@@ -163,7 +163,7 @@ export class ConformiteComponent implements OnInit {
     let bVerification: boolean = false;
     idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
     for (let p of this.tacheService.getPiecesByDossier(this.dossier.ident)) {
-      if(this.tacheService.getStatutDossier(this.dossier.ident) === 'À vérifier') {
+      if(this.tacheService.getStatutTache(this.dossier) === 'À vérifier') {
         idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
         bVerification = true;
         break;
@@ -177,7 +177,7 @@ export class ConformiteComponent implements OnInit {
       // Si l'utilisateur ne fait pas parti du groupe validation 
       if( !this.groupeValidation()) {
           // Passage du dossier à l'étape de validation
-          if (this.tacheService.getStatutDossier(this.dossier.ident) === 'En attente'){
+          if (this.tacheService.getStatutTache(this.dossier) === 'En attente'){
             this.toastr.success('Dossier passé   <b>En attente</b>', '', {enableHtml: true}); 
             this.tacheService.delAffectation(this.dossier.ident);
 

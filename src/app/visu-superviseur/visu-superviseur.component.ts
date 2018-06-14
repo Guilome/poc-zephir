@@ -21,7 +21,7 @@ export class VisuSuperviseurComponent implements OnInit {
   ngOnInit() {
     this.idGroupe = parseInt(this.activeRoute.snapshot.paramMap.get("id"))
     localStorage.setItem("GROUPE", this.idGroupe.toString());
-    this.titreService.updateTitre("Gestion du groupe " + this.groupeService.getGroupeById(this.idGroupe).libelle.toLowerCase())
+    this.titreService.updateTitre("Bannette " + this.groupeService.getGroupeById(this.idGroupe).libelle.toLowerCase())
   }
 
   ifConnexion(): boolean {

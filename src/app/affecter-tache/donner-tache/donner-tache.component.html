@@ -5,10 +5,10 @@
     <input class="btn btn-light m-3 text-black" type="submit" value="Affecter" (click)="affecterTacheGestionnaire()">
 </div>
 <div class="row">
-    <div class="col-6">
+    <div class="col-9">
         <app-tache-non-affecte (tacheAssigner)="traiterTache($event)" ></app-tache-non-affecte>
     </div>
-    <div class="col-6">
+    <div class="col-3">
         <app-gestionnaire (gestionnaireAssigner)="traiterGestionnaire($event)" ></app-gestionnaire>
     </div>
 </div>
