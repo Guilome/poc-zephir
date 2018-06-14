@@ -50,6 +50,7 @@ import { InformationCgComponent } from './traitement/traitement-tache/conformite
 import { InformationPcComponent } from './traitement/traitement-tache/conformite/information-pc/information-pc.component';
 import { ModificationService } from './shared/services/modification.service';
 import { VisualiserModificationComponent } from './traitement/traitement-tache/visualiser-modification/visualiser-modification.component';
+import { BannettePipe } from './shared/pipe/bannette.pipe';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -106,7 +107,8 @@ const appRoutes: Routes = [
     GraphiqueTermineComponent,
     InformationCgComponent,
     InformationPcComponent,
-    VisualiserModificationComponent
+    VisualiserModificationComponent,
+    BannettePipe
   ],
   imports: [
     BrowserModule,
