@@ -3,8 +3,11 @@
     <tr>
       <th scope="col"></th>
       <th scope="col">Numero</th>
+      <th scope="col">Produit</th> 
       <th scope="col">Nom client</th>
       <th scope="col">Nom intermédiaire</th>
+      <th scope="col">Date</th>
+      <th scope="col">Bannette</th>
       <th scope="col">Statut</th>
       <th scope="col">Action</th>
     </tr>
@@ -13,9 +16,12 @@
     <ng-container *ngFor="let dossier of dossierAffichage">
       <tr>
         <th scope="row"><a (click)="toggleChildren(dossier.ident)"><i class="fa fa-plus fa-lg"></i></a></th>
-        <td>{{dossier.numContrat}}</td>        
+        <td>{{dossier.numContrat}} - {{dossier.codeDossier}}</td>   
+        <td>{{dossier.produit}}</td>     
         <td>{{dossier.nomClient}}</td>
         <td>{{dossier.nomIntermediaire}}</td>
+        <td>{{dossier.dateGedRec}}</td>
+        <td>{{dossier.bannette}}</td>
         <td>{{dossier.status}}</td>
         <td> 
           <a (click)="traiterPieces(dossier.ident)"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a>

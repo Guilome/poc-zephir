@@ -242,15 +242,16 @@ export class ConformiteComponent implements OnInit {
    */
   demanderNouvellePiece() {
     if ( this.motifselected.length > 0){
+    this.piece.message = (<HTMLInputElement>document.getElementById('noteComplementaire')).value    
     this.tacheService.createPieceTemporaire(this.piece.code, this.dossier, this.piece);
     // cloture de la pièce NON CONFORME/
     this.tacheService.closePieceNonConforme(this.piece.ident, this.motifselected.join('\n'));
 
-    this.toastr.success('Demande de rounouvellement effectuée');
+    this.toastr.success('Demande de renouvellement effectuée');
     this.currentModal.close();
 
     }else {
-      this.toastr.error('Veuillez sélectionner un ou plkusieurs motif(s)');
+      this.toastr.error('Veuillez sélectionner un ou plusieurs motif(s)');
     }
   }
 

@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TacheService } from '../../../../shared/services/tache.service';
 import { Tache } from '../../../../shared/domain/Tache';
 import { ActionMetierService } from '../../../../shared/services/action-metier.service';
@@ -18,16 +18,16 @@ export class InformationCgComponent implements OnInit {
   public currentMarque: string
   public currentImmat: string
   public currentModele: string
-  public currentMEC: Date
+  public currentMEC: string
   public currentDesignation: string
   public currentMDA: string
-  public currentDA: Date
+  public currentDA: string
   //Liste des modifications
   public lesModifsCG: Modification[] = []
 
   currentTache: Tache;
   change: boolean = false  
-  public dateMax
+  date = new Date("01/01/2018");// Format anglais : mois/jours/annee 
   
   constructor(private actionMetierService: ActionMetierService,
               private tacheService: TacheService,
@@ -36,10 +36,15 @@ export class InformationCgComponent implements OnInit {
               private toastr: ToastrService) { }
 
   ngOnInit() {
+    // Mise en place de la date max des inputs de type date ---------------------------------------------------
+    let today = new Date();
+    (<HTMLInputElement>document.getElementById('mec')).setAttribute("max", this.createDate(today));    
+    (<HTMLInputElement>document.getElementById('dateAcquisition')).setAttribute("max", this.createDate(today));  
+    //---------------------------------------------------------------------------------------------------------
     this.route.params.subscribe(data => {
     this.currentTache = this.tacheService.getPieceById(+data.piece);
     });
-    this.inputDate();
+    this.lesModifsCG = this.modifService.getModificationByPiece(this.currentTache.ident)
     this.setInputValue();
   }
 
@@ -51,10 +56,11 @@ export class InformationCgComponent implements OnInit {
     const designation = (<HTMLInputElement>document.getElementById('designation')).value    
     const mda = (<HTMLInputElement>document.getElementById('mda')).value    
     const da = (<HTMLInputElement>document.getElementById('dateAcquisition')).value    
+
     if(marque != this.currentMarque || immat != this.currentImmat || modele != this.currentModele || 
-       new Date(mec).toLocaleDateString() != this.currentMEC.toLocaleDateString() ||
+       mec != this.currentMEC ||
        designation != this.currentDesignation || mda != this.currentMDA || 
-       new Date(da).toLocaleDateString() != this.currentDA.toLocaleDateString()) {
+       da != this.currentDA) { // Vérifie si au moins un des champs à été modifié
       
       this.change = true    
       this.DemandeAvt(marque, immat, modele, mec, designation, mda, da)
@@ -62,46 +68,92 @@ export class InformationCgComponent implements OnInit {
   }
 
   DemandeAvt(marque : string, immat: string, modele: string, mec: string, designation:string, mda: string, da: string){
-    let mecDate = new Date(mec).toLocaleDateString();
-    let daDate = new Date(da).toLocaleDateString();
-    this.currentTache.message = ' ';
+    let modifCG;    
     if(marque != this.currentMarque) {
-      let modifCG = new Modification(this.currentTache.ident,Donnee.MARQUE_VEHICULE, this.currentMarque, marque)
+      if (this.modifService.getMotifByDonnee(Donnee.MARQUE_VEHICULE) == null) {
+        modifCG = new Modification(this.currentTache.ident,Donnee.MARQUE_VEHICULE, this.currentMarque, marque);
+        this.modifService.addModification(modifCG)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée')
+      } else {
+        modifCG = this.modifService.getMotifByDonnee(Donnee.MARQUE_VEHICULE);
+        modifCG.valeurApres = marque;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }      
       this.currentMarque = marque
-      this.modifService.addModification(modifCG)
-    }
-    else if (immat != this.currentImmat) {
-      let modifCG = new Modification(this.currentTache.ident,Donnee.IMMATRICULATION_VEHICULE, this.currentImmat, immat)
+    } else if (immat != this.currentImmat) {
+      if (this.modifService.getMotifByDonnee(Donnee.IMMATRICULATION_VEHICULE) == null) {
+        modifCG = new Modification(this.currentTache.ident,Donnee.IMMATRICULATION_VEHICULE, this.currentImmat, immat)
+        this.modifService.addModification(modifCG)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée')
+      } else {
+        modifCG = this.modifService.getMotifByDonnee(Donnee.IMMATRICULATION_VEHICULE);
+        modifCG.valeurApres = immat;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }          
       this.currentImmat = immat
-      this.modifService.addModification(modifCG)
-    }
-    else if (modele != this.currentModele) {
-      let modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
+    } else if (modele != this.currentModele) {      
+      if (this.modifService.getMotifByDonnee(Donnee.MODELE_VEHICULE) == null) {
+        modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
+        this.modifService.addModification(modifCG)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée')
+      } else {
+        modifCG = this.modifService.getMotifByDonnee(Donnee.MODELE_VEHICULE);
+        modifCG.valeurApres = modele;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }    
       this.currentModele = modele
-      this.modifService.addModification(modifCG)
-    }
-    else if (mecDate != this.currentMEC.toLocaleDateString()) {
-      let modifCG = new Modification(this.currentTache.ident,Donnee.MEC_VEHICULE, this.currentMEC.toLocaleDateString("en-US"), mec)
-      this.currentMEC = new Date(mec)
-      this.modifService.addModification(modifCG)
-    }
-    else if (designation != this.currentDesignation) {
-      let modifCG = new Modification(this.currentTache.ident,Donnee.DESIGNATION_VEHICULE, this.currentDesignation, designation)
+    } else if (mec != this.currentMEC) {
+      if (this.modifService.getMotifByDonnee(Donnee.MEC_VEHICULE) == null) {
+        modifCG = new Modification(this.currentTache.ident,Donnee.MEC_VEHICULE, this.currentMEC, mec)
+        this.modifService.addModification(modifCG)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée')
+      } else {
+        modifCG = this.modifService.getMotifByDonnee(Donnee.MEC_VEHICULE);
+        modifCG.valeurApres = mec;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }         
+      this.currentMEC = mec
+    } else if (designation != this.currentDesignation) {
+      if (this.modifService.getMotifByDonnee(Donnee.DESIGNATION_VEHICULE) == null) {
+        modifCG = new Modification(this.currentTache.ident,Donnee.DESIGNATION_VEHICULE, this.currentDesignation, designation)
+        this.modifService.addModification(modifCG)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée')
+      } else {
+        modifCG = this.modifService.getMotifByDonnee(Donnee.DESIGNATION_VEHICULE);
+        modifCG.valeurApres = designation;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }  
       this.currentDesignation = designation
-      this.modifService.addModification(modifCG)
-    }
-    else if (mda != this.currentMDA) {
-      let modifCG = new Modification(this.currentTache.ident,Donnee.MA_VEHICULE, this.currentMDA, mda)
+    } else if (mda != this.currentMDA) {
+      if (this.modifService.getMotifByDonnee(Donnee.MA_VEHICULE) == null) {
+        modifCG = new Modification(this.currentTache.ident,Donnee.MA_VEHICULE, this.currentMDA, mda)
+        this.modifService.addModification(modifCG)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée')
+      } else {
+        modifCG = this.modifService.getMotifByDonnee(Donnee.MA_VEHICULE);
+        modifCG.valeurApres = mda;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
       this.currentMDA = mda
-      this.modifService.addModification(modifCG)
+    } else if (da != this.currentDA) {
+      if (this.modifService.getMotifByDonnee(Donnee.DA_VEHICULE) == null) {
+        modifCG = new Modification(this.currentTache.ident,Donnee.DA_VEHICULE, this.currentDA, da)
+        this.modifService.addModification(modifCG)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée')
+      } else {
+        modifCG = this.modifService.getMotifByDonnee(Donnee.DA_VEHICULE);
+        modifCG.valeurApres = da;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
+      this.currentDA = da
     }
-    else if (daDate != this.currentDA.toLocaleDateString()) {
-      let modifCG = new Modification(this.currentTache.ident,Donnee.DA_VEHICULE, this.currentDA.toLocaleDateString("en-US"), da)
-      this.currentDA = new Date(da)
-      this.modifService.addModification(modifCG)
-    }
-    this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
-    this.toastr.success('Une demande d\'avenant a été créée');
   }
 
   private setInputValue(){
@@ -110,78 +162,51 @@ export class InformationCgComponent implements OnInit {
     this.currentModele = "SERIE 3";
     this.currentDesignation = "";
     this.currentMDA ="";
+    this.currentMEC = this.createDate(this.date);
+    this.currentDA = this.createDate(this.date);
     //Changement par les valeurs de modification si existantes
-    if(this.lesModifsCG.length > 0){
+    if(this.lesModifsCG.length > 0){           
       this.lesModifsCG.forEach( m => {
-        if (m.donnee == Donnee.MARQUE_VEHICULE) {
-          this.currentMarque = m .valeurApres;
-        }
-        else if (m.donnee == Donnee.IMMATRICULATION_VEHICULE) {
-          this.currentImmat = m.valeurApres;
-        }
-        else if (m.donnee == Donnee.MODELE_VEHICULE) {
-          this.currentModele = m.valeurApres;
-        }
-        else if (m.donnee == Donnee.DESIGNATION_VEHICULE) {
-          this.currentDesignation = m.valeurApres;
-        }
-        else if (m.donnee == Donnee.MA_VEHICULE) {
-          this.currentMDA = m.valeurApres;
-        }
+        switch(m.donnee){
+          case Donnee.MARQUE_VEHICULE : 
+            this.currentMarque = m.valeurApres; 
+            break;
+          case Donnee.IMMATRICULATION_VEHICULE :
+            this.currentImmat = m.valeurApres;
+            break;
+          case Donnee.MODELE_VEHICULE :
+            this.currentModele = m.valeurApres;
+            break;
+          case Donnee.MEC_VEHICULE :
+            this.currentMEC =this.createDate(new Date(m.valeurApres));    
+            break;
+          case Donnee.DESIGNATION_VEHICULE :
+            this.currentDesignation = m.valeurApres;
+            break;
+          case Donnee.MA_VEHICULE :
+            this.currentMDA = m.valeurApres;
+            break;
+          case Donnee.DA_VEHICULE :
+            this.currentDA = this.createDate(new Date(m.valeurApres));
+            break;
+        } 
       })
     }
   }
 
-  private inputDate(){
-    //Gestion date max
-    var today = new Date();
-    var dd: string= today.getDate().toString();
-    var mm: string = (today.getMonth()+1).toString();
-    var yyyy: string = today.getFullYear().toString();
-    if(parseInt(dd)<10){
-            dd='0'+dd;
-        } 
-        if(parseInt(mm)<10){
-            mm='0'+mm;
-        } 
-    this.dateMax = yyyy+'-'+mm+'-'+dd;    
-    (<HTMLInputElement>document.getElementById('mec')).setAttribute("max", this.dateMax);    
-    (<HTMLInputElement>document.getElementById('dateAcquisition')).setAttribute("max", this.dateMax);        
-    if(this.lesModifsCG.length > 0){
-      this.lesModifsCG.forEach( m => {
-        if (m.donnee == Donnee.MEC_VEHICULE) {
-          this.currentMEC = new Date(m .valeurApres);
-          (<HTMLInputElement>document.getElementById('mec')).value = this.currentMEC.toDateString()
-        }
-        else if(m.donnee == Donnee.DA_VEHICULE){
-          this.currentDA = new Date(m .valeurApres);
-          (<HTMLInputElement>document.getElementById('dateAcquisition')).value = this.currentDA.toDateString()
-        }
-      })
+  private createDate(date: Date): string {
+    let dateString = "";
+    dateString += date.getFullYear() +"-";
+    if((date.getMonth()+1) < 10){
+      dateString += "0"+(date.getMonth()+1)+"-"
+    } else {
+      dateString += (date.getMonth()+1)+"-"
     }
-    else {
-      //Gestion date a afficher de base 
-      var date = new Date("01/01/2018");// Format anglais : mois/jours/annee
-      this.currentMEC = date;
-      this.currentDA = date;
-      let s = date.getFullYear() + '-' + '0'+(date.getMonth() + 1) +  '-'+'0' +date.getDate();       
-      (<HTMLInputElement>document.getElementById('mec')).value = s;      
-      (<HTMLInputElement>document.getElementById('dateAcquisition')).value = s;      
+    if(date.getDate() < 10){
+      dateString += "0"+date.getDate()
+    } else {
+      dateString += date.getDate()
     }
-  }
-  
-  private titleStatus() {
-    // Status 
-    let idLabelStatus = document.getElementById('idLabelStatus');
-    idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-    for (let p of this.tacheService.getPiecesByDossier(this.currentTache.idTacheMere)) {
-      if(p.status === 'À vérifier') {
-        idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérfication</span>';
-        return;
-      }
-      if (p.status === 'À valider') {
-        idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
-      }
-    }
+    return dateString
   }
 }

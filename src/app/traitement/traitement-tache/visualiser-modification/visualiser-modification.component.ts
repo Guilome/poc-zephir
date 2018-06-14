@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Modification } from '../../../shared/domain/modification';
+import { Modification, Donnee } from '../../../shared/domain/modification';
 import { ModificationService } from '../../../shared/services/modification.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Tache } from '../../../shared/domain/Tache';
@@ -15,6 +15,8 @@ export class VisualiserModificationComponent implements OnInit {
 
   //Liste des modifications
   public lesModifs: Modification[] = []
+  public dateAvant
+  public dateApres
 
   currentDossier: Tache
 
@@ -35,6 +37,16 @@ export class VisualiserModificationComponent implements OnInit {
 
   private chargerListeModif(){
     this.lesModifs = this.modifService.getModificationByDossier(this.currentDossier.ident)
+    this.lesModifs.forEach(m => {
+      if(m.donnee == Donnee.MEC_VEHICULE){
+        this.dateAvant = new Date(m.valeurAvant).toLocaleDateString()
+        this.dateApres = new Date(m.valeurApres).toLocaleDateString()
+      }
+      else if(m.donnee == Donnee.DA_VEHICULE){
+        this.dateAvant = new Date(m.valeurAvant).toLocaleDateString()
+        this.dateApres = new Date(m.valeurApres).toLocaleDateString()
+      }
+    })
   }
   
   private annulerModification(idModif: number) {
@@ -45,6 +57,14 @@ export class VisualiserModificationComponent implements OnInit {
       this.actionMetierService.supprimerActionMetierTemporaire();
       let idContext = this.currentDossier.context.ident
       this.router.navigate(['/TraitementTache', { id: this.currentDossier.context.ident, piece: modif.idTache }]);
+    }
+  }
+
+  private showDate(modif: Modification): boolean {
+    if(modif.donnee == Donnee.MEC_VEHICULE || modif.donnee == Donnee.DA_VEHICULE) {
+      return true
+    }else {
+      return false
     }
   }
   

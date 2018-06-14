@@ -199,9 +199,7 @@ export class TacheService {
       lTache.dateLimite = new Date('06/15/2018');
       lTache.dateCreation = new Date();
       lTache.dateReception = new Date();
-
       lTache.idUtilisateur = null;
-
       this.listTaches.push(lTache);
       this.create3Pieces(lTache);
     }

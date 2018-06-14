@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Modification } from '../domain/modification';
+import { Modification, Donnee } from '../domain/modification';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { TacheService } from './tache.service';
@@ -55,4 +55,11 @@ export class ModificationService {
     this.modificationSubject.next(this.listModifications);
   }
 
+  getDonneeModif(idModification: number): Donnee {
+    return this.getModificationById(idModification).donnee
+  }
+
+  getMotifByDonnee(donnee: Donnee): Modification {
+    return this.listModifications.find(m => m.donnee == donnee)
+  }
 }

@@ -4,6 +4,7 @@ import { TacheService } from '../../shared/services/tache.service';
 import { Router } from '@angular/router';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
+import { GroupeService } from '../../shared/services/groupe.service';
 
 @Component({
   selector: 'table-tree-contrat',
@@ -23,6 +24,7 @@ export class TableTreeContratComponent implements OnInit {
 
   constructor(private tacheService: TacheService, 
               private utilisateurService: UtilisateurService, 
+              private groupeService: GroupeService,
               private route: Router, 
               private modalService: NgbModal) {
     
@@ -31,10 +33,10 @@ export class TableTreeContratComponent implements OnInit {
       this.dossiers = data.filter( d => d.nature === Nature.DOSSIER && d.idUtilisateur === this.idCurrentUser && d.dateCloture == null)
       this.dossierAffichage = []
       this.dossiers.forEach(dossier => {
-        this.dossierAffichage.push({ident: dossier.ident, numContrat: dossier.context.contrat.numero, 
-                                    nomClient: dossier.context.nomAppelClient, nomIntermediaire: dossier.context.nomAppelIntermediaire, 
-                                    status: this.tacheService.getStatutDossier(dossier.ident)})
         this.lesPieces = this.tacheService.getPiecesByDossier(dossier.ident)
+        this.dossierAffichage.push({ident: dossier.ident, numContrat: dossier.context.contrat.numero, codeDossier: dossier.code, produit: dossier.context.contrat.codeProduit,
+                                    nomClient: dossier.context.nomAppelClient, nomIntermediaire: dossier.context.nomAppelIntermediaire, bannette: this.groupeService.getGroupeById(dossier.idGroupe).libelle,
+                                    status: this.tacheService.getStatutDossier(dossier.ident), dateGedRec : dossier.dateReception.toLocaleDateString()})
         this.dossierPieces.push({bool:false, dossier: dossier.ident, pieces: this.lesPieces})   
       })
      })
@@ -75,4 +77,5 @@ export class TableTreeContratComponent implements OnInit {
   getName(idUtilisateur){
     return this.utilisateurService.getUserById(idUtilisateur).nom
   }
+
 }

@@ -1,3 +1,14 @@
-.card{
-    font-size: 1.3em
+#fieldsetPermis{
+    border: 2px solid #69b9ee;
+    border-radius: 10px;
+    margin: 0 auto 15px auto;
+    padding: 10px;
+}
+legend {
+    color: #69b9ee;
+    margin-left: 175px;
+    font-size: 20px;
+    width: 150px;
+    text-align: center;
+    padding: 0;
 }

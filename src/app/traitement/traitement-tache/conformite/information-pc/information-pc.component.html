@@ -1,34 +1,44 @@
-<fieldset id="fieldsetPermis" class="border-info">
+<fieldset id="fieldsetPermis">
   <legend>Informations Permis de conduire</legend>
   <div class="form-group">
-    <div class="row">
-      <div>
-        <label for="numero">Numéro :</label>
-        <input type="text" class="form-control" id="numero" maxlength="15" value="{{currentNumero}}" (blur)="ifChangement()" #date>
-      </div>
-    </div> 
-    <div class="row">
-      <div>
-        <label for="categorie">Catégorie :</label>
-        <input type="text" class="form-control" id="categorie" maxlength="15" value="{{currentCategorie}}" (blur)="ifChangement()" #date>
-      </div>
-    </div> 
-    <div class="row">
-      <div>
-        <label class="control-label" for="date2delivrance">Date de délivrance :</label>
-        <input type="date" class="form-control" id="date2delivrance" (blur)="ifChangement()" #date>
-      </div>    
+    <div class="col-12">
+      <div class="row">
+        <div>
+          <label for="numero">Numéro :</label>
+          <input type="text" class="form-control" id="numero" maxlength="15" value="{{currentNumero}}" (blur)="ifChangement()" #date>
+        </div>
+      </div> 
     </div>
-    <div class="row">
-      <div>
-        <label class="control-label" for="departement">Département :</label>
-        <input type="number" class="form-control" id="departement" value="{{currentDepartement}}" (blur)="ifChangement()" #date>
+    <div class="col-12">
+      <div class="row">
+        <div>
+          <label for="categorie">Catégorie :</label>
+          <input type="text" class="form-control" id="categorie" maxlength="15" value="{{currentCategorie}}" (blur)="ifChangement()" #date>
+        </div>
+      </div> 
+    </div>
+    <div class="col-12">
+      <div class="row">
+        <div>
+          <label class="control-label" for="date2delivrance">Date de délivrance :</label>
+          <input type="date" class="form-control" id="date2delivrance" value="{{currentDate}}" (blur)="ifChangement()" #date>
+        </div>    
       </div>
     </div>
-    <div class="row">
-      <div>
-        <label class="control-label" for="prefecture">Préfecture :</label>
-        <input type="text" class="form-control" id="prefecture" value="{{currentPrefecture}}" (blur)="ifChangement()" #date>
+    <div class="col-12">
+      <div class="row">
+        <div>
+          <label class="control-label" for="departement">Département :</label>
+          <input type="number" class="form-control" id="departement" value="{{currentDepartement}}" (blur)="ifChangement()" #date>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row">
+        <div>
+          <label class="control-label" for="prefecture">Préfecture :</label>
+          <input type="text" class="form-control" id="prefecture" value="{{currentPrefecture}}" (blur)="ifChangement()" #date>
+        </div>
       </div>
     </div>
   </div>

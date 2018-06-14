@@ -1,30 +1,14 @@
-.modal-backdrop {
-    background-color:transparent;
-  }
-  
-  .link-modal{
-    width: 90%;
-    text-align: center;
-    margin: 0 auto;
-    padding-top: 10px;
-    padding-left: 15px;
-  }
-  
-  
-  .link-modal button{
-    border: 1px solid #fff;
-    color: orange;
-    font-family: inherit;
-    font-size: 15px;
-    padding: 5px;
-    text-decoration: none;
-    width: 300px;
-  }
-  
-  .light-blue-backdrop {
-    background-color:red;
-  }
-
-  .card{
-    font-size: 1.3em
+#fieldsetConducteur{
+  border: 2px solid #69b9ee;
+  border-radius: 10px;
+  margin: 0 auto 15px auto;
+  padding: 10px;
+}
+legend {
+  color: #69b9ee;
+  margin-left: 175px;
+  font-size: 20px;
+  width: 150px;
+  text-align: center;
+  padding: 0;
 }
