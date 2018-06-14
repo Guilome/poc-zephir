@@ -402,29 +402,56 @@ export class TacheService {
    * 
    * @param idDossier 
    */
-  public getStatutDossier(idDossier: number): Status{
-    let lesPieces = this.getPiecesByDossier(idDossier).filter(pi => pi.dateCloture == null)
-    if (lesPieces.length == 0) {
-      return Status.OK// pour le jeu de test sinon le dossier est en attente
-    }  else {
-      for (let p of lesPieces) {
-        if(p.status === 'À vérifier' )  { 
-          return Status.A_VERIFIER;
+  public getStatutTache(tache: Tache): Status{
+    //Dossier
+    if (tache.nature === Nature.DOSSIER){
+      let lesPieces = this.getPiecesByDossier(tache.ident).filter(pi => pi.dateCloture == null)
+      if (lesPieces.length == 0) {
+        return Status.OK// pour le jeu de test sinon le dossier est en attente
+      }  else {
+        for (let p of lesPieces) {
+          if(p.status === 'À vérifier' )  { 
+            return Status.A_VERIFIER;
+          }
+        }
+        for (let p of lesPieces) {
+          if(p.status === 'En attente' )  {
+            return Status.EN_ATTENTE;
+          }
+        }
+        for (let p of lesPieces) {
+          if(p.status === 'À valider' )  {
+            return Status.A_VALIDER;
+          }
         }
       }
-      for (let p of lesPieces) {
-        if(p.status === 'En attente' )  {
-           return Status.EN_ATTENTE;
-        }
-      }
-      for (let p of lesPieces) {
-        if(p.status === 'À valider' )  {
-          return Status.A_VALIDER;
-        }
-      }
-    }
       return Status.OK 
+    }
+    // PIECE
+    else if (tache.nature === Nature.PIECE){
+      if (tache.dateReception == null) {
+        return Status.EN_ATTENTE;
+      }else if ( tache.dateVerification != null ) {
+        if (tache.motifNonConformite == null && tache.dateCloture ==  null) {
+          return Status.A_VALIDER;
+        } else {
+          return Status.NON_CONFORME;
+        }
+      } else if (tache.dateCloture != null) {
+        return Status.OK;
+      }        
+      return Status.A_VERIFIER;
+    }
+    // NOTE deux statut : 'En attente'/ 'OK'
+    if (tache.nature === Nature.NOTE) {
+      if (tache.dateCloture != null) {
+        return Status.OK;
+      }
+      return Status.EN_ATTENTE;
+    }
+    return Status.EN_ATTENTE;
   }
+  
 
   public createNote(tacheMere: Tache, message: string) {
     const lNote = new Tache(Nature.NOTE);

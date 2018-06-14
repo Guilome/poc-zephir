@@ -182,21 +182,6 @@ export class GestionComponent implements OnInit {
   }
   
   /**
-   * Dispatche les tache non affectées aux gestionnaires de manière équitable
-   */
-  dispatcher() {
-    this.groupeService.dispatcher(Code.VERIFICATION);
-  }
-
-  /**
-   * Tout remettre dans la courbeille
-   * aucune taches ne sera affectée à un gestionnaire
-   */
-  corbeille() {
-    this.groupeService.corbeille(Code.VERIFICATION);
-  }
-
-  /**
    * Les tâches qui sont affectées à l'utilisateur courant seront misent en corbeille
    */
   userCorbeille() {    

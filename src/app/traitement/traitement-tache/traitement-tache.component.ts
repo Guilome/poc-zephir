@@ -53,7 +53,7 @@ export class TraitementTacheComponent implements OnInit {
 
     });
     if ( this.dossier != null) {
-        this.statutDossier = this.tacheService.getStatutDossier(this.dossier.ident);
+        this.statutDossier = this.tacheService.getStatutTache(this.dossier);
     }
 
     // Multiple select piece complementaire :
@@ -90,9 +90,9 @@ export class TraitementTacheComponent implements OnInit {
     if ( this.dossier != null) {
       const idLabelStatus = document.getElementById('idLabelStatus');
       idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-            if(this.tacheService.getStatutDossier(this.dossier.ident) === 'À vérifier' || this.tacheService.getStatutDossier(this.dossier.ident) === 'En attente' )  {
+            if(this.tacheService.getStatutTache(this.dossier) === 'À vérifier' || this.tacheService.getStatutTache(this.dossier) === 'En attente' )  {
                 idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
-              } else if (this.tacheService.getStatutDossier(this.dossier.ident) === 'À valider') {
+              } else if (this.tacheService.getStatutTache(this.dossier) === 'À valider') {
                 idLabelStatus.innerHTML = '<span style="color: #00b3ee">Validation</span>';
               } 
            else {
@@ -108,7 +108,7 @@ export class TraitementTacheComponent implements OnInit {
     const element = document.getElementsByClassName('bg-row')[0];
     if(element != null) {
         element.classList.remove('bg-row');
-        if (this.tacheService.getStatutDossier(this.dossier.ident) != 'À vérifier') {
+        if (this.tacheService.getStatutTache(this.dossier) != 'À vérifier') {
            for (let i = 0 ; i <document.getElementsByClassName('spanStatus').length ; i++ ){
                 const ele = document.getElementsByClassName('spanStatus')[i];
                 if (ele.innerHTML.toString().indexOf('À valider') > 0){
@@ -127,7 +127,7 @@ export class TraitementTacheComponent implements OnInit {
    */
   valider() {  
     if (this.tacheService.listPieceEnAttente.length > 0 ){
-      if ( this.tacheService.getStatutDossier(this.dossier.ident) === 'En attente'){
+      if ( this.tacheService.getStatutTache(this.dossier) === 'En attente'){
         this.toastr.success("Le dossier a été mis <b>En attente</b>",'', {enableHtml: true});
         this.tacheService.delAffectation(this.dossier.ident);
 
@@ -188,7 +188,7 @@ export class TraitementTacheComponent implements OnInit {
   }
 
   Statut(): string {
-    return this.tacheService.getStatutDossier(this.dossier.ident);
+    return this.tacheService.getStatutTache(this.dossier);
   }
 
   AjouterNote(message: any) {

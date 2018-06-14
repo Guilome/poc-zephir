@@ -75,10 +75,10 @@ export class GraphiqueTermineComponent implements OnInit {
     this.groupe = this.groupeService.getGroupeById(this.idGroupe)
     this.context = document.getElementById('chartBar');
     this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil != Profil.DIRECTEUR)
-    this.monGroupe();
+    this.tachesTermines();
   }
 
-  private monGroupe() {
+  private tachesTermines() {
     this.trierMois()
   }
 

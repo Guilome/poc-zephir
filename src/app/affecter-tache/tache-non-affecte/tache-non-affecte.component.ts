@@ -107,7 +107,7 @@ export class TacheNonAffecteComponent implements OnInit {
   }
 
   statutDossier(idDossier: number): string {
-    return this.tacheService.getStatutDossier(idDossier);
+    return this.tacheService.getStatutTache(this.tacheService.getDossierById(idDossier));
   }
 }
 

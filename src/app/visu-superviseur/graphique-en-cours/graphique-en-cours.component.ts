@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TacheService } from '../../shared/services/tache.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
+import { Tache } from '../../shared/domain/Tache';
 @Component({
   selector: 'graphique-en-cours',
   templateUrl: './graphique-en-cours.component.html',
@@ -14,6 +15,9 @@ import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
 export class GraphiqueEnCoursComponent implements OnInit {
 
   mapSubjectEnCours: Map<string, number> = new Map();
+
+  public titreCard:string
+  gestionnaire: boolean = true
 
   lesGestionnaires: Utilisateur[]
   dossiersEnCours = [] 
@@ -37,15 +41,11 @@ export class GraphiqueEnCoursComponent implements OnInit {
               private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.titreCard = "par gestionnaire"
     this.idGroupe = parseInt(this.activeRoute.snapshot.paramMap.get("id"))
     this.groupe = this.groupeService.getGroupeById(this.idGroupe)
     this.context = document.getElementById('chartPie');
-    this.monGroupe();
-  }
-
-  private monGroupe() {
-    this.groupeService.getDossierEnCours(this.groupe.code).subscribe(data => this.mapSubjectEnCours = data);
-    this.UpdateCanvas();    
+    this.graphGestionnaire();
   }
 
   private  UpdateCanvas() {
@@ -87,15 +87,38 @@ export class GraphiqueEnCoursComponent implements OnInit {
     }
   }
   corbeille() {    
-    this.groupeService.corbeille(this.groupe.code)
+    this.groupeService.corbeille(this.idGroupe)
     this.UpdateCanvas()    
   }
 
   dispatcher() {
-    this.groupeService.dispatcher(this.groupe.code);
+    this.groupeService.dispatcher(this.idGroupe);
     this.UpdateCanvas()
   }
 
+  graphGestionnaire(){
+    this.gestionnaire = true
+    this.titreCard = "par gestionnaire"
+    this.groupeService.getTacheEnCoursByGroupe(this.idGroupe, "gestionnaire").subscribe(data => this.mapSubjectEnCours = data);    
+    this.UpdateCanvas();    
+    
+  }
+
+  graphStatut(){
+    this.gestionnaire = false
+    this.titreCard = "par statut"
+    this.groupeService.getTacheEnCoursByGroupe(this.idGroupe, "statut").subscribe(data => this.mapSubjectEnCours = data);    
+    this.UpdateCanvas();    
+    
+  }
+
+  graphProduit(){
+    this.gestionnaire = false
+    this.titreCard = "par produit"
+    this.groupeService.getTacheEnCoursByGroupe(this.idGroupe, "produit").subscribe(data => this.mapSubjectEnCours = data);    
+    this.UpdateCanvas();    
+    
+  }
 }
 
 
