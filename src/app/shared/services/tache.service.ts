@@ -187,7 +187,7 @@ export class TacheService {
     }
   }
   private create15Dossiers() {
-    for (let i = 0; i < 15; i++) {
+    for (let i = 10; i < 25; i++) {
       const lTache = new Tache(Nature.DOSSIER);
       lTache.ident = 1000020+i;
       const c = new Contrat(740001+i,'SOLUTIO');
@@ -196,9 +196,9 @@ export class TacheService {
       lTache.idGroupe = 1;
       lTache.priorite = 5;
       lTache.code = "199_AFN";
-      lTache.dateLimite = new Date('06/15/2018');
+      lTache.dateLimite = new Date('01/15/2018');
       lTache.dateCreation = new Date();
-      lTache.dateReception = new Date();
+      lTache.dateReception = new Date('01/'+i+'/2018');
       lTache.idUtilisateur = null;
       this.listTaches.push(lTache);
       this.create3Pieces(lTache);

@@ -7,11 +7,51 @@
       <table class="table table-borderless">
         <tbody>
           <tr>
-            <th>N° d'affaire</th>
-            <th>Produit</th>
-            <th>Date</th>
+            <th>
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        N° d'affaire
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdown1">
+                          <div class="input-group-addon">Filtrer par N° d'affaire : </div>
+                          <input type="text" class="form-control" placeholder="N°..." (keyup)="onKeyUpFilter($event)">
+                    </div>
+                </div>
+            </th>
+            <th>                <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Produit
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdown2">
+                      <div class="input-group-addon">Filtrer par produit : </div>
+                      <input type="text" class="form-control" placeholder="Produit..." (keyup)="produitFilter($event)">
+                </div>
+            </div></th>
+            <th (click)="sortByDate(thDate)" #thDate>Date <i class="fa fa-sort"></i></th >
             <th>Bannette</th>
-            <th>Statut</th>
+            <th>                <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownStatut" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Statut
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownStatut" (click)="statutFilter(enAttente, aVerifier, aValider, ok)">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="En attente" id="defaultCheck1" #enAttente>
+                        <label class="form-check-label" for="defaultCheck1">En instance</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="À vérifier" id="defaultCheck2" #aVerifier>
+                        <label class="form-check-label" for="defaultCheck2">À vérifier</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="À valider" id="defaultCheck3" #aValider>
+                        <label class="form-check-label" for="defaultCheck3">À Valider</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"  value="Ok" id="defaultCheck4" #ok>
+                        <label class="form-check-label" for="defaultCheck4">Ok</label>
+                    </div>
+                </div>
+            </div></th>
             <th align="right">      
               <input class="mt-2 float-right" type="checkbox" id="allDossier" [checked]="isAllDossiers()" name="dossiers" (change)="checkboxDossier = !checkboxDossier; returnAll()">
             </th>
@@ -22,8 +62,10 @@
             <td>{{ dossier.context.contrat.codeProduit }}</td>
             <td>{{ dossier.dateReception | date: 'dd/MM/yyyy' }}</td>
             <td>{{  statutDossier(dossier.ident) | bannette }}</td>
-            <td>{{  statutDossier(dossier.ident) }}</td>
-            <td align="right"><input type="checkbox" id="{{dossier.ident}}" [checked]="checkboxDossier" name="dossiers" (change)="return()"></td>
+            <td [innerHTML]="statutDossier(dossier.ident) | statut" ></td>
+            <td align="right" *ngIf="statutDossier(dossier.ident) != 'Ok'">
+              <input type="checkbox" id="{{dossier.ident}}" [checked]="checkboxDossier" name="dossiers" (change)="return()">
+            </td>
           </tr>
         </tbody>
       </table>

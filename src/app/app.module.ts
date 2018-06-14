@@ -51,6 +51,7 @@ import { InformationPcComponent } from './traitement/traitement-tache/conformite
 import { ModificationService } from './shared/services/modification.service';
 import { VisualiserModificationComponent } from './traitement/traitement-tache/visualiser-modification/visualiser-modification.component';
 import { BannettePipe } from './shared/pipe/bannette.pipe';
+import { StatutPipe } from './shared/pipe/statut.pipe';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -108,7 +109,8 @@ const appRoutes: Routes = [
     InformationCgComponent,
     InformationPcComponent,
     VisualiserModificationComponent,
-    BannettePipe
+    BannettePipe,
+    StatutPipe
   ],
   imports: [
     BrowserModule,

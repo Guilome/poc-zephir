@@ -16,12 +16,16 @@ export class TacheNonAffecteComponent implements OnInit {
   dossiers:Tache[] = []
   checkboxDossier: boolean;
   idGroupe: number;
+  private tousLesDossiers: Tache[] = [];
   @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
   collectDossier = []
 
   constructor(private  tacheService: TacheService,
               private groupeService: GroupeService) {
-    this.tacheService.listerTaches().subscribe(data => this.lesDossiers = data)
+    this.tacheService.listerTaches().subscribe(data => {
+                                                          this.lesDossiers = data;
+                                                         this.tousLesDossiers = data.filter(tache => tache.nature == Nature.DOSSIER);   
+                                                        });
     this.trierListe()
   }
 
@@ -108,6 +112,69 @@ export class TacheNonAffecteComponent implements OnInit {
 
   statutDossier(idDossier: number): string {
     return this.tacheService.getStatutDossier(idDossier);
+  }
+
+  onKeyUpFilter($event){
+
+      const value =  $event.target.value;
+      if ( value === '' ){
+        this.lesDossiers = this.tousLesDossiers;
+      }else {
+          this.lesDossiers = this.tousLesDossiers.filter( dos => dos.context.contrat.numero.toLowerCase().indexOf(value.toLowerCase()) >= 0 );
+      }
+  }
+
+    statutFilter(enAttente, aVerifier, aValider, ok) {
+      if( enAttente.checked || aVerifier.checked  || aValider.checked || ok.checked ){    
+        this.lesDossiers = this.tousLesDossiers.filter( dos =>
+                                                              
+                                                              (enAttente.checked ? this.tacheService.getStatutDossier(dos.ident) === 'En attente' : false) ||
+                                                            (aVerifier.checked ? this.tacheService.getStatutDossier(dos.ident) === 'À vérifier'   : false) ||
+                                                            (aValider.checked  ? this.tacheService.getStatutDossier(dos.ident) === 'À valider'    : false) || 
+                                                            (ok.checked ? this.tacheService.getStatutDossier(dos.ident) === 'Ok' : false)
+
+                                                            );
+      } else {
+        this.lesDossiers = this.tousLesDossiers;
+      }
+  }
+
+
+  produitFilter($event) {
+    const value =  $event.target.value;
+    if ( value === '' ){
+      this.lesDossiers = this.tousLesDossiers;
+    }else {
+        this.lesDossiers = this.tousLesDossiers.filter( dos => dos.context.contrat.codeProduit.toLowerCase().indexOf(value.toLowerCase()) >= 0 );
+    }
+  }
+  private boolSortDate: boolean = true;
+  sortByDate(thDate) {
+    if(this.boolSortDate){
+    this.lesDossiers = this.tousLesDossiers.sort(this.sortDateCroissant);
+    } else {
+      this.lesDossiers = this.tousLesDossiers.sort(this.sortDateDeCroissant);
+    }
+    this.boolSortDate = !this.boolSortDate;
+    thDate.innerHTML = this.boolSortDate ? 'Date <i class="fa fa-sort-down"></i>' : 'Date <i class="fa fa-sort-up"></i>'
+    
+  }
+
+  private sortDateCroissant = (dos1,dos2) => {
+    if ( dos1.dateReception == dos2.dateReception )
+        return 0;
+    else if  (dos1.dateReception < dos2.dateReception) 
+        return 1;
+      else
+    return -1;
+  }
+  private sortDateDeCroissant = (dos1,dos2) => {
+    if ( dos1.dateReception == dos2.dateReception )
+        return 0;
+    else if  (dos1.dateReception < dos2.dateReception) 
+        return -1;
+      else
+    return 1;
   }
 }
 
