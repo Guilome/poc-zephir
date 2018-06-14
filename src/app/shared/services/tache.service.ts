@@ -28,6 +28,8 @@ export class TacheService {
       lTache.code = "199_AFN";
       lTache.dateLimite = new Date('06/15/2018');
       lTache.dateCreation = new Date();
+      lTache.dateReception = new Date();
+      lTache.dateVerification = new Date();
       lTache.idUtilisateur = 5; // Rousseau
       lTache.idUtilisateurVerification = 1; // Dupont
 
