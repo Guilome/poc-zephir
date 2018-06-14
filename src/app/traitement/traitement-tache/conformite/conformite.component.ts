@@ -247,7 +247,7 @@ export class ConformiteComponent implements OnInit {
     // cloture de la pièce NON CONFORME/
     this.tacheService.closePieceNonConforme(this.piece.ident, this.motifselected.join('\n'));
 
-    this.toastr.success('Demande de rounouvellement effectuée');
+    this.toastr.success('Demande de renouvellement effectuée');
     this.currentModal.close();
 
     }else {
