@@ -81,6 +81,10 @@
           <angular2-multiselect [data]="motifsData"
                                 [(ngModel)]="motifselected">
           </angular2-multiselect>
+          <div class="col-sm-6">
+            <label class="control-label" for="noteComplementaire">Note complémentaire :</label>
+            <textarea class="form-control" id="noteComplementaire" rows="3"></textarea>
+          </div>
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-light" (click)="c('Close click')">Annuler</button>

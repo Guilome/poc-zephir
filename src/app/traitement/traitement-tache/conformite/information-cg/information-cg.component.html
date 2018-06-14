@@ -2,23 +2,25 @@
   <legend>Informations Véhicule</legend>
   <div class="form-group">
     <div class="row">
+      <div class="col-sm-12">
+        <label class="control-label" for="mec">Mise en circulation :</label>
+        <input type="date" class="form-control" id="mec" value="{{currentMEC}}" (blur)="ifChangement()" #mec>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-sm-6">
         <label for="marque">Marque :</label>
         <input type="text" class="form-control" id="marque" value="{{currentMarque}}" (blur)="ifChangement()" #marque>
       </div>
       <div class="col-sm-6">
-          <label class="control-label" for="crm">Immatriculation :</label>
-          <input type="text" class="form-control" id="immat" value="{{currentImmat}}" (blur)="ifChangement()" #immat>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-5">
         <label class="control-label" for="modele">Modele :</label>
         <input type="text" class="form-control" id="modele" value="{{currentModele}}" (blur)="ifChangement()" #modele>
       </div>
-      <div class="col-sm-7">
-        <label class="control-label" for="mec">Mise en circulation :</label>
-        <input type="date" class="form-control" id="mec" (blur)="ifChangement()" #mec>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <label class="control-label" for="crm">Immatriculation :</label>
+        <input type="text" class="form-control" id="immat" value="{{currentImmat}}" (blur)="ifChangement()" #immat>
       </div>
     </div>
     <div class="row">
@@ -32,9 +34,9 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-7 offset-5">
+      <div class="col-sm-12">
           <label class="control-label" for="dateAcquisition">Date d'acquisition :</label>
-          <input type="date" class="form-control" id="dateAcquisition" (blur)="ifChangement()" #dateAcquisition>
+          <input type="date" class="form-control" id="dateAcquisition" value="{{currentDA}}" (blur)="ifChangement()" #dateAcquisition>
       </div>
     </div>
   </div>

@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { TacheService } from '../../../../shared/services/tache.service';
 import { Modification, Donnee } from '../../../../shared/domain/modification';
 import { ModificationService } from '../../../../shared/services/modification.service';
+import { DonnerTacheComponent } from '../../../../affecter-tache/donner-tache/donner-tache.component';
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-information-conducteur',
@@ -16,7 +18,7 @@ export class InformationConducteurComponent implements OnInit {
 
   public currentCRM: string;
   public currentCRM2: string;
-  public currentDateCRM05: Date;
+  public currentDateCRM05: string;
   public currentResp100: string;
   public currentResp50: string;
   public currentResp0: string;
@@ -24,7 +26,6 @@ export class InformationConducteurComponent implements OnInit {
   public currentBrisGlace: string;
   public currentStationnement: string;
 
-  public dateMax
   currentTache: Tache;
   public lesModifsC: Modification[] = []
   change: boolean
@@ -36,10 +37,12 @@ export class InformationConducteurComponent implements OnInit {
               private toastr: ToastrService) { }
 
   ngOnInit() {
+    //Gestion date max
+    var today = new Date();
+    (<HTMLInputElement>document.getElementById('dateCrm05')).setAttribute("max", this.createDate(today));    
     this.route.params.subscribe(data => {
       this.currentTache = this.tacheService.getPieceById(+data.piece);
     });
-    this.inputDate();
     this.setInputValue();
   }
 
@@ -57,72 +60,139 @@ export class InformationConducteurComponent implements OnInit {
        resp100 != this.currentResp100 || 
        resp50 != this.currentResp50 || resp0 != this.currentResp0 ||       
        volIncendie != this.currentVolIncendie || brisDeGlace != this.currentBrisGlace ||
-       stationnement != this.currentStationnement) {
-      if (this.currentDateCRM05 != null) {
-        if (dateCRM05 != this.currentDateCRM05.toLocaleDateString()) {
-          this.change = true    
-          this.DemandeAvt(crm, crm2, dateCRM05, resp100, resp50, resp0, volIncendie, brisDeGlace, stationnement)            
-        }
-      }
+       stationnement != this.currentStationnement || dateCRM05 != this.currentDateCRM05) {
       this.change = true    
       this.DemandeAvt(crm, crm2, dateCRM05, resp100, resp50, resp0, volIncendie, brisDeGlace, stationnement)       
     }
   }
 
   DemandeAvt(crm: string, crm2: string, dateCrm05: string, resp100: string, resp50: string, resp0: string, volIncendie: string, brisDeGlace: string, stationnement: string){
-    let dateCRM = new Date(dateCrm05).toLocaleDateString();
+    let modifC; 
     if(crm != this.currentCRM) {
-      let modifC = new Modification(this.currentTache.ident,Donnee.CRM_CONDUCTEUR, this.currentCRM, crm)
-      this.currentCRM = crm
-      this.modifService.addModification(modifC)
+      if (this.modifService.getMotifByDonnee(Donnee.CRM_CONDUCTEUR) == null) {
+        modifC = new Modification(this.currentTache.ident,Donnee.CRM_CONDUCTEUR, this.currentCRM, crm)
+        this.currentCRM = crm
+        this.modifService.addModification(modifC)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée');
+      } else {
+        modifC = this.modifService.getMotifByDonnee(Donnee.CRM_CONDUCTEUR);
+        modifC.valeurApres = crm;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
     }
     else if (crm2 != this.currentCRM2) {
-      let modifC = new Modification(this.currentTache.ident,Donnee.CRM2_CONDUCTEUR, this.currentCRM2, crm2)
-      this.currentCRM2 = crm2
-      this.modifService.addModification(modifC)
+      if (this.modifService.getMotifByDonnee(Donnee.CRM2_CONDUCTEUR) == null) {
+        modifC = new Modification(this.currentTache.ident,Donnee.CRM2_CONDUCTEUR, this.currentCRM2, crm2)
+        this.currentCRM2 = crm2
+        this.modifService.addModification(modifC)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée');
+      } else {
+        modifC = this.modifService.getMotifByDonnee(Donnee.CRM2_CONDUCTEUR);
+        modifC.valeurApres = crm2;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
+
     }
-    else if (dateCRM != this.currentDateCRM05.toLocaleDateString()) {
-      let modifC = new Modification(this.currentTache.ident,Donnee.DOCRM05_CONDUCTEUR, this.currentDateCRM05.toLocaleDateString("en-US"), dateCrm05)
-      this.currentDateCRM05 = new Date(dateCrm05)
-      this.modifService.addModification(modifC)
+    else if (dateCrm05 != this.currentDateCRM05) {
+      if (this.modifService.getMotifByDonnee(Donnee.DOCRM05_CONDUCTEUR) == null) {
+        modifC = new Modification(this.currentTache.ident,Donnee.DOCRM05_CONDUCTEUR, this.currentDateCRM05, dateCrm05)
+        this.currentDateCRM05 = dateCrm05
+        this.modifService.addModification(modifC)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée');
+      } else {
+        modifC = this.modifService.getMotifByDonnee(Donnee.DOCRM05_CONDUCTEUR);
+        modifC.valeurApres = dateCrm05;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
     }
     else if (resp100 != this.currentResp100) {
-      let modifC = new Modification(this.currentTache.ident,Donnee.RESP100_CONDUCTEUR, this.currentResp100, resp100)
-      this.currentResp100 = resp100
-      this.modifService.addModification(modifC)
+      if (this.modifService.getMotifByDonnee(Donnee.RESP100_CONDUCTEUR) == null) {
+        modifC = new Modification(this.currentTache.ident,Donnee.RESP100_CONDUCTEUR, this.currentResp100, resp100)
+        this.currentResp100 = resp100
+        this.modifService.addModification(modifC)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée');
+      } else {
+        modifC = this.modifService.getMotifByDonnee(Donnee.RESP100_CONDUCTEUR);
+        modifC.valeurApres = resp100;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
+
     }
     else if (resp50 != this.currentResp50) {
-      let modifC = new Modification(this.currentTache.ident,Donnee.RESP50_CONDUCTEUR, this.currentResp50, resp50)
-      this.currentResp50 = resp50
-      this.modifService.addModification(modifC)
+      if (this.modifService.getMotifByDonnee(Donnee.RESP50_CONDUCTEUR) == null) {
+        modifC = new Modification(this.currentTache.ident,Donnee.RESP50_CONDUCTEUR, this.currentResp50, resp50)
+        this.currentResp50 = resp50
+        this.modifService.addModification(modifC)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée');
+      } else {
+        modifC = this.modifService.getMotifByDonnee(Donnee.RESP50_CONDUCTEUR);
+        modifC.valeurApres = resp50;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
     }
     else if (resp0 != this.currentResp0) {
-      let modifC = new Modification(this.currentTache.ident,Donnee.RESP0_CONDUCTEUR, this.currentResp0, resp0)
-      this.currentResp0 = resp0
-      this.modifService.addModification(modifC)
+      if (this.modifService.getMotifByDonnee(Donnee.RESP0_CONDUCTEUR) == null) {
+        modifC = new Modification(this.currentTache.ident,Donnee.RESP0_CONDUCTEUR, this.currentResp0, resp0)
+        this.currentResp0 = resp0
+        this.modifService.addModification(modifC)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée');
+      } else {
+        modifC = this.modifService.getMotifByDonnee(Donnee.RESP0_CONDUCTEUR);
+        modifC.valeurApres = resp0;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
     }
     else if (volIncendie != this.currentVolIncendie) {
-      let modifC = new Modification(this.currentTache.ident,Donnee.VI_CONDUCTEUR, this.currentVolIncendie, volIncendie)
-      this.currentVolIncendie = volIncendie
-      this.modifService.addModification(modifC)
+      if (this.modifService.getMotifByDonnee(Donnee.VI_CONDUCTEUR) == null) {
+        modifC = new Modification(this.currentTache.ident,Donnee.VI_CONDUCTEUR, this.currentVolIncendie, volIncendie)
+        this.currentVolIncendie = volIncendie
+        this.modifService.addModification(modifC)   
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée');     
+      }else {
+        modifC = this.modifService.getMotifByDonnee(Donnee.VI_CONDUCTEUR);
+        modifC.valeurApres = volIncendie;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
     }
     else if (brisDeGlace != this.currentBrisGlace) {
-      let modifC = new Modification(this.currentTache.ident,Donnee.BDG_CONDUCTEUR, this.currentBrisGlace, brisDeGlace)
-      this.currentBrisGlace = brisDeGlace
-      this.modifService.addModification(modifC)
+      if (this.modifService.getMotifByDonnee(Donnee.BDG_CONDUCTEUR) == null) {
+        modifC = new Modification(this.currentTache.ident,Donnee.BDG_CONDUCTEUR, this.currentBrisGlace, brisDeGlace)
+        this.currentBrisGlace = brisDeGlace
+        this.modifService.addModification(modifC)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée');        
+      }else {
+        modifC = this.modifService.getMotifByDonnee(Donnee.BDG_CONDUCTEUR);
+        modifC.valeurApres = brisDeGlace;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
     }
     else if (stationnement != this.currentStationnement) {
-      let modifC = new Modification(this.currentTache.ident,Donnee.STATIONNEMENT_CONDUCTEUR, this.currentStationnement, stationnement)
-      this.currentStationnement = stationnement
-      this.modifService.addModification(modifC)
+      if (this.modifService.getMotifByDonnee(Donnee.STATIONNEMENT_CONDUCTEUR) == null) {
+        modifC = new Modification(this.currentTache.ident,Donnee.STATIONNEMENT_CONDUCTEUR, this.currentStationnement, stationnement)
+        this.currentStationnement = stationnement
+        this.modifService.addModification(modifC)
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.toastr.success('Une demande d\'avenant a été créée');
+      }else {
+        modifC = this.modifService.getMotifByDonnee(Donnee.STATIONNEMENT_CONDUCTEUR);
+        modifC.valeurApres = stationnement;
+        this.toastr.success('La demande d\'avenant a été modifiée');
+      }
     }
-    this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
-    this.toastr.success('Une demande d\'avenant a été créée');
   }
 
   private setInputValue(){
     this.currentCRM = "0.68";
     this.currentCRM2 = "0.6";
+    this.currentDateCRM05 = null
     this.currentResp100 = "0";
     this.currentResp50 = "0";
     this.currentResp0 = "0";
@@ -132,70 +202,52 @@ export class InformationConducteurComponent implements OnInit {
     //Changement par les valeurs de modification si existantes
     if(this.lesModifsC.length > 0){
       this.lesModifsC.forEach( m => {
-        if (m.donnee == Donnee.CRM_CONDUCTEUR) {
-          this.currentCRM = m .valeurApres;
-        }
-        else if (m.donnee == Donnee.CRM2_CONDUCTEUR) {
-          this.currentCRM2 = m.valeurApres;
-        }
-        else if (m.donnee == Donnee.RESP100_CONDUCTEUR) {
-          this.currentResp100 = m.valeurApres;
-        }
-        else if (m.donnee == Donnee.RESP50_CONDUCTEUR) {
-          this.currentResp50 = m.valeurApres;
-        }
-        else if (m.donnee == Donnee.RESP0_CONDUCTEUR) {
-          this.currentResp0 = m.valeurApres;
-        }
-        else if (m.donnee == Donnee.VI_CONDUCTEUR) {
-          this.currentVolIncendie = m.valeurApres;
-        }
-        else if (m.donnee == Donnee.BDG_CONDUCTEUR) {
-          this.currentBrisGlace = m.valeurApres;
-        }
-        else if (m.donnee == Donnee.STATIONNEMENT_CONDUCTEUR) {
-          this.currentStationnement = m.valeurApres;
-        }
-      })
-    }
-  }
-
-  inputDate(){
-    //Gestion date max
-    var today = new Date();
-    var dd: string= today.getDate().toString();
-    var mm: string = (today.getMonth()+1).toString();
-    var yyyy: string = today.getFullYear().toString();
-    if(parseInt(dd)<10){
-            dd='0'+dd;
-        } 
-        if(parseInt(mm)<10){
-            mm='0'+mm;
-        } 
-    this.dateMax = yyyy+'-'+mm+'-'+dd;
-    (<HTMLInputElement>document.getElementById('dateCrm05')).setAttribute("max", this.dateMax);    
-    if(this.lesModifsC.length > 0){
-      this.lesModifsC.forEach( m => {
-        if (m.donnee == Donnee.DATE_PERMIS) {
-          this.currentDateCRM05 = new Date(m .valeurApres);
-          (<HTMLInputElement>document.getElementById('dateCrm05')).value = this.currentDateCRM05.toDateString()
+        switch(m.donnee){
+          case Donnee.CRM_CONDUCTEUR :
+            this.currentCRM = m.valeurApres;
+            break;
+          case Donnee.CRM2_CONDUCTEUR :
+            this.currentCRM2 = m.valeurApres;
+            break;
+          case Donnee.DOCRM05_CONDUCTEUR : 
+            this.currentDateCRM05 = this.createDate(new Date(m.valeurApres));
+            break;
+          case Donnee.RESP100_CONDUCTEUR :
+            this.currentResp100 = m.valeurApres;
+            break;
+          case Donnee.RESP50_CONDUCTEUR :
+            this.currentResp50 = m.valeurApres;
+            break;
+          case Donnee.RESP0_CONDUCTEUR :
+            this.currentResp0 = m.valeurApres;
+            break;
+          case Donnee.VI_CONDUCTEUR :
+            this.currentVolIncendie = m.valeurApres;
+            break;
+          case Donnee.BDG_CONDUCTEUR :
+            this.currentBrisGlace = m.valeurApres;
+            break;
+          case Donnee.STATIONNEMENT_CONDUCTEUR :
+            this.currentStationnement = m.valeurApres;
+            break;
         }
       })
     }
   }
 
-  private titleStatus() {
-    // Status 
-    let idLabelStatus = document.getElementById('idLabelStatus');
-    idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-    for (let p of this.tacheService.getPiecesByDossier(this.currentTache.idTacheMere)) {
-      if(p.status === 'À vérifier') {
-        idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérfication</span>';
-        return;
-      }
-      if (p.status === 'À valider') {
-        idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
-      }
+  private createDate(date: Date): string {
+    let dateString = "";
+    dateString += date.getFullYear() +"-";
+    if((date.getMonth()+1) < 10){
+      dateString += "0"+(date.getMonth()+1)+"-"
+    } else {
+      dateString += (date.getMonth()+1)+"-"
     }
+    if(date.getDate() < 10){
+      dateString += "0"+date.getDate()
+    } else {
+      dateString += date.getDate()
+    }
+    return dateString
   }
 }
