@@ -2,10 +2,7 @@ export class Profil {
 
     public ident: number;
 
-
-    constructor(public code: ProfilCode, public AFN: boolean, public AVN: boolean, public RES: boolean, public REF: boolean){
-        
-    }
+    constructor(public code: ProfilCode, public AFN: boolean, public AVN: boolean, public RES: boolean, public REF: boolean){}
 }
 
 export enum ProfilCode {
@@ -13,5 +10,4 @@ export enum ProfilCode {
     SUPERVISEUR = 'Superviseur',
     DIRECTEUR = 'Directeur'
   }
-  
   

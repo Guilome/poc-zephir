@@ -23,6 +23,7 @@ export class Tache {
 
   //
   constructor(public nature: Nature ) {
+    //this.status = Status.EN_ATTENTE;
     this.dateCloture = null;
     this.message = null;
     this.idUtilisateurCloture = null;
@@ -39,6 +40,7 @@ export class Tache {
   public dateCreation: Date;
   public dateLimite: Date; // format DD/MM/YYYY hh:mm
   public dateCloture: Date; // format DD/MM/YYYY hh:mm
+  //public status: Status;
   public urlDocument: string;
   public conformite: boolean;
   public motifNonConformite: string;
@@ -49,7 +51,7 @@ export class Tache {
   public dateReception: Date;
   public dateVerification: Date;
   idUtilisateur: number;
-  idBannette: number;
+  idGroupe: number;
 
   get libelle(): string {
     return Tache.libCode.get(this.code);
@@ -104,3 +106,18 @@ export enum Status {
   NON_CONFORME = 'Non conforme'
 
 }
+
+/*
+export enum Priorite {
+  ZERO = 0,
+  UN = 1,
+  DEUX = 2,
+  TROIS = 3,
+  QUATRE = 4,
+  CINQ = 5,
+  SIX = 6,
+  SEPT = 7,
+  HUIT = 8,
+  NEUF = 9,
+  DIX = 10
+}*/
