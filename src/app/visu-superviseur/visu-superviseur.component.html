@@ -1,10 +1,55 @@
 <div *ngIf="ifConnexion()">
-<div class="row">
-    <div class="col-6">
-        <graphique-en-cours></graphique-en-cours>
-    </div>
-    <div class="col-6">
-        <graphique-termine></graphique-termine>
-    </div>
+	<div class="row">
+		<div class="col-6">
+			<graphique-en-cours (details)="afficherTab($event)"></graphique-en-cours>
+		</div>
+		<div class="col-6">
+			<graphique-termine></graphique-termine>
+		</div>
+	</div>
+	<div class="row" *ngIf="detail">
+		<div class="col-sm-12">
+			<div class="card text-center mt-5">
+				<div class="card-header">
+					Détails répartition
+					<i class="fa fa-times-circle float-right" (click)="detail = false"></i>
+				</div>
+				<div class="card-body">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">N° d'affaire</th>
+								<th scope="col">Produit</th>
+								<th scope="col">Nom client</th>
+								<th scope="col">Nom intermédiaire</th>
+								<th scope="col">Date</th>
+								<th scope="col">Utilisateur</th>
+								<th scope="col">Statut</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ng-container *ngFor="let entete of entetes">
+								<tr>
+									<td class="table-primary" colspan="7" *ngIf="filtre === 'gestionnaire'">{{entete.nom}} {{entete.prenom}}</td>
+									<td class="table-primary" colspan="7" *ngIf="filtre === 'statut'">{{entete}}</td>
+									<td class="table-primary" colspan="7" *ngIf="filtre === 'produit'">{{entete.nom}}</td>
+								</tr>
+								<ng-container *ngFor="let dossier of dossierDetail">
+									<tr *ngIf="entete.nom === dossier.utilisateur || entete ==  dossier.statusDossier|| entete.nom == dossier.produit">
+										<td>{{dossier.numContrat}} - {{dossier.code == '199_AFN' ? 'AFN' : dossier.code}}</td>
+										<td>{{dossier.produit}}</td>
+										<td>{{dossier.client}}</td>
+										<td>{{dossier.intermediaire}}</td>
+										<td>{{dossier.dateGed}}</td>
+										<td>{{dossier.utilisateur}}</td>
+										<td>{{dossier.statusDossier}}</td>
+									</tr>
+								</ng-container>
+							</ng-container>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-

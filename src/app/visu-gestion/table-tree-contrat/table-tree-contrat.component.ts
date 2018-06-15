@@ -17,7 +17,7 @@ export class TableTreeContratComponent implements OnInit {
   dossiers: Tache[]
   dossierAffichage: any[] = []
   dossierPieces = []
-  dossierStatut: Status
+  dossierStatut: string
   idCurrentUser;
   firstIdent;
   private currentModal:NgbModalRef;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {Chart} from 'chart.js';
 import { Groupe } from '../../shared/domain/groupe';
 import { GroupeService } from '../../shared/services/groupe.service';
@@ -13,10 +13,13 @@ import { Tache } from '../../shared/domain/Tache';
   styleUrls: ['./graphique-en-cours.component.css']
 })
 export class GraphiqueEnCoursComponent implements OnInit {
+  
+  @Output() details:EventEmitter<boolean> = new EventEmitter<boolean>();
 
   mapSubjectEnCours: Map<string, number> = new Map();
 
   public titreCard:string
+  filtreGraph: string
   gestionnaire: boolean = true
 
   lesGestionnaires: Utilisateur[]
@@ -97,27 +100,31 @@ export class GraphiqueEnCoursComponent implements OnInit {
   }
 
   graphGestionnaire(){
+    this.filtreGraph = "gestionnaire"
     this.gestionnaire = true
     this.titreCard = "par gestionnaire"
     this.groupeService.getTacheEnCoursByGroupe(this.idGroupe, "gestionnaire").subscribe(data => this.mapSubjectEnCours = data);    
-    this.UpdateCanvas();    
-    
+    this.UpdateCanvas();        
   }
 
   graphStatut(){
+    this.filtreGraph = "statut"
     this.gestionnaire = false
     this.titreCard = "par statut"
     this.groupeService.getTacheEnCoursByGroupe(this.idGroupe, "statut").subscribe(data => this.mapSubjectEnCours = data);    
-    this.UpdateCanvas();    
-    
+    this.UpdateCanvas(); 
   }
 
   graphProduit(){
+    this.filtreGraph = "produit"
     this.gestionnaire = false
     this.titreCard = "par produit"
     this.groupeService.getTacheEnCoursByGroupe(this.idGroupe, "produit").subscribe(data => this.mapSubjectEnCours = data);    
     this.UpdateCanvas();    
-    
+  }
+
+  AfficherDetail(){
+    this.details.emit(true) 
   }
 }
 

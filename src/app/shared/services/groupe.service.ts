@@ -82,7 +82,7 @@ export class GroupeService {
     statuts.push(Status.A_VERIFIER);
     statuts.push(Status.A_VALIDER);
     statuts.forEach(s => map.set(s ,0))
-    for (const t of this.tachesEnCours) {
+    for (const t of this.tachesEnCours) {  
       map.set(this.tacheService.getStatutTache(t) , (map.get(this.tacheService.getStatutTache(t)))+1);
     }
     this.mapEnCours.next(map)
@@ -94,8 +94,7 @@ export class GroupeService {
     let produits = this.tachesEnCours.filter(t => t.context.contrat.codeProduit)
     produits.forEach(p => map.set(p.context.contrat.codeProduit ,0))
     for (const t of this.tachesEnCours) {
-      map.set(t.context.contrat.codeProduit,  (map.get(t.context.contrat.codeProduit) + 1));
-      
+      map.set(t.context.contrat.codeProduit,  (map.get(t.context.contrat.codeProduit) + 1));      
     }
     this.mapEnCours.next(map)
   }

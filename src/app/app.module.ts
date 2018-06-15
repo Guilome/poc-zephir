@@ -110,7 +110,7 @@ const appRoutes: Routes = [
     InformationPcComponent,
     VisualiserModificationComponent,
     BannettePipe,
-    StatutPipe
+    StatutPipe,
   ],
   imports: [
     BrowserModule,
