@@ -5,12 +5,13 @@ import {NoteService} from '../../shared/services/note.service';
 import {Router} from '@angular/router';
 import {Chart} from 'chart.js';
 import {GroupeService} from '../../shared/services/groupe.service';
-import {Code, Groupe} from '../../shared/domain/groupe';
+import { Groupe} from '../../shared/domain/groupe';
 import {ToastrService} from 'ngx-toastr';
-import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
+import { Utilisateur} from '../../shared/domain/Utilisateur';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { ActionMetierService } from '../../shared/services/action-metier.service';
 import { Contrat } from '../../shared/domain/contrat';
+import { ProfilCode } from '../../shared/domain/profil';
 
 @Component({
   selector: 'app-gestion',
@@ -21,7 +22,7 @@ export class GestionComponent implements OnInit {
 
   @Input() titre: string;
   @Input() card: string;
-  @Input() profil: Profil;  
+  @Input() profil: ProfilCode;  
   eye = false;
   search = false;
   share = false;
@@ -82,7 +83,7 @@ export class GestionComponent implements OnInit {
       this.actionMetier = true;
       this.numId = 2;
     } else if (this.titre === 'Mes groupes') {
-      this.profil = this.utilisateur.profil
+      this.profil = this.utilisateur.profil.code
       this.groupes = this.groupeService.getAll().filter( g => g.ident == this.utilisateur.idGroupe)
       this.groupeBoolean = true;
       this.numId = 3;
@@ -193,7 +194,7 @@ export class GestionComponent implements OnInit {
   }
 
   permission(role: string) {
-    if (role === Profil.SUPERVISEUR.toString() || role === Profil.DIRECTEUR.toString()) {
+    if (role === ProfilCode.SUPERVISEUR.toString() || role === ProfilCode.DIRECTEUR.toString()) {
       return true
     }
     else {

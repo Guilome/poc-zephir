@@ -2,11 +2,8 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {Chart} from 'chart.js';
 import { Groupe } from '../../shared/domain/groupe';
 import { GroupeService } from '../../shared/services/groupe.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { TacheService } from '../../shared/services/tache.service';
-import { UtilisateurService } from '../../shared/services/utilisateur.service';
-import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
-import { Tache } from '../../shared/domain/Tache';
+import { ActivatedRoute } from '@angular/router';
+import { Utilisateur } from '../../shared/domain/Utilisateur';
 @Component({
   selector: 'graphique-en-cours',
   templateUrl: './graphique-en-cours.component.html',

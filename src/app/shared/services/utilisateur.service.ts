@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Utilisateur, Profil} from '../domain/Utilisateur';
+import {Utilisateur} from '../domain/Utilisateur';
+import { Profil, ProfilCode } from '../domain/profil';
 
 @Injectable()
 export class UtilisateurService {
@@ -9,13 +10,13 @@ export class UtilisateurService {
   constructor() {
 
     const listUsers = [];
-    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille', Profil.GESTIONNAIRE,1));
-    listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	Profil.GESTIONNAIRE,2));
-    listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	Profil.GESTIONNAIRE,2));
-    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	Profil.GESTIONNAIRE,1));
-    listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	Profil.SUPERVISEUR,2));
-    listUsers.push(new Utilisateur(6,	'VOLTAIRE',	'Louis',	Profil.SUPERVISEUR,1));
-    listUsers.push(new Utilisateur(7,	'BOYER',	'Eric',	Profil.DIRECTEUR,2));
+    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille', new Profil(ProfilCode.GESTIONNAIRE, true,false,false,false)));
+    listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	new Profil(ProfilCode.SUPERVISEUR, false,true,false,false)));
+    listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	new Profil(ProfilCode.SUPERVISEUR, false,false,true,false)));
+    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	new Profil(ProfilCode.SUPERVISEUR, false,false,false,true)));
+    listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	new Profil(ProfilCode.GESTIONNAIRE, true,false,false,false)));
+    listUsers.push(new Utilisateur(6,	'VOLTAIRE',	'Louis',	new Profil(ProfilCode.SUPERVISEUR, true,false,false,false)));
+    listUsers.push(new Utilisateur(7,	'BOYER',	'Eric',	new Profil(ProfilCode.DIRECTEUR, true,true,true,true)));
     this.usersSubject.next(listUsers);
   }
 

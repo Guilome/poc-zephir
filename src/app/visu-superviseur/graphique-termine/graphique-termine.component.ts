@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {Chart} from 'chart.js';
-import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
+import { Utilisateur } from '../../shared/domain/Utilisateur';
 import { Groupe, Code } from '../../shared/domain/groupe';
 import { TacheService } from '../../shared/services/tache.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../../shared/services/groupe.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Tache } from '../../shared/domain/Tache';
+import { ProfilCode } from '../../shared/domain/profil';
 
 @Component({
   selector: 'graphique-termine',
@@ -74,7 +75,7 @@ export class GraphiqueTermineComponent implements OnInit {
     this.idGroupe = parseInt(this.activeRoute.snapshot.paramMap.get("id"))
     this.groupe = this.groupeService.getGroupeById(this.idGroupe)
     this.context = document.getElementById('chartBar');
-    this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil != Profil.DIRECTEUR)
+    this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil.code != ProfilCode.DIRECTEUR)
     this.tachesTermines();
   }
 
@@ -134,7 +135,7 @@ export class GraphiqueTermineComponent implements OnInit {
   }
 
   private getDossierTermine(codeGroupe: Code, typeTri: string, value: any){
-    if (this.groupeService.getGroupeById(this.idGroupe).code == Code.VERIFICATION) {
+    if (this.groupeService.getGroupeById(this.idGroupe).code == Code.AFN) {
       if (typeTri === "day" || typeTri == "month") {
         this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateVerification.toLocaleDateString().includes(value))  
       } else if (typeTri == "week") {     
@@ -155,8 +156,8 @@ export class GraphiqueTermineComponent implements OnInit {
   }
 
   private refreshMapTermine(lesDossiers: Tache[]) {
-    if (this.groupeService.getGroupeById(this.idGroupe).code == Code.VERIFICATION) {
-      this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
+    if (this.groupeService.getGroupeById(this.idGroupe).code == Code.AFN) {
+      this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
       for (const d of lesDossiers) {    
         let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurVerification)[0];
         if (gestionnaire.idGroupe == this.idGroupe) {
@@ -167,7 +168,7 @@ export class GraphiqueTermineComponent implements OnInit {
       }
     }
     else {
-      this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
+      this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
       for (const d of lesDossiers) {    
         let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurCloture)[0];
         if (gestionnaire.idGroupe == this.idGroupe) {

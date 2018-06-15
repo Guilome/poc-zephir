@@ -4,7 +4,8 @@ import {TacheService} from './tache.service';
 import {Tache, Nature, Status} from '../domain/Tache';
 import {BehaviorSubject} from '../../../../node_modules/rxjs';
 import { UtilisateurService } from './utilisateur.service';
-import { Utilisateur, Profil } from '../domain/Utilisateur';
+import { Utilisateur } from '../domain/Utilisateur';
+import { ProfilCode } from '../domain/profil';
 
 @Injectable()
 export class GroupeService {
@@ -20,10 +21,10 @@ export class GroupeService {
 
   constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {
       
-    this.groupes.push(new Groupe(1, Code.VERIFICATION));
-    this.groupes.push(new Groupe(2, Code.VALIDATION));
-    this.groupes.push(new Groupe(3, Code.AVENANT));
-    this.groupes.push(new Groupe(4, Code.SOUSCRIPTION));
+    this.groupes.push(new Groupe(1, Code.AFN));
+    this.groupes.push(new Groupe(2, Code.AVN));
+    this.groupes.push(new Groupe(3, Code.REF));
+    this.groupes.push(new Groupe(4, Code.RES));
 
   }
 
@@ -58,7 +59,7 @@ export class GroupeService {
     const map = new Map<string, number>();
     // liste des gestionnaires : Initialisation
     map.set('Non Affectées', 0);
-    this.utilisateurs = this.getUtilisateurByGroupe(idGroupe).filter(g => g.profil != Profil.DIRECTEUR)    
+    this.utilisateurs = this.getUtilisateurByGroupe(idGroupe).filter(g => g.profil.code != ProfilCode.DIRECTEUR)    
     this.utilisateurs.forEach(g => map.set( g.nom+' '+g.prenom, 0))
     for (const t of this.tachesEnCours) {
       if (t.idUtilisateur != null && this.utilisateurs.find(u => u.ident == t.idUtilisateur)) {
@@ -109,7 +110,7 @@ export class GroupeService {
   }
 
   public dispatcher(idGroupe: number) {
-    const tailleGestionnaires =  this.utilisateurService.getAll().filter(u => u.profil != Profil.DIRECTEUR && u.idGroupe == idGroupe).length;
+    const tailleGestionnaires =  this.utilisateurService.getAll().filter(u => u.profil.code != ProfilCode.DIRECTEUR && u.idGroupe == idGroupe).length;
     let list;
     this.tacheService.listerTaches().subscribe(t => list = t)
     list.filter(tt => tt.idUtilisateur == null && tt.dateCloture == null && tt.nature == Nature.DOSSIER).forEach( ( tache , i) => {
