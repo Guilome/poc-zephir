@@ -83,12 +83,8 @@
               <th scope="row">{{note.nature}}</th>
               <td>{{note.code}}</td>
               <td>  
-                <i class="fa fa-question" [popover]="popoverMsg" [popoverOnHover]="true" popoverPlacement="top"></i>
-                <popover-content #popoverMsg [closeOnClickOutside]="true"  > 
-                  <div class="container">
-                      {{note.message}}
-                  </div>
-                </popover-content>
+                  <i class="fa fa-question" placement="top" ngbTooltip="{{note.message}}"> </i>
+
                </td>
               <td>{{note.dateLimite | date: 'dd/MM/yyyy' }}</td>
               <td align="center">
