@@ -176,5 +176,9 @@ export class TacheNonAffecteComponent implements OnInit {
       else
     return 1;
   }
+
+  private bannetteFilter(enAttente, aVerifier, aValider, ok): void {
+      // plus tard 
+  }
 }
 

@@ -28,30 +28,56 @@
                 </div>
             </div></th>
             <th (click)="sortByDate(thDate)" #thDate>Date <i class="fa fa-sort"></i></th >
-            <th>Bannette</th>
-            <th>                <div class="dropdown">
-                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownStatut" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Statut
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownStatut" (click)="statutFilter(enAttente, aVerifier, aValider, ok)">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="En attente" id="defaultCheck1" #enAttente>
-                        <label class="form-check-label" for="defaultCheck1">En instance</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="À vérifier" id="defaultCheck2" #aVerifier>
-                        <label class="form-check-label" for="defaultCheck2">À vérifier</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="À valider" id="defaultCheck3" #aValider>
-                        <label class="form-check-label" for="defaultCheck3">À Valider</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox"  value="Ok" id="defaultCheck4" #ok>
-                        <label class="form-check-label" for="defaultCheck4">Ok</label>
+            <th>
+                    <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownBannette" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Bannette
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownBannette" (click)="bannetteFilter(afn, resil, avt, refus)">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="En attente" id="defaultCheck10" #afn>
+                                    <label class="form-check-label" for="defaultCheck10">AFN</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="À vérifier" id="defaultCheck20" #resil>
+                                    <label class="form-check-label" for="defaultCheck20">Résiliationr</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="À valider" id="defaultCheck30" #avt>
+                                    <label class="form-check-label" for="defaultCheck30">Avenant</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"  value="Ok" id="defaultCheck40" #refus>
+                                    <label class="form-check-label" for="defaultCheck40">Refus</label>
+                                </div>
+                            </div>
+                        </div>
+            </th>
+            <th>               
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownStatut" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Statut
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownStatut" (click)="statutFilter(enAttente, aVerifier, aValider, ok)">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="En attente" id="defaultCheck1" #enAttente>
+                            <label class="form-check-label" for="defaultCheck1">En instance</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="À vérifier" id="defaultCheck2" #aVerifier>
+                            <label class="form-check-label" for="defaultCheck2">À vérifier</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="À valider" id="defaultCheck3" #aValider>
+                            <label class="form-check-label" for="defaultCheck3">À Valider</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"  value="Ok" id="defaultCheck4" #ok>
+                            <label class="form-check-label" for="defaultCheck4">Ok</label>
+                        </div>
                     </div>
                 </div>
-            </div></th>
+            </th>
             <th align="right">      
               <input class="mt-2 float-right" type="checkbox" id="allDossier" [checked]="isAllDossiers()" name="dossiers" (change)="checkboxDossier = !checkboxDossier; returnAll()">
             </th>
