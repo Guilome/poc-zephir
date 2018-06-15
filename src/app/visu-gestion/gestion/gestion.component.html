@@ -82,7 +82,14 @@
 
               <th scope="row">{{note.nature}}</th>
               <td>{{note.code}}</td>
-              <td>  <span tooltip="{{note.message}}"  >...</span>  </td>
+              <td>  
+                <i class="fa fa-question" [popover]="popoverMsg" [popoverOnHover]="true" popoverPlacement="top"></i>
+                <popover-content #popoverMsg [closeOnClickOutside]="true"  > 
+                  <div class="container">
+                      {{note.message}}
+                  </div>
+                </popover-content>
+               </td>
               <td>{{note.dateLimite | date: 'dd/MM/yyyy' }}</td>
               <td align="center">
                 <a (click)="ouvrirNote(note.ident)"><i *ngIf="note.status == 'Ok'" class="fa fa-check-square-o fa-lg"  title="Re-ouvrir"></i></a>
