@@ -402,7 +402,7 @@ export class TacheService {
    * 
    * @param idDossier 
    */
-  public getStatutTache(tache: Tache): Status{
+  public getStatutTache(tache: Tache): string{
     //Dossier
     if (tache.nature === Nature.DOSSIER){
       let lesPieces = this.getPiecesByDossier(tache.ident).filter(pi => pi.dateCloture == null)
@@ -428,30 +428,11 @@ export class TacheService {
       return Status.OK 
     }
     // PIECE
-    else if (tache.nature === Nature.PIECE){
-      if (tache.dateReception == null) {
-        return Status.EN_ATTENTE;
-      }else if ( tache.dateVerification != null ) {
-        if (tache.motifNonConformite == null && tache.dateCloture ==  null) {
-          return Status.A_VALIDER;
-        } else {
-          return Status.NON_CONFORME;
-        }
-      } else if (tache.dateCloture != null) {
-        return Status.OK;
-      }        
-      return Status.A_VERIFIER;
+    else {
+      return tache.status;
     }
-    // NOTE deux statut : 'En attente'/ 'OK'
-    if (tache.nature === Nature.NOTE) {
-      if (tache.dateCloture != null) {
-        return Status.OK;
-      }
-      return Status.EN_ATTENTE;
-    }
-    return Status.EN_ATTENTE;
-  }
-  
+  }      
+
 
   public createNote(tacheMere: Tache, message: string) {
     const lNote = new Tache(Nature.NOTE);
