@@ -152,15 +152,16 @@ export class GroupeService {
   }
 
   public isVerification(idUser: number): boolean {
-    const idVerif = this.getIdGroupeByCode(Code.VERIFICATION);
+    const idVerif = this.getIdGroupeByCode(Code.AFN);
     const user = this.utilisateurService.getUserById(idUser);
     return idVerif == user.idGroupe;
+        
   }
 
   public isValidation(idUser: number): boolean {
-    const idVerif = this.getIdGroupeByCode(Code.VALIDATION);
+    const idValid = this.getIdGroupeByCode(Code.AFN);
     const user = this.utilisateurService.getUserById(idUser);
-    return idVerif == user.idGroupe;
+    return idValid == user.idGroupe;
   }
   
   /** Recupère la liste des utilisateurs dont l'id du groupe est passé en paramètre
