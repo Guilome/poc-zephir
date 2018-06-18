@@ -164,7 +164,11 @@ export class TacheService {
    */
   closeDossier(idDossier: number){
     let dossier = this.getDossierById(idDossier)
-    dossier.dateCloture = new Date()
+    dossier.dateCloture = new Date();
+    // fermer toutes les pieces...
+    for ( let p of  this.getPiecesByDossier(idDossier) ) {
+      p.dateCloture = new Date();
+    }
   }
   
   private create_100_DossiersClotures(){
@@ -473,5 +477,6 @@ export class TacheService {
   public delAffectation(id: number) {
      this.getDossierById(id).idUtilisateur = null;
   }
+  
 }
 

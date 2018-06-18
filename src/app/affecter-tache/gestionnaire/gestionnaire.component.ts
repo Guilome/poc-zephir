@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
-import { Utilisateur, Profil } from '../../shared/domain/Utilisateur';
+import { Utilisateur } from '../../shared/domain/Utilisateur';
+import { ProfilCode } from '../../shared/domain/profil'
 @Component({
   selector: 'app-gestionnaire',
   templateUrl: './gestionnaire.component.html',
@@ -27,7 +28,7 @@ export class GestionnaireComponent implements OnInit {
   }
 
   trierListe() {
-    this.lesGestionnaires = this.lesGestionnaires.filter(g => g.profil != Profil.DIRECTEUR && g.idGroupe == this.idGroupe)
+    this.lesGestionnaires = this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.idGroupe == this.idGroupe)
   }
 
   //Retourne les gestionnaires selectionnés

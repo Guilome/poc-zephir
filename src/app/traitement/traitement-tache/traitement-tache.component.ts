@@ -15,7 +15,8 @@ import { UtilisateurService } from '../../shared/services/utilisateur.service';
 export class TraitementTacheComponent implements OnInit {
 
   showDetail = true;
-  dossier: Tache
+  dossier: Tache;
+  currentTache: Tache;
   listPieces = [];
   listActionsMetier= [];
   listNotes = [];
@@ -42,12 +43,15 @@ export class TraitementTacheComponent implements OnInit {
       this.actionMetierService.getAllByIdContext(+params.id).subscribe(data => this.listActionsMetier = data);
       // Status 
       this.dossier = this.tacheService.getDossierByIdContext(+params.id, +localStorage.getItem('USER'))
+      
       // liste des pieces :
       if( this.dossier != null){
           this.tacheService.listerTaches()
           .subscribe(data => {
                               this.listNotes = this.tacheService.getNotesByDossier(this.dossier.ident);
                               this.listPieces = this.tacheService.getPiecesByDossier(this.dossier.ident);
+                              //this.currentPiece = this.tacheService.getPieceById(+params.piece);
+                              this.currentTache = this.tacheService.getTacheById(+params.piece);
                             });
       }
 
@@ -74,7 +78,7 @@ export class TraitementTacheComponent implements OnInit {
 
   ngAfterViewInit() {
     this.route.params.subscribe((params: any) => {
-     /* if ( this.dossier != null){
+      if ( this.dossier != null){
           const element = document.getElementsByClassName('bg-row')[0];
           if(element != null) {
             element.classList.remove('bg-row')
@@ -83,7 +87,7 @@ export class TraitementTacheComponent implements OnInit {
           if ( this.tacheService.isPiece(+params.piece)){
             document.getElementById('span'+ params.piece).classList.add('spanStatus');
           }
-      }*/
+      }
 
     });
 
@@ -210,18 +214,16 @@ export class TraitementTacheComponent implements OnInit {
   }
 
   ngOnDestroy($event:Event)	{
-    //confirm('Confirmation ?');
-    console.log(event)
+    /*confirm('Confirmation ?');
     event.preventDefault();
-    console.log('after...');
     event.defaultPrevented;
-    console.log('after...2');
     event.stopImmediatePropagation();
-    console.log('after...3');
-    event.stopPropagation();
-    console.log('after...4');
+    event.stopPropagation();*/
+  }
 
-
+  isPiece(): boolean {
+    
+    return this.tacheService.isPiece(this.currentTache.ident);
   }
 
 }

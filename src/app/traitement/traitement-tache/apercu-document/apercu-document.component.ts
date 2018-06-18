@@ -5,6 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import { ActionMetierService } from '../../../shared/services/action-metier.service';
 import { UtilisateurService } from '../../../shared/services/utilisateur.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-apercu-document',
@@ -21,7 +22,8 @@ export class ApercuDocumentComponent implements OnInit {
   constructor(private tacheService: TacheService,
               private route: ActivatedRoute, 
               private actionMetierService: ActionMetierService,
-              private utilisateurService: UtilisateurService
+              private utilisateurService: UtilisateurService,
+              private sanitizer: DomSanitizer
               ) {
   }
 
@@ -32,34 +34,27 @@ export class ApercuDocumentComponent implements OnInit {
           this.piece = this.tacheService.getPieceById(idPiece);
           this.note = this.tacheService.getNoteById(idPiece);
           this.actionMetier = this.actionMetierService.getById(idPiece);
+          if(this.piece != null) {  
+            if (this.piece.urlDocument != null ) {
+                document.getElementById('divPdf').innerHTML = '<object data="'
+                                                              + this.piece.urlDocument 
+                                                              +'" width="100%" height="800px" type="application/pdf"></object>' ;
+            }else {
+               document.getElementById('divPdf').innerHTML = 'Pièce en attente de réception';
+            }
+        } else if (this.note != null ) {
+          document.getElementById('divPdf').innerHTML = '';
+        }
       }
     });
   }
 
-  ngAfterViewInit() {
-    this.idSubscription = this.route.params.subscribe((params: any) => {
-    if(this.piece != null) {  
-        if (this.piece.urlDocument != null) {
-            document.getElementById('divPdf').innerHTML = '<object data="'
-                                                          + this.piece.urlDocument 
-                                                          +'" width="100%" height="800px" type="application/pdf"></object>' ;
-        }else {
-          document.getElementById('divPdf').innerHTML = 'Pièce en attente de réception';
-        }
-    } else if (this.note != null ) {
-      document.getElementById('divPdf').innerHTML = '';
-    } else if (this.actionMetier != null) {
-      document.getElementById('divPdf').innerHTML = '';
-    }
-    });
-
-  }
 
   // transformation URL
-  /*urlSafe() {//              private sanitizer: DomSanitizer
+  urlSafe() {//              private sanitizer: DomSanitizer
 
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.piece.urlDocument);
-  }*/
+  }
 
   /**
    * retourn le nom de celui qui a émit la note 

@@ -79,20 +79,24 @@
   <!-- END left screnn-->
 
   <!-- begin DOCUMENT -->
-    <!-- Vérification -->
-    <div *ngIf="getDossierStatut() === 'À vérifier' || getDossierStatut() === 'En attente'" class="col-7">
-        <app-apercu-document></app-apercu-document>
-    </div>
+      <!-- Vérification -->
+      <div *ngIf="currentTache.status === 'À vérifier' || currentTache.status === 'En attente'" class="col-7">
+          <app-apercu-document></app-apercu-document>
+      </div>
 
-    <!-- Validation -->
-    <div  *ngIf="getDossierStatut() === 'À valider'" class="col-5">
-      <app-apercu-document></app-apercu-document>
-    </div>
+      <!-- Validation -->
+      <div  *ngIf="currentTache.status === 'À valider'" class="col-5">
+        <app-apercu-document></app-apercu-document>
+      </div>
   <!-- end DOCUMENT-->
 
-  <div class="col" id="idContentRight">
-    <app-conformite ></app-conformite>
-  </div>
+    <!-- BEGIN RIGHT screnn-->
+
+      <div class="col" id="idContentRight">
+        <app-conformite ></app-conformite>
+      </div>
+    <!-- END RIGHT screnn-->
+
 </div>
 
 <!-- Begin Modal Demande de piece complémentaire-->

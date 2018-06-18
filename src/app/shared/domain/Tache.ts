@@ -75,13 +75,8 @@ export class Tache {
       }
 
     // NOTE deux statut : 'En attente'/ 'OK'
-    if (this.nature === Nature.NOTE) {
-
-      if (this.dateCloture != null) {
+    if (this.nature === Nature.NOTE && this.dateCloture != null) {
         return Status.OK;
-      }
-      return Status.EN_ATTENTE;
-
     }
 
       return Status.EN_ATTENTE;
