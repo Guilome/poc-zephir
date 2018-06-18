@@ -201,10 +201,10 @@ export class ConformiteComponent implements OnInit {
   }
 
   groupeVerification(): boolean {
-    if ( this.groupeService.isVerification(this.idCurrentUser)){
-        return true;//this.piece.status != 'À valider';
-    } 
-    return false;
+   // if ( this.groupeService.isVerification(this.idCurrentUser)){
+        return this.piece.status != 'À valider';
+   // } 
+    //return false;
   }
 
   /**
@@ -223,10 +223,10 @@ export class ConformiteComponent implements OnInit {
   }
 
   groupeValidation(): boolean {
-    if ( this.groupeService.isValidation(this.idCurrentUser)){
+   // if ( this.groupeService.isValidation(this.idCurrentUser)){
       return this.piece.status === 'À valider';
-  } 
-    return false;
+ // } 
+    //return false;
   }
 
   /**

@@ -10,13 +10,13 @@ export class UtilisateurService {
   constructor() {
 
     const listUsers = [];
-    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille', new Profil(ProfilCode.GESTIONNAIRE, true,false,false,false)));
-    listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	new Profil(ProfilCode.SUPERVISEUR, false,true,false,false)));
-    listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	new Profil(ProfilCode.SUPERVISEUR, false,false,true,false)));
-    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	new Profil(ProfilCode.SUPERVISEUR, false,false,false,true)));
-    listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	new Profil(ProfilCode.GESTIONNAIRE, true,false,false,false)));
-    listUsers.push(new Utilisateur(6,	'VOLTAIRE',	'Louis',	new Profil(ProfilCode.SUPERVISEUR, true,false,false,false)));
-    listUsers.push(new Utilisateur(7,	'BOYER',	'Eric',	new Profil(ProfilCode.DIRECTEUR, true,true,true,true)));
+    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille', new Profil(ProfilCode.GESTIONNAIRE, true,false,false,false), 1 ));
+    listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	new Profil(ProfilCode.SUPERVISEUR, false,true,false,false), 1) );
+    listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	new Profil(ProfilCode.SUPERVISEUR, false,false,true,false), 1));
+    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	new Profil(ProfilCode.SUPERVISEUR, false,false,false,true), 1));
+    listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	new Profil(ProfilCode.GESTIONNAIRE, true,false,false,false), 1));
+    listUsers.push(new Utilisateur(6,	'VOLTAIRE',	'Louis',	new Profil(ProfilCode.SUPERVISEUR, true,false,false,false), 1));
+    listUsers.push(new Utilisateur(7,	'BOYER',	'Eric',	new Profil(ProfilCode.DIRECTEUR, true,true,true,true), 1));
     this.usersSubject.next(listUsers);
   }
 

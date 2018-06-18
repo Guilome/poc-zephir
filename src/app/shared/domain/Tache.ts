@@ -40,9 +40,7 @@ export class Tache {
   public dateCreation: Date;
   public dateLimite: Date; // format DD/MM/YYYY hh:mm
   public dateCloture: Date; // format DD/MM/YYYY hh:mm
-  //public status: Status;
   public urlDocument: string;
-  public conformite: boolean;
   public motifNonConformite: string;
   public context: Context;
   public idTacheMere: number;
