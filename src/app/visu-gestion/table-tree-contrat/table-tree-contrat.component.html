@@ -21,7 +21,7 @@
         <td>{{dossier.nomClient}}</td>
         <td>{{dossier.nomIntermediaire}}</td>
         <td>{{dossier.dateGedRec}}</td>
-        <td>{{dossier.status | bannette}}</td>
+        <td>{{dossier.codeDossier == '199_AFN' ? 'AFN' : dossier.code}}</td>
         <td>{{dossier.status}}</td>
         <td> 
           <a (click)="traiterPieces(dossier.ident)"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a>

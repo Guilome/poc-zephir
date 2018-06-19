@@ -24,7 +24,6 @@ import {EditTacheComponent} from './traitement/traitement-tache/edit-tache/edit-
 import {NoteService} from './shared/services/note.service';
 import { NouvelleNoteComponent } from './traitement/nouvelle-note/nouvelle-note.component';
 import {GroupeService} from './shared/services/groupe.service';
-import {NavGestionComponent} from './nav/nav-gestion/nav-gestion.component';
 import {TitreService} from './shared/services/titre.service';
 import {InformationConducteurComponent} from './traitement/traitement-tache/conformite/information-conducteur/information-conducteur.component';
 import {CommonModule} from '@angular/common';
@@ -52,6 +51,7 @@ import { ModificationService } from './shared/services/modification.service';
 import { VisualiserModificationComponent } from './traitement/traitement-tache/visualiser-modification/visualiser-modification.component';
 import { BannettePipe } from './shared/pipe/bannette.pipe';
 import { StatutPipe } from './shared/pipe/statut.pipe';
+import { NavTitreComponent } from './nav/nav-titre/nav-titre.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -94,7 +94,7 @@ const appRoutes: Routes = [
     ConformiteComponent,
     EditTacheComponent,
     NouvelleNoteComponent,
-    NavGestionComponent,
+    NavTitreComponent,
     InformationConducteurComponent,
     AccueilComponent,
     DonnerTacheComponent,
