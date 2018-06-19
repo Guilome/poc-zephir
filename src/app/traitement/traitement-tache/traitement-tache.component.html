@@ -12,7 +12,7 @@
 
     <div *ngIf="dossier != null">
         <h5>Pièces justificatives :     
-           <button type="button" title="Demande de pièces complémentaires" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModalLg(modalDmdeDePiece)">  </button>
+           <button type="button" title="Demande de pièces complémentaires" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModal(modalDmdeDePiece)">  </button>
         </h5>
         <div class="nav flex-column nav-pills ">
           
@@ -36,7 +36,7 @@
           </div>
           <!-- begin  NOTE-->
           <h5>Note : 
-              <button type="button" title="Ajouter une note au dossier" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModalSm(modalAjoutDeNote)">  </button>
+              <button type="button" title="Ajouter une note au dossier" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModal(modalAjoutDeNote)">  </button>
           </h5>
           <div class="nav flex-column nav-pills ">
           
@@ -80,12 +80,12 @@
 
   <!-- begin DOCUMENT -->
       <!-- Vérification -->
-      <div *ngIf="currentTache.status === 'À vérifier' || currentTache.status === 'En attente'" class="col-7">
+      <div *ngIf="statutDossier === 'À vérifier' || statutDossier === 'En attente'" class="col-7">
           <app-apercu-document></app-apercu-document>
       </div>
 
       <!-- Validation -->
-      <div  *ngIf="currentTache.status === 'À valider'" class="col-5">
+      <div  *ngIf="statutDossier === 'À valider'" class="col-5">
         <app-apercu-document></app-apercu-document>
       </div>
   <!-- end DOCUMENT-->

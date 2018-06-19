@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {TitreService} from '../../shared/services/titre.service';
 
 @Component({
-  selector: 'app-nav-gestion',
-  templateUrl: './nav-gestion.component.html',
-  styleUrls: ['./nav-gestion.component.css']
+  selector: 'app-nav-titre',
+  templateUrl: './nav-titre.component.html',
+  styleUrls: ['./nav-titre.component.css']
 })
-export class NavGestionComponent implements OnInit {
+export class NavTitreComponent implements OnInit {
 
   public titre: string;
   constructor(private titreService: TitreService) { }

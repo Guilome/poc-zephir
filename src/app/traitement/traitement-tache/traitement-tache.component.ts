@@ -24,8 +24,9 @@ export class TraitementTacheComponent implements OnInit {
   piecesComplementaires = [];
   selectedItems = [];
   dropdownSettings = {};
-  currentModal: NgbModalRef;
+  private currentModal: NgbModalRef;
   statutDossier: string;
+  private boolVerification: boolean = false;
   constructor(private tacheService: TacheService,
               private actionMetierService: ActionMetierService,
               private route: ActivatedRoute,
@@ -53,11 +54,15 @@ export class TraitementTacheComponent implements OnInit {
                               //this.currentPiece = this.tacheService.getPieceById(+params.piece);
                               this.currentTache = this.tacheService.getTacheById(+params.piece);
                             });
+
+
       }
 
     });
-    if ( this.dossier != null) {
+    // without Subscribe
+    if( this.dossier != null){
         this.statutDossier = this.tacheService.getStatutTache(this.dossier);
+        this.boolVerification = this.statutDossier === 'À vérifier'
     }
 
     // Multiple select piece complementaire :
@@ -159,17 +164,11 @@ export class TraitementTacheComponent implements OnInit {
     return '';
   }
 
-  // problème de mettre la taille en paramére 
-  openModalLg(content: any) {
+  openModal(content: any) {
     this.currentModal = this.modalService.open(content, { size : 'lg', 
                                       centered : true, 
                                       keyboard: false, 
                                       backdrop: 'static' });
-  
-  }
-  openModalSm(content: any) {
-    this.currentModal = this.modalService.open(content, { size : 'lg', 
-                                      centered : true });
   
   }
 
@@ -185,6 +184,9 @@ export class TraitementTacheComponent implements OnInit {
         if(confirm('Confirmez-vous la demande de cette/ces pièce(s) ?\n' + lPieces )){ 
           for (let val of this.selectedItems){
               this.tacheService.createPieceTemporaire(val.id, this.dossier);
+              if ( this.boolVerification ) {
+                this.tacheService.viderPiecesTemporaire();
+              }
           }
           this.currentModal.close();
       }

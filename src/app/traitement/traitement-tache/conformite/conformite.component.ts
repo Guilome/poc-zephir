@@ -50,7 +50,8 @@ export class ConformiteComponent implements OnInit {
      
       });
       if (this.piece != null) {
-          this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere);
+        this.tacheService.listerTaches().subscribe(data => 
+                                  this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere));
       }
       this.dropdownList = [
                             {"id": 1, "itemName":"CRM non conforme"},
@@ -203,12 +204,20 @@ export class ConformiteComponent implements OnInit {
 
   groupeVerification(): boolean {
    // if ( this.groupeService.isVerification(this.idCurrentUser)){
-     if(this.piece != null)
-        return this.piece.status != 'À valider';
+     if(this.dossier != null)
+        return this.tacheService.getStatutTache(this.dossier) != 'À valider';
     return false;
    // } 
     //return false;
   }
+  groupeValidation(): boolean {
+    // if ( this.groupeService.isValidation(this.idCurrentUser)){
+      if(this.dossier != null)
+          return this.tacheService.getStatutTache(this.dossier) === 'À valider';
+      return false;
+  // } 
+     //return false;
+   }
 
   /**
    * retourne le nom de la personne qui a vérifié la piece
@@ -229,14 +238,7 @@ export class ConformiteComponent implements OnInit {
 
   }
 
-  groupeValidation(): boolean {
-   // if ( this.groupeService.isValidation(this.idCurrentUser)){
-    if(this.piece != null)
-      return this.piece.status === 'À valider';
-      return false;
- // } 
-    //return false;
-  }
+
 
   /**
    * Envoie une relance qui correspond au papier en train d'être valider
