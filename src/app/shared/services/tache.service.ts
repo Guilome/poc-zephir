@@ -162,7 +162,11 @@ export class TacheService {
    */
   closeDossier(idDossier: number){
     let dossier = this.getDossierById(idDossier)
-    dossier.dateCloture = new Date()
+    dossier.dateCloture = new Date();
+    // fermer toutes les pieces...
+    for ( let p of  this.getPiecesByDossier(idDossier) ) {
+      p.dateCloture = new Date();
+    }
   }
   
   private create_100_DossiersClotures(){
@@ -302,6 +306,13 @@ export class TacheService {
   }
 
   /**
+   * Cas de la vérification : les pièces ajoutées seront conservées
+   * ( aucun moyen d'annuler )
+   */
+  viderPiecesTemporaire() {
+    this.listPieceEnAttente = [];
+  }
+  /**
    * Permet d'ajouter la liste des pieces en attente 
    * Appel web service à faire
    */
@@ -402,26 +413,25 @@ export class TacheService {
   public getStatutTache(tache: Tache): string{
     //Dossier
     if (tache.nature === Nature.DOSSIER){
-      let lesPieces = this.getPiecesByDossier(tache.ident).filter(pi => pi.dateCloture == null)
+      let lesPieces = this.getPiecesByDossier(tache.ident).filter(pi => pi.dateCloture == null);
+      const mapCount = new Map<string,number>();
+      mapCount.set('En attente', 0);
+      mapCount.set('À vérifier', 0);
+      mapCount.set('À valider', 0);
       if (lesPieces.length == 0) {
         return Status.OK// pour le jeu de test sinon le dossier est en attente
       }  else {
-        for (let p of lesPieces) {
-          if(p.status === 'À vérifier' )  { 
-            return Status.A_VERIFIER;
-          }
-        }
-        for (let p of lesPieces) {
-          if(p.status === 'En attente' )  {
-            return Status.EN_ATTENTE;
-          }
-        }
-        for (let p of lesPieces) {
-          if(p.status === 'À valider' )  {
-            return Status.A_VALIDER;
-          }
-        }
+            for (let p of lesPieces) {
+              mapCount.set(p.status, mapCount.get(p.status)+1);
+            }
+            if( mapCount.get('En attente') > 0)
+                return Status.EN_ATTENTE;
+            else if(mapCount.get('À vérifier') > 0 )
+                return Status.A_VERIFIER
+            else if (mapCount.get('À valider') > 0 )
+                return Status.A_VALIDER;
       }
+
       return Status.OK 
     }
     // PIECE

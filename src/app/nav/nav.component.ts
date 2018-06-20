@@ -29,4 +29,12 @@ export class NavComponent implements OnInit {
     this.connexionBoolean = false;
     this.router.navigate(['Acceuil']);
   }
+
+  closeNav() {
+    document.getElementById('myNav').style.width = '0%';
+  }
+
+  openNav() {
+    document.getElementById('myNav').style.width = '30%';
+  }
 }

@@ -1,5 +1,21 @@
+<div *ngIf="ifConnexion()" >
+    <div id="myNav" class="overlay" >
+      <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+      <div class="overlay-content">
+        <a href="#">Recherche Personne</a>
+        <a href="#">Recherche Contrat</a>
+        <a href="#">Recherche Sinistre</a>
+        <a href="#">Nouveau devis</a>
+        <a href="#">Nouveau Sinistre</a>
+        <a href="#">Comptabilité technique</a>
+        <a href="#">Transverse</a>
+      </div>
+    </div>
+</div>
 <nav class="navbar navbar-expand-lg bg-nav navbar-dark " >
-  <a class="navbar-brand" *ngIf="ifConnexion()" routerLink="/gestionBO">{{userName}}</a>
+    <span style="font-size:30px;cursor:pointer" (click)="openNav()"> <h2>&#9776; {{titre}} </h2></span>
+
+  <a class="navbar-brand" *ngIf="connexionBoolean" routerLink="/gestionBO"> <i class="fa fa-home"></i>   {{userName}}</a>
   <div class="container-fluid" >
     <ul class="nav navbar-nav" *ngIf="!connexionBoolean">
       <li class="nav-item">

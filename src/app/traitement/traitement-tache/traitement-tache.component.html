@@ -12,7 +12,7 @@
 
     <div *ngIf="dossier != null">
         <h5>Pièces justificatives :     
-           <button type="button" title="Demande de pièces complémentaires" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModalLg(modalDmdeDePiece)">  </button>
+           <button type="button" title="Demande de pièces complémentaires" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModal(modalDmdeDePiece)">  </button>
         </h5>
         <div class="nav flex-column nav-pills ">
           
@@ -36,7 +36,7 @@
           </div>
           <!-- begin  NOTE-->
           <h5>Note : 
-              <button type="button" title="Ajouter une note au dossier" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModalSm(modalAjoutDeNote)">  </button>
+              <button type="button" title="Ajouter une note au dossier" class="btn btn-outline-warning btn-circle fa fa-plus" (click)="openModal(modalAjoutDeNote)">  </button>
           </h5>
           <div class="nav flex-column nav-pills ">
           
@@ -79,20 +79,24 @@
   <!-- END left screnn-->
 
   <!-- begin DOCUMENT -->
-    <!-- Vérification -->
-    <div *ngIf="getDossierStatut() === 'À vérifier' || getDossierStatut() === 'En attente'" class="col-7">
-        <app-apercu-document></app-apercu-document>
-    </div>
+      <!-- Vérification -->
+      <div *ngIf="statutDossier === 'À vérifier' || statutDossier === 'En attente'" class="col-7">
+          <app-apercu-document></app-apercu-document>
+      </div>
 
-    <!-- Validation -->
-    <div  *ngIf="getDossierStatut() === 'À valider'" class="col-5">
-      <app-apercu-document></app-apercu-document>
-    </div>
+      <!-- Validation -->
+      <div  *ngIf="statutDossier === 'À valider'" class="col-5">
+        <app-apercu-document></app-apercu-document>
+      </div>
   <!-- end DOCUMENT-->
 
-  <div class="col" id="idContentRight">
-    <app-conformite ></app-conformite>
-  </div>
+    <!-- BEGIN RIGHT screnn-->
+
+      <div class="col" id="idContentRight">
+        <app-conformite ></app-conformite>
+      </div>
+    <!-- END RIGHT screnn-->
+
 </div>
 
 <!-- Begin Modal Demande de piece complémentaire-->

@@ -47,9 +47,11 @@ export class ConformiteComponent implements OnInit {
       this.idCurrentUser = +localStorage.getItem('USER');
       this.idSubscription = this.route.params.subscribe((params: any) => {
         this.piece = this.tacheService.getPieceById(+params.piece);
+     
       });
       if (this.piece != null) {
-          this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere);
+        this.tacheService.listerTaches().subscribe(data => 
+                                  this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere));
       }
       this.dropdownList = [
                             {"id": 1, "itemName":"CRM non conforme"},
@@ -91,7 +93,7 @@ export class ConformiteComponent implements OnInit {
   } else {
       this.toastr.success('La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture), '', {enableHtml: true});
     }
-    this.titleStatus()
+    //this.titleStatus()
 
   }
   /**
@@ -157,7 +159,7 @@ export class ConformiteComponent implements OnInit {
     return motif;
   }
 
-  private titleStatus() {
+  /*private titleStatus() {
     // Status 
     let idLabelStatus = document.getElementById('idLabelStatus');
     let bVerification: boolean = false;
@@ -189,7 +191,7 @@ export class ConformiteComponent implements OnInit {
 
       }
     }
-  }
+  }*/
 
   listMotifs(): string[] {
     let lList = [];
@@ -201,33 +203,42 @@ export class ConformiteComponent implements OnInit {
   }
 
   groupeVerification(): boolean {
-    if ( this.groupeService.isVerification(this.idCurrentUser)){
-        return true;//this.piece.status != 'À valider';
-    } 
+   // if ( this.groupeService.isVerification(this.idCurrentUser)){
+     if(this.dossier != null)
+        return this.tacheService.getStatutTache(this.dossier) != 'À valider';
     return false;
+   // } 
+    //return false;
   }
+  groupeValidation(): boolean {
+    // if ( this.groupeService.isValidation(this.idCurrentUser)){
+      if(this.dossier != null)
+          return this.tacheService.getStatutTache(this.dossier) === 'À valider';
+      return false;
+  // } 
+     //return false;
+   }
 
   /**
    * retourne le nom de la personne qui a vérifié la piece
    */
-  getNomVerification(): string {    
-    return this.utilisateurService.getName(this.piece.idUtilisateurVerification);
+  getNomVerification(): string {
+    if(this.piece != null)
+        return this.utilisateurService.getName(this.piece.idUtilisateurVerification);
+    return '';
   }
 
   /**
    * return le nom de la personne qui a validé la piece
    */
   getNomValidation(): string {
+    if(this.piece != null)
     return this.utilisateurService.getName(this.piece.idUtilisateurCloture);
+    return '';
 
   }
 
-  groupeValidation(): boolean {
-    if ( this.groupeService.isValidation(this.idCurrentUser)){
-      return this.piece.status === 'À valider';
-  } 
-    return false;
-  }
+
 
   /**
    * Envoie une relance qui correspond au papier en train d'être valider

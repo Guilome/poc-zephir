@@ -59,12 +59,10 @@ export class NoteService {
 
   fermer(idNote) {
     const note = this.notes.find(n =>  n.ident === idNote);
-    //note.status = Status.OK;
     note.dateCloture = new Date(); // date du jour + heure
   }
   reOuvrir(idNote) {
     const note = this.notes.find(n => n.ident === idNote);
-    //note.status = Status.EN_ATTENTE;
     note.dateCloture = null; // date du jour + heure
   }
 

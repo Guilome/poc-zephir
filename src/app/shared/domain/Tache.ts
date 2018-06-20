@@ -23,7 +23,6 @@ export class Tache {
 
   //
   constructor(public nature: Nature ) {
-    //this.status = Status.EN_ATTENTE;
     this.dateCloture = null;
     this.message = null;
     this.idUtilisateurCloture = null;
@@ -40,9 +39,7 @@ export class Tache {
   public dateCreation: Date;
   public dateLimite: Date; // format DD/MM/YYYY hh:mm
   public dateCloture: Date; // format DD/MM/YYYY hh:mm
-  //public status: Status;
   public urlDocument: string;
-  public conformite: boolean;
   public motifNonConformite: string;
   public context: Context;
   public idTacheMere: number;
@@ -77,13 +74,8 @@ export class Tache {
       }
 
     // NOTE deux statut : 'En attente'/ 'OK'
-    if (this.nature === Nature.NOTE) {
-
-      if (this.dateCloture != null) {
+    if (this.nature === Nature.NOTE && this.dateCloture != null) {
         return Status.OK;
-      }
-      return Status.EN_ATTENTE;
-
     }
 
       return Status.EN_ATTENTE;

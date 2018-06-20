@@ -21,7 +21,9 @@
     <p>Votre navigateur ne supporte pas les pdfs. Vous pouvez le visuliser en cliquant  <a href="{{tache.urlDocument}}">ici.</a>.</p>
     </pdf-viewer-->
 
- <div id="divPdf"></div>
+ <div id="divPdf">
+ </div>
+ 
  <app-visualiser-modification *ngIf="this.actionMetier != null"></app-visualiser-modification>
 
  <div *ngIf="note != null">

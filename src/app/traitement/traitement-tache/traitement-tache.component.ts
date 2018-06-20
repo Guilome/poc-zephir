@@ -17,7 +17,8 @@ import { Code } from '../../shared/domain/groupe';
 export class TraitementTacheComponent implements OnInit {
 
   showDetail = true;
-  dossier: Tache
+  dossier: Tache;
+  currentTache: Tache;
   listPieces = [];
   listActionsMetier= [];
   listNotes = [];
@@ -25,8 +26,9 @@ export class TraitementTacheComponent implements OnInit {
   piecesComplementaires = [];
   selectedItems = [];
   dropdownSettings = {};
-  currentModal: NgbModalRef;
+  private currentModal: NgbModalRef;
   statutDossier: string;
+  private boolVerification: boolean = false;
   constructor(private tacheService: TacheService,
               private actionMetierService: ActionMetierService,
               private groupeService: GroupeService,
@@ -45,18 +47,25 @@ export class TraitementTacheComponent implements OnInit {
       this.actionMetierService.getAllByIdContext(+params.id).subscribe(data => this.listActionsMetier = data);
       // Status 
       this.dossier = this.tacheService.getDossierByIdContext(+params.id, +localStorage.getItem('USER'))
+      
       // liste des pieces :
       if( this.dossier != null){
           this.tacheService.listerTaches()
           .subscribe(data => {
                               this.listNotes = this.tacheService.getNotesByDossier(this.dossier.ident);
                               this.listPieces = this.tacheService.getPiecesByDossier(this.dossier.ident);
+                              //this.currentPiece = this.tacheService.getPieceById(+params.piece);
+                              this.currentTache = this.tacheService.getTacheById(+params.piece);
                             });
+
+
       }
 
     });
-    if ( this.dossier != null) {
+    // without Subscribe
+    if( this.dossier != null){
         this.statutDossier = this.tacheService.getStatutTache(this.dossier);
+        this.boolVerification = this.statutDossier === 'À vérifier'
     }
 
     // Multiple select piece complementaire :
@@ -77,7 +86,7 @@ export class TraitementTacheComponent implements OnInit {
 
   ngAfterViewInit() {
     this.route.params.subscribe((params: any) => {
-     /* if ( this.dossier != null){
+      if ( this.dossier != null){
           const element = document.getElementsByClassName('bg-row')[0];
           if(element != null) {
             element.classList.remove('bg-row')
@@ -86,7 +95,7 @@ export class TraitementTacheComponent implements OnInit {
           if ( this.tacheService.isPiece(+params.piece)){
             document.getElementById('span'+ params.piece).classList.add('spanStatus');
           }
-      }*/
+      }
 
     });
 
@@ -163,17 +172,11 @@ export class TraitementTacheComponent implements OnInit {
     return '';
   }
 
-  // problème de mettre la taille en paramére 
-  openModalLg(content: any) {
+  openModal(content: any) {
     this.currentModal = this.modalService.open(content, { size : 'lg', 
                                       centered : true, 
                                       keyboard: false, 
                                       backdrop: 'static' });
-  
-  }
-  openModalSm(content: any) {
-    this.currentModal = this.modalService.open(content, { size : 'lg', 
-                                      centered : true });
   
   }
 
@@ -189,6 +192,9 @@ export class TraitementTacheComponent implements OnInit {
         if(confirm('Confirmez-vous la demande de cette/ces pièce(s) ?\n' + lPieces )){ 
           for (let val of this.selectedItems){
               this.tacheService.createPieceTemporaire(val.id, this.dossier);
+              if ( this.boolVerification ) {
+                this.tacheService.viderPiecesTemporaire();
+              }
           }
           this.currentModal.close();
       }
@@ -218,18 +224,16 @@ export class TraitementTacheComponent implements OnInit {
   }
 
   ngOnDestroy($event:Event)	{
-    //confirm('Confirmation ?');
-    console.log(event)
+    /*confirm('Confirmation ?');
     event.preventDefault();
-    console.log('after...');
     event.defaultPrevented;
-    console.log('after...2');
     event.stopImmediatePropagation();
-    console.log('after...3');
-    event.stopPropagation();
-    console.log('after...4');
+    event.stopPropagation();*/
+  }
 
-
+  isPiece(): boolean {
+    
+    return this.tacheService.isPiece(this.currentTache.ident);
   }
 
 }
