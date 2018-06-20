@@ -147,16 +147,16 @@ export class TacheService {
    */
   toEtapeValidation(idTache: number) {
     const tache = this.getTacheById(idTache);
-    //appel web service pour récupérer l'id du groupe validati on
-    tache.idGroupe = 2;
+    //appel web service pour récupérer l'id du groupe validation
     tache.dateVerification = new Date();
     tache.idUtilisateurVerification = tache.idUtilisateur;
-
     tache.idUtilisateur = null;
-
-
   }
 
+  setUtilisateurNull(tache: Tache){
+    tache.idUtilisateur = null
+  }
+  
   /**
    * Fermeture du dossier
    */

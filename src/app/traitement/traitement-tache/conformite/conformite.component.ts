@@ -140,6 +140,9 @@ export class ConformiteComponent implements OnInit {
      }
        
     if (idNext == null) {
+      if (this.utilisateurService.getUserById(this.idCurrentUser).validation == false) {
+        this.tacheService.setUtilisateurNull(this.dossier)
+      }      
       this.router.navigate(['/gestionBO']);
     } else {
       this.router.navigate(['/TraitementTache', { id: this.piece.context.ident, piece: idNext }]);
