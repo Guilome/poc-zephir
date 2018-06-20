@@ -5,7 +5,7 @@ import {Tache, Nature, Status} from '../domain/Tache';
 import {BehaviorSubject} from '../../../../node_modules/rxjs';
 import { UtilisateurService } from './utilisateur.service';
 import { Utilisateur } from '../domain/Utilisateur';
-import { ProfilCode } from '../domain/profil';
+import { ProfilCode } from '../domain/Profil';
 
 @Injectable()
 export class GroupeService {

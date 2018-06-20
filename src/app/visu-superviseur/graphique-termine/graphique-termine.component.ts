@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../../shared/services/groupe.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Tache } from '../../shared/domain/Tache';
-import { ProfilCode } from '../../shared/domain/profil';
+import { ProfilCode } from '../../shared/domain/Profil';
 
 @Component({
   selector: 'graphique-termine',
