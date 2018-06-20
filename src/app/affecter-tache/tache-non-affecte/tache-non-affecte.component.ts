@@ -29,7 +29,7 @@ export class TacheNonAffecteComponent implements OnInit {
               private groupeService: GroupeService) {
     this.idUser = +localStorage.getItem('USER');
     this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
-    if(this.idGroupe === null){
+    if(isNaN(this.idGroupe)){
       this.tacheService.listerTaches().subscribe(data => {
         this.lesDossiers = data;
         this.tousLesDossiers = data.filter(tache => tache.nature == Nature.DOSSIER);   
