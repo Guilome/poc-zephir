@@ -31,18 +31,16 @@ export class TacheNonAffecteComponent implements OnInit {
     this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
     if(isNaN(this.idGroupe)){
       this.tacheService.listerTaches().subscribe(data => {
-        this.lesDossiers = data;
-        this.tousLesDossiers = data.filter(tache => tache.nature == Nature.DOSSIER);   
+        this.lesDossiers = data;  
       });
-      this.lesDossiers = this.lesDossiers.filter(tache => this.groupeService.getGroupesUtilisateur(this.idUser).find(g => g.ident == tache.idGroupe))
+      this.lesDossiers = this.lesDossiers.filter(tache => this.groupeService.getGroupesUtilisateur(this.idUser).find(g => g.ident == tache.idGroupe));
     } else {
       this.tacheService.listerTaches().subscribe(data => {
         this.lesDossiers = data;
-        this.tousLesDossiers = data.filter(tache => tache.nature == Nature.DOSSIER);  
       });
       this.lesDossiers = this.lesDossiers.filter(tache => tache.idGroupe == this.idGroupe) 
     }
-
+    this.tousLesDossiers = this.lesDossiers
     this.trierListe()
   }
 
