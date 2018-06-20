@@ -1,8 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { TacheService } from '../../shared/services/tache.service';
-import { Tache, Nature } from '../../shared/domain/Tache';
+import { Tache, Nature, Status } from '../../shared/domain/Tache';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { GroupeService } from '../../shared/services/groupe.service';
+import { Statement } from '@angular/compiler';
 
 @Component({
   selector: 'app-tache-non-affecte',
@@ -11,37 +12,52 @@ import { GroupeService } from '../../shared/services/groupe.service';
 })
 export class TacheNonAffecteComponent implements OnInit {
 
-  lesDossiers:Tache[]
-  allChecked: Boolean
-  dossiers:Tache[] = []
-  checkboxDossier: boolean;
-  idGroupe: number;
-  private tousLesDossiers: Tache[] = [];
-  @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
   collectDossier = []
+  lesDossiers:Tache[]
+  dossiers:Tache[] = []
+  private tousLesDossiers: Tache[] = [];
+
+  allChecked: Boolean
+  checkboxDossier: boolean;
+
+  idGroupe: number;
+  idUser: number;
+
+  @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
 
   constructor(private  tacheService: TacheService,
               private groupeService: GroupeService) {
-    this.tacheService.listerTaches().subscribe(data => {
-                                                          this.lesDossiers = data;
-                                                         this.tousLesDossiers = data.filter(tache => tache.nature == Nature.DOSSIER);   
-                                                        });
+    this.idUser = +localStorage.getItem('USER');
+    this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
+    if(this.idGroupe === null){
+      this.tacheService.listerTaches().subscribe(data => {
+        this.lesDossiers = data;
+        this.tousLesDossiers = data.filter(tache => tache.nature == Nature.DOSSIER);   
+      });
+      this.lesDossiers = this.lesDossiers.filter(tache => this.groupeService.getGroupesUtilisateur(this.idUser).find(g => g.ident == tache.idGroupe))
+    } else {
+      this.tacheService.listerTaches().subscribe(data => {
+        this.lesDossiers = data;
+        this.tousLesDossiers = data.filter(tache => tache.nature == Nature.DOSSIER);  
+      });
+      this.lesDossiers = this.lesDossiers.filter(tache => tache.idGroupe == this.idGroupe) 
+    }
+
     this.trierListe()
   }
 
   ngOnInit() {
-    this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
   }  
 
   trierListe() {
-    this.lesDossiers = this.lesDossiers.filter(t => t.idUtilisateur == null && t.nature === Nature.DOSSIER);
-    /* S'il appartient à aucun de ces deux groupes il verra tous les dossiers */
-    const idUser = +localStorage.getItem('USER');
-    if ( this.groupeService.isVerification(idUser)){
-      this.lesDossiers = this.lesDossiers
-                        .filter(dos => 
-                                      this.statutDossier(dos.ident) == 'À vérifier');
-    } else if (this.groupeService.isValidation(idUser)){
+    if( this.groupeService.isVerification(this.idUser) && this.groupeService.isValidation(this.idUser)) {
+      this.lesDossiers = this.lesDossiers.filter(t => t.idUtilisateur == null && 
+                                                 t.nature === Nature.DOSSIER && 
+                                                 this.tacheService.getStatutTache(t) != Status.OK);
+    }
+    else if ( this.groupeService.isVerification(this.idUser)){
+      this.lesDossiers = this.lesDossiers.filter(dos => this.statutDossier(dos.ident) == 'À vérifier');
+    } else if (this.groupeService.isValidation(this.idUser)){
       this.lesDossiers = this.lesDossiers.filter(dos => this.statutDossier(dos.ident) == 'À valider');
     }
   }
@@ -112,6 +128,10 @@ export class TacheNonAffecteComponent implements OnInit {
 
   statutDossier(idDossier: number): string {
     return this.tacheService.getStatutTache(this.tacheService.getDossierById(idDossier));
+  }
+
+  bannetteDossier(idDossier: number): string {
+    return this.groupeService.getGroupeById(this.tacheService.getDossierById(idDossier).ident).libelle
   }
 
   onKeyUpFilter($event){

@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Utilisateur } from '../../shared/domain/Utilisateur';
 import { ProfilCode } from '../../shared/domain/profil'
+import { GroupeService } from '../../shared/services/groupe.service';
 @Component({
   selector: 'app-gestionnaire',
   templateUrl: './gestionnaire.component.html',
@@ -17,18 +18,20 @@ export class GestionnaireComponent implements OnInit {
   @Output() gestionnaireAssigner:EventEmitter<Utilisateur[]> = new EventEmitter<Utilisateur[]>();
   collectGestionnaire = []
 
-  constructor(public GestionnaireService: UtilisateurService) {  
+  constructor(public gestionnaireService: UtilisateurService,
+              public groupeService:GroupeService) {  
 
   }
 
   ngOnInit() {  
     this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
-    this.lesGestionnaires = this.GestionnaireService.getAll() 
+    this.lesGestionnaires = this.gestionnaireService.getAll() 
     this.trierListe()   
   }
 
   trierListe() {
-    this.lesGestionnaires = this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.idGroupe == this.idGroupe)
+    this.lesGestionnaires = this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && this.groupeService.getGroupesUtilisateur(g.ident)
+                                                 .find(groupe => groupe.ident == this.idGroupe))
   }
 
   //Retourne les gestionnaires selectionnés

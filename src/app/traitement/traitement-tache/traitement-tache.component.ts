@@ -6,6 +6,8 @@ import { ActionMetierService } from '../../shared/services/action-metier.service
 import {ToastrService} from 'ngx-toastr';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
+import { GroupeService } from '../../shared/services/groupe.service';
+import { Code } from '../../shared/domain/groupe';
 
 @Component({
   selector: 'app-traitement-tache',
@@ -27,6 +29,7 @@ export class TraitementTacheComponent implements OnInit {
   statutDossier: string;
   constructor(private tacheService: TacheService,
               private actionMetierService: ActionMetierService,
+              private groupeService: GroupeService,
               private route: ActivatedRoute,
               private router: Router, 
               public toastr: ToastrService,
@@ -135,7 +138,12 @@ export class TraitementTacheComponent implements OnInit {
         this.toastr.success("Le dossier a été déplacé à la bannette <b>Vérification</b>",'', {enableHtml: true});
       }
       this.tacheService.addPieceEnAttente(this.dossier);
-    } else {
+    } else if (this.actionMetierService.getAll().filter(a => a.context.ident == this.dossier.context.ident).length > 0 && 
+              this.groupeService.getGroupesUtilisateur(parseInt(localStorage.getItem("USER"))).find(groupe => groupe.code === Code.AVN) == null) {
+      this.tacheService.avnAffectation(this.dossier.ident)
+      this.toastr.success("Le dossier a été déplacé dans la bannette Avenant");
+    }     
+    else {
         this.tacheService.closeDossier(this.dossier.ident)
         this.toastr.success("Le dossier a été validé");
     }

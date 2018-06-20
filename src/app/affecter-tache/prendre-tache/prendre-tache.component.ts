@@ -6,6 +6,7 @@ import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Router } from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import { TitreService } from '../../shared/services/titre.service';
+import { GroupeService } from '../../shared/services/groupe.service';
 
 @Component({
   selector: 'app-prendre-tache',
@@ -16,10 +17,8 @@ export class PrendreTacheComponent implements OnInit {
 
   dossiers: Tache[] = []
   idGestionnaire: number
-  gestionnaire: Utilisateur
 
-  constructor(private utilService: UtilisateurService,
-              private tacheService: TacheService,
+  constructor(private tacheService: TacheService,
               private router: Router, 
               private toastr: ToastrService, 
               private titreService: TitreService) { }
@@ -27,12 +26,11 @@ export class PrendreTacheComponent implements OnInit {
   ngOnInit() {
     this.titreService.updateTitre("S'attribuer un dossier")
     this.idGestionnaire = parseInt(localStorage.getItem('USER'))
-    this.gestionnaire = this.utilService.getUserById(this.idGestionnaire)
 
   }
 
   traiterTache(tabTache: Tache[]){
-    this.dossiers = tabTache   
+    this.dossiers = tabTache
   }
 
   affecterTacheGestionnaire(){   
@@ -42,7 +40,6 @@ export class PrendreTacheComponent implements OnInit {
     else {
       this.dossiers.forEach(dossier => {
         dossier.idUtilisateur = this.idGestionnaire
-        dossier.idGroupe = this.gestionnaire.idGroupe
         let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
         pieces.forEach(piece => piece.idUtilisateur = this.idGestionnaire)
       });   

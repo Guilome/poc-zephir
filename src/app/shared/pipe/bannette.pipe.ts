@@ -7,9 +7,9 @@ export class BannettePipe implements PipeTransform {
 
   transform(value: string, args?: any): any {
     if( value === 'À vérifier')
-      return 'Vérification';
+      return 'Affaire nouvelle';
     else if (value === 'À valider')
-      return 'Validation';
+      return 'Affaire nouvelle';
 
     return value;
   }

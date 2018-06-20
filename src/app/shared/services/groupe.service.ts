@@ -11,7 +11,6 @@ import { ProfilCode } from '../domain/profil';
 export class GroupeService {
 
   // données en mémoire
-  mapSubject: BehaviorSubject<Map<string, number>> = new BehaviorSubject(new Map());
   mapEnCours: BehaviorSubject<Map<string, number>> = new BehaviorSubject(new Map());
 
   groupes = []
@@ -57,19 +56,15 @@ export class GroupeService {
 
   private refreshMapEnCoursByUtilisateur(idGroupe: number) {
     const map = new Map<string, number>();
-    // liste des gestionnaires : Initialisation
     map.set('Non Affectées', 0);
     this.utilisateurs = this.getUtilisateurByGroupe(idGroupe).filter(g => g.profil.code != ProfilCode.DIRECTEUR)    
     this.utilisateurs.forEach(g => map.set( g.nom+' '+g.prenom, 0))
     for (const t of this.tachesEnCours) {
       if (t.idUtilisateur != null && this.utilisateurs.find(u => u.ident == t.idUtilisateur)) {
         let gestionnaire = this.utilisateurService.getUserById(t.idUtilisateur)
-        const key = gestionnaire.nom+' '+gestionnaire.prenom;
-        const sum = map.get(key);
-        map.set(key,  sum + 1);
+        map.set(gestionnaire.nom+' '+gestionnaire.prenom,  (map.get(gestionnaire.nom+' '+gestionnaire.prenom)) + 1);
       } else {
-        const sum = map.get('Non Affectées');
-        map.set('Non Affectées', sum + 1);
+        map.set('Non Affectées', (map.get('Non Affectées')) + 1);
       }
     }
     this.mapEnCours.next(map)
@@ -110,20 +105,49 @@ export class GroupeService {
   }
 
   public dispatcher(idGroupe: number) {
-    const tailleGestionnaires =  this.utilisateurService.getAll().filter(u => u.profil.code != ProfilCode.DIRECTEUR && u.idGroupe == idGroupe).length;
     let list;
     this.tacheService.listerTaches().subscribe(t => list = t)
-    list.filter(tt => tt.idUtilisateur == null && tt.dateCloture == null && tt.nature == Nature.DOSSIER).forEach( ( tache , i) => {
-      tache.idUtilisateur = this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].ident
+    list.filter(t => t.idGroupe == idGroupe).forEach( ( tache , i) => {
+      const tailleGestionnaires =  this.getUtilisateurByGroupe(idGroupe)
+          .filter(u => u.profil.code != ProfilCode.DIRECTEUR && this.getGroupesUtilisateur(u.ident).find(g => g.ident == tache.idGroupe)).length;
+      if (tailleGestionnaires > 0 && this.tacheService.getStatutTache(tache) == Status.A_VALIDER && 
+          this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].validation == true) {
+        tache.idUtilisateur = this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].ident
+        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+      }
+      else if (tailleGestionnaires > 0 && this.tacheService.getStatutTache(tache) == Status.A_VERIFIER && 
+               this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].verification == true) {
+        tache.idUtilisateur = this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].ident
+        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+      }
+      else if (tailleGestionnaires > 0 && this.tacheService.getStatutTache(tache) == Status.NON_CONFORME && 
+               this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].avenant == true) {
+        tache.idUtilisateur = this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].ident
+        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+      }
     });
     this.tacheService.nextListSubject(list);
     this.getTacheEnCoursByGroupe(idGroupe, "gestionnaire");
   }
 
   public dispatcherGestionnaire(utilisateurs: Utilisateur[], taches: Tache[]){
-    const tailleGestionnaires =  utilisateurs.length;
-    taches.filter(tache => tache.dateCloture == null && tache.nature == Nature.DOSSIER).forEach( ( tache , i) => {
-      tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
+    //const tailleGestionnaires =  utilisateurs.length;
+    taches.forEach( ( tache , i) => {
+      const tailleGestionnaires =  utilisateurs.filter(u => this.getGroupesUtilisateur(u.ident).find(g => g.ident == tache.idGroupe)).length;
+      console.log(tailleGestionnaires);
+      
+      if (this.tacheService.getStatutTache(tache) == Status.A_VALIDER && utilisateurs[i % tailleGestionnaires].validation == true) {
+        tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
+        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+      }
+      else if (this.tacheService.getStatutTache(tache) == Status.A_VERIFIER && utilisateurs[i % tailleGestionnaires].verification == true) {
+        tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
+        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+      }
+      else if (this.tacheService.getStatutTache(tache) == Status.NON_CONFORME && utilisateurs[i % tailleGestionnaires].avenant == true) {
+        tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
+        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+      }
     });
   }
 
@@ -135,33 +159,29 @@ export class GroupeService {
     this.getTacheEnCoursByGroupe(idGroupe, "gestionnaire");
   }
 
-  public corbeilleUser(idGroupe: number): boolean {
+  public corbeilleUser(idUser: number): boolean {
     let list;
-    const userId = +localStorage.getItem('USER');
-    if(userId != null) {
+    if(idUser != null) {
       this.tacheService.listerTaches().subscribe(t => list = t);
-      if (list.filter(tache => tache.idUtilisateur === userId).length == 0 ){
+      if (list.filter(tache => tache.idUtilisateur === idUser).length == 0 ){
         return false;
       }
-      list.filter(tache => tache.idUtilisateur === userId).forEach(tache => tache.idUtilisateur = null);
+      list.filter(tache => tache.idUtilisateur === idUser).forEach(tache => tache.idUtilisateur = null);
       this.tacheService.nextListSubject(list);
       return true;
     }
-    this.refreshMapEnCoursByUtilisateur(idGroupe);
+    this.getGroupesUtilisateur(idUser).forEach(groupe => this.refreshMapEnCoursByUtilisateur(groupe.ident));
     return false;
   }
 
   public isVerification(idUser: number): boolean {
-    const idVerif = this.getIdGroupeByCode(Code.AFN);
     const user = this.utilisateurService.getUserById(idUser);
-    return idVerif == user.idGroupe;
-        
+    return user.verification;        
   }
 
   public isValidation(idUser: number): boolean {
-    const idValid = this.getIdGroupeByCode(Code.AFN);
     const user = this.utilisateurService.getUserById(idUser);
-    return idValid == user.idGroupe;
+    return user.validation;
   }
   
   /** Recupère la liste des utilisateurs dont l'id du groupe est passé en paramètre
@@ -169,6 +189,57 @@ export class GroupeService {
    * @param idGroupe 
    */
   public getUtilisateurByGroupe(idGroupe: number): Utilisateur[]{
-    return this.utilisateurService.getAll().filter(utilisateur => utilisateur.idGroupe === idGroupe)
+    return this.utilisateurService.getAll().filter(utilisateur => this.getGroupesUtilisateur(utilisateur.ident).find(groupe => groupe.ident == idGroupe))
+  }
+
+  getGroupesUtilisateur(idUtilisateur: number) {
+    let utilisateur = this.utilisateurService.getUserById(idUtilisateur);
+    let listeBannette: Groupe[] = [];
+    if (utilisateur.profil.AVN == true){
+      listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.AVN)))
+      if (utilisateur.profil.AFN == true){
+        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.AFN)))   
+        if (utilisateur.profil.REF == true){
+          listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.REF)))
+          if (utilisateur.profil.RES == true){
+            listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
+          }
+        }
+        else if (utilisateur.profil.RES == true){
+          listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
+        }
+      }
+      else if (utilisateur.profil.REF == true){
+        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.REF)))
+        if (utilisateur.profil.RES == true){
+          listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
+        }
+      }
+      else if (utilisateur.profil.RES == true){
+        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
+      }
+    } 
+    else if (utilisateur.profil.AFN == true){
+      listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.AFN)))   
+      if (utilisateur.profil.REF == true){
+        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.REF)))
+        if (utilisateur.profil.RES == true){
+          listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
+        }
+      }
+      else if (utilisateur.profil.RES == true){
+        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
+      }
+    }
+    else if (utilisateur.profil.REF == true){
+      listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.REF)))
+      if (utilisateur.profil.RES == true){
+        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
+      }
+    }
+    else if (utilisateur.profil.RES == true){
+      listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
+    }
+    return listeBannette
   }
 }

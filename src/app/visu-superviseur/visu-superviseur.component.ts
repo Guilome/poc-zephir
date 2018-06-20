@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../shared/services/groupe.service';
 import { TitreService } from '../shared/services/titre.service';
@@ -7,6 +7,7 @@ import { Tache, Status } from '../shared/domain/Tache';
 import { TacheService } from '../shared/services/tache.service';
 import { UtilisateurService } from '../shared/services/utilisateur.service';
 import { Utilisateur } from '../shared/domain/Utilisateur';
+import { ProfilCode } from '../shared/domain/profil';
 
 @Component({
   selector: 'app-visu-superviseur',
@@ -41,8 +42,10 @@ export class VisuSuperviseurComponent implements OnInit {
     this.idGroupe = parseInt(this.activeRoute.snapshot.paramMap.get("id"))
     localStorage.setItem("GROUPE", this.idGroupe.toString());
     this.titreService.updateTitre("Bannette " + this.groupeService.getGroupeById(this.idGroupe).libelle.toLowerCase())
-    this.dossiers = this.tacheService.getDossierEncours();
-    this.gestionnaires = this.utilisateurService.getAll().filter(utilisateur => utilisateur.idGroupe == this.idGroupe);
+    this.dossiers = this.tacheService.getDossierEncours().filter(dossier => dossier.idGroupe == this.idGroupe);
+    this.gestionnaires = this.utilisateurService.getAll()
+        .filter(utilisateur => this.groupeService.getGroupesUtilisateur(utilisateur.ident)
+        .find(g => g.ident == this.idGroupe));
     this.dossiers.forEach(d => {
       if (this.produits.length == 0) {
         this.produits.push({nom: d.context.contrat.codeProduit})        
@@ -73,7 +76,7 @@ export class VisuSuperviseurComponent implements OnInit {
     this.entetes = []
     switch(this.filtre) {
       case"gestionnaire":
-        this.gestionnaires.forEach(g => {
+        this.gestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR).forEach(g => {
           this.entetes.push({
             nom: g.nom,
             prenom: g.prenom

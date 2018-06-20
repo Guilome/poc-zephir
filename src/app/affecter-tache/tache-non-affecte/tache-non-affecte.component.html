@@ -87,7 +87,7 @@
             <td>{{ dossier.context.contrat.numero}} - {{dossier.code == '199_AFN' ? 'AFN' : dossier.code }} </td>
             <td>{{ dossier.context.contrat.codeProduit }}</td>
             <td>{{ dossier.dateReception | date: 'dd/MM/yyyy' }}</td>
-            <td>{{  statutDossier(dossier.ident) | bannette }}</td>
+            <td>{{dossier.codeDossier == '199_AFN' ? 'AFN' : dossier.code}}</td>
             <td [innerHTML]="statutDossier(dossier.ident) | statut" ></td>
             <td align="right" *ngIf="statutDossier(dossier.ident) != 'Ok'">
               <input type="checkbox" id="{{dossier.ident}}" [checked]="checkboxDossier" name="dossiers" (change)="return()">

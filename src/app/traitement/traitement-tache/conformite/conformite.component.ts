@@ -210,7 +210,7 @@ export class ConformiteComponent implements OnInit {
   /**
    * retourne le nom de la personne qui a vérifié la piece
    */
-  getNomVerification(): string {
+  getNomVerification(): string {    
     return this.utilisateurService.getName(this.piece.idUtilisateurVerification);
   }
 

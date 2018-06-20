@@ -157,10 +157,12 @@ export class GraphiqueTermineComponent implements OnInit {
 
   private refreshMapTermine(lesDossiers: Tache[]) {
     if (this.groupeService.getGroupeById(this.idGroupe).code == Code.AFN) {
-      this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
+      this.lesGestionnaires
+          .filter(g => g.profil.code != ProfilCode.DIRECTEUR && this.groupeService.getGroupesUtilisateur(g.ident).find(groupe => groupe.ident == this.idGroupe))
+          .forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
       for (const d of lesDossiers) {    
         let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurVerification)[0];
-        if (gestionnaire.idGroupe == this.idGroupe) {
+        if (this.groupeService.getGroupesUtilisateur(gestionnaire.ident).find(groupe => groupe.ident == this.idGroupe)) {
           const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
           const sum = this.mapSubjectTermine.get(key);
           this.mapSubjectTermine.set(key,  sum + 1);
@@ -168,10 +170,12 @@ export class GraphiqueTermineComponent implements OnInit {
       }
     }
     else {
-      this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
+      this.lesGestionnaires
+          .filter(g => g.profil.code != ProfilCode.DIRECTEUR && this.groupeService.getGroupesUtilisateur(g.ident).find(groupe => groupe.ident == this.idGroupe))
+          .forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
       for (const d of lesDossiers) {    
         let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurCloture)[0];
-        if (gestionnaire.idGroupe == this.idGroupe) {
+        if (this.groupeService.getGroupesUtilisateur(gestionnaire.ident).find(groupe => groupe.ident == this.idGroupe)) {
           const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
           const sum = this.mapSubjectTermine.get(key);
           this.mapSubjectTermine.set(key,  sum + 1);

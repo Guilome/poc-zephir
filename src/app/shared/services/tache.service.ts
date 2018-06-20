@@ -3,7 +3,6 @@ import {Nature, Status, Tache} from '../domain/Tache';
 import {Context} from '../domain/context';
 import { BehaviorSubject} from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import {UtilisateurService} from './utilisateur.service';
 import { Contrat } from '../domain/contrat';
 
 
@@ -30,8 +29,7 @@ export class TacheService {
       lTache.dateCreation = new Date();
       lTache.dateReception = new Date();
       lTache.dateVerification = new Date();
-      lTache.idUtilisateur = 5; // Rousseau
-      lTache.idUtilisateurVerification = 1; // Dupont
+      lTache.idUtilisateurVerification = 1;// Dupont
 
       this.listTaches.push(lTache);
       this.create3PiecesTMP(lTache);
@@ -234,7 +232,6 @@ export class TacheService {
       lPiece.dateCreation = new Date();
       lPiece.dateReception = new Date();
       lPiece.dateVerification = new Date();
-      lPiece.idUtilisateur = 5;
       lPiece.idUtilisateurVerification = 1;// Dupont
       
       this.listTaches.push(lPiece);
@@ -472,6 +469,12 @@ export class TacheService {
    */
   public delAffectation(id: number) {
      this.getDossierById(id).idUtilisateur = null;
+  }
+
+  public avnAffectation(id: number) {
+    this.getDossierById(id).idGroupe = 2
+    this.getDossierById(id).code = Tache.libCode.get('AVENANT')
+    this.getDossierById(id).idUtilisateur = null;
   }
 }
 
