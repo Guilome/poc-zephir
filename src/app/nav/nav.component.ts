@@ -12,7 +12,7 @@ export class NavComponent implements OnInit {
   constructor(private router: Router, private userService: UtilisateurService) { }
 
   public userName = '';
-  public connexionBoolean
+  public connexionBoolean = false;
   ngOnInit() {
   }
 

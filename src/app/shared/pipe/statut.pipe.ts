@@ -7,9 +7,11 @@ export class StatutPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
     if(value === 'À valider'){
-      return `<span class="text-info">${value} </span>`;
+      return `<span class="badge badge-info">${value} </span>`;
     }else if(value === 'À vérifier') {
-    return `<span class="text-warning">${value}</span>`;
+    return `<span class="badge badge-warning">${value}</span>`;
+    } else if (value === 'Ok') {
+      return `<span class="badge badge-success">${value}</span>`;
     }
 
     return value;
