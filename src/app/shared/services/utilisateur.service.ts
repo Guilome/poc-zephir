@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Utilisateur} from '../domain/Utilisateur';
-import { Profil, ProfilCode } from '../domain/profil';
+import { Profil, ProfilCode } from '../domain/Profil';
 
 @Injectable()
 export class UtilisateurService {

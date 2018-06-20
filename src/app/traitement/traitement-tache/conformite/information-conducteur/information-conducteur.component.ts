@@ -4,7 +4,7 @@ import { Tache } from '../../../../shared/domain/Tache';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TacheService } from '../../../../shared/services/tache.service';
-import { Modification, Donnee } from '../../../../shared/domain/modification';
+import { Modification, Donnee } from '../../../../shared/domain/Modification';
 import { ModificationService } from '../../../../shared/services/modification.service';
 import { DonnerTacheComponent } from '../../../../affecter-tache/donner-tache/donner-tache.component';
 import { $ } from 'protractor';

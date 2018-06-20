@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Modification, Donnee } from '../domain/modification';
+import { Modification, Donnee } from '../domain/Modification';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { TacheService } from './tache.service';

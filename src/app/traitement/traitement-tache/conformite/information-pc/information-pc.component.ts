@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Modification, Donnee } from '../../../../shared/domain/modification';
+import { Modification, Donnee } from '../../../../shared/domain/Modification';
 import { Tache } from '../../../../shared/domain/Tache';
 import { ActionMetierService } from '../../../../shared/services/action-metier.service';
 import { TacheService } from '../../../../shared/services/tache.service';

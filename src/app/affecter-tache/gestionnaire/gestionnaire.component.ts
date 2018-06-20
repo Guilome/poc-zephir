@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Utilisateur } from '../../shared/domain/Utilisateur';
-import { ProfilCode } from '../../shared/domain/profil'
+import { ProfilCode } from '../../shared/domain/Profil'
 import { GroupeService } from '../../shared/services/groupe.service';
 @Component({
   selector: 'app-gestionnaire',

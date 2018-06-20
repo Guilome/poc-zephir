@@ -1,4 +1,4 @@
-import { Profil } from "./profil";
+import { Profil } from "./Profil";
 
 export class Utilisateur {
 

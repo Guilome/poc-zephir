@@ -7,7 +7,7 @@ import { Tache, Status } from '../shared/domain/Tache';
 import { TacheService } from '../shared/services/tache.service';
 import { UtilisateurService } from '../shared/services/utilisateur.service';
 import { Utilisateur } from '../shared/domain/Utilisateur';
-import { ProfilCode } from '../shared/domain/profil';
+import { ProfilCode } from '../shared/domain/Profil';
 
 @Component({
   selector: 'app-visu-superviseur',

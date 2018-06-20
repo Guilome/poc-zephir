@@ -11,7 +11,7 @@ import { Utilisateur} from '../../shared/domain/Utilisateur';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { ActionMetierService } from '../../shared/services/action-metier.service';
 import { Contrat } from '../../shared/domain/contrat';
-import { ProfilCode } from '../../shared/domain/profil';
+import { ProfilCode } from '../../shared/domain/Profil';
 
 @Component({
   selector: 'app-gestion',

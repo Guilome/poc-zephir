@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TacheService } from '../../../../shared/services/tache.service';
 import { Tache } from '../../../../shared/domain/Tache';
 import { ActionMetierService } from '../../../../shared/services/action-metier.service';
-import { Modification, Donnee } from '../../../../shared/domain/modification';
+import { Modification, Donnee } from '../../../../shared/domain/Modification';
 import { ModificationService } from '../../../../shared/services/modification.service';
 
 @Component({
