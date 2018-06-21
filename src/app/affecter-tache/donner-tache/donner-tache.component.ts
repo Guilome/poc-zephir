@@ -49,19 +49,19 @@ export class DonnerTacheComponent implements OnInit {
             if (this.tacheService.getStatutTache(dossier) == Status.A_VALIDER && g.validation == true) {
               dossier.idGroupe = this.idGroupe
               dossier.idUtilisateur = g.ident
-              let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
+              let pieces = this.tacheService.getTachesByDossier(dossier.ident)
               pieces.forEach(piece => piece.idUtilisateur = g.ident)
             }
             else if (this.tacheService.getStatutTache(dossier) == Status.A_VERIFIER && g.verification == true) {
               dossier.idGroupe = this.idGroupe
               dossier.idUtilisateur = g.ident
-              let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
+              let pieces = this.tacheService.getTachesByDossier(dossier.ident)
               pieces.forEach(piece => piece.idUtilisateur = g.ident)
             }
             else if (this.tacheService.getStatutTache(dossier) == Status.NON_CONFORME && g.avenant == true) {
               dossier.idGroupe = this.idGroupe
               dossier.idUtilisateur = g.ident
-              let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
+              let pieces = this.tacheService.getTachesByDossier(dossier.ident)
               pieces.forEach(piece => piece.idUtilisateur = g.ident)
             }
             else {

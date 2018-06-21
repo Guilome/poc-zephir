@@ -37,7 +37,7 @@ export class InformationPcComponent implements OnInit {
     var today = new Date();
     (<HTMLInputElement>document.getElementById('date2delivrance')).setAttribute("max", this.createDate(today));    
     this.route.params.subscribe(data => {
-    this.currentTache = this.tacheService.getPieceById(+data.piece);
+    this.currentTache = this.tacheService.getTacheById(+data.piece);
     });
     this.setInputValue();
   }
@@ -83,7 +83,7 @@ export class InformationPcComponent implements OnInit {
       this.currentPrefecture = prefecture
       this.modifService.addModification(modifPC)
     }
-    this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));    
+    this.actionMetierService.updateDemandeAvt(this.tacheService.getTacheById(this.currentTache.idTacheMere));    
     this.toastr.success('Une demande d\'avenant a été créée');
   }
 

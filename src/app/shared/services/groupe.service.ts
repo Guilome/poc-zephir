@@ -113,17 +113,17 @@ export class GroupeService {
       if (tailleGestionnaires > 0 && this.tacheService.getStatutTache(tache) == Status.A_VALIDER && 
           this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].validation == true) {
         tache.idUtilisateur = this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].ident
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+        this.tacheService.getTachesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
       }
       else if (tailleGestionnaires > 0 && this.tacheService.getStatutTache(tache) == Status.A_VERIFIER && 
                this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].verification == true) {
         tache.idUtilisateur = this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].ident
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+        this.tacheService.getTachesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
       }
       else if (tailleGestionnaires > 0 && this.tacheService.getStatutTache(tache) == Status.NON_CONFORME && 
                this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].avenant == true) {
         tache.idUtilisateur = this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].ident
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+        this.tacheService.getTachesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
       }
     });
     this.tacheService.nextListSubject(list);
@@ -134,19 +134,18 @@ export class GroupeService {
     //const tailleGestionnaires =  utilisateurs.length;
     taches.forEach( ( tache , i) => {
       const tailleGestionnaires =  utilisateurs.filter(u => this.getGroupesUtilisateur(u.ident).find(g => g.ident == tache.idGroupe)).length;
-      console.log(tailleGestionnaires);
       
       if (this.tacheService.getStatutTache(tache) == Status.A_VALIDER && utilisateurs[i % tailleGestionnaires].validation == true) {
         tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+        this.tacheService.getTachesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
       }
       else if (this.tacheService.getStatutTache(tache) == Status.A_VERIFIER && utilisateurs[i % tailleGestionnaires].verification == true) {
         tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+        this.tacheService.getTachesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
       }
       else if (this.tacheService.getStatutTache(tache) == Status.NON_CONFORME && utilisateurs[i % tailleGestionnaires].avenant == true) {
         tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
+        this.tacheService.getTachesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
       }
     });
   }

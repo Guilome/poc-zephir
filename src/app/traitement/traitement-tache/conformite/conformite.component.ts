@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Tache, Status} from '../../../shared/domain/Tache';
+import {Tache, Status, Nature} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
 import {Subscription} from 'rxjs/Subscription';
 import {ToastrService} from 'ngx-toastr';
@@ -42,12 +42,12 @@ export class ConformiteComponent implements OnInit {
 
       this.idCurrentUser = +localStorage.getItem('USER');
       this.idSubscription = this.route.params.subscribe((params: any) => {
-        this.piece = this.tacheService.getPieceById(+params.piece);
+        this.piece = this.tacheService.getTacheById(+params.piece);
      
       });
       if (this.piece != null) {
         this.tacheService.listerTaches().subscribe(data => 
-                                  this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere));
+                                  this.dossier = this.tacheService.getTacheById(this.piece.idTacheMere));
 
       this.dropdownSettings = { 
                                 singleSelection: false, 
@@ -94,7 +94,7 @@ export class ConformiteComponent implements OnInit {
 
     let idNext = null;
   
-    for ( let val of this.tacheService.getPiecesByIdContext(this.piece.context.ident)) {
+    for ( let val of this.tacheService.getTachesByDossier(this.dossier.ident).filter(piece => piece.nature === Nature.PIECE)) {
          if(val.status != 'À valider' ) {
              idNext = val.ident;
             break;

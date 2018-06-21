@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Tache} from '../../shared/domain/Tache';
+import {Tache, Nature} from '../../shared/domain/Tache';
 import {ActivatedRoute, Router } from '@angular/router';
 import {TacheService} from '../../shared/services/tache.service';
 import { ActionMetierService } from '../../shared/services/action-metier.service';
@@ -52,9 +52,8 @@ export class TraitementTacheComponent implements OnInit {
       if( this.dossier != null){
           this.tacheService.listerTaches()
           .subscribe(data => {
-                              this.listNotes = this.tacheService.getNotesByDossier(this.dossier.ident);
-                              this.listPieces = this.tacheService.getPiecesByDossier(this.dossier.ident);
-                              //this.currentPiece = this.tacheService.getPieceById(+params.piece);
+                              this.listNotes = this.tacheService.getTachesByDossier(this.dossier.ident).filter(pi => pi.nature === Nature.NOTE);
+                              this.listPieces = this.tacheService.getTachesByDossier(this.dossier.ident).filter(pi => pi.nature === Nature.PIECE);
                               this.currentTache = this.tacheService.getTacheById(+params.piece);
                             });
 

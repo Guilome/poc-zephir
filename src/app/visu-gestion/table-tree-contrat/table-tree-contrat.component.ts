@@ -33,7 +33,7 @@ export class TableTreeContratComponent implements OnInit {
       this.dossiers = data.filter( d => d.nature === Nature.DOSSIER && d.idUtilisateur === this.idCurrentUser && d.dateCloture == null)
       this.dossierAffichage = []
       this.dossiers.forEach(dossier => {
-        this.lesPieces = this.tacheService.getPiecesByDossier(dossier.ident)
+        this.lesPieces = this.tacheService.getTachesByDossier(dossier.ident).filter( pi => pi.nature === Nature.PIECE)
         this.dossierAffichage.push({ident: dossier.ident, numContrat: dossier.context.contrat.numero, codeDossier: dossier.code, produit: dossier.context.contrat.codeProduit,
                                     nomClient: dossier.context.nomAppelClient, nomIntermediaire: dossier.context.nomAppelIntermediaire,
                                     status: this.tacheService.getStatutTache(dossier), dateGedRec : dossier.dateReception.toLocaleDateString()})
@@ -60,13 +60,13 @@ export class TableTreeContratComponent implements OnInit {
         this.firstIdent = dp.pieces[0].ident
       }
     })
-    const dossier = this.tacheService.getDossierById(idDossier);
+    const dossier = this.tacheService.getTacheById(idDossier);
     this.route.navigate(['/TraitementTache', { id: dossier.context.ident, piece: this.firstIdent}])
   }
 
   openModal(modal, idDossier){
-    this.dossierStatut = this.tacheService.getStatutTache(this.tacheService.getDossierById(idDossier))
-    this.lesPieces = this.tacheService.getPiecesByDossier(idDossier)
+    this.dossierStatut = this.tacheService.getStatutTache(this.tacheService.getTacheById(idDossier))
+    this.lesPieces = this.tacheService.getTachesByDossier(idDossier).filter(ta => ta.nature === Nature.PIECE)
     this.currentModal = this.modalService.open(modal,  { size: 'lg', backdropClass: 'light-blue-backdrop', centered: true });   
   }
 

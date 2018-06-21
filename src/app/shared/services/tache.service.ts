@@ -50,10 +50,12 @@ export class TacheService {
   
 
 
+  /**
+   * Retourne un observable sur la liste des taches
+   */
   listerTaches(): Observable<Tache[]> {
     return this.tacheSubject;
   }
-
   /** Permet l'ajout d'une liste a tacheSubject
    * 
    * @param list 
@@ -61,7 +63,6 @@ export class TacheService {
   nextListSubject(list: any){
     this.tacheSubject.next(list)
   }
-
   addTache(tache: Tache) {
     tache.ident = this.listTaches[(this.listTaches.length - 1)].ident + 1;
     this.listTaches.push(tache);
@@ -73,43 +74,11 @@ export class TacheService {
   }
 
   /**
-   * retourne une pièce en fonction de son id
-   * @param id 
-   */
-  getPieceById(id: number): Tache {
-    return this.listTaches.find(t => t.ident === id && t.nature == Nature.PIECE);
-  }
-
-    /**
-   * retourne une note en fonction de son id
-   * @param id 
-   */
-  getNoteById(id: number): Tache {
-    return this.listTaches.find(t => t.ident === id && t.nature == Nature.NOTE);
-  }
-
-  /**
    * Retourne la liste de pièces en fonction de l'ID du dossier (199), trié par priorité.
    * @param idDossier 
    */
-  getPiecesByDossier(idDossier: number): Tache[]{
+  getTachesByDossier(idDossier: number): Tache[]{
     return this.listTaches.filter(t => t.nature == Nature.PIECE && t.idTacheMere === idDossier).sort(this.trieByPriorite)
-  }
-
-  /**
-   * Retourne la liste de note en fonction de l'ID du dossier (199)
-   * @param idDossier 
-   */
-  getNotesByDossier(idDossier: number): Tache[]{
-    return this.listTaches.filter(t => t.nature == Nature.NOTE && t.idTacheMere === idDossier)
-  }
-
-  /**
-   * retourne un dossier (199) en fonction de son ID
-   * @param id 
-   */
-  getDossierById(id: number): Tache {
-    return this.listTaches.find(t => t.ident === id && t.nature == Nature.DOSSIER);
   }
 
   /**
@@ -118,7 +87,7 @@ export class TacheService {
    * @returns {Tache}
    */
   closePieceConforme(idTache: number): Tache {
-    const p = this.getPieceById(idTache);
+    const p = this.getTacheById(idTache);
     p.dateVerification  = new Date();
     p.idUtilisateurVerification = p.idUtilisateur;
     
@@ -147,7 +116,6 @@ export class TacheService {
    */
   toEtapeValidation(idTache: number) {
     const tache = this.getTacheById(idTache);
-    //appel web service pour récupérer l'id du groupe validation
     tache.dateVerification = new Date();
     tache.idUtilisateurVerification = tache.idUtilisateur;
     tache.idUtilisateur = null;
@@ -161,10 +129,10 @@ export class TacheService {
    * Fermeture du dossier
    */
   closeDossier(idDossier: number){
-    let dossier = this.getDossierById(idDossier)
+    let dossier = this.getTacheById(idDossier)
     dossier.dateCloture = new Date();
     // fermer toutes les pieces...
-    for ( let p of  this.getPiecesByDossier(idDossier) ) {
+    for ( let p of  this.getTachesByDossier(idDossier) ) {
       p.dateCloture = new Date();
     }
   }
@@ -294,9 +262,8 @@ export class TacheService {
   public removePiecesTemporaire() {
     for (let pi of this.listPieceEnAttente) {
       if(pi.motifNonConformite != null){
-        this.getPieceById(pi.ident).motifNonConformite = null;
-        this.getPieceById(pi.ident).dateCloture = null;
-        
+        this.getTacheById(pi.ident).motifNonConformite = null;
+        this.getTacheById(pi.ident).dateCloture = null;
       }else {
         this.listTaches.splice(this.listTaches.indexOf(pi), 1)
       }
@@ -373,16 +340,6 @@ export class TacheService {
       else
     return 1;
   }
-  /*private getPiecesByContext(context: Context): Tache[]{
-    return this.listTaches.filter(piece => piece.context == context && piece.nature == Nature.PIECE)
-    .sort(this.trieByPriorite);
-  }*/
-
-  public getPiecesByIdContext(idContext: number): Tache[]{
-    return this.listTaches.filter(piece => piece.context.ident == idContext && piece.nature == Nature.PIECE)
-    .sort(this.trieByPriorite);
-  }
-
   public getDossierByIdContext(idContext: number, userId: number): Tache{
     return this.listTaches.find(dossier => dossier.context.ident == idContext && dossier.nature == Nature.DOSSIER && dossier.idUtilisateur == userId)
   }
@@ -413,7 +370,7 @@ export class TacheService {
   public getStatutTache(tache: Tache): string{
     //Dossier
     if (tache.nature === Nature.DOSSIER){
-      let lesPieces = this.getPiecesByDossier(tache.ident).filter(pi => pi.dateCloture == null);
+      let lesPieces = this.getTachesByDossier(tache.ident).filter(pi => pi.dateCloture == null && pi.nature === Nature.PIECE);
       const mapCount = new Map<string,number>();
       mapCount.set('En attente', 0);
       mapCount.set('À vérifier', 0);
@@ -478,13 +435,13 @@ export class TacheService {
    * @param dossier 
    */
   public delAffectation(id: number) {
-     this.getDossierById(id).idUtilisateur = null;
+     this.getTacheById(id).idUtilisateur = null;
   }
 
   public avnAffectation(id: number) {
-    this.getDossierById(id).idGroupe = 2
-    this.getDossierById(id).code = Tache.libCode.get('AVENANT')
-    this.getDossierById(id).idUtilisateur = null;
+    this.getTacheById(id).idGroupe = 2
+    this.getTacheById(id).code = Tache.libCode.get('AVENANT')
+    this.getTacheById(id).idUtilisateur = null;
   }
 }
 

@@ -42,7 +42,7 @@ export class InformationCgComponent implements OnInit {
     (<HTMLInputElement>document.getElementById('dateAcquisition')).setAttribute("max", this.createDate(today));  
     //---------------------------------------------------------------------------------------------------------
     this.route.params.subscribe(data => {
-    this.currentTache = this.tacheService.getPieceById(+data.piece);
+    this.currentTache = this.tacheService.getTacheById(+data.piece);
     });
     this.lesModifsCG = this.modifService.getModificationByPiece(this.currentTache.ident)
     this.setInputValue();
@@ -73,7 +73,7 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getMotifByDonnee(Donnee.MARQUE_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MARQUE_VEHICULE, this.currentMarque, marque);
         this.modifService.addModification(modifCG)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getTacheById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getMotifByDonnee(Donnee.MARQUE_VEHICULE);
@@ -85,7 +85,7 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getMotifByDonnee(Donnee.IMMATRICULATION_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.IMMATRICULATION_VEHICULE, this.currentImmat, immat)
         this.modifService.addModification(modifCG)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getTacheById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getMotifByDonnee(Donnee.IMMATRICULATION_VEHICULE);
@@ -97,7 +97,7 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getMotifByDonnee(Donnee.MODELE_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
         this.modifService.addModification(modifCG)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getTacheById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getMotifByDonnee(Donnee.MODELE_VEHICULE);
@@ -109,7 +109,7 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getMotifByDonnee(Donnee.MEC_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MEC_VEHICULE, this.currentMEC, mec)
         this.modifService.addModification(modifCG)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getTacheById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getMotifByDonnee(Donnee.MEC_VEHICULE);
@@ -121,7 +121,7 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getMotifByDonnee(Donnee.DESIGNATION_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.DESIGNATION_VEHICULE, this.currentDesignation, designation)
         this.modifService.addModification(modifCG)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getTacheById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getMotifByDonnee(Donnee.DESIGNATION_VEHICULE);
@@ -133,7 +133,7 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getMotifByDonnee(Donnee.MA_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MA_VEHICULE, this.currentMDA, mda)
         this.modifService.addModification(modifCG)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getTacheById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getMotifByDonnee(Donnee.MA_VEHICULE);
@@ -145,7 +145,7 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getMotifByDonnee(Donnee.DA_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.DA_VEHICULE, this.currentDA, da)
         this.modifService.addModification(modifCG)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.actionMetierService.updateDemandeAvt(this.tacheService.getTacheById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getMotifByDonnee(Donnee.DA_VEHICULE);

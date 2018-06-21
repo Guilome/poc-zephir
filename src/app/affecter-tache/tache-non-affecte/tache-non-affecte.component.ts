@@ -125,11 +125,11 @@ export class TacheNonAffecteComponent implements OnInit {
   }
 
   statutDossier(idDossier: number): string {
-    return this.tacheService.getStatutTache(this.tacheService.getDossierById(idDossier));
+    return this.tacheService.getStatutTache(this.tacheService.getTacheById(idDossier));
   }
 
   bannetteDossier(idDossier: number): string {
-    return this.groupeService.getGroupeById(this.tacheService.getDossierById(idDossier).ident).libelle
+    return this.groupeService.getGroupeById(this.tacheService.getTacheById(idDossier).ident).libelle
   }
 
   onKeyUpFilter($event){

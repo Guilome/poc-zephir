@@ -37,7 +37,7 @@ export class ModificationService {
   }
 
   public getModificationByDossier(idDossier: number): Modification[]{
-    return this.listModifications.filter(modif => this.tacheService.getPieceById(modif.idTache).idTacheMere == idDossier)
+    return this.listModifications.filter(modif => this.tacheService.getTacheById(modif.idTache).idTacheMere == idDossier)
   }
   addModification(modif: Modification) {
     if (this.listModifications.length == 0) {

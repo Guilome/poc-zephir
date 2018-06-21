@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../shared/services/groupe.service';
 import { TitreService } from '../shared/services/titre.service';
 import { GraphiqueEnCoursComponent } from './graphique-en-cours/graphique-en-cours.component';
-import { Tache, Status } from '../shared/domain/Tache';
+import { Tache, Status, Nature } from '../shared/domain/Tache';
 import { TacheService } from '../shared/services/tache.service';
 import { UtilisateurService } from '../shared/services/utilisateur.service';
 import { Utilisateur } from '../shared/domain/Utilisateur';
@@ -83,12 +83,12 @@ export class VisuSuperviseurComponent implements OnInit {
 
   traiterPieces(idDossier) {
     let firstIdent = null
-    this.tacheService.getPiecesByDossier(idDossier).forEach(dp => {
+    this.tacheService.getTachesByDossier(idDossier).filter(pi => pi.nature === Nature.PIECE).forEach(dp => {
       if(firstIdent == null){
         firstIdent = dp.ident
       }
     })
-    const dossier = this.tacheService.getDossierById(idDossier);
+    const dossier = this.tacheService.getTacheById(idDossier);
     this.route.navigate(['/TraitementTache', { id: dossier.context.ident, piece: firstIdent}])
   }
 
