@@ -64,16 +64,26 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td colspan="4">DOSSIER EN ATTENTE</td>
-        </tr>
-        <ng-container *ngFor="let piece of lesPieces">
+        <ng-container *ngIf="dossierStatut == 'En attente' || dossierStatut == 'À vérifier' || dossierStatut == 'À valider' || dossierStatut == 'Ok'">
           <tr>
-            <th scope="row"> / </th>
-            <td>{{piece.libelle}}</td>
-            <td>Reception de la pièce</td>
-            <td>{{piece.dateReception.toLocaleString()}}</td>
+            <td colspan="4">DOSSIER EN ATTENTE</td>
           </tr>
+          <ng-container *ngFor="let piece of lesPieces">
+            <tr *ngIf="piece.status ==='En attente', else elseBlock">
+              <th scope="row"> / </th>
+              <td>{{piece.libelle}}</td>
+              <td>Reception de la pièce</td>
+              <td></td>
+            </tr>
+            <ng-template #elseBlock>            
+              <tr>
+                <th scope="row"> / </th>
+                <td>{{piece.libelle}}</td>
+                <td>Reception de la pièce</td>
+                <td>{{piece.dateReception.toLocaleDateString()}}</td>
+              </tr>
+            </ng-template>
+          </ng-container>
         </ng-container>
         <ng-container *ngIf="dossierStatut == 'À vérifier' || dossierStatut == 'À valider' || dossierStatut == 'Ok'">
           <tr>
@@ -84,7 +94,7 @@
               <th scope="row">{{getName(piece.idUtilisateurVerification)}}</th>
               <td>{{piece.libelle}}</td>
               <td>Vérification de la pièce</td>
-              <td>{{piece.dateVerification.toLocaleString()}}</td>
+              <td>{{piece.dateVerification.toLocaleDateString()}}</td>
             </tr>
           </ng-container>
         </ng-container>
@@ -97,7 +107,7 @@
               <th scope="row">{{getName(piece.idUtilisateurCloture)}}</th>
               <td>{{piece.libelle}}</td>
               <td>Validation de la pièce</td>
-              <td>{{piece.dateCloture.toLocaleString()}}</td>
+              <td>{{piece.dateCloture.toLocaleDateString()}}</td>
             </tr>
           </ng-container>
         </ng-container>

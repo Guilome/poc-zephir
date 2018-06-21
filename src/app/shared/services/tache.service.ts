@@ -178,14 +178,14 @@ export class TacheService {
         lTache.context = new Context(330010+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
         lTache.priorite = (i%10) + 1;
         lTache.code = "199_AFN";
-        const date = '05/' + ((i%31) + 1) + '/2018';
+        const date = '06/' + ((i%31) + 1) + '/2018';
         lTache.dateCloture = new Date(date);
-        lTache.dateVerification  = new Date('05/21/2018');
-        lTache.dateCreation  = new Date('05/01/2018');
-        lTache.dateReception = new Date('05/01/2018');
+        lTache.dateVerification  = new Date('06/21/2018');
+        lTache.dateCreation  = new Date('06/01/2018');
+        lTache.dateReception = new Date('06/01/2018');
         
-        lTache.idUtilisateurVerification = [1, 4, 6][i % 3];
-        lTache.idUtilisateurCloture = [2, 3, 5][i % 3];
+        lTache.idUtilisateurVerification = [1, 3, 4, 6][i % 4];
+        lTache.idUtilisateurCloture = [3, 4, 6][i % 3];
         this.listTaches.push(lTache);
     }
   }
