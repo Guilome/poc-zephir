@@ -8,7 +8,8 @@
   <!-- BEGIN left screnn-->
   <div  class="col-3">
     <h4>Contrat <a href="/#">{{dossier.context.contrat.numero}} </a></h4>
-    <h4>Bannette : <label id="idLabelStatus" ></label> </h4>
+    <h4>Statut : <label id="idLabelStatus" ></label> </h4>
+    <h4>Bannette : <label> {{dossier.code | bannette}}</label> </h4>
 
     <div *ngIf="dossier != null">
         <h5>Pièces justificatives :     
@@ -40,14 +41,11 @@
           </h5>
           <div class="nav flex-column nav-pills ">
           
-            <div *ngFor="let n of listNotes" > 
+            <ng-container *ngFor="let n of listNotes" > 
               <a class="nav-link" (click)="detailPiece(n,a)" [attr.id]="'link'+n.ident" #a>
-                      <div class="row">
-                          {{n.nature}} de {{getNomUtilisateur(n)}}
-                      </div>
-
+                  Note de {{getNomUtilisateur(n)}}
               </a>
-            </div>
+            </ng-container>
           </div>
 
             <!-- end NOTE-->
@@ -55,15 +53,15 @@
           <!-- begin  ACTION METIER-->
               
           <div *ngIf="listActionsMetier.length > 0 ">
-                  <div class="row" >
-                    <h5>Actions Métier : </h5>
-                  </div>
-                  <div class="nav flex-column nav-pills ">
+                  <h5>
+                    Actions Métier :
+                  </h5>
 
-                  <div *ngFor="let act of listActionsMetier">
-                    <div class="row"> <a class="nav-link" (click)="detailPiece(act,a)" #a>{{act.libelle}}</a></div>
-                  </div>
-              </div>
+                  <ng-container *ngFor="let act of listActionsMetier">
+                      <div class="nav flex-column nav-pills ">
+                          <a class="nav-link" (click)="detailPiece(act,a)"[attr.id]="'link'+act.ident" #a>{{act.libelle}}</a>
+                    </div>
+                  </ng-container>
             </div>  
           <!-- END  ACTION METIER-->
 

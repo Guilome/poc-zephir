@@ -418,20 +418,20 @@ export class TacheService {
       mapCount.set('En attente', 0);
       mapCount.set('À vérifier', 0);
       mapCount.set('À valider', 0);
-      if (lesPieces.length == 0) {
+      const nbPiecesNonCloturees = lesPieces.length;
+      if ( nbPiecesNonCloturees == 0) {
         return Status.OK// pour le jeu de test sinon le dossier est en attente
       }  else {
             for (let p of lesPieces) {
               mapCount.set(p.status, mapCount.get(p.status)+1);
             }
-            if( mapCount.get('En attente') > 0)
-                return Status.EN_ATTENTE;
-            else if(mapCount.get('À vérifier') > 0 )
+            if(mapCount.get('À vérifier') > 0 )
                 return Status.A_VERIFIER
-            else if (mapCount.get('À valider') > 0 )
+            else if (mapCount.get('À valider') == nbPiecesNonCloturees )
                 return Status.A_VALIDER;
+            else if( mapCount.get('En attente')  > 0)
+                return Status.EN_ATTENTE;
       }
-
       return Status.OK 
     }
     // PIECE
