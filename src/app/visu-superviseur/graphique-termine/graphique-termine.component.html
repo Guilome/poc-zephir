@@ -2,14 +2,15 @@
   <div class="card-header">
     Dossiers Terminés
   </div>
+  <button type="button" class="btn btn-info btn-sm" (click)="AfficherDetail()">Détails</button>
   <div class="card-body">
     <canvas id="chartBar"></canvas>
   </div>
   <div class="card-footer">
     <div class="btn-group btn-group" role="group" aria-label="Basic example">
-      <button class="btn btn-info" (click)="trierJour()">Jour</button>
-      <button class="btn btn-info" (click)="trierSemaine()">Semaine</button>
-      <button class="btn btn-info" (click)="trierMois()">Mois</button>
+      <button class="btn btn-info" (click)="filtrer('jour')">Jour</button>
+      <button class="btn btn-info" (click)="filtrer('semaine')">Semaine</button>
+      <button class="btn btn-info" (click)="filtrer('mois')">Mois</button>
     </div>
   </div>
 </div>

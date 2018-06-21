@@ -13,7 +13,7 @@ export class UtilisateurService {
     listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille', new Profil(ProfilCode.GESTIONNAIRE, true,false,false,false), true, false, false));
     listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	new Profil(ProfilCode.GESTIONNAIRE, false,true,false,false), true, false, true));
     listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	new Profil(ProfilCode.GESTIONNAIRE, true,false,true,false), true, true, false));
-    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	new Profil(ProfilCode.GESTIONNAIRE, true,false,false,true), false, true, false));
+    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	new Profil(ProfilCode.GESTIONNAIRE, true,false,false,true), true, true, false));
     listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	new Profil(ProfilCode.SUPERVISEUR, false,true,false,true), true, true, true));
     listUsers.push(new Utilisateur(6,	'VOLTAIRE',	'Louis',	new Profil(ProfilCode.SUPERVISEUR, true,false,true,false), true, true, false));
     listUsers.push(new Utilisateur(7,	'BOYER',	'Eric',	new Profil(ProfilCode.DIRECTEUR, true,true,true,true), true, true, true));

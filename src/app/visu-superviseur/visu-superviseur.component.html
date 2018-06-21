@@ -4,7 +4,7 @@
 			<graphique-en-cours (details)="afficherTab($event)"></graphique-en-cours>
 		</div>
 		<div class="col-6">
-			<graphique-termine></graphique-termine>
+			<graphique-termine (details)="afficherTabCloture($event)"></graphique-termine>
 		</div>
 	</div>
 	<div class="row" *ngIf="detail">
@@ -25,6 +25,7 @@
 								<th scope="col">Date</th>
 								<th scope="col">Utilisateur</th>
 								<th scope="col">Statut</th>
+								<th scope="col" *ngIf="filtre === 'termine'">Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -33,10 +34,21 @@
 									<td class="table-primary" colspan="7" *ngIf="filtre === 'gestionnaire'">{{entete.nom}} {{entete.prenom}}</td>
 									<td class="table-primary" colspan="7" *ngIf="filtre === 'statut'">{{entete}}</td>
 									<td class="table-primary" colspan="7" *ngIf="filtre === 'produit'">{{entete.nom}}</td>
+									<td class="table-primary" colspan="8" *ngIf="filtre === 'termine'">{{entete.nom}}</td>
 								</tr>
 								<ng-container *ngFor="let dossier of dossierDetail">
-									<tr *ngIf="entete.nom === dossier.utilisateur || entete ==  dossier.statusDossier|| entete.nom == dossier.produit">
-										<td>{{dossier.numContrat}} - {{dossier.code == '199_AFN' ? 'AFN' : dossier.code}}</td>
+									<tr *ngIf="entete.statut == dossier.statusDossier">
+										<td>{{dossier.numContrat}} - {{dossier.code == 'AFN' ? 'AFN' : dossier.code}}</td>
+										<td>{{dossier.produit}}</td>
+										<td>{{dossier.client}}</td>
+										<td>{{dossier.intermediaire}}</td>
+										<td>{{dossier.dateGed}}</td>
+										<td>{{dossier.utilisateur}}</td>
+										<td>{{dossier.statusDossier}}</td>
+										<td><a (click)="traiterPieces(dossier.ident)"><i class="fa fa-share-square-o fa-lg" title="Traiter"></i></a></td>
+									</tr>
+									<tr *ngIf="entete.nom === dossier.utilisateur || entete ==  dossier.statusDossier || entete.nom == dossier.produit ">
+										<td>{{dossier.numContrat}} - {{dossier.code == 'AFN' ? 'AFN' : dossier.code}}</td>
 										<td>{{dossier.produit}}</td>
 										<td>{{dossier.client}}</td>
 										<td>{{dossier.intermediaire}}</td>

@@ -81,13 +81,12 @@
             <th align="right">      
               <input class="mt-2 float-right" type="checkbox" id="allDossier" [checked]="isAllDossiers()" name="dossiers" (change)="checkboxDossier = !checkboxDossier; returnAll()">
             </th>
-
           </tr>
           <tr *ngFor="let dossier of lesDossiers">
-            <td>{{ dossier.context.contrat.numero}} - {{dossier.code == '199_AFN' ? 'AFN' : dossier.code }} </td>
+            <td>{{ dossier.context.contrat.numero}}</td>
             <td>{{ dossier.context.contrat.codeProduit }}</td>
             <td>{{ dossier.dateReception | date: 'dd/MM/yyyy' }}</td>
-            <td>{{dossier.codeDossier == '199_AFN' ? 'AFN' : dossier.code}}</td>
+            <td>{{dossier.code | bannette }}</td>
             <td [innerHTML]="statutDossier(dossier.ident) | statut" ></td>
             <td align="right" *ngIf="statutDossier(dossier.ident) != 'Ok'">
               <input type="checkbox" id="{{dossier.ident}}" [checked]="checkboxDossier" name="dossiers" (change)="return()">
