@@ -18,7 +18,7 @@ export class TacheService {
   public listPieceEnAttente: Tache[] = []; 
   public actionMetierTemporaire: Tache
 
-
+  
   listerTaches(): Observable<Tache[]> {
     return this.tacheSubject;
   }
@@ -31,10 +31,8 @@ export class TacheService {
     this.tacheSubject.next(list)
   }
 
-  ajoutTache(tache: Tache) {
-    /* Appel Web Service */
-    this.listTaches.push(tache);
-    this.tacheSubject.next(this.listTaches);
+  public getAll(): Tache[]{
+    return this.listTaches;
   }
 
   getTacheById(id: number): Tache {
@@ -42,19 +40,11 @@ export class TacheService {
   }
 
   /**
-   * retourne une pièce en fonction de son id
+   * retourne un dossier (199) en fonction de son ID
    * @param id 
    */
-  getPieceById(id: number): Tache {
-    return this.listTaches.find(t => t.ident === id && t.nature == Nature.PIECE);
-  }
-
-    /**
-   * retourne une note en fonction de son id
-   * @param id 
-   */
-  getNoteById(id: number): Tache {
-    return this.listTaches.find(t => t.ident === id && t.nature == Nature.NOTE);
+  getDossierById(id: number): Tache {
+    return this.listTaches.find(t => t.ident === id && t.nature == Nature.DOSSIER);
   }
 
   /**
@@ -72,22 +62,62 @@ export class TacheService {
   getNotesByDossier(idDossier: number): Tache[]{
     return this.listTaches.filter(t => t.nature == Nature.NOTE && t.idTacheMere === idDossier)
   }
-
-  /**
-   * retourne un dossier (199) en fonction de son ID
-   * @param id 
-   */
-  getDossierById(id: number): Tache {
-    return this.listTaches.find(t => t.ident === id && t.nature == Nature.DOSSIER);
+  
+  getActionMetierByIdContext(idContext: number): BehaviorSubject<Tache[]>{
+    this.tacheSubject.next(this.listTaches.filter(act => act.context.ident == idContext && act.nature == Nature.TACHE));
+    return this.tacheSubject;
   }
 
+  getDossierByIdContext(idContext: number, userId: number): Tache{
+    return this.listTaches.find(dossier => dossier.context.ident == idContext && dossier.nature == Nature.DOSSIER && dossier.utilisateur.ident == userId)
+  }
+
+  getTacheTermine(){
+    return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture != null)
+  }
+
+  getTacheEncours(){
+    return this.listTaches.filter( t => t.dateCloture == null)
+  }
+  
+  public ajoutActionMetier(actionMetier: Tache){
+    this.listTaches.push(actionMetier)
+    this.tacheSubject.next(this.listTaches)
+  }
+  
+  public supprimerActionMetier(actionMetier: Tache){
+    this.listTaches.splice(this.listTaches.indexOf(actionMetier), 1)
+    //this.getAllByIdContext(actionMetier.context.ident)
+  }
+  
+  public supprimerActionMetierTemporaire() {
+    if( this.actionMetierTemporaire != null) {
+      this.supprimerActionMetier(this.actionMetierTemporaire);
+      this.actionMetierTemporaire = null;
+    }
+  }
+  
+  /**
+   * Appel web service
+   */
+  public confirmerAjoutActionMetier() {
+    this.actionMetierTemporaire = null;
+  }
+
+  ajoutTache(tache: Tache) {
+    /* Appel Web Service */
+    this.listTaches.push(tache);
+    this.tacheSubject.next(this.listTaches);
+  }
+
+ 
   /**
    * set la date de cloture de vérification et set l'id de l'utilisateur vérificateur
    * @param {number} idTache
    * @returns {Tache}
    */
   closePieceConforme(idTache: number): Tache {
-    const p = this.getPieceById(idTache);
+    const p = this.getTacheById(idTache);
     p.dateVerification  = new Date();
     p.utilisateurVerification = p.utilisateur;
     
@@ -190,8 +220,8 @@ export class TacheService {
   public removePiecesTemporaire() {
     for (let pi of this.listPieceEnAttente) {
       if(pi.motifNonConformite != null){
-        this.getPieceById(pi.ident).motifNonConformite = null;
-        this.getPieceById(pi.ident).dateCloture = null;
+        this.getTacheById(pi.ident).motifNonConformite = null;
+        this.getTacheById(pi.ident).dateCloture = null;
         
       }else {
         this.listTaches.splice(this.listTaches.indexOf(pi), 1)
@@ -230,27 +260,6 @@ export class TacheService {
         return -1;
       else
     return 1;
-  }
-  /*private getPiecesByContext(context: Context): Tache[]{
-    return this.listTaches.filter(piece => piece.context == context && piece.nature == Nature.PIECE)
-    .sort(this.trieByPriorite);
-  }*/
-
-  public getPiecesByIdContext(idContext: number): Tache[]{
-    return this.listTaches.filter(piece => piece.context.ident == idContext && piece.nature == Nature.PIECE)
-    .sort(this.trieByPriorite);
-  }
-
-  public getDossierByIdContext(idContext: number, userId: number): Tache{
-    return this.listTaches.find(dossier => dossier.context.ident == idContext && dossier.nature == Nature.DOSSIER && dossier.utilisateur.ident == userId)
-  }
-
-  public getDossierTermine(){
-    return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture != null)
-  }
-
-  public getTacheEncours(){
-    return this.listTaches.filter( t => t.dateCloture == null)
   }
 
   /**
@@ -346,18 +355,6 @@ export class TacheService {
   }
 
 
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-getActionMetier(idContext: number): BehaviorSubject<Tache[]>{
-  this.tacheSubject.next(this.listTaches.filter(act => act.context.ident == idContext && act.nature == Nature.TACHE));
-  return this.tacheSubject;
-}
-
 /**
  * 
  * @param tache 
@@ -398,34 +395,6 @@ createSansEffet(tache: Tache){
   this.create(tache, 'SANS_EFFET');
 }
 
-
-public getAll(): Tache[]{
-  return this.listTaches;
-}
-
-public ajoutActionMetier(actionMetier: Tache){
-  this.listTaches.push(actionMetier)
-  this.tacheSubject.next(this.listTaches)
-}
-
-public supprimerActionMetier(actionMetier: Tache){
-  this.listTaches.splice(this.listTaches.indexOf(actionMetier), 1)
-  //this.getAllByIdContext(actionMetier.context.ident)
-}
-
-public supprimerActionMetierTemporaire() {
-  if( this.actionMetierTemporaire != null) {
-    this.supprimerActionMetier(this.actionMetierTemporaire);
-    this.actionMetierTemporaire = null;
-  }
-}
-
-/**
- * Appel web service
- */
-public confirmerAjoutActionMetier() {
-  this.actionMetierTemporaire = null;
-}
 
 
 }

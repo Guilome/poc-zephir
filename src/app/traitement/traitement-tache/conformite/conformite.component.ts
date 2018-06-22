@@ -41,7 +41,7 @@ export class ConformiteComponent implements OnInit {
 
       this.idCurrentUser = +localStorage.getItem('USER');
       this.idSubscription = this.route.params.subscribe((params: any) => {
-        this.piece = this.tacheService.getPieceById(+params.piece);
+        this.piece = this.tacheService.getTacheById(+params.piece);
      
       });
       

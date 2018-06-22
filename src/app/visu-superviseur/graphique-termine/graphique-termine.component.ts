@@ -143,13 +143,13 @@ export class GraphiqueTermineComponent implements OnInit {
    */
   private dossierTermine(typeTri: string, value: any){
     if (typeTri === "day") {
-      this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateCloture.toLocaleDateString() === value)  
+      this.dossiersTermine = this.tacheService.getTacheTermine().filter(tache => tache.dateCloture.toLocaleDateString() === value)  
     }
     else if (typeTri === "month") {
-      this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateCloture.getMonth() == value)  
+      this.dossiersTermine = this.tacheService.getTacheEncours().filter(tache => tache.dateCloture.getMonth() == value)  
     }
     else if (typeTri == "week") {     
-      this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < value[1])      
+      this.dossiersTermine = this.tacheService.getTacheTermine().filter(tache => value[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < value[1])      
     }      
     this.refreshMapTermine(this.dossiersTermine)
   }

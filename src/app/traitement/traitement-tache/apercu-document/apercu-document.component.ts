@@ -28,8 +28,8 @@ export class ApercuDocumentComponent implements OnInit {
     this.idSubscription = this.route.params.subscribe((params: any) => {
       if( params.piece != null) {
           const idPiece = +params.piece;
-          this.piece = this.tacheService.getPieceById(idPiece);
-          this.note = this.tacheService.getNoteById(idPiece);
+          this.piece = this.tacheService.getTacheById(idPiece);
+          this.note = this.tacheService.getTacheById(idPiece);
           this.actionMetier = this.tacheService.getTacheById(idPiece);
           if(this.piece != null) {  
             if (this.piece.urlDocument != null ) {

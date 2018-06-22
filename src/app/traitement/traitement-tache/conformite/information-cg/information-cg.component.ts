@@ -40,7 +40,7 @@ export class InformationCgComponent implements OnInit {
     (<HTMLInputElement>document.getElementById('dateAcquisition')).setAttribute("max", this.createDate(today));  
     //---------------------------------------------------------------------------------------------------------
     this.route.params.subscribe(data => {
-    this.currentTache = this.tacheService.getPieceById(+data.piece);
+    this.currentTache = this.tacheService.getTacheById(+data.piece);
     });
     this.lesModifsCG = this.modifService.getModificationByPiece(this.currentTache.ident)
     this.setInputValue();

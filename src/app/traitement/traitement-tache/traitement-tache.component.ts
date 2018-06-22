@@ -42,7 +42,7 @@ export class TraitementTacheComponent implements OnInit {
     this.route.params.subscribe((params: any) => {
 
       // list des actions métiers 
-      this.tacheService.getActionMetier(+params.id).subscribe(data => this.listActionsMetier = data);      
+      this.tacheService.getActionMetierByIdContext(+params.id).subscribe(data => this.listActionsMetier = data);      
       // Status 
       this.dossier = this.tacheService.getDossierByIdContext(+params.id, +localStorage.getItem('USER'))
       

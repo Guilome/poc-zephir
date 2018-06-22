@@ -35,7 +35,7 @@ export class InformationPcComponent implements OnInit {
     var today = new Date();
     (<HTMLInputElement>document.getElementById('date2delivrance')).setAttribute("max", this.createDate(today));    
     this.route.params.subscribe(data => {
-    this.currentTache = this.tacheService.getPieceById(+data.piece);
+    this.currentTache = this.tacheService.getTacheById(+data.piece);
     });
     this.lesModifsPC = this.modifService.getModificationByPiece(this.currentTache.ident)
     this.setInputValue();

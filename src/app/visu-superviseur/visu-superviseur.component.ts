@@ -44,7 +44,7 @@ export class VisuSuperviseurComponent implements OnInit {
     this.idGroupe = parseInt(this.activeRoute.snapshot.paramMap.get("id"))
     localStorage.setItem("GROUPE", this.idGroupe.toString());
     this.titreService.updateTitre("Bannette " + this.groupeService.getGroupeById(this.idGroupe).libelle.toLowerCase())
-    this.dossierTermine = this.tacheService.getDossierTermine();
+    this.dossierTermine = this.tacheService.getTacheTermine();
     this.dossiersEncours = this.tacheService.getTacheEncours().filter(dossier => dossier.nature == Nature.DOSSIER && dossier.groupe.ident == this.idGroupe);
     this.gestionnaires = this.utilisateurService.getAll().filter(utilisateur => utilisateur.profil.groupes.find( g => g == this.idGroupe))
     this.dossiersEncours.forEach(d => {
