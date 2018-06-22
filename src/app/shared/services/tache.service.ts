@@ -488,6 +488,7 @@ export class TacheService {
       this.getPiecesByDossier(tache.ident).forEach(piece => piece.idUtilisateur = utilisateur.ident)
     }
   }
+  // Méthode qui change une tache à un groupe 
   public affecterTacheGroupe(tache: Tache, groupe: Groupe){
     tache.idGroupe = groupe.ident;
   }
