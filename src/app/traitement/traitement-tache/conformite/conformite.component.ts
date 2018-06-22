@@ -94,10 +94,13 @@ export class ConformiteComponent implements OnInit {
 
     let idNext = null;
   
-    for ( let val of this.tacheService.getPiecesByIdContext(this.piece.context.ident)) {
+    for ( let val of this.tacheService.getPiecesByDossier(this.dossier.ident)) {
+        console.log(val.status);
+        
          if(val.status != 'À valider' ) {
              idNext = val.ident;
-            break;
+             console.log(idNext);
+             break;
          } 
      }
        
