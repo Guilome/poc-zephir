@@ -463,7 +463,10 @@ export class TacheService {
   }
 
   isPiece(idTache: number): boolean {
-    return this.getTacheById(idTache).nature === Nature.PIECE;
+    const lPiece = this.getTacheById(idTache);
+    if ( lPiece != null)
+      return lPiece.nature === Nature.PIECE;
+    return false;
   }
 
   /**

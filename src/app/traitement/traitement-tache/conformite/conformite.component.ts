@@ -45,9 +45,11 @@ export class ConformiteComponent implements OnInit {
         this.piece = this.tacheService.getPieceById(+params.piece);
      
       });
-      if (this.piece != null) {
-        this.tacheService.listerTaches().subscribe(data => 
-                                  this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere));
+      
+      this.tacheService.listerTaches().subscribe(data => { 
+                                    if (this.piece != null) 
+                                      this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere)
+                                    });
 
       this.dropdownSettings = { 
                                 singleSelection: false, 
@@ -57,7 +59,6 @@ export class ConformiteComponent implements OnInit {
                                 enableSearchFilter: true,
                                 classes:"myclass custom-class"
                               };
-                            }
     }
 
   /*
@@ -106,7 +107,7 @@ export class ConformiteComponent implements OnInit {
        
     if (idNext == null) {
       if (this.utilisateurService.getUserById(this.idCurrentUser) != null) {
-        this.tacheService.affecterTacheUtilisateur(this.dossier, null)
+       // this.tacheService.affecterTacheUtilisateur(this.dossier, null)
       }      
       this.router.navigate(['/gestionBO']);
     } else {
