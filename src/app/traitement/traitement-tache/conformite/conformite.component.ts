@@ -102,8 +102,8 @@ export class ConformiteComponent implements OnInit {
      }
        
     if (idNext == null) {
-      if (this.utilisateurService.getUserById(this.idCurrentUser).validation == false) {
-        this.tacheService.setUtilisateurNull(this.dossier)
+      if (this.utilisateurService.getUserById(this.idCurrentUser) != null) {
+        this.tacheService.affecterTacheUtilisateur(this.dossier, null)
       }      
       this.router.navigate(['/gestionBO']);
     } else {
@@ -134,20 +134,14 @@ export class ConformiteComponent implements OnInit {
   }
 
   groupeVerification(): boolean {
-   // if ( this.groupeService.isVerification(this.idCurrentUser)){
-     if(this.dossier != null)
+    if(this.dossier != null)
         return this.tacheService.getStatutTache(this.dossier) != 'À valider';
     return false;
-   // } 
-    //return false;
   }
   groupeValidation(): boolean {
-    // if ( this.groupeService.isValidation(this.idCurrentUser)){
-      if(this.dossier != null)
-          return this.tacheService.getStatutTache(this.dossier) === 'À valider';
-      return false;
-  // } 
-     //return false;
+    if(this.dossier != null)
+      return this.tacheService.getStatutTache(this.dossier) === 'À valider';
+    return false;
    }
 
   /**

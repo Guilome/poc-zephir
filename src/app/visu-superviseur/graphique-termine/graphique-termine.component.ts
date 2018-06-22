@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {Chart} from 'chart.js';
-import { Utilisateur } from '../../shared/domain/Utilisateur';
-import { Groupe, Code } from '../../shared/domain/groupe';
+import { Groupe } from '../../shared/domain/groupe';
 import { TacheService } from '../../shared/services/tache.service';
 import { ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../../shared/services/groupe.service';
@@ -21,8 +20,8 @@ export class GraphiqueTermineComponent implements OnInit {
   mapSubjectTermine: Map<string, number> = new Map();
 
   dateJour:Date = new Date()
-  lesGestionnaires: Utilisateur[]
-  dossiersTermine:Tache[] = []
+  lesGestionnaires = []
+  dossiersTermine = []
   groupe :Groupe
   idGroupe: number
   context: any;
@@ -149,12 +148,11 @@ export class GraphiqueTermineComponent implements OnInit {
   }
 
   private refreshMapTermine(lesDossiers: Tache[]) {
-    this.lesGestionnaires
-        .filter(g => g.profil.code != ProfilCode.DIRECTEUR && this.groupeService.getGroupesUtilisateur(g.ident).find(groupe => groupe.ident == this.idGroupe))
+    this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.profil.groupes.find(g => g == this.idGroupe))
         .forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
     for (const d of lesDossiers) {    
       let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurCloture)[0];
-      if (this.groupeService.getGroupesUtilisateur(gestionnaire.ident).find(groupe => groupe.ident == this.idGroupe)) {
+      if (gestionnaire.profil.groupes.find(g => g == this.idGroupe)) {
         const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
         const sum = this.mapSubjectTermine.get(key);
         this.mapSubjectTermine.set(key,  sum + 1);
@@ -174,7 +172,7 @@ export class GraphiqueTermineComponent implements OnInit {
         let debutSemaine
         let semaine
         if (day == 1) { // Si le jour est lundi
-          this.dossierTermine("day", this.daysTab[day])
+          this.dossierTermine("day", this.dateJour.toLocaleDateString())
           this.UpdateCanvas()
         }
         else { // jour autre que lundi
@@ -188,9 +186,9 @@ export class GraphiqueTermineComponent implements OnInit {
             debutSemaine = new Date(this.dateJour.getFullYear(), this.dateJour.getMonth(), difference)
             semaine = [debutSemaine.getDate(), date]
           }
+          this.dossierTermine("week", semaine)
+          this.UpdateCanvas()  
         }     
-        this.dossierTermine("week", semaine)
-        this.UpdateCanvas()  
         break;
       case "mois" :   
         this.dossierTermine("month", this.dateJour.getMonth())

@@ -4,6 +4,8 @@ import {Context} from '../domain/context';
 import { BehaviorSubject} from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Contrat } from '../domain/contrat';
+import { Utilisateur } from '../domain/Utilisateur';
+import { Groupe } from '../domain/Groupe';
 
 
 @Injectable()
@@ -395,14 +397,6 @@ export class TacheService {
     return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture == null)
   }
 
-  public getDossierTermineByUser(idUtilisateur: number){
-    return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture != null)
-  }
-
-  public getDossierEnCoursByUser(idUtilisateur: number){
-    return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture == null)
-  }
-
   /**
    * "en attente" si aucune pièce est reçu.
    * "à vérifier" si une/plusieurs pîèce est à vérifiée.
@@ -485,6 +479,18 @@ export class TacheService {
     this.getDossierById(id).idGroupe = 2
     this.getDossierById(id).code = Tache.libCode.get('AVENANT')
     this.getDossierById(id).idUtilisateur = null;
+  }
+
+  // Méthode qui ajoute une tache à un utilisateur 
+  public affecterTacheUtilisateur(tache: Tache, utilisateur: Utilisateur){
+    tache.idUtilisateur = utilisateur.ident;
+    if(tache.nature = Nature.DOSSIER){
+      this.getPiecesByDossier(tache.ident).forEach(piece => piece.idUtilisateur = utilisateur.ident)
+    }
+  }
+  // Méthode qui change une tache à un groupe 
+  public affecterTacheGroupe(tache: Tache, groupe: Groupe){
+    tache.idGroupe = groupe.ident;
   }
 }
 

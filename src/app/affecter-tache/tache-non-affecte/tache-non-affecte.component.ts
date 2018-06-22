@@ -26,14 +26,15 @@ export class TacheNonAffecteComponent implements OnInit {
   @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
 
   constructor(private  tacheService: TacheService,
-              private groupeService: GroupeService) {
+              private groupeService: GroupeService,
+              private utilisateurService: UtilisateurService) {
     this.idUser = +localStorage.getItem('USER');
     this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
     if(isNaN(this.idGroupe)){
       this.tacheService.listerTaches().subscribe(data => {
         this.lesDossiers = data;  
       });
-      this.lesDossiers = this.lesDossiers.filter(tache => this.groupeService.getGroupesUtilisateur(this.idUser).find(g => g.ident == tache.idGroupe));
+      this.lesDossiers = this.lesDossiers.filter(tache => this.utilisateurService.getUserById(this.idUser).profil.groupes.find(g => g == tache.idGroupe));
     } else {
       this.tacheService.listerTaches().subscribe(data => {
         this.lesDossiers = data;
@@ -46,19 +47,11 @@ export class TacheNonAffecteComponent implements OnInit {
 
   ngOnInit() {
   }  
-
+  
   trierListe() {
-    if( this.groupeService.isVerification(this.idUser) && this.groupeService.isValidation(this.idUser)) {
-      this.lesDossiers = this.lesDossiers.filter(t => t.idUtilisateur == null && 
-                                                 t.nature === Nature.DOSSIER && 
-                                                 this.tacheService.getStatutTache(t) != Status.OK);
-    }
-    else if ( this.groupeService.isVerification(this.idUser)){
-      this.lesDossiers = this.lesDossiers.filter(dos => this.statutDossier(dos.ident) == 'À vérifier');
-    } else if (this.groupeService.isValidation(this.idUser)){
-      this.lesDossiers = this.lesDossiers.filter(dos => this.statutDossier(dos.ident) == 'À valider');
-    }
+    this.lesDossiers = this.lesDossiers.filter(t => t.idUtilisateur == null && t.nature === Nature.DOSSIER && this.tacheService.getStatutTache(t) != Status.OK);
   }
+  
 
   //Retourne les tâches non affectées et selectionnées
   return(){   

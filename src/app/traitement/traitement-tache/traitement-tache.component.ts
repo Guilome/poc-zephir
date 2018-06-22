@@ -141,15 +141,14 @@ export class TraitementTacheComponent implements OnInit {
     if (this.tacheService.listPieceEnAttente.length > 0 ){
       if ( this.tacheService.getStatutTache(this.dossier) === 'En attente'){
         this.toastr.success("Le dossier a été mis <b>En attente</b>",'', {enableHtml: true});
-        this.tacheService.delAffectation(this.dossier.ident);
+        this.tacheService.affecterTacheUtilisateur(this.dossier, null)
 
       }else {
         this.toastr.success("Le dossier a été déplacé à la bannette <b>Vérification</b>",'', {enableHtml: true});
       }
       this.tacheService.addPieceEnAttente(this.dossier);
-    } else if (this.actionMetierService.getAll().filter(a => a.context.ident == this.dossier.context.ident).length > 0 && 
-              this.groupeService.getGroupesUtilisateur(parseInt(localStorage.getItem("USER"))).find(groupe => groupe.code === Code.AVN) == null) {
-      this.tacheService.avnAffectation(this.dossier.ident)
+    } else if (this.actionMetierService.getAll().filter(a => a.context.ident == this.dossier.context.ident).length > 0) {
+      this.tacheService.affecterTacheGroupe(this.dossier, this.groupeService.getGroupeByCode(Code.AVN))
       this.toastr.success("Le dossier a été déplacé dans la bannette Avenant");
     }     
     else {

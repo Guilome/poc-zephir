@@ -19,21 +19,11 @@ export class ModificationService {
   }
 
   public getModificationById(idModif: number): Modification{
-    if (this.listModifications.length == 0) {
-      return null
-    }
-    else {
-      return this.listModifications.filter(m => m.ident == idModif)[0]
-    }
+    return this.listModifications.filter(m => m.ident == idModif)[0]
   }
 
-  public getModificationByPiece(idPiece: number): any{
-    if (this.listModifications.length == 0) {
-      return false;
-    }
-    else {
-      return this.listModifications.filter(m => m.idTache == idPiece);
-    }
+  public getModificationByPiece(idPiece: number): Modification[]{
+    return this.listModifications.filter(m => m.idTache == idPiece);
   }
 
   public getModificationByDossier(idDossier: number): Modification[]{
@@ -53,10 +43,6 @@ export class ModificationService {
   supprimerModif(modif: Modification){
     this.listModifications.splice(this.listModifications.indexOf(modif),1)
     this.modificationSubject.next(this.listModifications);
-  }
-
-  getDonneeModif(idModification: number): Donnee {
-    return this.getModificationById(idModification).donnee
   }
 
   getMotifByDonnee(donnee: Donnee): Modification {

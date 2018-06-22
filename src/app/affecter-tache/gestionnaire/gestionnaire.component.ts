@@ -11,9 +11,9 @@ import { GroupeService } from '../../shared/services/groupe.service';
 export class GestionnaireComponent implements OnInit {
 
   idGroupe: number
-  lesGestionnaires: Utilisateur[]
+  lesGestionnaires = []
   allChecked: Boolean
-  gestionnaires:Utilisateur[] = []
+  gestionnaires = []
   checkboxGest: boolean;
   @Output() gestionnaireAssigner:EventEmitter<Utilisateur[]> = new EventEmitter<Utilisateur[]>();
   collectGestionnaire = []
@@ -30,8 +30,7 @@ export class GestionnaireComponent implements OnInit {
   }
 
   trierListe() {
-    this.lesGestionnaires = this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && this.groupeService.getGroupesUtilisateur(g.ident)
-                                                 .find(groupe => groupe.ident == this.idGroupe))
+    this.lesGestionnaires = this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.profil.groupes.find(g => g == this.idGroupe))
   }
 
   //Retourne les gestionnaires selectionnés

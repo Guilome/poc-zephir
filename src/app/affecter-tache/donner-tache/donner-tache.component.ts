@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import { TitreService } from '../../shared/services/titre.service';
 import { GroupeService } from '../../shared/services/groupe.service';
+import { Groupe } from '../../shared/domain/groupe';
 
 @Component({
   selector: 'donner-tache',
@@ -18,6 +19,7 @@ export class DonnerTacheComponent implements OnInit {
   gestionnaires: Utilisateur[] = []
   lesGestionnaires: Utilisateur[]
   idGroupe: number
+  groupe: Groupe
 
   constructor(private tacheService: TacheService,
               private route: Router, 
@@ -27,6 +29,7 @@ export class DonnerTacheComponent implements OnInit {
 
   ngOnInit() {
     this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
+    this.groupe = this.groupeService.getGroupeById(this.idGroupe)
     this.titreService.updateTitre("Repartir les tâches")    
   }
 
@@ -46,27 +49,8 @@ export class DonnerTacheComponent implements OnInit {
       if (this.gestionnaires.length == 1) {
         this.dossiers.forEach(dossier => { 
           this.gestionnaires.forEach(g => {
-            if (this.tacheService.getStatutTache(dossier) == Status.A_VALIDER && g.validation == true) {
-              dossier.idGroupe = this.idGroupe
-              dossier.idUtilisateur = g.ident
-              let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
-              pieces.forEach(piece => piece.idUtilisateur = g.ident)
-            }
-            else if (this.tacheService.getStatutTache(dossier) == Status.A_VERIFIER && g.verification == true) {
-              dossier.idGroupe = this.idGroupe
-              dossier.idUtilisateur = g.ident
-              let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
-              pieces.forEach(piece => piece.idUtilisateur = g.ident)
-            }
-            else if (this.tacheService.getStatutTache(dossier) == Status.NON_CONFORME && g.avenant == true) {
-              dossier.idGroupe = this.idGroupe
-              dossier.idUtilisateur = g.ident
-              let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
-              pieces.forEach(piece => piece.idUtilisateur = g.ident)
-            }
-            else {
-              this.toastr.error("Le gestionnaire séléctionné n'a pas les habilitations nécessaires")
-            }
+            this.tacheService.affecterTacheUtilisateur(dossier, g)
+            this.tacheService.affecterTacheGroupe(dossier, this.groupe)
           });
         }); 
       }

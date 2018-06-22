@@ -35,8 +35,17 @@ export class GroupeService {
     return this.groupes.find(groupe => groupe.ident === ident)
   }
 
+  public getGroupeByCode(code :Code): Groupe {
+    return this.groupes.find(groupe => groupe.code == code)
+  }
+  /**
+   * Retourne une liste de taches de tache non cloturés pour le graphique
+   * @param idGroupe 
+   * @param filtre
+   */
   getTacheEnCoursByGroupe(idGroupe: number, filtre: string): BehaviorSubject<Map<string, number>>{
     this.tacheService.listerTaches().subscribe(data => this.tachesEnCours = data.filter(t => t.idGroupe == idGroupe));    
+
     this.tachesEnCours = this.tachesEnCours.filter(t => this.tacheService.getStatutTache(t) != Status.OK ||
                                                         this.tacheService.getStatutTache(t) != Status.NON_CONFORME &&
                                                         t.nature != Nature.PIECE)
@@ -104,53 +113,38 @@ export class GroupeService {
     return this.groupes.find(g => g.code === code).ident;
   }
 
+  /**
+   * Distribue toute les tâches au sein d'un groupe a ses utilisateurs
+   * @param idGroupe 
+   */
   public dispatcher(idGroupe: number) {
     let list;
     this.tacheService.listerTaches().subscribe(t => list = t)
     list.filter(t => t.idGroupe == idGroupe).forEach( ( tache , i) => {
       const tailleGestionnaires =  this.getUtilisateurByGroupe(idGroupe)
-          .filter(u => u.profil.code != ProfilCode.DIRECTEUR && this.getGroupesUtilisateur(u.ident).find(g => g.ident == tache.idGroupe)).length;
-      if (tailleGestionnaires > 0 && this.tacheService.getStatutTache(tache) == Status.A_VALIDER && 
-          this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].validation == true) {
-        tache.idUtilisateur = this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].ident
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
-      }
-      else if (tailleGestionnaires > 0 && this.tacheService.getStatutTache(tache) == Status.A_VERIFIER && 
-               this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].verification == true) {
-        tache.idUtilisateur = this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].ident
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
-      }
-      else if (tailleGestionnaires > 0 && this.tacheService.getStatutTache(tache) == Status.NON_CONFORME && 
-               this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].avenant == true) {
-        tache.idUtilisateur = this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires].ident
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
-      }
+          .filter(u => u.profil.code != ProfilCode.DIRECTEUR && u.profil.groupes.find( g => g == tache.idGroupe)).length;
+          this.tacheService.affecterTacheUtilisateur(tache, this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires])
     });
     this.tacheService.nextListSubject(list);
     this.getTacheEnCoursByGroupe(idGroupe, "gestionnaire");
   }
 
+  /**
+   * Distribue les tâches séléctionnées aux utlisateurs séléctionnés
+   * @param utilisateurs 
+   * @param taches 
+   */
   public dispatcherGestionnaire(utilisateurs: Utilisateur[], taches: Tache[]){
-    //const tailleGestionnaires =  utilisateurs.length;
     taches.forEach( ( tache , i) => {
-      const tailleGestionnaires =  utilisateurs.filter(u => this.getGroupesUtilisateur(u.ident).find(g => g.ident == tache.idGroupe)).length;
-      console.log(tailleGestionnaires);
-      
-      if (this.tacheService.getStatutTache(tache) == Status.A_VALIDER && utilisateurs[i % tailleGestionnaires].validation == true) {
-        tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
-      }
-      else if (this.tacheService.getStatutTache(tache) == Status.A_VERIFIER && utilisateurs[i % tailleGestionnaires].verification == true) {
-        tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
-      }
-      else if (this.tacheService.getStatutTache(tache) == Status.NON_CONFORME && utilisateurs[i % tailleGestionnaires].avenant == true) {
-        tache.idUtilisateur = utilisateurs[i % tailleGestionnaires].ident;
-        this.tacheService.getPiecesByDossier(tache.ident).forEach(p => p.idUtilisateur = tache.idUtilisateur)
-      }
+      const tailleGestionnaires =  utilisateurs.filter(u => u.profil.groupes.find( g => g == tache.idGroupe)).length;
+      this.tacheService.affecterTacheUtilisateur(tache, utilisateurs[i % tailleGestionnaires])
     });
   }
 
+  /**
+   * désaffecte toutes les tâches d'un groupe
+   * @param idGroupe 
+   */
   public corbeille(idGroupe: number) {  
     let list;
     this.tacheService.listerTaches().subscribe(t => list = t)
@@ -159,6 +153,10 @@ export class GroupeService {
     this.getTacheEnCoursByGroupe(idGroupe, "gestionnaire");
   }
 
+  /**
+   * désaffecte toutes les tâches d'un utilisateur
+   * @param idUser 
+   */
   public corbeilleUser(idUser: number): boolean {
     let list;
     if(idUser != null) {
@@ -170,76 +168,15 @@ export class GroupeService {
       this.tacheService.nextListSubject(list);
       return true;
     }
-    this.getGroupesUtilisateur(idUser).forEach(groupe => this.refreshMapEnCoursByUtilisateur(groupe.ident));
+    this.utilisateurService.getUserById(idUser).profil.groupes.forEach( g => this.refreshMapEnCoursByUtilisateur(g))
     return false;
   }
 
-  public isVerification(idUser: number): boolean {
-    const user = this.utilisateurService.getUserById(idUser);
-    return user.verification;        
-  }
-
-  public isValidation(idUser: number): boolean {
-    const user = this.utilisateurService.getUserById(idUser);
-    return user.validation;
-  }
-  
   /** Recupère la liste des utilisateurs dont l'id du groupe est passé en paramètre
    * 
    * @param idGroupe 
    */
   public getUtilisateurByGroupe(idGroupe: number): Utilisateur[]{
-    return this.utilisateurService.getAll().filter(utilisateur => this.getGroupesUtilisateur(utilisateur.ident).find(groupe => groupe.ident == idGroupe))
-  }
-
-  getGroupesUtilisateur(idUtilisateur: number) {
-    let utilisateur = this.utilisateurService.getUserById(idUtilisateur);
-    let listeBannette: Groupe[] = [];
-    if (utilisateur.profil.AVN == true){
-      listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.AVN)))
-      if (utilisateur.profil.AFN == true){
-        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.AFN)))   
-        if (utilisateur.profil.REF == true){
-          listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.REF)))
-          if (utilisateur.profil.RES == true){
-            listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
-          }
-        }
-        else if (utilisateur.profil.RES == true){
-          listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
-        }
-      }
-      else if (utilisateur.profil.REF == true){
-        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.REF)))
-        if (utilisateur.profil.RES == true){
-          listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
-        }
-      }
-      else if (utilisateur.profil.RES == true){
-        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
-      }
-    } 
-    else if (utilisateur.profil.AFN == true){
-      listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.AFN)))   
-      if (utilisateur.profil.REF == true){
-        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.REF)))
-        if (utilisateur.profil.RES == true){
-          listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
-        }
-      }
-      else if (utilisateur.profil.RES == true){
-        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
-      }
-    }
-    else if (utilisateur.profil.REF == true){
-      listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.REF)))
-      if (utilisateur.profil.RES == true){
-        listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
-      }
-    }
-    else if (utilisateur.profil.RES == true){
-      listeBannette.push(this.getGroupeById(this.getIdGroupeByCode(Code.RES)))
-    }
-    return listeBannette
+    return this.utilisateurService.getAll().filter(utilisateur => utilisateur.profil.groupes.find(g => g == idGroupe))
   }
 }

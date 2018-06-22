@@ -3,10 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../shared/services/groupe.service';
 import { TitreService } from '../shared/services/titre.service';
 import { GraphiqueEnCoursComponent } from './graphique-en-cours/graphique-en-cours.component';
-import { Tache, Status } from '../shared/domain/Tache';
+import { Status } from '../shared/domain/Tache';
 import { TacheService } from '../shared/services/tache.service';
 import { UtilisateurService } from '../shared/services/utilisateur.service';
-import { Utilisateur } from '../shared/domain/Utilisateur';
 import { ProfilCode } from '../shared/domain/Profil';
 import { GraphiqueTermineComponent } from './graphique-termine/graphique-termine.component';
 
@@ -22,9 +21,9 @@ export class VisuSuperviseurComponent implements OnInit {
   public filtre: string
 
   //TABLEAU
-  dossiersEncours: Tache[]
-  dossierTermine: Tache[]
-  gestionnaires: Utilisateur[]
+  dossiersEncours = []
+  dossierTermine = []
+  gestionnaires = []
   statuts: Status[] = [Status.A_VALIDER, Status.A_VERIFIER, Status.EN_ATTENTE]
   produits = []
   dossierDetail = []
@@ -47,9 +46,7 @@ export class VisuSuperviseurComponent implements OnInit {
     this.titreService.updateTitre("Bannette " + this.groupeService.getGroupeById(this.idGroupe).libelle.toLowerCase())
     this.dossierTermine = this.tacheService.getDossierTermine();
     this.dossiersEncours = this.tacheService.getDossierEncours().filter(dossier => dossier.idGroupe == this.idGroupe);
-    this.gestionnaires = this.utilisateurService.getAll()
-        .filter(utilisateur => this.groupeService.getGroupesUtilisateur(utilisateur.ident)
-        .find(g => g.ident == this.idGroupe));
+    this.gestionnaires = this.utilisateurService.getAll().filter(utilisateur => utilisateur.profil.groupes.find( g => g == this.idGroupe))
     this.dossiersEncours.forEach(d => {
       if (this.produits.length == 0) {
         this.produits.push({nom: d.context.contrat.codeProduit})        
@@ -98,12 +95,16 @@ export class VisuSuperviseurComponent implements OnInit {
     switch(this.filtre) {
       case "gestionnaire":
         this.gestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR).forEach(g => {
-          this.entetes.push({
-            nom: g.nom,
-            prenom: g.prenom
-          })
+          if (this.dossiersEncours.find(d => d.idUtilisateur == g.ident)) {
+            this.entetes.push({
+              nom: g.nom,
+              prenom: g.prenom
+            })
+          }
         })
-        this.entetes.push({nom: "Non affectées", prenom: ""})
+        if (this.dossiersEncours.find(d => d.idUtilisateur == null)) {
+          this.entetes.push({nom: "Non affectées", prenom: ""})
+        }
         this.dossiersEncours.forEach(d => {          
           this.dossierDetail.push({
             ident: d.ident,
