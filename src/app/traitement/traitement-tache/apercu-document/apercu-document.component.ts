@@ -42,7 +42,7 @@ export class ApercuDocumentComponent implements OnInit {
             }else {
                document.getElementById('divPdf').innerHTML = 'Pièce en attente de réception';
             }
-        } else if (this.note != null ) {
+        } else if (this.note != null || this.actionMetier != null) {
           document.getElementById('divPdf').innerHTML = '';
         }
       }
@@ -51,10 +51,10 @@ export class ApercuDocumentComponent implements OnInit {
 
 
   // transformation URL
-  urlSafe() {//              private sanitizer: DomSanitizer
+ /* urlSafe() {//              private sanitizer: DomSanitizer
 
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.piece.urlDocument);
-  }
+  }*/
 
   /**
    * retourn le nom de celui qui a émit la note 

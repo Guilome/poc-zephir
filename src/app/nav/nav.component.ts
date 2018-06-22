@@ -13,7 +13,6 @@ export class NavComponent implements OnInit {
 
   public userName = '';
   public connexionBoolean = false;
-  public titre: string = 'Tableau de bord';
   ngOnInit() {
   }
 

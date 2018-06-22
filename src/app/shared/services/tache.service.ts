@@ -3,8 +3,9 @@ import {Nature, Status, Tache} from '../domain/Tache';
 import {Context} from '../domain/context';
 import { BehaviorSubject} from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import {UtilisateurService} from './utilisateur.service';
 import { Contrat } from '../domain/contrat';
+import { Utilisateur } from '../domain/Utilisateur';
+import { Groupe } from '../domain/Groupe';
 
 
 @Injectable()
@@ -30,8 +31,7 @@ export class TacheService {
       lTache.dateCreation = new Date();
       lTache.dateReception = new Date();
       lTache.dateVerification = new Date();
-      lTache.idUtilisateur = 5; // Rousseau
-      lTache.idUtilisateurVerification = 1; // Dupont
+      lTache.idUtilisateurVerification = 1;// Dupont
 
       this.listTaches.push(lTache);
       this.create3PiecesTMP(lTache);
@@ -149,16 +149,16 @@ export class TacheService {
    */
   toEtapeValidation(idTache: number) {
     const tache = this.getTacheById(idTache);
-    //appel web service pour récupérer l'id du groupe validati on
-    tache.idGroupe = 2;
+    //appel web service pour récupérer l'id du groupe validation
     tache.dateVerification = new Date();
     tache.idUtilisateurVerification = tache.idUtilisateur;
-
     tache.idUtilisateur = null;
-
-
   }
 
+  setUtilisateurNull(tache: Tache){
+    tache.idUtilisateur = null
+  }
+  
   /**
    * Fermeture du dossier
    */
@@ -180,14 +180,14 @@ export class TacheService {
         lTache.context = new Context(330010+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
         lTache.priorite = (i%10) + 1;
         lTache.code = "199_AFN";
-        const date = '05/' + ((i%31) + 1) + '/2018';
+        const date = '06/' + ((i%31) + 1) + '/2018';
         lTache.dateCloture = new Date(date);
-        lTache.dateVerification  = new Date('05/21/2018');
-        lTache.dateCreation  = new Date('05/01/2018');
-        lTache.dateReception = new Date('05/01/2018');
+        lTache.dateVerification  = new Date('06/21/2018');
+        lTache.dateCreation  = new Date('06/01/2018');
+        lTache.dateReception = new Date('06/01/2018');
         
-        lTache.idUtilisateurVerification = [1, 4, 6][i % 3];
-        lTache.idUtilisateurCloture = [2, 3, 5][i % 3];
+        lTache.idUtilisateurVerification = [1, 3, 4, 6][i % 4];
+        lTache.idUtilisateurCloture = [3, 4, 6][i % 3];
         this.listTaches.push(lTache);
     }
   }
@@ -238,7 +238,6 @@ export class TacheService {
       lPiece.dateCreation = new Date();
       lPiece.dateReception = new Date();
       lPiece.dateVerification = new Date();
-      lPiece.idUtilisateur = 5;
       lPiece.idUtilisateurVerification = 1;// Dupont
       
       this.listTaches.push(lPiece);
@@ -398,14 +397,6 @@ export class TacheService {
     return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture == null)
   }
 
-  public getDossierTermineByUser(idUtilisateur: number){
-    return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture != null)
-  }
-
-  public getDossierEnCoursByUser(idUtilisateur: number){
-    return this.listTaches.filter( t => t.idUtilisateur == idUtilisateur && t.nature === Nature.DOSSIER && t.dateCloture == null)
-  }
-
   /**
    * "en attente" si aucune pièce est reçu.
    * "à vérifier" si une/plusieurs pîèce est à vérifiée.
@@ -421,20 +412,20 @@ export class TacheService {
       mapCount.set('En attente', 0);
       mapCount.set('À vérifier', 0);
       mapCount.set('À valider', 0);
-      if (lesPieces.length == 0) {
+      const nbPiecesNonCloturees = lesPieces.length;
+      if ( nbPiecesNonCloturees == 0) {
         return Status.OK// pour le jeu de test sinon le dossier est en attente
       }  else {
             for (let p of lesPieces) {
               mapCount.set(p.status, mapCount.get(p.status)+1);
             }
-            if( mapCount.get('En attente') > 0)
-                return Status.EN_ATTENTE;
-            else if(mapCount.get('À vérifier') > 0 )
+            if(mapCount.get('À vérifier') > 0 )
                 return Status.A_VERIFIER
-            else if (mapCount.get('À valider') > 0 )
+            else if (mapCount.get('À valider') == nbPiecesNonCloturees )
                 return Status.A_VALIDER;
+            else if( mapCount.get('En attente')  > 0)
+                return Status.EN_ATTENTE;
       }
-
       return Status.OK 
     }
     // PIECE
@@ -483,6 +474,23 @@ export class TacheService {
   public delAffectation(id: number) {
      this.getDossierById(id).idUtilisateur = null;
   }
-  
+
+  public avnAffectation(id: number) {
+    this.getDossierById(id).idGroupe = 2
+    this.getDossierById(id).code = Tache.libCode.get('AVENANT')
+    this.getDossierById(id).idUtilisateur = null;
+  }
+
+  // Méthode qui ajoute une tache à un utilisateur 
+  public affecterTacheUtilisateur(tache: Tache, utilisateur: Utilisateur){
+    tache.idUtilisateur = utilisateur.ident;
+    if(tache.nature = Nature.DOSSIER){
+      this.getPiecesByDossier(tache.ident).forEach(piece => piece.idUtilisateur = utilisateur.ident)
+    }
+  }
+  // Méthode qui change une tache à un groupe 
+  public affecterTacheGroupe(tache: Tache, groupe: Groupe){
+    tache.idGroupe = groupe.ident;
+  }
 }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Modification, Donnee } from '../domain/modification';
+import { Modification, Donnee } from '../domain/Modification';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { TacheService } from './tache.service';
@@ -19,26 +19,17 @@ export class ModificationService {
   }
 
   public getModificationById(idModif: number): Modification{
-    if (this.listModifications.length == 0) {
-      return null
-    }
-    else {
-      return this.listModifications.filter(m => m.ident == idModif)[0]
-    }
+    return this.listModifications.filter(m => m.ident == idModif)[0]
   }
 
-  public getModificationByPiece(idPiece: number): any{
-    if (this.listModifications.length == 0) {
-      return false;
-    }
-    else {
-      return this.listModifications.filter(m => m.idTache == idPiece);
-    }
+  public getModificationByPiece(idPiece: number): Modification[]{
+    return this.listModifications.filter(m => m.idTache == idPiece);
   }
 
   public getModificationByDossier(idDossier: number): Modification[]{
     return this.listModifications.filter(modif => this.tacheService.getPieceById(modif.idTache).idTacheMere == idDossier)
   }
+  
   addModification(modif: Modification) {
     if (this.listModifications.length == 0) {
       modif.ident = 1
@@ -55,11 +46,11 @@ export class ModificationService {
     this.modificationSubject.next(this.listModifications);
   }
 
-  getDonneeModif(idModification: number): Donnee {
-    return this.getModificationById(idModification).donnee
-  }
-
-  getMotifByDonnee(donnee: Donnee): Modification {
+  /**
+   * retourne la modification par rapport au type de donnée modifié
+   * @param donnee 
+   */
+  getModifByDonnee(donnee: Donnee): Modification {
     return this.listModifications.find(m => m.donnee == donnee)
   }
 }

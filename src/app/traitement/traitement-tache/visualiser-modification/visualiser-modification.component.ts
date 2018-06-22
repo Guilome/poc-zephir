@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Modification, Donnee } from '../../../shared/domain/modification';
+import { Modification, Donnee } from '../../../shared/domain/Modification';
 import { ModificationService } from '../../../shared/services/modification.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Tache } from '../../../shared/domain/Tache';

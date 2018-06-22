@@ -48,6 +48,9 @@ export class GraphiqueEnCoursComponent implements OnInit {
     this.graphGestionnaire();
   }
 
+  /**
+   * met a les jours les données du graphique
+   */
   private  UpdateCanvas() {
     if (this.c == null) {
       this.createCanvas();
@@ -63,6 +66,9 @@ export class GraphiqueEnCoursComponent implements OnInit {
     this.c.update();
   }
 
+  /**
+   * instancie le graphique
+   */
   private createCanvas() {
     if (this.context != null) {
       this.c = new Chart(this.context, {
@@ -86,16 +92,26 @@ export class GraphiqueEnCoursComponent implements OnInit {
       });
     }
   }
+
+  /**
+   * désaffecte tous les tâches aux utilisateurs du groupe
+   */
   corbeille() {    
     this.groupeService.corbeille(this.idGroupe)
     this.UpdateCanvas()    
   }
 
+  /**
+   * distribue toute les données aux utilisateurs du groupe
+   */
   dispatcher() {
     this.groupeService.dispatcher(this.idGroupe);
     this.UpdateCanvas()
   }
 
+  /**
+   * filtre gestionnaire
+   */
   graphGestionnaire(){
     this.filtreGraph = "gestionnaire"
     this.gestionnaire = true
@@ -104,6 +120,9 @@ export class GraphiqueEnCoursComponent implements OnInit {
     this.UpdateCanvas();        
   }
 
+  /**
+   * filtre statut
+   */
   graphStatut(){
     this.filtreGraph = "statut"
     this.gestionnaire = false
@@ -112,6 +131,9 @@ export class GraphiqueEnCoursComponent implements OnInit {
     this.UpdateCanvas(); 
   }
 
+  /**
+   * filtre produit
+   */
   graphProduit(){
     this.filtreGraph = "produit"
     this.gestionnaire = false
@@ -120,6 +142,9 @@ export class GraphiqueEnCoursComponent implements OnInit {
     this.UpdateCanvas();    
   }
 
+  /**
+   * gère l'action sur le bouton détail
+   */
   AfficherDetail(){
     this.details.emit(true) 
   }

@@ -25,15 +25,11 @@ export class ConformiteComponent implements OnInit {
 
   piece: Tache;
   private idSubscription: Subscription;
-  public motifBoolean = false;
 
   private idCurrentUser: number
   private dossier: Tache;
 
   currentModal: NgbModalRef;
-  // multiplSelect
-  dropdownList = [];
-  selectedItems = [];
   dropdownSettings = {};
   motifselected = [];
   motifsData: any;
@@ -52,12 +48,7 @@ export class ConformiteComponent implements OnInit {
       if (this.piece != null) {
         this.tacheService.listerTaches().subscribe(data => 
                                   this.dossier = this.tacheService.getDossierById(this.piece.idTacheMere));
-      }
-      this.dropdownList = [
-                            {"id": 1, "itemName":"CRM non conforme"},
-                            {"id": 2, "itemName":"Véhicule interdit à la souscription"}
-                          ];
-      this.selectedItems = [];
+
       this.dropdownSettings = { 
                                 singleSelection: false, 
                                 text:"Selectionner un ou plusieurs motifs",
@@ -67,14 +58,13 @@ export class ConformiteComponent implements OnInit {
                                 classes:"myclass custom-class"
                               };
                             }
-  
+    }
 
   /*
    Fermer la tache et créer une nouvelle si étape "A_VALIDER"
     */
   conforme() {
-    this.motifBoolean = false;
-    this.selectedItems = [];
+    this.motifselected = [];
     if (this.piece.dateCloture == null) {
       if (this.piece.status === Status.A_VERIFIER) {
       if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
@@ -93,37 +83,9 @@ export class ConformiteComponent implements OnInit {
   } else {
       this.toastr.success('La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture), '', {enableHtml: true});
     }
-    //this.titleStatus()
 
   }
-  /**
-   * Affichage de la liste NON CONFRMITEE
-   */
-  nonConforme() {
-    if (this.piece.dateCloture == null) {
-      if (this.motifBoolean) {
-      } else {
-        this.motifBoolean = true;
-      }
-    }
-  }
-  /**
-   * Valider la non conformité 
-   */
-  valider() {
-    if (this.selectedItems.length > 0) {
-          
-      this.tacheService.closePieceNonConforme(this.piece.ident, this.recuperationMotif());
-      // création auto d'un nouvelle piece en attente :
-      this.tacheService.demandeNouvellePiece(this.piece);
-      this.toastr.success('La tâche a été fermé');
-      this.selectedItems = [];
-      this.motifBoolean = false;
-      this.docSuivant();
-    } else {
-      this.toastr.error('Veuillez renseigner le(s) motif(s)');
-    }
-  }
+
 
   /**
    * Cas de la Bannette vérification 
@@ -140,6 +102,9 @@ export class ConformiteComponent implements OnInit {
      }
        
     if (idNext == null) {
+      if (this.utilisateurService.getUserById(this.idCurrentUser) != null) {
+        this.tacheService.affecterTacheUtilisateur(this.dossier, null)
+      }      
       this.router.navigate(['/gestionBO']);
     } else {
       this.router.navigate(['/TraitementTache', { id: this.piece.context.ident, piece: idNext }]);
@@ -153,49 +118,15 @@ export class ConformiteComponent implements OnInit {
 
   private recuperationMotif(): string {
     let motif = '';
-    for(let i in this.selectedItems){
-      motif += this.selectedItems[i]['itemName'] + '.\n';
+    for(let i in this.motifselected){
+      motif += this.motifselected[i]['itemName'] + '.\n';
     }
     return motif;
   }
 
-  /*private titleStatus() {
-    // Status 
-    let idLabelStatus = document.getElementById('idLabelStatus');
-    let bVerification: boolean = false;
-    idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-    for (let p of this.tacheService.getPiecesByDossier(this.dossier.ident)) {
-      if(this.tacheService.getStatutTache(this.dossier) === 'À vérifier') {
-        idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
-        bVerification = true;
-        break;
-      }
-      if (p.status === 'À valider') {
-        idLabelStatus.innerHTML = '<span style="color: #00b3ee" >Validation</span>';
-      }
-    }
-    // le status du dossier est toujours en vérification, car une des pièces est au statut "à vérifier"
-    if(!bVerification){
-      // Si l'utilisateur ne fait pas parti du groupe validation 
-      if( !this.groupeValidation()) {
-          // Passage du dossier à l'étape de validation
-          if (this.tacheService.getStatutTache(this.dossier) === 'En attente'){
-            this.toastr.success('Dossier passé   <b>En attente</b>', '', {enableHtml: true}); 
-            this.tacheService.delAffectation(this.dossier.ident);
-
-          }else {
-            this.toastr.success('Passage à la bannette <b>VALIDATION</b>', '', {enableHtml: true}); 
-            this.tacheService.toEtapeValidation(this.dossier.ident);
-          }
-          this.router.navigate(['/gestionBO']);
-
-      }
-    }
-  }*/
-
   listMotifs(): string[] {
     let lList = [];
-    const taille = this.piece.motifNonConformite.split('.').length - 1;
+    const taille = this.piece.motifNonConformite.split('.').length -1;
     for ( let i = 0 ; i < taille ; i++ ) {
       lList.push(this.piece.motifNonConformite.split('.')[i]);
     }
@@ -203,20 +134,14 @@ export class ConformiteComponent implements OnInit {
   }
 
   groupeVerification(): boolean {
-   // if ( this.groupeService.isVerification(this.idCurrentUser)){
-     if(this.dossier != null)
+    if(this.dossier != null)
         return this.tacheService.getStatutTache(this.dossier) != 'À valider';
     return false;
-   // } 
-    //return false;
   }
   groupeValidation(): boolean {
-    // if ( this.groupeService.isValidation(this.idCurrentUser)){
-      if(this.dossier != null)
-          return this.tacheService.getStatutTache(this.dossier) === 'À valider';
-      return false;
-  // } 
-     //return false;
+    if(this.dossier != null)
+      return this.tacheService.getStatutTache(this.dossier) === 'À valider';
+    return false;
    }
 
   /**
@@ -253,13 +178,21 @@ export class ConformiteComponent implements OnInit {
    */
   demanderNouvellePiece() {
     if ( this.motifselected.length > 0){
-    this.piece.message = (<HTMLInputElement>document.getElementById('noteComplementaire')).value    
-    this.tacheService.createPieceTemporaire(this.piece.code, this.dossier, this.piece);
+    this.piece.message = (<HTMLInputElement>document.getElementById('noteComplementaire')).value  
+    if ( this.piece.status != 'À vérifier') {
+          this.tacheService.createPieceTemporaire(this.piece.code, this.dossier, this.piece);
+    } else {
+      this.tacheService.demandeNouvellePiece(this.piece);
+    }
     // cloture de la pièce NON CONFORME/
-    this.tacheService.closePieceNonConforme(this.piece.ident, this.motifselected.join('\n'));
+    
+    this.tacheService.closePieceNonConforme(this.piece.ident, this.recuperationMotif());
 
+
+    this.motifselected = [];
     this.toastr.success('Demande de renouvellement effectuée');
     this.currentModal.close();
+    this.docSuivant();
 
     }else {
       this.toastr.error('Veuillez sélectionner un ou plusieurs motif(s)');

@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {Chart} from 'chart.js';
-import { Utilisateur } from '../../shared/domain/Utilisateur';
-import { Groupe, Code } from '../../shared/domain/groupe';
+import { Groupe } from '../../shared/domain/groupe';
 import { TacheService } from '../../shared/services/tache.service';
 import { ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../../shared/services/groupe.service';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { Tache } from '../../shared/domain/Tache';
-import { ProfilCode } from '../../shared/domain/profil';
+import { ProfilCode } from '../../shared/domain/Profil';
 
 @Component({
   selector: 'graphique-termine',
@@ -16,12 +15,13 @@ import { ProfilCode } from '../../shared/domain/profil';
 })
 export class GraphiqueTermineComponent implements OnInit {
 
+  @Output() details:EventEmitter<boolean> = new EventEmitter<boolean>();
+
   mapSubjectTermine: Map<string, number> = new Map();
 
-
-  dateJour:Date = new Date("05-10-2018")
-  lesGestionnaires: Utilisateur[]
-  dossiersTermine:Tache[] = []
+  dateJour:Date = new Date()
+  lesGestionnaires = []
+  dossiersTermine = []
   groupe :Groupe
   idGroupe: number
   context: any;
@@ -76,13 +76,12 @@ export class GraphiqueTermineComponent implements OnInit {
     this.groupe = this.groupeService.getGroupeById(this.idGroupe)
     this.context = document.getElementById('chartBar');
     this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil.code != ProfilCode.DIRECTEUR)
-    this.tachesTermines();
+    this.filtrer("mois");
   }
 
-  private tachesTermines() {
-    this.trierMois()
-  }
-
+  /**
+   * met a les jours les données du graphique
+   */
   private  UpdateCanvas() {
     if (this.c == null) {
       this.createCanvas();
@@ -104,6 +103,9 @@ export class GraphiqueTermineComponent implements OnInit {
     this.c.update();
   }
 
+  /**
+   * instancie le graphique
+   */
   private createCanvas() {
     if (this.context != null) {
       this.c = new Chart(this.context, {
@@ -134,84 +136,83 @@ export class GraphiqueTermineComponent implements OnInit {
     }
   }
 
-  private getDossierTermine(codeGroupe: Code, typeTri: string, value: any){
-    if (this.groupeService.getGroupeById(this.idGroupe).code == Code.AFN) {
-      if (typeTri === "day" || typeTri == "month") {
-        this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateVerification.toLocaleDateString().includes(value))  
-      } else if (typeTri == "week") {     
-        this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateVerification.getDate() && tache.dateVerification.getDate() < value[1])      
-      }
-      
-      this.refreshMapTermine(this.dossiersTermine)
+  /**
+   * filte la liste des dossiers en fonction du jour,semaine ou mois
+   * @param typeTri 
+   * @param value 
+   */
+  private dossierTermine(typeTri: string, value: any){
+    if (typeTri === "day") {
+      this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateCloture.toLocaleDateString() === value)  
     }
-    else {
-      if (typeTri === "day" || typeTri == "month") {
-        this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateCloture.toLocaleDateString().includes(value))  
-      } else if (typeTri == "week") {     
-        this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < value[1])      
+    else if (typeTri === "month") {
+      this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateCloture.getMonth() == value)  
+    }
+    else if (typeTri == "week") {     
+      this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => value[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < value[1])      
+    }      
+    this.refreshMapTermine(this.dossiersTermine)
+  }
+
+  /**
+   * map de donnée du graph
+   * @param lesDossiers 
+   */
+  private refreshMapTermine(lesDossiers: Tache[]) {
+    this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.profil.groupes.find(g => g == this.idGroupe))
+        .forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
+    for (const d of lesDossiers) {    
+      let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurCloture)[0];
+      if (gestionnaire.profil.groupes.find(g => g == this.idGroupe)) {
+        const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
+        const sum = this.mapSubjectTermine.get(key);
+        this.mapSubjectTermine.set(key,  sum + 1);
       }
-      
-      this.refreshMapTermine(this.dossiersTermine)
     }
   }
 
-  private refreshMapTermine(lesDossiers: Tache[]) {
-    if (this.groupeService.getGroupeById(this.idGroupe).code == Code.AFN) {
-      this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
-      for (const d of lesDossiers) {    
-        let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurVerification)[0];
-        if (gestionnaire.idGroupe == this.idGroupe) {
-          const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
-          const sum = this.mapSubjectTermine.get(key);
-          this.mapSubjectTermine.set(key,  sum + 1);
+  /**
+   * gère le groupe de bouton jour/semaine/mois
+   * @param filter 
+   */
+  filtrer(filter: string){
+    switch(filter){
+      case "jour" :
+        this.dossierTermine("day", this.dateJour.toLocaleDateString())
+        this.UpdateCanvas()
+        break;
+      case "semaine" :
+        let day = this.dateJour.getDay()
+        let date = this.dateJour.getDate()
+        let debutSemaine
+        let semaine
+        if (day == 1) { // Si le jour est lundi
+          this.dossierTermine("day", this.dateJour.toLocaleDateString())
+          this.UpdateCanvas()
         }
-      }
-    }
-    else {
-      this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.idGroupe == this.idGroupe).forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
-      for (const d of lesDossiers) {    
-        let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurCloture)[0];
-        if (gestionnaire.idGroupe == this.idGroupe) {
-          const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
-          const sum = this.mapSubjectTermine.get(key);
-          this.mapSubjectTermine.set(key,  sum + 1);
-        }
-      }
+        else { // jour autre que lundi
+          let difference = date - day 
+          if (difference < 0) {
+            let month = this.monthsTab[this.dateJour.getMonth()-1]
+            debutSemaine = month.maxDay + difference 
+            semaine = [debutSemaine.getDate(), date]
+          } else {
+            difference += 1
+            debutSemaine = new Date(this.dateJour.getFullYear(), this.dateJour.getMonth(), difference)
+            semaine = [debutSemaine.getDate(), date]
+          }
+          this.dossierTermine("week", semaine)
+          this.UpdateCanvas()  
+        }     
+        break;
+      case "mois" :   
+        this.dossierTermine("month", this.dateJour.getMonth())
+        this.UpdateCanvas() 
+        break;
     }
   }
   
-  trierJour(){
-    this.getDossierTermine(this.groupe.code, "day", this.dateJour.toLocaleDateString())
-    this.UpdateCanvas()
+  AfficherDetail(){
+    this.details.emit(true) 
   }
-  trierSemaine(){
-    let day = this.dateJour.getDay()
-    let date = this.dateJour.getDate()
-    let debutSemaine
-    let semaine
-    if (day == 1) { // Si le jour est lundi
-      this.getDossierTermine(this.groupe.code, "day", this.daysTab[day])
-      this.UpdateCanvas()
-    }
-    else { // jour autre que lundi
-      let difference = date - day 
-      if (difference < 0) {
-        let month = this.monthsTab[this.dateJour.getMonth()-1]
-        debutSemaine = month.maxDay + difference 
-        semaine = [debutSemaine.getDate(), date]
-      } else {
-        difference += 1
-        debutSemaine = new Date(this.dateJour.getFullYear(), this.dateJour.getMonth(), difference)
-        semaine = [debutSemaine.getDate(), date]
-      }
-    }     
-    this.getDossierTermine(this.groupe.code, "week", semaine)
-    this.UpdateCanvas()  
-  }
-  trierMois(){
-    let month ='0'+ (this.dateJour.getMonth() + 1)    
-    this.getDossierTermine(this.groupe.code, "month", month)
-    this.UpdateCanvas() 
-  }
-  
 }

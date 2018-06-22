@@ -1,8 +1,8 @@
-import { Profil } from "./profil";
+import { Profil } from "./Profil";
 
 export class Utilisateur {
 
-  constructor(public ident: number, public nom: string, public prenom:	String, public profil: Profil, public idGroupe: number) {}
+  constructor(public ident: number, public nom: string, public prenom:	String, public profil: Profil) {}
 }
 
 

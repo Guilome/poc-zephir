@@ -1,8 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { TacheService } from '../../shared/services/tache.service';
-import { Tache, Nature } from '../../shared/domain/Tache';
+import { Tache, Nature, Status } from '../../shared/domain/Tache';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { GroupeService } from '../../shared/services/groupe.service';
+import { Statement } from '@angular/compiler';
 
 @Component({
   selector: 'app-tache-non-affecte',
@@ -11,42 +12,50 @@ import { GroupeService } from '../../shared/services/groupe.service';
 })
 export class TacheNonAffecteComponent implements OnInit {
 
-  lesDossiers:Tache[]
-  allChecked: Boolean
-  dossiers:Tache[] = []
-  checkboxDossier: boolean;
-  idGroupe: number;
-  private tousLesDossiers: Tache[] = [];
-  @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
   collectDossier = []
+  lesDossiers:Tache[]
+  dossiers:Tache[] = []
+  private tousLesDossiers: Tache[] = [];
+
+  allChecked: Boolean
+  checkboxDossier: boolean;
+
+  idGroupe: number;
+  idUser: number;
+
+  @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
 
   constructor(private  tacheService: TacheService,
-              private groupeService: GroupeService) {
-    this.tacheService.listerTaches().subscribe(data => {
-                                                          this.lesDossiers = data;
-                                                         this.tousLesDossiers = data.filter(tache => tache.nature == Nature.DOSSIER);   
-                                                        });
+              private utilisateurService: UtilisateurService) {
+    this.idUser = +localStorage.getItem('USER');
+    this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
+    // Constitue la liste des taches à afficher sur l'écran d'attribution ou de distribution des tâches
+    if(isNaN(this.idGroupe)){
+      this.tacheService.listerTaches().subscribe(data => {
+        this.lesDossiers = data;  
+      });
+      this.lesDossiers = this.lesDossiers.filter(tache => this.utilisateurService.getUserById(this.idUser).profil.groupes.find(g => g == tache.idGroupe));
+    } else {
+      this.tacheService.listerTaches().subscribe(data => {
+        this.lesDossiers = data;
+      });
+      this.lesDossiers = this.lesDossiers.filter(tache => tache.idGroupe == this.idGroupe) 
+    }
+    this.tousLesDossiers = this.lesDossiers
     this.trierListe()
   }
 
   ngOnInit() {
-    this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
   }  
-
+  
   trierListe() {
-    this.lesDossiers = this.lesDossiers.filter(t => t.idUtilisateur == null && t.nature === Nature.DOSSIER);
-    /* S'il appartient à aucun de ces deux groupes il verra tous les dossiers */
-    const idUser = +localStorage.getItem('USER');
-    if ( this.groupeService.isVerification(idUser)){
-      this.lesDossiers = this.lesDossiers
-                        .filter(dos => 
-                                      this.statutDossier(dos.ident) == 'À vérifier');
-    } else if (this.groupeService.isValidation(idUser)){
-      this.lesDossiers = this.lesDossiers.filter(dos => this.statutDossier(dos.ident) == 'À valider');
-    }
+    this.lesDossiers = this.lesDossiers.filter(t => t.idUtilisateur == null && t.nature === Nature.DOSSIER && this.tacheService.getStatutTache(t) != Status.OK);
   }
+  
 
-  //Retourne les tâches non affectées et selectionnées
+  /**
+   * Retourne les tâches selectionnées
+   */
   return(){   
     this.dossiers = []
     if (this.collectDossier.length < 7) {
@@ -80,7 +89,9 @@ export class TacheNonAffecteComponent implements OnInit {
     this.tacheAssigner.emit(this.dossiers)
   }
 
-  // Retourne l'ID de toutes les tâches non affectées
+  /**
+   * Retourne toutes les tâches
+   */
   returnAll(){
     if ((<HTMLInputElement> document.getElementById('allDossier')).checked) {
       //Rempli la liste de l'ID de toute les tâches
@@ -97,8 +108,10 @@ export class TacheNonAffecteComponent implements OnInit {
     this.tacheAssigner.emit(this.dossiers)
   }
 
+  /**
+   * Fonction de gestion des checkbox
+   */
   isAllDossiers():Boolean {
-
     var collectInput = document.getElementsByTagName('input');
   
     for (let i = 0; i < collectInput.length; i++) {
@@ -115,30 +128,26 @@ export class TacheNonAffecteComponent implements OnInit {
   }
 
   onKeyUpFilter($event){
-
-      const value =  $event.target.value;
-      if ( value === '' ){
-        this.lesDossiers = this.tousLesDossiers;
-      }else {
-          this.lesDossiers = this.tousLesDossiers.filter( dos => dos.context.contrat.numero.toLowerCase().indexOf(value.toLowerCase()) >= 0 );
-      }
+    const value =  $event.target.value;
+    if ( value === '' ){
+      this.lesDossiers = this.tousLesDossiers;
+    }else {
+      this.lesDossiers = this.tousLesDossiers.filter( dos => dos.context.contrat.numero.toLowerCase().indexOf(value.toLowerCase()) >= 0 );
+    }
   }
 
-    statutFilter(enAttente, aVerifier, aValider, ok) {
-      if( enAttente.checked || aVerifier.checked  || aValider.checked || ok.checked ){    
-        this.lesDossiers = this.tousLesDossiers.filter( dos =>
-                                                              
-                                                              (enAttente.checked ? this.tacheService.getStatutTache(dos) === 'En attente' : false) ||
-                                                            (aVerifier.checked ? this.tacheService.getStatutTache(dos) === 'À vérifier'   : false) ||
-                                                            (aValider.checked  ? this.tacheService.getStatutTache(dos) === 'À valider'    : false) || 
-                                                            (ok.checked ? this.tacheService.getStatutTache(dos) === 'Ok' : false)
-
-                                                            );
-      } else {
-        this.lesDossiers = this.tousLesDossiers;
-      }
+  statutFilter(enAttente, aVerifier, aValider, ok) {
+    if( enAttente.checked || aVerifier.checked  || aValider.checked || ok.checked ){    
+      this.lesDossiers = this.tousLesDossiers.filter( dos =>                                                  
+        (enAttente.checked ? this.tacheService.getStatutTache(dos) === 'En attente' : false) ||
+        (aVerifier.checked ? this.tacheService.getStatutTache(dos) === 'À vérifier'   : false) ||
+        (aValider.checked  ? this.tacheService.getStatutTache(dos) === 'À valider'    : false) || 
+        (ok.checked ? this.tacheService.getStatutTache(dos) === 'Ok' : false)
+      );
+    } else {
+      this.lesDossiers = this.tousLesDossiers;
+    }
   }
-
 
   produitFilter($event) {
     const value =  $event.target.value;
@@ -148,7 +157,9 @@ export class TacheNonAffecteComponent implements OnInit {
         this.lesDossiers = this.tousLesDossiers.filter( dos => dos.context.contrat.codeProduit.toLowerCase().indexOf(value.toLowerCase()) >= 0 );
     }
   }
+
   private boolSortDate: boolean = true;
+
   sortByDate(thDate) {
     if(this.boolSortDate){
     this.lesDossiers = this.tousLesDossiers.sort(this.sortDateCroissant);
@@ -168,6 +179,7 @@ export class TacheNonAffecteComponent implements OnInit {
       else
     return -1;
   }
+
   private sortDateDeCroissant = (dos1,dos2) => {
     if ( dos1.dateReception == dos2.dateReception )
         return 0;

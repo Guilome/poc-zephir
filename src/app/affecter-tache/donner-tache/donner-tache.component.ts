@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { TacheService } from '../../shared/services/tache.service';
-import { Tache } from '../../shared/domain/Tache';
+import { Tache, Status } from '../../shared/domain/Tache';
 import { Utilisateur } from '../../shared/domain/Utilisateur';
 import { Router } from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import { TitreService } from '../../shared/services/titre.service';
 import { GroupeService } from '../../shared/services/groupe.service';
+import { Groupe } from '../../shared/domain/groupe';
 
 @Component({
   selector: 'donner-tache',
@@ -18,6 +19,7 @@ export class DonnerTacheComponent implements OnInit {
   gestionnaires: Utilisateur[] = []
   lesGestionnaires: Utilisateur[]
   idGroupe: number
+  groupe: Groupe
 
   constructor(private tacheService: TacheService,
               private route: Router, 
@@ -27,6 +29,7 @@ export class DonnerTacheComponent implements OnInit {
 
   ngOnInit() {
     this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
+    this.groupe = this.groupeService.getGroupeById(this.idGroupe)
     this.titreService.updateTitre("Repartir les tâches")    
   }
 
@@ -46,12 +49,10 @@ export class DonnerTacheComponent implements OnInit {
       if (this.gestionnaires.length == 1) {
         this.dossiers.forEach(dossier => { 
           this.gestionnaires.forEach(g => {
-            dossier.idGroupe = this.idGroupe
-            dossier.idUtilisateur = g.ident
-            let pieces = this.tacheService.getPiecesByDossier(dossier.ident)
-            pieces.forEach(piece => piece.idUtilisateur = g.ident)
+            this.tacheService.affecterTacheUtilisateur(dossier, g)
+            this.tacheService.affecterTacheGroupe(dossier, this.groupe)
           });
-        });    
+        }); 
       }
       else {
         this.groupeService.dispatcherGestionnaire(this.gestionnaires, this.dossiers)

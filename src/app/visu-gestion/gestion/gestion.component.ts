@@ -11,7 +11,7 @@ import { Utilisateur} from '../../shared/domain/Utilisateur';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { ActionMetierService } from '../../shared/services/action-metier.service';
 import { Contrat } from '../../shared/domain/contrat';
-import { ProfilCode } from '../../shared/domain/profil';
+import { ProfilCode } from '../../shared/domain/Profil';
 
 @Component({
   selector: 'app-gestion',
@@ -47,10 +47,10 @@ export class GestionComponent implements OnInit {
   dossierBoolean = false
 
   // Liste :
-  taches: Tache[];
-  groupes: Groupe[];
-  actionMetiers: Tache[];
-  contrats: Contrat[]
+  taches = []
+  groupes = []
+  actionMetiers = []
+  contrats = []
   // map groupe key/value
   dataGroupe: Map<string, number>;
 
@@ -84,7 +84,7 @@ export class GestionComponent implements OnInit {
       this.numId = 2;
     } else if (this.titre === 'Mes groupes') {
       this.profil = this.utilisateur.profil.code
-      this.groupes = this.groupeService.getAll().filter( g => g.ident == this.utilisateur.idGroupe)
+      this.utilisateur.profil.groupes.forEach(g => this.groupes.push(this.groupeService.getGroupeById(g)))
       this.groupeBoolean = true;
       this.numId = 3;
     } else if (this.titre === 'Mes Notes') {
@@ -186,13 +186,17 @@ export class GestionComponent implements OnInit {
    * Les tâches qui sont affectées à l'utilisateur courant seront misent en corbeille
    */
   userCorbeille() {    
-    if ( this.groupeService.corbeilleUser(this.utilisateur.idGroupe) ) {
+    if ( this.groupeService.corbeilleUser(this.idCurrentUser)) {
       this.toastr.success('Vos taches ont été misent à la corbeille');
     }else {
       this.toastr.warning('Votre liste de tache est vide');
     }
   }
 
+  /**
+   * retourne un boolean qui donne la permission ou non d'acceder a l'écran de supervision
+   * @param role 
+   */
   permission(role: string) {
     if (role === ProfilCode.SUPERVISEUR.toString() || role === ProfilCode.DIRECTEUR.toString()) {
       return true
