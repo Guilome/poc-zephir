@@ -76,13 +76,12 @@ export class GraphiqueTermineComponent implements OnInit {
     this.groupe = this.groupeService.getGroupeById(this.idGroupe)
     this.context = document.getElementById('chartBar');
     this.lesGestionnaires = this.utilService.getAll().filter(g => g.profil.code != ProfilCode.DIRECTEUR)
-    this.tachesTermines();
-  }
-
-  private tachesTermines() {
     this.filtrer("mois");
   }
 
+  /**
+   * met a les jours les données du graphique
+   */
   private  UpdateCanvas() {
     if (this.c == null) {
       this.createCanvas();
@@ -104,6 +103,9 @@ export class GraphiqueTermineComponent implements OnInit {
     this.c.update();
   }
 
+  /**
+   * instancie le graphique
+   */
   private createCanvas() {
     if (this.context != null) {
       this.c = new Chart(this.context, {
@@ -134,6 +136,11 @@ export class GraphiqueTermineComponent implements OnInit {
     }
   }
 
+  /**
+   * filte la liste des dossiers en fonction du jour,semaine ou mois
+   * @param typeTri 
+   * @param value 
+   */
   private dossierTermine(typeTri: string, value: any){
     if (typeTri === "day") {
       this.dossiersTermine = this.tacheService.getDossierTermine().filter(tache => tache.dateCloture.toLocaleDateString() === value)  
@@ -147,6 +154,10 @@ export class GraphiqueTermineComponent implements OnInit {
     this.refreshMapTermine(this.dossiersTermine)
   }
 
+  /**
+   * map de donnée du graph
+   * @param lesDossiers 
+   */
   private refreshMapTermine(lesDossiers: Tache[]) {
     this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.profil.groupes.find(g => g == this.idGroupe))
         .forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
@@ -160,6 +171,10 @@ export class GraphiqueTermineComponent implements OnInit {
     }
   }
 
+  /**
+   * gère le groupe de bouton jour/semaine/mois
+   * @param filter 
+   */
   filtrer(filter: string){
     switch(filter){
       case "jour" :

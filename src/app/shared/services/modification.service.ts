@@ -29,6 +29,7 @@ export class ModificationService {
   public getModificationByDossier(idDossier: number): Modification[]{
     return this.listModifications.filter(modif => this.tacheService.getPieceById(modif.idTache).idTacheMere == idDossier)
   }
+  
   addModification(modif: Modification) {
     if (this.listModifications.length == 0) {
       modif.ident = 1
@@ -45,7 +46,11 @@ export class ModificationService {
     this.modificationSubject.next(this.listModifications);
   }
 
-  getMotifByDonnee(donnee: Donnee): Modification {
+  /**
+   * retourne la modification par rapport au type de donnée modifié
+   * @param donnee 
+   */
+  getModifByDonnee(donnee: Donnee): Modification {
     return this.listModifications.find(m => m.donnee == donnee)
   }
 }

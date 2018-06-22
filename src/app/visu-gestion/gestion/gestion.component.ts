@@ -193,6 +193,10 @@ export class GestionComponent implements OnInit {
     }
   }
 
+  /**
+   * retourne un boolean qui donne la permission ou non d'acceder a l'écran de supervision
+   * @param role 
+   */
   permission(role: string) {
     if (role === ProfilCode.SUPERVISEUR.toString() || role === ProfilCode.DIRECTEUR.toString()) {
       return true

@@ -42,6 +42,9 @@ export class InformationPcComponent implements OnInit {
     this.setInputValue();
   }
 
+  /**
+   * fonction a chaque perte de focus sur un des inputs et test si il y a un changement
+   */
   ifChangement() {
     const numero = (<HTMLInputElement>document.getElementById('numero')).value    
     const categorie = (<HTMLInputElement>document.getElementById('categorie')).value    
@@ -56,6 +59,14 @@ export class InformationPcComponent implements OnInit {
     }
   }
 
+  /**
+   * Créer ou modifie une demande d'avenant en fonction du ou des champs modifiés
+   * @param numero 
+   * @param categorie 
+   * @param date 
+   * @param departement 
+   * @param prefecture 
+   */
   DemandeAvt(numero:string, categorie:string, date: string, departement: string, prefecture: string){
     let modifPC
     if(numero != this.currentNumero) {
@@ -87,6 +98,9 @@ export class InformationPcComponent implements OnInit {
     this.toastr.success('Une demande d\'avenant a été créée');
   }
 
+  /**
+   * Insère les données de base dans le formulaire
+   */
   private setInputValue(){
     this.currentNumero = "P012345678";
     this.currentCategorie = "B";
@@ -116,7 +130,11 @@ export class InformationPcComponent implements OnInit {
       })
     }
   }
-  
+
+  /**
+  * Créer la date au format adéquate (mm/jj/aaaa) afin qu'elle s'affiche correctement dans le formulaire
+  * @param date 
+  */
   private createDate(date: Date): string {
     let dateString = "";
     dateString += date.getFullYear() +"-";

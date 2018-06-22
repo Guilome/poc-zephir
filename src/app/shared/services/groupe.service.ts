@@ -38,6 +38,7 @@ export class GroupeService {
   public getGroupeByCode(code :Code): Groupe {
     return this.groupes.find(groupe => groupe.code == code)
   }
+  
   /**
    * Retourne une liste de taches de tache non cloturés pour le graphique
    * @param idGroupe 
@@ -63,6 +64,10 @@ export class GroupeService {
     return this.mapEnCours
   }
 
+  /**
+   * renvoie une map des utilisateurs du groupe passer en paramètre ainsi que des taches
+   * @param idGroupe 
+   */
   private refreshMapEnCoursByUtilisateur(idGroupe: number) {
     const map = new Map<string, number>();
     map.set('Non Affectées', 0);
@@ -79,6 +84,9 @@ export class GroupeService {
     this.mapEnCours.next(map)
   }
 
+  /**
+   * renvoie une map du nombre de tâche par status pour un groupe
+   */
   private refreshMapEnCoursByStatut() {
     const map = new Map<string, number>();
     // liste des statuts : Initialisation 
@@ -93,6 +101,9 @@ export class GroupeService {
     this.mapEnCours.next(map)
   }
 
+  /**
+   * renvoie une map du nombre de tâche par produits
+   */
   private refreshMapEnCoursByProduit() {
     const map = new Map<string, number>();
     // liste des produits : Initialisation

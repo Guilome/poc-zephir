@@ -48,6 +48,9 @@ export class InformationCgComponent implements OnInit {
     this.setInputValue();
   }
 
+  /**
+   * fonction a chaque perte de focus sur un des inputs et test si il y a un changement
+   */
   ifChangement() {
     const marque = (<HTMLInputElement>document.getElementById('marque')).value    
     const immat = (<HTMLInputElement>document.getElementById('immat')).value    
@@ -67,88 +70,98 @@ export class InformationCgComponent implements OnInit {
     }
   }
 
+  /**
+   * Créer ou modifie une demande d'avenant en fonction du ou des champs modifiés
+   * @param marque 
+   * @param immat 
+   * @param modele 
+   * @param mec 
+   * @param designation 
+   * @param mda 
+   * @param da 
+   */
   DemandeAvt(marque : string, immat: string, modele: string, mec: string, designation:string, mda: string, da: string){
     let modifCG;    
     if(marque != this.currentMarque) {
-      if (this.modifService.getMotifByDonnee(Donnee.MARQUE_VEHICULE) == null) {
+      if (this.modifService.getModifByDonnee(Donnee.MARQUE_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MARQUE_VEHICULE, this.currentMarque, marque);
         this.modifService.addModification(modifCG)
         this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
-        modifCG = this.modifService.getMotifByDonnee(Donnee.MARQUE_VEHICULE);
+        modifCG = this.modifService.getModifByDonnee(Donnee.MARQUE_VEHICULE);
         modifCG.valeurApres = marque;
         this.toastr.success('La demande d\'avenant a été modifiée');
       }      
       this.currentMarque = marque
     } else if (immat != this.currentImmat) {
-      if (this.modifService.getMotifByDonnee(Donnee.IMMATRICULATION_VEHICULE) == null) {
+      if (this.modifService.getModifByDonnee(Donnee.IMMATRICULATION_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.IMMATRICULATION_VEHICULE, this.currentImmat, immat)
         this.modifService.addModification(modifCG)
         this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
-        modifCG = this.modifService.getMotifByDonnee(Donnee.IMMATRICULATION_VEHICULE);
+        modifCG = this.modifService.getModifByDonnee(Donnee.IMMATRICULATION_VEHICULE);
         modifCG.valeurApres = immat;
         this.toastr.success('La demande d\'avenant a été modifiée');
       }          
       this.currentImmat = immat
     } else if (modele != this.currentModele) {      
-      if (this.modifService.getMotifByDonnee(Donnee.MODELE_VEHICULE) == null) {
+      if (this.modifService.getModifByDonnee(Donnee.MODELE_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
         this.modifService.addModification(modifCG)
         this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
-        modifCG = this.modifService.getMotifByDonnee(Donnee.MODELE_VEHICULE);
+        modifCG = this.modifService.getModifByDonnee(Donnee.MODELE_VEHICULE);
         modifCG.valeurApres = modele;
         this.toastr.success('La demande d\'avenant a été modifiée');
       }    
       this.currentModele = modele
     } else if (mec != this.currentMEC) {
-      if (this.modifService.getMotifByDonnee(Donnee.MEC_VEHICULE) == null) {
+      if (this.modifService.getModifByDonnee(Donnee.MEC_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MEC_VEHICULE, this.currentMEC, mec)
         this.modifService.addModification(modifCG)
         this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
-        modifCG = this.modifService.getMotifByDonnee(Donnee.MEC_VEHICULE);
+        modifCG = this.modifService.getModifByDonnee(Donnee.MEC_VEHICULE);
         modifCG.valeurApres = mec;
         this.toastr.success('La demande d\'avenant a été modifiée');
       }         
       this.currentMEC = mec
     } else if (designation != this.currentDesignation) {
-      if (this.modifService.getMotifByDonnee(Donnee.DESIGNATION_VEHICULE) == null) {
+      if (this.modifService.getModifByDonnee(Donnee.DESIGNATION_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.DESIGNATION_VEHICULE, this.currentDesignation, designation)
         this.modifService.addModification(modifCG)
         this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
-        modifCG = this.modifService.getMotifByDonnee(Donnee.DESIGNATION_VEHICULE);
+        modifCG = this.modifService.getModifByDonnee(Donnee.DESIGNATION_VEHICULE);
         modifCG.valeurApres = designation;
         this.toastr.success('La demande d\'avenant a été modifiée');
       }  
       this.currentDesignation = designation
     } else if (mda != this.currentMDA) {
-      if (this.modifService.getMotifByDonnee(Donnee.MA_VEHICULE) == null) {
+      if (this.modifService.getModifByDonnee(Donnee.MA_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MA_VEHICULE, this.currentMDA, mda)
         this.modifService.addModification(modifCG)
         this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
-        modifCG = this.modifService.getMotifByDonnee(Donnee.MA_VEHICULE);
+        modifCG = this.modifService.getModifByDonnee(Donnee.MA_VEHICULE);
         modifCG.valeurApres = mda;
         this.toastr.success('La demande d\'avenant a été modifiée');
       }
       this.currentMDA = mda
     } else if (da != this.currentDA) {
-      if (this.modifService.getMotifByDonnee(Donnee.DA_VEHICULE) == null) {
+      if (this.modifService.getModifByDonnee(Donnee.DA_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.DA_VEHICULE, this.currentDA, da)
         this.modifService.addModification(modifCG)
         this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
-        modifCG = this.modifService.getMotifByDonnee(Donnee.DA_VEHICULE);
+        modifCG = this.modifService.getModifByDonnee(Donnee.DA_VEHICULE);
         modifCG.valeurApres = da;
         this.toastr.success('La demande d\'avenant a été modifiée');
       }
@@ -156,6 +169,9 @@ export class InformationCgComponent implements OnInit {
     }
   }
 
+  /**
+   * Insère les données de base dans le formulaire
+   */
   private setInputValue(){
     this.currentMarque = "BMW";
     this.currentImmat = "AB-123-CP";
@@ -194,6 +210,10 @@ export class InformationCgComponent implements OnInit {
     }
   }
 
+  /**
+   * Créer la date au format adéquate (mm/jj/aaaa) afin qu'elle s'affiche correctement dans le formulaire
+   * @param date 
+   */
   private createDate(date: Date): string {
     let dateString = "";
     dateString += date.getFullYear() +"-";

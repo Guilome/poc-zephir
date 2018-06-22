@@ -60,12 +60,20 @@ export class VisuSuperviseurComponent implements OnInit {
     })
   }
 
+  /**
+   * fonction qui se lance au clic sur le bouton détails des taches en cours
+   * @param bool 
+   */
   afficherTab(bool: boolean){
     this.filtre = this.graphEnCours.filtreGraph
     this.detail = bool; 
     this.gestionTableau()
   }
 
+  /**
+   * fonction qui se lance au clic sur le bouton détails des taches terminées
+   * @param bool 
+   */
   afficherTabCloture(bool: boolean){
     this.filtre = "termine"
     this.detail = bool; 
@@ -78,6 +86,10 @@ export class VisuSuperviseurComponent implements OnInit {
     return localStorage.getItem('USER') != null;
   }
 
+  /**
+   * Envoie vers la page de traitement d'un dossier
+   * @param idDossier 
+   */
   traiterPieces(idDossier) {
     let firstIdent = null
     this.tacheService.getPiecesByDossier(idDossier).forEach(dp => {
@@ -89,6 +101,9 @@ export class VisuSuperviseurComponent implements OnInit {
     this.route.navigate(['/TraitementTache', { id: dossier.context.ident, piece: firstIdent}])
   }
 
+  /**
+   * fonction qui affiche en fonction d'un filtre (gestionnaire / statut / prosuit / termine)
+   */
   gestionTableau(){
     this.dossierDetail = []
     this.entetes = []
