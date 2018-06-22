@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {Chart} from 'chart.js';
-import { Groupe } from '../../shared/domain/groupe';
+import { Groupe } from '../../shared/domain/Groupe';
 import { GroupeService } from '../../shared/services/groupe.service';
 import { ActivatedRoute } from '@angular/router';
 import { Utilisateur } from '../../shared/domain/Utilisateur';

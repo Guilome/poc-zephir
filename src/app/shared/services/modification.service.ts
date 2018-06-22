@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Modification, Donnee } from '../domain/Modification';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject} from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { TacheService } from './tache.service';
 
@@ -23,14 +23,15 @@ export class ModificationService {
   }
 
   public getModificationByPiece(idPiece: number): Modification[]{
-    return this.listModifications.filter(m => m.idTache == idPiece);
+    return this.modificationSubject.value.filter(m => m.idTache == idPiece);
+    //return this.listModifications.filter(m => m.idTache == idPiece);
   }
 
   public getModificationByDossier(idDossier: number): Modification[]{
     return this.listModifications.filter(modif => this.tacheService.getPieceById(modif.idTache).idTacheMere == idDossier)
   }
   
-  addModification(modif: Modification) {
+  ajoutModification(modif: Modification) {
     if (this.listModifications.length == 0) {
       modif.ident = 1
     }

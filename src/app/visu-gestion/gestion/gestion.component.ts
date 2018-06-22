@@ -1,16 +1,13 @@
 import { Component, Input, OnInit} from '@angular/core';
 import {TacheService} from '../../shared/services/tache.service';
-import { Tache } from '../../shared/domain/Tache';
+import { Tache, Nature } from '../../shared/domain/Tache';
 import {NoteService} from '../../shared/services/note.service';
 import {Router} from '@angular/router';
 import {Chart} from 'chart.js';
 import {GroupeService} from '../../shared/services/groupe.service';
-import { Groupe} from '../../shared/domain/groupe';
 import {ToastrService} from 'ngx-toastr';
 import { Utilisateur} from '../../shared/domain/Utilisateur';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
-import { ActionMetierService } from '../../shared/services/action-metier.service';
-import { Contrat } from '../../shared/domain/contrat';
 import { ProfilCode } from '../../shared/domain/Profil';
 
 @Component({
@@ -67,8 +64,7 @@ export class GestionComponent implements OnInit {
               private router: Router,
               private groupeService: GroupeService,
               private toastr: ToastrService,
-              private utilService: UtilisateurService,
-              private actionMetierService: ActionMetierService) {
+              private utilService: UtilisateurService) {
 
   }
 
@@ -79,7 +75,7 @@ export class GestionComponent implements OnInit {
 
     if (this.titre === 'Actions métier') {
       this.mesActionsMetier();
-      this.actionMetiers =this.actionMetierService.listActionMetier;
+      this.actionMetiers =this.tacheService.getAll().filter(t => t.nature == Nature.TACHE && t.idTacheMere == null);
       this.actionMetier = true;
       this.numId = 2;
     } else if (this.titre === 'Mes groupes') {
@@ -175,11 +171,11 @@ export class GestionComponent implements OnInit {
   }
 
   recuperMestaches(pTache: Tache) {
-    if (pTache.idUtilisateur == null) {
+    if (pTache.utilisateur == null) {
       return false;
     }
 
-    return pTache.dateCloture == null && pTache.idUtilisateur === this.idCurrentUser;
+    return pTache.dateCloture == null && pTache.utilisateur.ident === this.idCurrentUser;
   }
   
   /**

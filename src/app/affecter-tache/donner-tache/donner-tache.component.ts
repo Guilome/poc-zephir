@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import { TitreService } from '../../shared/services/titre.service';
 import { GroupeService } from '../../shared/services/groupe.service';
-import { Groupe } from '../../shared/domain/groupe';
+import { Groupe } from '../../shared/domain/Groupe';
 
 @Component({
   selector: 'donner-tache',

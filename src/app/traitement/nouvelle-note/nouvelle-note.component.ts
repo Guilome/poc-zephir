@@ -3,6 +3,7 @@ import {NgForm} from '@angular/forms';
 import {NoteService} from '../../shared/services/note.service';
 import {Router} from '@angular/router';
 import {TitreService} from '../../shared/services/titre.service';
+import { TacheService } from '../../shared/services/tache.service';
 
 @Component({
   selector: 'app-nouvelle-note',

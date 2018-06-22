@@ -1,55 +1,22 @@
 import {Injectable} from '@angular/core';
 import {Nature, Status, Tache} from '../domain/Tache';
-import {Context} from '../domain/context';
 import { BehaviorSubject} from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { Contrat } from '../domain/contrat';
 import { Utilisateur } from '../domain/Utilisateur';
 import { Groupe } from '../domain/Groupe';
+import { UtilisateurService } from './utilisateur.service';
 
 
 @Injectable()
 export class TacheService {
 
-  constructor() {
-
-    let length = 0;
-    this.tacheSubject.subscribe(data => length = data.length);
-    if (length < 1) {
-      this.create15Dossiers();
-      this.create_100_DossiersClotures();
-      /// begin TMP
-      const lTache = new Tache(Nature.DOSSIER);
-      lTache.ident = 1000019;
-      const c = new Contrat(740000,'SOLUTIO');
-      c.numero = 'S140580';
-      lTache.context = new Context(100019, this.nomApl[0], this.nomInter[0], c);
-      lTache.idGroupe = 1;
-      lTache.priorite = 5;
-      lTache.code = "199_AFN";
-      lTache.dateLimite = new Date('06/15/2018');
-      lTache.dateCreation = new Date();
-      lTache.dateReception = new Date();
-      lTache.dateVerification = new Date();
-      lTache.idUtilisateurVerification = 1;// Dupont
-
-      this.listTaches.push(lTache);
-      this.create3PiecesTMP(lTache);
-
-      /// end TMP
-
-
-
-      this.tacheSubject.next(this.listTaches);
-    }
-  }
+  constructor(public utilisateurService: UtilisateurService) {}
 
   private listTaches: Tache[] = [];
   // données en mémoire
   private tacheSubject: BehaviorSubject<Tache[]> = new BehaviorSubject([]);
-  public listPieceEnAttente: Tache[] = [];
-
-  
+  public listPieceEnAttente: Tache[] = []; 
+  public actionMetierTemporaire: Tache
 
 
   listerTaches(): Observable<Tache[]> {
@@ -64,8 +31,8 @@ export class TacheService {
     this.tacheSubject.next(list)
   }
 
-  addTache(tache: Tache) {
-    tache.ident = this.listTaches[(this.listTaches.length - 1)].ident + 1;
+  ajoutTache(tache: Tache) {
+    /* Appel Web Service */
     this.listTaches.push(tache);
     this.tacheSubject.next(this.listTaches);
   }
@@ -122,7 +89,7 @@ export class TacheService {
   closePieceConforme(idTache: number): Tache {
     const p = this.getPieceById(idTache);
     p.dateVerification  = new Date();
-    p.idUtilisateurVerification = p.idUtilisateur;
+    p.utilisateurVerification = p.utilisateur;
     
     return p;
   }
@@ -136,7 +103,7 @@ export class TacheService {
     p.motifNonConformite = motifNonConformite;
     p.dateCloture = new Date();
     p.dateVerification = p.dateCloture;
-    p.idUtilisateurVerification = p.idUtilisateur;
+    p.utilisateurVerification = p.utilisateur;
   }
 
 
@@ -151,12 +118,12 @@ export class TacheService {
     const tache = this.getTacheById(idTache);
     //appel web service pour récupérer l'id du groupe validation
     tache.dateVerification = new Date();
-    tache.idUtilisateurVerification = tache.idUtilisateur;
-    tache.idUtilisateur = null;
+    tache.utilisateurVerification = tache.utilisateur;
+    tache.utilisateur = null;
   }
 
   setUtilisateurNull(tache: Tache){
-    tache.idUtilisateur = null
+    tache.utilisateur = null
   }
   
   /**
@@ -171,83 +138,10 @@ export class TacheService {
     }
   }
   
-  private create_100_DossiersClotures(){
-    for (let i = 500 ; i < 600 ; i++) {
-        const lTache = new Tache(Nature.DOSSIER);
-        lTache.ident = i;
-        const c = new Contrat(450020+i,'SOLUTIO')
-        c.numero = 'S140510'+ i;
-        lTache.context = new Context(330010+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
-        lTache.priorite = (i%10) + 1;
-        lTache.code = "199_AFN";
-        const date = '06/' + ((i%31) + 1) + '/2018';
-        lTache.dateCloture = new Date(date);
-        lTache.dateVerification  = new Date('06/21/2018');
-        lTache.dateCreation  = new Date('06/01/2018');
-        lTache.dateReception = new Date('06/01/2018');
-        
-        lTache.idUtilisateurVerification = [1, 3, 4, 6][i % 4];
-        lTache.idUtilisateurCloture = [3, 4, 6][i % 3];
-        this.listTaches.push(lTache);
-    }
-  }
-  private create15Dossiers() {
-    for (let i = 10; i < 25; i++) {
-      const lTache = new Tache(Nature.DOSSIER);
-      lTache.ident = 1000020+i;
-      const c = new Contrat(740001+i,'SOLUTIO');
-      c.numero = 'S140581'+ i;
-      lTache.context = new Context(100020+i, this.nomApl[i%this.nomApl.length], this.nomInter[i%this.nomInter.length], c);
-      lTache.idGroupe = 1;
-      lTache.priorite = 5;
-      lTache.code = "199_AFN";
-      lTache.dateLimite = new Date('01/15/2018');
-      lTache.dateCreation = new Date();
-      lTache.dateReception = new Date('01/'+i+'/2018');
-      lTache.idUtilisateur = null;
-      this.listTaches.push(lTache);
-      this.create3Pieces(lTache);
-    }
-  }
-  private create3Pieces(dossier_199: Tache) {
-    for (let i = 0; i < 3; i++) {
-      const lPiece = new Tache(Nature.PIECE);  
-      lPiece.ident = this.listTaches.length + 70000 ;
-      lPiece.idTacheMere = dossier_199.ident;
-      lPiece.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i];
-      lPiece.priorite = [5, 3, 6][i];
-      lPiece.urlDocument = ['assets/pdf/CG.pdf','assets/pdf/PDC.pdf','assets/pdf/RI.pdf'][i];
-      lPiece.context = dossier_199.context;
-      lPiece.dateLimite = dossier_199.dateLimite
-      lPiece.dateCreation = new Date();
-      lPiece.dateReception = new Date();
-      
-      this.listTaches.push(lPiece);
-    }
-  }
-  private create3PiecesTMP(dossier_199: Tache) {
-    for (let i = 0; i < 3; i++) {
-      const lPiece = new Tache(Nature.PIECE);  
-      lPiece.ident = this.listTaches.length + 70000 ;
-      lPiece.idTacheMere = dossier_199.ident;
-      lPiece.code = ['ATT_CG', 'ATT_PERMIS', 'ATT_RI'][i];
-      lPiece.priorite = [5, 3, 6][i];
-      lPiece.urlDocument = ['assets/pdf/CG.pdf','assets/pdf/PDC.pdf','assets/pdf/RI.pdf'][i];
-      lPiece.context = dossier_199.context;
-      lPiece.dateLimite = dossier_199.dateLimite
-      lPiece.dateCreation = new Date();
-      lPiece.dateReception = new Date();
-      lPiece.dateVerification = new Date();
-      lPiece.idUtilisateurVerification = 1;// Dupont
-      
-      this.listTaches.push(lPiece);
-    }
-
-  }
   createPiece(code: string, dossier: Tache) : Tache {
     // Appel Web service pour la génération de de l'identifiant
     const lPiece =  new Tache(Nature.PIECE);
-    lPiece.code = code;
+    lPiece.codeTache = code;
     lPiece.dateCreation = new Date();
     // l'ident sera généré automatiquement via le serveur 
     lPiece.ident =  Math.floor(Math.random() * (999999 - 100000));
@@ -273,7 +167,7 @@ export class TacheService {
    */
   public createPieceTemporaire(code: string, dossier: Tache, piece?: Tache) {
     const lPiece =  new Tache(Nature.PIECE);
-    lPiece.code = code;
+    lPiece.codeTache = code;
     lPiece.dateCreation = new Date();
     lPiece.ident =  Math.floor(Math.random() * (999999 - 100000));
     lPiece.idTacheMere = dossier.ident;
@@ -324,48 +218,10 @@ export class TacheService {
       // appel web service 
     }
     this.listPieceEnAttente = [];
-    dossier.idUtilisateur = null;
+    dossier.utilisateur = null;
     dossier.dateVerification = null;
   }
 
-  private nomInter = [
-            'ROUQUETTE FREDERIC'
-            ,'ROUQUETTE FREDERIC'
-            ,'IQBAL ZAFAR'
-            ,'IQBAL ZAFAR'
-            ,'IQBAL ZAFAR'
-            ,'FOSTER MALCOLM'
-            ,'FOSTER MALCOLM'
-            ,'FOSTER MALCOLM'
-            ,'CETANI MARIO'
-            ,'CETANI MARIO'
-            ,'CETANI MARIO'
-            ,'SCHONDORF DANIEL'
-            ,'SCHONDORF DANIEL'
-            ,'SCHONDORF DANIEL'
-            ,'LAMBERT PIERRETTE'
-            ,'LAMBERT PIERRETTE'
-            ,'LAMBERT PIERRETTE'
-  ]
-  private nomApl = [
-          'BOYER ET MORVILLIERS',
-          'BOYER ET MORVILLIERS',
-          'LEADER ASSURANCES',
-          'LEADER ASSURANCES',
-          'FAAC',
-          'FAAC',
-          'FAAC',
-          'PEREIRE DIRECT',
-          'PEREIRE DIRECT',
-          'PEREIRE DIRECT',
-          'APM ASSURANCES',
-          'APM ASSURANCES',
-          'APM ASSURANCES',
-          'ASSUR INVEST',
-          'ASSUR INVEST',
-          'ASSUR INVEST',
-          'H/ZEPHIR ASSURANCES'
-  ]
 
   private trieByPriorite = (p1,p2) => {
     if ( p1.priorite == p2.priorite )
@@ -386,15 +242,15 @@ export class TacheService {
   }
 
   public getDossierByIdContext(idContext: number, userId: number): Tache{
-    return this.listTaches.find(dossier => dossier.context.ident == idContext && dossier.nature == Nature.DOSSIER && dossier.idUtilisateur == userId)
+    return this.listTaches.find(dossier => dossier.context.ident == idContext && dossier.nature == Nature.DOSSIER && dossier.utilisateur.ident == userId)
   }
 
   public getDossierTermine(){
     return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture != null)
   }
 
-  public getDossierEncours(){
-    return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture == null)
+  public getTacheEncours(){
+    return this.listTaches.filter( t => t.dateCloture == null)
   }
 
   /**
@@ -442,7 +298,7 @@ export class TacheService {
     lNote.message = message;
     lNote.context = tacheMere.context;
     lNote.dateCreation = new Date();
-    lNote.idUtilisateur = tacheMere.idUtilisateur;
+    lNote.utilisateur = tacheMere.utilisateur;
     
     this.listTaches.push(lNote);
     this.tacheSubject.next(this.listTaches);
@@ -450,7 +306,7 @@ export class TacheService {
 
   demandeNouvellePiece(piece: Tache) {
     const lPiece = new Tache(Nature.PIECE);
-    lPiece.code = piece.code;
+    lPiece.codeTache = piece.codeTache;
     lPiece.dateCreation = new Date();
     lPiece.ident =  Math.floor(Math.random() * (999999 - 100000));
     lPiece.idTacheMere = piece.idTacheMere;
@@ -467,30 +323,107 @@ export class TacheService {
   }
 
   /**
-   * Méthode appelée lors qu'un dossier est en attente de pièce 
-   * Supprime l'affection d'un dossier
-   * @param dossier 
+   *  Méthode qui modifie l'idUtilisateur d'une tâche 
+   * @param tache 
+   * @param utilisateur 
    */
-  public delAffectation(id: number) {
-     this.getDossierById(id).idUtilisateur = null;
-  }
-
-  public avnAffectation(id: number) {
-    this.getDossierById(id).idGroupe = 2
-    this.getDossierById(id).code = Tache.libCode.get('AVENANT')
-    this.getDossierById(id).idUtilisateur = null;
-  }
-
-  // Méthode qui ajoute une tache à un utilisateur 
   public affecterTacheUtilisateur(tache: Tache, utilisateur: Utilisateur){
-    tache.idUtilisateur = utilisateur.ident;
+    tache.utilisateur = utilisateur
     if(tache.nature = Nature.DOSSIER){
-      this.getPiecesByDossier(tache.ident).forEach(piece => piece.idUtilisateur = utilisateur.ident)
+      this.getPiecesByDossier(tache.ident).forEach(piece => piece.utilisateur = tache.utilisateur)
     }
   }
-  // Méthode qui change une tache à un groupe 
+  /**
+   * Méthode qui change une tâche à un groupe 
+   * @param tache 
+   * @param groupe 
+   */
   public affecterTacheGroupe(tache: Tache, groupe: Groupe){
-    tache.idGroupe = groupe.ident;
+    tache.groupe = groupe;
   }
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+getActionMetier(idContext: number): BehaviorSubject<Tache[]>{
+  this.tacheSubject.next(this.listTaches.filter(act => act.context.ident == idContext && act.nature == Nature.TACHE));
+  return this.tacheSubject;
+}
+
+/**
+ * 
+ * @param tache 
+ * @param code 
+ */
+private create(dossier: Tache, code: string) {
+
+  const a = new Tache(Nature.TACHE);
+  a.ident =  Math.floor(Math.random() * (99999 - 10000));
+  a.groupe = dossier.groupe;
+  a.context = dossier.context;
+  a.codeTache = code;
+  a.dateCreation = new Date();
+  a.priorite = 1;
+  if ( dossier.nature === Nature.DOSSIER){
+      a.utilisateur = dossier.utilisateur;
+      a.idTacheMere = dossier.ident;
+  }
+
+  this.listTaches.push(a);
+  this.actionMetierTemporaire = a;
+  this.tacheSubject.next(this.listTaches.filter(act => act.context == dossier.context));
+}
+
+private createDemandeAvt(tache: Tache) {
+  this.create(tache, 'AVENANT');
+}
+
+updateDemandeAvt(tache: Tache) {
+  if (this.actionMetierTemporaire != null) {
+    this.actionMetierTemporaire.message = tache.message + '\n';
+  }else {
+    this.createDemandeAvt(tache);
+  }
+}
+
+createSansEffet(tache: Tache){
+  this.create(tache, 'SANS_EFFET');
+}
+
+
+public getAll(): Tache[]{
+  return this.listTaches;
+}
+
+public ajoutActionMetier(actionMetier: Tache){
+  this.listTaches.push(actionMetier)
+  this.tacheSubject.next(this.listTaches)
+}
+
+public supprimerActionMetier(actionMetier: Tache){
+  this.listTaches.splice(this.listTaches.indexOf(actionMetier), 1)
+  //this.getAllByIdContext(actionMetier.context.ident)
+}
+
+public supprimerActionMetierTemporaire() {
+  if( this.actionMetierTemporaire != null) {
+    this.supprimerActionMetier(this.actionMetierTemporaire);
+    this.actionMetierTemporaire = null;
+  }
+}
+
+/**
+ * Appel web service
+ */
+public confirmerAjoutActionMetier() {
+  this.actionMetierTemporaire = null;
+}
+
+
 }
 

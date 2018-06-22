@@ -1,4 +1,6 @@
 import {Context} from './context';
+import { Utilisateur } from './Utilisateur';
+import { Groupe } from './Groupe';
 
 
 export class Tache {
@@ -17,7 +19,9 @@ export class Tache {
     .set('DEV_AVT','Devis d\'avenant à valider')
     .set('RESIL','Demande de résiliation')
     .set('SANS_EFFET','Demande de sans effet')
-    .set('199_AFN', 'Dossier 199')
+    .set('AFN', 'Dossier Affaire Nouvelle')
+    .set('AVT', 'Dossier Avenant')
+    .set('RES', 'Dossier Résiliation')
     .set('ATT_CI', 'Carte d\'identié')
     .set('ATT_MDP', 'Mandat de prélèvement');
 
@@ -25,13 +29,13 @@ export class Tache {
   constructor(public nature: Nature ) {
     this.dateCloture = null;
     this.message = null;
-    this.idUtilisateurCloture = null;
-    this.idUtilisateurVerification = null;
+    this.utilisateurCloture = null;
+    this.utilisateurVerification = null;
     this.motifNonConformite = null;
   }
 
   public ident: number;
-  public code: string;
+  public codeTache: string;
   public famille: string;
   public sousFamille: string;
   public message: string; // commentaire
@@ -43,15 +47,15 @@ export class Tache {
   public motifNonConformite: string;
   public context: Context;
   public idTacheMere: number;
-  public idUtilisateurVerification: number;
-  public idUtilisateurCloture: number;
+  public utilisateurVerification: Utilisateur;
+  public utilisateurCloture: Utilisateur;
   public dateReception: Date;
   public dateVerification: Date;
-  idUtilisateur: number;
-  idGroupe: number;
+  utilisateur: Utilisateur;
+  groupe: Groupe;
 
   get libelle(): string {
-    return Tache.libCode.get(this.code);
+    return Tache.libCode.get(this.codeTache);
   }
 
 

@@ -16,12 +16,12 @@
     <ng-container *ngFor="let dossier of dossierAffichage">
       <tr>
         <th scope="row"><a (click)="toggleChildren(dossier.ident)"><i class="fa fa-plus fa-lg"></i></a></th>
-        <td>{{dossier.numContrat}} - {{dossier.codeDossier == '199_AFN' ? 'AFN' : dossier.code}}</td>   
+        <td>{{dossier.numContrat}} - {{dossier.code}}</td>   
         <td>{{dossier.produit}}</td>     
         <td>{{dossier.nomClient}}</td>
         <td>{{dossier.nomIntermediaire}}</td>
         <td>{{dossier.dateGedRec}}</td>
-        <td>{{dossier.codeDossier == '199_AFN' ? 'AFN' : dossier.code}}</td>
+        <td>{{dossier.groupe}}</td>
         <td>{{dossier.status}}</td>
         <td> 
           <a (click)="traiterPieces(dossier.ident)"> <i class="fa fa-share-square-o fa-lg"  title="Traiter"></i></a>

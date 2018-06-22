@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {Chart} from 'chart.js';
-import { Groupe } from '../../shared/domain/groupe';
+import { Groupe } from '../../shared/domain/Groupe';
 import { TacheService } from '../../shared/services/tache.service';
 import { ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../../shared/services/groupe.service';
@@ -162,7 +162,7 @@ export class GraphiqueTermineComponent implements OnInit {
     this.lesGestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR && g.profil.groupes.find(g => g == this.idGroupe))
         .forEach(g => this.mapSubjectTermine.set( g.nom.slice(0,1)+'. '+g.prenom, 0))
     for (const d of lesDossiers) {    
-      let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.idUtilisateurCloture)[0];
+      let gestionnaire = this.lesGestionnaires.filter( g => g.ident == d.utilisateurCloture.ident)[0];
       if (gestionnaire.profil.groupes.find(g => g == this.idGroupe)) {
         const key =gestionnaire.nom.slice(0,1)+'. '+gestionnaire.prenom;
         const sum = this.mapSubjectTermine.get(key);

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Tache, Status} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
 import { GroupeService } from '../../../shared/services/groupe.service';
 import { UtilisateurService } from '../../../shared/services/utilisateur.service';
@@ -19,7 +19,6 @@ export class ConformiteComponent implements OnInit {
     private tacheService: TacheService, 
     private route: ActivatedRoute, 
     public toastr: ToastrService,
-    private groupeService: GroupeService,
     private utilisateurService: UtilisateurService,
     private modalService: NgbModal) {}
 
@@ -149,7 +148,7 @@ export class ConformiteComponent implements OnInit {
    */
   getNomVerification(): string {
     if(this.piece != null)
-        return this.utilisateurService.getName(this.piece.idUtilisateurVerification);
+        return this.utilisateurService.getName(this.piece.utilisateurVerification.ident);
     return '';
   }
 
@@ -158,7 +157,7 @@ export class ConformiteComponent implements OnInit {
    */
   getNomValidation(): string {
     if(this.piece != null)
-    return this.utilisateurService.getName(this.piece.idUtilisateurCloture);
+    return this.utilisateurService.getName(this.piece.utilisateurCloture.ident);
     return '';
 
   }
@@ -180,7 +179,7 @@ export class ConformiteComponent implements OnInit {
     if ( this.motifselected.length > 0){
     this.piece.message = (<HTMLInputElement>document.getElementById('noteComplementaire')).value  
     if ( this.piece.status != 'À vérifier') {
-          this.tacheService.createPieceTemporaire(this.piece.code, this.dossier, this.piece);
+          this.tacheService.createPieceTemporaire(this.piece.codeTache, this.dossier, this.piece);
     } else {
       this.tacheService.demandeNouvellePiece(this.piece);
     }

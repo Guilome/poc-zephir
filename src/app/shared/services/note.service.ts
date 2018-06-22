@@ -18,13 +18,13 @@ export class NoteService {
     if ( taille < 1) {
       const note1 = new Tache(Nature.NOTE);
       note1.ident = 10;
-      note1.code = 'NOTE';
+      note1.codeTache = 'NOTE';
       note1.message = 'Rappeler M. MOLINARO JACQUES pour lui proposer de changer de formule de garanties sur son contrat habitation';
       note1.dateLimite = new Date('08/05/2018');
 
       const note2 = new Tache(Nature.NOTE);
       note2.ident = 11;
-      note2.code =  'NOTE_INTERNE';
+      note2.codeTache =  'NOTE_INTERNE';
       note2.message = 'Ne plus souscrire de devis SOLUTIO à effet 2020 partir du 01/12/2019';
       note2.dateLimite = new Date('12/05/2018');
 
@@ -39,8 +39,8 @@ export class NoteService {
   addNote(code, groupe, message, dateLimite) {
 
     const note = new Tache(Nature.NOTE);
-    note.code = code;
-    note.idGroupe = this.getIdGroupe(groupe);
+    note.codeTache = code;
+    note.groupe = groupe;
     note.message = message;
     note.dateLimite = dateLimite;
     this.notes.push(note);

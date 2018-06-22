@@ -4,7 +4,6 @@ import { ModificationService } from '../../../shared/services/modification.servi
 import { Router, ActivatedRoute } from '@angular/router';
 import { Tache } from '../../../shared/domain/Tache';
 import { TacheService } from '../../../shared/services/tache.service';
-import { ActionMetierService } from '../../../shared/services/action-metier.service';
 
 @Component({
   selector: 'app-visualiser-modification',
@@ -21,8 +20,7 @@ export class VisualiserModificationComponent implements OnInit {
   currentDossier: Tache
 
   
-  constructor(private actionMetierService: ActionMetierService,
-              private tacheService: TacheService,
+  constructor(private tacheService: TacheService,
               private route: ActivatedRoute,
               private modifService: ModificationService,
               private router: Router) { }
@@ -54,7 +52,7 @@ export class VisualiserModificationComponent implements OnInit {
     this.modifService.supprimerModif(modif)
     this.chargerListeModif()    
     if (this.lesModifs.length == 0) {      
-      this.actionMetierService.supprimerActionMetierTemporaire();
+      this.tacheService.supprimerActionMetierTemporaire();
       let idContext = this.currentDossier.context.ident
       this.router.navigate(['/TraitementTache', { id: this.currentDossier.context.ident, piece: modif.idTache }]);
     }

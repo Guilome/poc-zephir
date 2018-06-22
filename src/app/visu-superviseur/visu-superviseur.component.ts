@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../shared/services/groupe.service';
 import { TitreService } from '../shared/services/titre.service';
 import { GraphiqueEnCoursComponent } from './graphique-en-cours/graphique-en-cours.component';
-import { Status } from '../shared/domain/Tache';
+import { Status, Nature } from '../shared/domain/Tache';
 import { TacheService } from '../shared/services/tache.service';
 import { UtilisateurService } from '../shared/services/utilisateur.service';
 import { ProfilCode } from '../shared/domain/Profil';
@@ -45,7 +45,7 @@ export class VisuSuperviseurComponent implements OnInit {
     localStorage.setItem("GROUPE", this.idGroupe.toString());
     this.titreService.updateTitre("Bannette " + this.groupeService.getGroupeById(this.idGroupe).libelle.toLowerCase())
     this.dossierTermine = this.tacheService.getDossierTermine();
-    this.dossiersEncours = this.tacheService.getDossierEncours().filter(dossier => dossier.idGroupe == this.idGroupe);
+    this.dossiersEncours = this.tacheService.getTacheEncours().filter(dossier => dossier.nature == Nature.DOSSIER && dossier.groupe.ident == this.idGroupe);
     this.gestionnaires = this.utilisateurService.getAll().filter(utilisateur => utilisateur.profil.groupes.find( g => g == this.idGroupe))
     this.dossiersEncours.forEach(d => {
       if (this.produits.length == 0) {
@@ -58,6 +58,8 @@ export class VisuSuperviseurComponent implements OnInit {
         })
       }
     })
+    console.log(this.dossiersEncours);
+    
   }
 
   /**

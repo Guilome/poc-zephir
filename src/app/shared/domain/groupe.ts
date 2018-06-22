@@ -2,13 +2,13 @@ export class Groupe {
 
   public libelle: string;
 
-  constructor(public ident: number, public code: Code) {
+  constructor(public ident: number, public code: CodeGroupe) {
     this.libelle = this.code.valueOf();
   }
 }
-export enum Code {
+export enum CodeGroupe {
   AFN = 'Affaire nouvelle',
-  AVN = 'Avenant',
+  AVT = 'Avenant',
   REF = 'Refus',
   RES = 'Résiliation'
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Modification, Donnee } from '../../../../shared/domain/Modification';
 import { Tache } from '../../../../shared/domain/Tache';
-import { ActionMetierService } from '../../../../shared/services/action-metier.service';
 import { TacheService } from '../../../../shared/services/tache.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModificationService } from '../../../../shared/services/modification.service';
@@ -26,8 +25,7 @@ export class InformationPcComponent implements OnInit {
   
   date = new Date("05/01/2000");
   
-  constructor(private actionMetierService: ActionMetierService,
-              private tacheService: TacheService,
+  constructor(private tacheService: TacheService,
               private route: ActivatedRoute,
               private modifService: ModificationService,
               private toastr: ToastrService) { }
@@ -39,6 +37,7 @@ export class InformationPcComponent implements OnInit {
     this.route.params.subscribe(data => {
     this.currentTache = this.tacheService.getPieceById(+data.piece);
     });
+    this.lesModifsPC = this.modifService.getModificationByPiece(this.currentTache.ident)
     this.setInputValue();
   }
 
@@ -72,29 +71,29 @@ export class InformationPcComponent implements OnInit {
     if(numero != this.currentNumero) {
       modifPC = new Modification(this.currentTache.ident,Donnee.NUMERO_PERMIS, this.currentNumero, numero)
       this.currentNumero = numero
-      this.modifService.addModification(modifPC)
+      this.modifService.ajoutModification(modifPC)
     } 
     else if (categorie != this.currentCategorie) {
       modifPC = new Modification(this.currentTache.ident,Donnee.CATEGORIE_PERMIS, this.currentCategorie, categorie)
       this.currentCategorie = categorie
-      this.modifService.addModification(modifPC)
+      this.modifService.ajoutModification(modifPC)
     }
     else if (date != this.currentDate) {
       modifPC = new Modification(this.currentTache.ident,Donnee.DATE_PERMIS, this.currentDate, date)
       this.currentDate = date
-      this.modifService.addModification(modifPC)
+      this.modifService.ajoutModification(modifPC)
     }
     else if (departement != this.currentDepartement) {
       modifPC = new Modification(this.currentTache.ident,Donnee.DEPARTEMENT_PERMIS, this.currentDepartement, departement)
       this.currentDepartement = departement
-      this.modifService.addModification(modifPC)
+      this.modifService.ajoutModification(modifPC)
     }
     else if (prefecture != this.currentPrefecture) {
       modifPC = new Modification(this.currentTache.ident,Donnee.PREFECTURE_PERMIS, this.currentPrefecture, prefecture)
       this.currentPrefecture = prefecture
-      this.modifService.addModification(modifPC)
+      this.modifService.ajoutModification(modifPC)
     }
-    this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));    
+    this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));    
     this.toastr.success('Une demande d\'avenant a été créée');
   }
 

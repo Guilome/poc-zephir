@@ -20,7 +20,6 @@ import { TraitementTacheComponent } from './traitement/traitement-tache/traiteme
 import { DetailTacheComponent } from './traitement/traitement-tache/detail-tache/detail-tache.component';
 import { ApercuDocumentComponent } from './traitement/traitement-tache/apercu-document/apercu-document.component';
 import { ConformiteComponent } from './traitement/traitement-tache/conformite/conformite.component';
-import { EditTacheComponent } from './traitement/traitement-tache/edit-tache/edit-tache.component';
 import { NoteService } from './shared/services/note.service';
 import { NouvelleNoteComponent } from './traitement/nouvelle-note/nouvelle-note.component';
 import { GroupeService } from './shared/services/groupe.service';
@@ -33,7 +32,6 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { PopoverModule } from 'ng4-popover';
 import { UtilisateurService } from './shared/services/utilisateur.service';
 import { AccueilComponent } from './accueil/accueil.component';
-import { ActionMetierService } from './shared/services/action-metier.service';
 import { DonnerTacheComponent } from './affecter-tache/donner-tache/donner-tache.component';
 import { GestionnaireComponent } from './affecter-tache/gestionnaire/gestionnaire.component';
 import { TacheNonAffecteComponent } from './affecter-tache/tache-non-affecte/tache-non-affecte.component';
@@ -64,7 +62,6 @@ const appRoutes: Routes = [
   { path: 'gestionBO', component: VisuGestionComponent},
   { path: 'TraitementTache', component: TraitementTacheComponent},
   { path: 'TraitementTache/:id', component: TraitementTacheComponent},
-  { path: 'EditTache', component: EditTacheComponent},
   { path: 'NouvelleNote', component: NouvelleNoteComponent},
   { path: 'Connexion', component: LoginComponent},
   { path: 'Accueil', component: AccueilComponent},
@@ -92,7 +89,6 @@ const appRoutes: Routes = [
     DetailTacheComponent,
     ApercuDocumentComponent,
     ConformiteComponent,
-    EditTacheComponent,
     NouvelleNoteComponent,
     NavTitreComponent,
     InformationConducteurComponent,
@@ -129,7 +125,6 @@ const appRoutes: Routes = [
               GroupeService, 
               TitreService, 
               UtilisateurService, 
-              ActionMetierService, 
               ModificationService,
               NgbActiveModal
           ],

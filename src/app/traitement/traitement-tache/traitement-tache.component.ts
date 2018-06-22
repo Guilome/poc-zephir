@@ -2,12 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Tache} from '../../shared/domain/Tache';
 import {ActivatedRoute, Router } from '@angular/router';
 import {TacheService} from '../../shared/services/tache.service';
-import { ActionMetierService } from '../../shared/services/action-metier.service';
 import {ToastrService} from 'ngx-toastr';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { UtilisateurService } from '../../shared/services/utilisateur.service';
 import { GroupeService } from '../../shared/services/groupe.service';
-import { Code } from '../../shared/domain/groupe';
+import { CodeGroupe } from '../../shared/domain/Groupe';
 
 @Component({
   selector: 'app-traitement-tache',
@@ -30,7 +29,6 @@ export class TraitementTacheComponent implements OnInit {
   statutDossier: string;
   private boolVerification: boolean = false;
   constructor(private tacheService: TacheService,
-              private actionMetierService: ActionMetierService,
               private groupeService: GroupeService,
               private route: ActivatedRoute,
               private router: Router, 
@@ -44,7 +42,7 @@ export class TraitementTacheComponent implements OnInit {
     this.route.params.subscribe((params: any) => {
 
       // list des actions métiers 
-      this.actionMetierService.getAllByIdContext(+params.id).subscribe(data => this.listActionsMetier = data);
+      this.tacheService.getActionMetier(+params.id).subscribe(data => this.listActionsMetier = data);      
       // Status 
       this.dossier = this.tacheService.getDossierByIdContext(+params.id, +localStorage.getItem('USER'))
       
@@ -147,18 +145,25 @@ export class TraitementTacheComponent implements OnInit {
         this.toastr.success("Le dossier a été déplacé à la bannette <b>Vérification</b>",'', {enableHtml: true});
       }
       this.tacheService.addPieceEnAttente(this.dossier);
-    } else if (this.actionMetierService.getAll().filter(a => a.context.ident == this.dossier.context.ident).length > 0) {
-      this.tacheService.affecterTacheGroupe(this.dossier, this.groupeService.getGroupeByCode(Code.AVN))
+    } else if (this.tacheService.getAll().filter(a => a.context.ident == this.dossier.context.ident).length > 0) { // Si demande d'avenant
+      // Ajout toute les demande d'avenant
+      this.tacheService.getAll().filter(a => a.context.ident == this.dossier.context.ident).forEach(am => this.tacheService.ajoutActionMetier(am))
+      // Transfert le dossier au groupe AVN
+      this.tacheService.affecterTacheGroupe(this.dossier, this.groupeService.getGroupeByCode(CodeGroupe.AVT))
+      this.tacheService.affecterTacheUtilisateur(this.dossier, null)
       this.toastr.success("Le dossier a été déplacé dans la bannette Avenant");
     }     
     else {
         this.tacheService.closeDossier(this.dossier.ident)
+        this.tacheService.affecterTacheUtilisateur(this.dossier, null)
         this.toastr.success("Le dossier a été validé");
     }
     this.router.navigate(['/gestionBO']);
   }
 
-  refuser() {
+  refuser() {      
+    this.tacheService.affecterTacheGroupe(this.dossier, this.groupeService.getGroupeByCode(CodeGroupe.REF))
+    this.tacheService.affecterTacheUtilisateur(this.dossier, null)
     this.tacheService.closeDossier(this.dossier.ident)
     this.toastr.warning("Le dossier a été refusé")
     this.router.navigate(['/gestionBO']);
@@ -219,7 +224,7 @@ export class TraitementTacheComponent implements OnInit {
    * @param note 
    */
   getNomUtilisateur(note: Tache): string  {
-    return this.utilisateurService.getName(note.idUtilisateur);
+    return this.utilisateurService.getName(note.utilisateur.ident);
   }
 
   ngOnDestroy($event:Event)	{

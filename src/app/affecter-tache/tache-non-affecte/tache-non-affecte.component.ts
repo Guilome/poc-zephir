@@ -26,20 +26,16 @@ export class TacheNonAffecteComponent implements OnInit {
   @Output() tacheAssigner:EventEmitter<Tache[]> = new EventEmitter<Tache[]>();
 
   constructor(private  tacheService: TacheService,
-              private utilisateurService: UtilisateurService) {
+              private utilisateurService: UtilisateurService,
+              private groupeService: GroupeService) {
     this.idUser = +localStorage.getItem('USER');
     this.idGroupe = parseInt(localStorage.getItem("GROUPE"))
+    this.lesDossiers = this.tacheService.getTacheEncours().filter(t => t.nature == Nature.DOSSIER)
     // Constitue la liste des taches à afficher sur l'écran d'attribution ou de distribution des tâches
     if(isNaN(this.idGroupe)){
-      this.tacheService.listerTaches().subscribe(data => {
-        this.lesDossiers = data;  
-      });
-      this.lesDossiers = this.lesDossiers.filter(tache => this.utilisateurService.getUserById(this.idUser).profil.groupes.find(g => g == tache.idGroupe));
+      this.lesDossiers = this.lesDossiers.filter(tache => this.utilisateurService.getUserById(this.idUser).profil.groupes.find(g => g == tache.groupe.ident));
     } else {
-      this.tacheService.listerTaches().subscribe(data => {
-        this.lesDossiers = data;
-      });
-      this.lesDossiers = this.lesDossiers.filter(tache => tache.idGroupe == this.idGroupe) 
+      this.lesDossiers = this.lesDossiers.filter(tache => tache.groupe == this.groupeService.getGroupeById(this.idGroupe)) 
     }
     this.tousLesDossiers = this.lesDossiers
     this.trierListe()
@@ -49,7 +45,8 @@ export class TacheNonAffecteComponent implements OnInit {
   }  
   
   trierListe() {
-    this.lesDossiers = this.lesDossiers.filter(t => t.idUtilisateur == null && t.nature === Nature.DOSSIER && this.tacheService.getStatutTache(t) != Status.OK);
+    console.log(this.lesDossiers)
+    this.lesDossiers = this.lesDossiers.filter(t => t.utilisateur == null && this.tacheService.getStatutTache(t) != Status.OK);
   }
   
 

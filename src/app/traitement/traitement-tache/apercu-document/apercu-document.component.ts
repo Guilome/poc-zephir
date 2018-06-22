@@ -3,7 +3,6 @@ import {Tache} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import { ActionMetierService } from '../../../shared/services/action-metier.service';
 import { UtilisateurService } from '../../../shared/services/utilisateur.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -21,9 +20,7 @@ export class ApercuDocumentComponent implements OnInit {
 
   constructor(private tacheService: TacheService,
               private route: ActivatedRoute, 
-              private actionMetierService: ActionMetierService,
               private utilisateurService: UtilisateurService,
-              private sanitizer: DomSanitizer
               ) {
   }
 
@@ -33,7 +30,7 @@ export class ApercuDocumentComponent implements OnInit {
           const idPiece = +params.piece;
           this.piece = this.tacheService.getPieceById(idPiece);
           this.note = this.tacheService.getNoteById(idPiece);
-          this.actionMetier = this.actionMetierService.getById(idPiece);
+          this.actionMetier = this.tacheService.getTacheById(idPiece);
           if(this.piece != null) {  
             if (this.piece.urlDocument != null ) {
                 document.getElementById('divPdf').innerHTML = '<object data="'
@@ -60,7 +57,7 @@ export class ApercuDocumentComponent implements OnInit {
    * retourn le nom de celui qui a émit la note 
    */
   public getName(): string{
-    return this.utilisateurService.getName(this.note.idUtilisateur);
+    return this.utilisateurService.getName(this.note.utilisateur.ident);
   }
 
 }

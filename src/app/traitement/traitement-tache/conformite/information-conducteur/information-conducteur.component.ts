@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionMetierService } from '../../../../shared/services/action-metier.service';
 import { Tache } from '../../../../shared/domain/Tache';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TacheService } from '../../../../shared/services/tache.service';
 import { Modification, Donnee } from '../../../../shared/domain/Modification';
 import { ModificationService } from '../../../../shared/services/modification.service';
-import { DonnerTacheComponent } from '../../../../affecter-tache/donner-tache/donner-tache.component';
-import { $ } from 'protractor';
+
 
 @Component({
   selector: 'app-information-conducteur',
@@ -30,8 +28,7 @@ export class InformationConducteurComponent implements OnInit {
   public lesModifsC: Modification[] = []
   change: boolean
 
-  constructor(private actionMetierService: ActionMetierService,
-              private tacheService: TacheService,
+  constructor(private tacheService: TacheService,
               private modifService: ModificationService,
               private route: ActivatedRoute,
               private toastr: ToastrService) { }
@@ -43,6 +40,7 @@ export class InformationConducteurComponent implements OnInit {
     this.route.params.subscribe(data => {
       this.currentTache = this.tacheService.getPieceById(+data.piece);
     });
+    this.lesModifsC = this.modifService.getModificationByPiece(this.currentTache.ident)
     this.setInputValue();
   }
 
@@ -85,8 +83,8 @@ export class InformationConducteurComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.CRM_CONDUCTEUR) == null) {
         modifC = new Modification(this.currentTache.ident,Donnee.CRM_CONDUCTEUR, this.currentCRM, crm)
         this.currentCRM = crm
-        this.modifService.addModification(modifC)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.modifService.ajoutModification(modifC)
+        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée');
       } else {
         modifC = this.modifService.getModifByDonnee(Donnee.CRM_CONDUCTEUR);
@@ -98,8 +96,8 @@ export class InformationConducteurComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.CRM2_CONDUCTEUR) == null) {
         modifC = new Modification(this.currentTache.ident,Donnee.CRM2_CONDUCTEUR, this.currentCRM2, crm2)
         this.currentCRM2 = crm2
-        this.modifService.addModification(modifC)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.modifService.ajoutModification(modifC)
+        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée');
       } else {
         modifC = this.modifService.getModifByDonnee(Donnee.CRM2_CONDUCTEUR);
@@ -112,8 +110,8 @@ export class InformationConducteurComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.DOCRM05_CONDUCTEUR) == null) {
         modifC = new Modification(this.currentTache.ident,Donnee.DOCRM05_CONDUCTEUR, this.currentDateCRM05, dateCrm05)
         this.currentDateCRM05 = dateCrm05
-        this.modifService.addModification(modifC)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.modifService.ajoutModification(modifC)
+        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée');
       } else {
         modifC = this.modifService.getModifByDonnee(Donnee.DOCRM05_CONDUCTEUR);
@@ -125,8 +123,8 @@ export class InformationConducteurComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.RESP100_CONDUCTEUR) == null) {
         modifC = new Modification(this.currentTache.ident,Donnee.RESP100_CONDUCTEUR, this.currentResp100, resp100)
         this.currentResp100 = resp100
-        this.modifService.addModification(modifC)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.modifService.ajoutModification(modifC)
+        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée');
       } else {
         modifC = this.modifService.getModifByDonnee(Donnee.RESP100_CONDUCTEUR);
@@ -139,8 +137,8 @@ export class InformationConducteurComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.RESP50_CONDUCTEUR) == null) {
         modifC = new Modification(this.currentTache.ident,Donnee.RESP50_CONDUCTEUR, this.currentResp50, resp50)
         this.currentResp50 = resp50
-        this.modifService.addModification(modifC)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.modifService.ajoutModification(modifC)
+        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée');
       } else {
         modifC = this.modifService.getModifByDonnee(Donnee.RESP50_CONDUCTEUR);
@@ -152,8 +150,8 @@ export class InformationConducteurComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.RESP0_CONDUCTEUR) == null) {
         modifC = new Modification(this.currentTache.ident,Donnee.RESP0_CONDUCTEUR, this.currentResp0, resp0)
         this.currentResp0 = resp0
-        this.modifService.addModification(modifC)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.modifService.ajoutModification(modifC)
+        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée');
       } else {
         modifC = this.modifService.getModifByDonnee(Donnee.RESP0_CONDUCTEUR);
@@ -165,8 +163,8 @@ export class InformationConducteurComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.VI_CONDUCTEUR) == null) {
         modifC = new Modification(this.currentTache.ident,Donnee.VI_CONDUCTEUR, this.currentVolIncendie, volIncendie)
         this.currentVolIncendie = volIncendie
-        this.modifService.addModification(modifC)   
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.modifService.ajoutModification(modifC)   
+        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée');     
       }else {
         modifC = this.modifService.getModifByDonnee(Donnee.VI_CONDUCTEUR);
@@ -178,8 +176,8 @@ export class InformationConducteurComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.BDG_CONDUCTEUR) == null) {
         modifC = new Modification(this.currentTache.ident,Donnee.BDG_CONDUCTEUR, this.currentBrisGlace, brisDeGlace)
         this.currentBrisGlace = brisDeGlace
-        this.modifService.addModification(modifC)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.modifService.ajoutModification(modifC)
+        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée');        
       }else {
         modifC = this.modifService.getModifByDonnee(Donnee.BDG_CONDUCTEUR);
@@ -191,8 +189,8 @@ export class InformationConducteurComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.STATIONNEMENT_CONDUCTEUR) == null) {
         modifC = new Modification(this.currentTache.ident,Donnee.STATIONNEMENT_CONDUCTEUR, this.currentStationnement, stationnement)
         this.currentStationnement = stationnement
-        this.modifService.addModification(modifC)
-        this.actionMetierService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
+        this.modifService.ajoutModification(modifC)
+        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée');
       }else {
         modifC = this.modifService.getModifByDonnee(Donnee.STATIONNEMENT_CONDUCTEUR);

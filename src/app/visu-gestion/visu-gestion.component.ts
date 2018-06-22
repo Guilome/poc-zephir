@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {TitreService} from '../shared/services/titre.service';
 import {Router} from '@angular/router';
 import { TacheService } from '../shared/services/tache.service';
-import { ActionMetierService } from '../shared/services/action-metier.service';
 @Component({
   selector: 'app-visu-gestion',
   templateUrl: './visu-gestion.component.html',
@@ -13,14 +12,13 @@ export class VisuGestionComponent implements OnInit {
 
   constructor(private titreService: TitreService, 
               private route: Router,
-              private tacheservice: TacheService,
-              private actionMetierService: ActionMetierService) { }
+              private tacheservice: TacheService) { }
 
   ngOnInit() {
     this.titreService.updateTitre('Tableau de Bord');
     // vider la liste des pieces temporaire
     this.tacheservice.removePiecesTemporaire();
-    this.actionMetierService.supprimerActionMetierTemporaire();   
+    this.tacheservice.supprimerActionMetierTemporaire();   
   }
 
   ifConnexion(): boolean {

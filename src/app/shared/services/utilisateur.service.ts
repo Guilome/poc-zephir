@@ -1,24 +1,13 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Utilisateur} from '../domain/Utilisateur';
-import { Profil, ProfilCode } from '../domain/Profil';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class UtilisateurService {
 
-  private usersSubject: BehaviorSubject<Utilisateur[]> = new BehaviorSubject([]);
-  constructor() {
-
-    const listUsers = [];
-    listUsers.push(new Utilisateur(1,	'DUPONT',	'Camille', new Profil(ProfilCode.GESTIONNAIRE, true,false,false,false)));
-    listUsers.push(new Utilisateur(2,	'BARBIER',	'Cédric',	new Profil(ProfilCode.GESTIONNAIRE, false,true,false,false)));
-    listUsers.push(new Utilisateur(3,	'MOREAU',	'Dominique',	new Profil(ProfilCode.GESTIONNAIRE, true,false,true,false)));
-    listUsers.push(new Utilisateur(4,	'FOURNIER',	'Martine',	new Profil(ProfilCode.GESTIONNAIRE, true,false,false,true)));
-    listUsers.push(new Utilisateur(5,	'ROUSSEAU',	'Laurence',	new Profil(ProfilCode.SUPERVISEUR, false,true,false,true)));
-    listUsers.push(new Utilisateur(6,	'VOLTAIRE',	'Louis',	new Profil(ProfilCode.SUPERVISEUR, true,false,true,false)));
-    listUsers.push(new Utilisateur(7,	'BOYER',	'Eric',	new Profil(ProfilCode.DIRECTEUR, true,true,true,true)));
-    this.usersSubject.next(listUsers);
-  }
+  constructor() {}
+  listUsers = [];  
+  usersSubject: BehaviorSubject<Utilisateur[]> = new BehaviorSubject([]);
 
   getAll(): Utilisateur[] {
     return this.usersSubject.getValue();
@@ -30,5 +19,10 @@ export class UtilisateurService {
 
   public getUserById(ident: number) {
     return this.usersSubject.getValue().find(user => user.ident === ident);
+  }
+
+  public ajoutUtilisateur(utilisateur: Utilisateur) {
+    this.listUsers.push(utilisateur);
+    this.usersSubject.next(this.listUsers);    
   }
 }

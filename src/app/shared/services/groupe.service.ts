@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Groupe, Code} from '../domain/groupe';
+import {Groupe, CodeGroupe} from '../domain/Groupe';
 import {TacheService} from './tache.service';
 import {Tache, Nature, Status} from '../domain/Tache';
 import {BehaviorSubject} from '../../../../node_modules/rxjs';
@@ -13,18 +13,15 @@ export class GroupeService {
   // données en mémoire
   mapEnCours: BehaviorSubject<Map<string, number>> = new BehaviorSubject(new Map());
 
-  groupes = []
   taches = []
   tachesEnCours = []
   utilisateurs = []
+  groupes = []
 
-  constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {
-      
-    this.groupes.push(new Groupe(1, Code.AFN));
-    this.groupes.push(new Groupe(2, Code.AVN));
-    this.groupes.push(new Groupe(3, Code.REF));
-    this.groupes.push(new Groupe(4, Code.RES));
+  constructor(private tacheService: TacheService, private utilisateurService: UtilisateurService) {}
 
+  public ajoutGroupe(groupe: Groupe){
+    this.groupes.push(groupe)
   }
 
   getAll(): Groupe[] {
@@ -35,7 +32,7 @@ export class GroupeService {
     return this.groupes.find(groupe => groupe.ident === ident)
   }
 
-  public getGroupeByCode(code :Code): Groupe {
+  public getGroupeByCode(code :CodeGroupe): Groupe {
     return this.groupes.find(groupe => groupe.code == code)
   }
   
@@ -45,11 +42,10 @@ export class GroupeService {
    * @param filtre
    */
   getTacheEnCoursByGroupe(idGroupe: number, filtre: string): BehaviorSubject<Map<string, number>>{
-    this.tacheService.listerTaches().subscribe(data => this.tachesEnCours = data.filter(t => t.idGroupe == idGroupe));    
+    this.tachesEnCours = this.tacheService.getTacheEncours().filter(t => t.nature != Nature.PIECE && t.groupe.ident == idGroupe); 
 
     this.tachesEnCours = this.tachesEnCours.filter(t => this.tacheService.getStatutTache(t) != Status.OK ||
-                                                        this.tacheService.getStatutTache(t) != Status.NON_CONFORME &&
-                                                        t.nature != Nature.PIECE)
+                                                        this.tacheService.getStatutTache(t) != Status.NON_CONFORME)
     switch(filtre){
       case "gestionnaire" :
         this.refreshMapEnCoursByUtilisateur(idGroupe);
@@ -120,7 +116,7 @@ export class GroupeService {
    * @param {Code} code
    * @returns {number}
    */
-  public getIdGroupeByCode(code: Code): number {
+  public getIdGroupeByCode(code: CodeGroupe): number {
     return this.groupes.find(g => g.code === code).ident;
   }
 
@@ -147,7 +143,7 @@ export class GroupeService {
    */
   public dispatcherGestionnaire(utilisateurs: Utilisateur[], taches: Tache[]){
     taches.forEach( ( tache , i) => {
-      const tailleGestionnaires =  utilisateurs.filter(u => u.profil.groupes.find( g => g == tache.idGroupe)).length;
+      const tailleGestionnaires =  utilisateurs.filter(u => u.profil.groupes.find( g => g == tache.groupe.ident)).length;
       this.tacheService.affecterTacheUtilisateur(tache, utilisateurs[i % tailleGestionnaires])
     });
   }
