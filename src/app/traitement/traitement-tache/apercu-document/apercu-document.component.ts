@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Tache} from '../../../shared/domain/Tache';
+import {Tache, Nature} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
@@ -28,9 +28,13 @@ export class ApercuDocumentComponent implements OnInit {
     this.idSubscription = this.route.params.subscribe((params: any) => {
       if( params.piece != null) {
           const idPiece = +params.piece;
-          this.piece = this.tacheService.getTacheById(idPiece);
-          this.note = this.tacheService.getTacheById(idPiece);
-          this.actionMetier = this.tacheService.getTacheById(idPiece);
+          const tache = this.tacheService.getTacheById(idPiece); // peut être PIECE / TACHE / NOTE
+          if (tache != null) {
+              this.piece = tache.nature === Nature.PIECE ? tache : null;
+              this.note = tache.nature === Nature.NOTE ? tache : null;
+              this.actionMetier = tache.nature === Nature.TACHE ? tache : null;
+         }
+          
           if(this.piece != null) {  
             if (this.piece.urlDocument != null ) {
                 document.getElementById('divPdf').innerHTML = '<object data="'

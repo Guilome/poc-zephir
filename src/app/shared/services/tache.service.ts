@@ -63,9 +63,12 @@ export class TacheService {
     return this.listTaches.filter(t => t.nature == Nature.NOTE && t.idTacheMere === idDossier)
   }
   
-  getActionMetierByIdContext(idContext: number): BehaviorSubject<Tache[]>{
-    this.tacheSubject.next(this.listTaches.filter(act => act.context.ident == idContext && act.nature == Nature.TACHE));
-    return this.tacheSubject;
+    /**
+   * Retourne l'action métier qui est affectée à un dossier
+   * @param idDossier 
+   */
+  getActionMetierByDossier(idDossier: number): Tache[]{
+    return this.listTaches.filter(t => t.nature == Nature.TACHE && t.idTacheMere === idDossier);
   }
 
   getDossierByIdContext(idContext: number, userId: number): Tache{
