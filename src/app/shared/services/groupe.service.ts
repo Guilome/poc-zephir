@@ -43,9 +43,6 @@ export class GroupeService {
    */
   getTacheEnCoursByGroupe(idGroupe: number, filtre: string): BehaviorSubject<Map<string, number>>{
     this.tachesEnCours = this.tacheService.getTacheEncours().filter(t => t.nature != Nature.PIECE && t.groupe.ident == idGroupe); 
-
-    this.tachesEnCours = this.tachesEnCours.filter(t => this.tacheService.getStatutTache(t) != Status.OK ||
-                                                        this.tacheService.getStatutTache(t) != Status.NON_CONFORME)
     switch(filtre){
       case "gestionnaire" :
         this.refreshMapEnCoursByUtilisateur(idGroupe);
