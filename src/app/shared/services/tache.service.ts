@@ -83,23 +83,6 @@ export class TacheService {
     return this.listTaches.filter( t => t.dateCloture == null)
   }
   
-  public ajoutActionMetier(actionMetier: Tache){
-    this.listTaches.push(actionMetier)
-    this.tacheSubject.next(this.listTaches)
-  }
-  
-  public supprimerActionMetier(actionMetier: Tache){
-    this.listTaches.splice(this.listTaches.indexOf(actionMetier), 1)
-    //this.getAllByIdContext(actionMetier.context.ident)
-  }
-  
-  public supprimerActionMetierTemporaire() {
-    if( this.actionMetierTemporaire != null) {
-      this.supprimerActionMetier(this.actionMetierTemporaire);
-      this.actionMetierTemporaire = null;
-    }
-  }
-  
   /**
    * Appel web service
    */
@@ -196,10 +179,11 @@ export class TacheService {
    * La pièce est optionnel 
    * @param code 
    * @param dossier 
+   * @param nature 
    * @param piece 
    */
-  public createPieceTemporaire(code: string, dossier: Tache, piece?: Tache) {
-    const lPiece =  new Tache(Nature.PIECE);
+  public createTacheTemporaire(code: string, dossier: Tache, nature: Nature , piece?: Tache) {
+    const lPiece =  new Tache(nature);
     lPiece.codeTache = code;
     lPiece.dateCreation = new Date();
     lPiece.ident =  Math.floor(Math.random() * (999999 - 100000));
@@ -219,33 +203,54 @@ export class TacheService {
   /**
    * Permet de supprimer la liste des pièces stocké tomporairement
    * Permet aussi d'annuler les modif effectuées sur une pièce
+   * le bool sert à voir si on annule les modif effectuié sur une DMD d'AVT
    */
-  public removePiecesTemporaire() {
-    for (let pi of this.listPieceEnAttente) {
-      if(pi.motifNonConformite != null){
-        this.getTacheById(pi.ident).motifNonConformite = null;
-        this.getTacheById(pi.ident).dateCloture = null;
-        
-      }else {
-        this.listTaches.splice(this.listTaches.indexOf(pi), 1)
+  public removeTacheTemporaire(bool?: boolean) {
+    if (bool) {
+      if( this.actionMetierTemporaire != null) {
+        this.listTaches.splice(this.listTaches.indexOf(this.actionMetierTemporaire), 1)
+        this.actionMetierTemporaire = null;
       }
-    }
+
+    }else {
+        for (let pi of this.listPieceEnAttente) {
+          if(pi.motifNonConformite != null){
+            this.getTacheById(pi.ident).motifNonConformite = null;
+            this.getTacheById(pi.ident).dateCloture = null;
+            
+          }else {
+            this.listTaches.splice(this.listTaches.indexOf(pi), 1)
+          }
+        }
+      }
     this.tacheSubject.next(this.listTaches);
     this.listPieceEnAttente = [];
   }
+
+/*   public ajoutActionMetier(actionMetier: Tache){
+    this.listTaches.push(actionMetier)
+    this.tacheSubject.next(this.listTaches)
+  } */
+  
+/*   public supprimerActionMetierTemporaire() {
+    if( this.actionMetierTemporaire != null) {
+      this.listTaches.splice(this.listTaches.indexOf(this.actionMetierTemporaire), 1)
+      this.actionMetierTemporaire = null;
+    }
+  } */
 
   /**
    * Cas de la vérification : les pièces ajoutées seront conservées
    * ( aucun moyen d'annuler )
    */
-  viderPiecesTemporaire() {
+  viderTacheTemporaire() {
     this.listPieceEnAttente = [];
   }
   /**
    * Permet d'ajouter la liste des pieces en attente 
    * Appel web service à faire
    */
-  addPieceEnAttente(dossier: Tache) {
+  addTacheEnAttente(dossier: Tache) {
     for (const piece of this.listPieceEnAttente){
       // les pieces existe déjà dans la list du service 
       // appel web service 
@@ -356,49 +361,5 @@ export class TacheService {
   public affecterTacheGroupe(tache: Tache, groupe: Groupe){
     tache.groupe = groupe;
   }
-
-
-/**
- * 
- * @param tache 
- * @param code 
- */
-private create(dossier: Tache, code: string) {
-
-  const a = new Tache(Nature.TACHE);
-  a.ident =  Math.floor(Math.random() * (99999 - 10000));
-  a.groupe = dossier.groupe;
-  a.context = dossier.context;
-  a.codeTache = code;
-  a.dateCreation = new Date();
-  a.priorite = 1;
-  if ( dossier.nature === Nature.DOSSIER){
-      a.utilisateur = dossier.utilisateur;
-      a.idTacheMere = dossier.ident;
-  }
-
-  this.listTaches.push(a);
-  this.actionMetierTemporaire = a;
-  this.tacheSubject.next(this.listTaches.filter(act => act.context == dossier.context));
-}
-
-private createDemandeAvt(tache: Tache) {
-  this.create(tache, 'AVENANT');
-}
-
-updateDemandeAvt(tache: Tache) {
-  if (this.actionMetierTemporaire != null) {
-    this.actionMetierTemporaire.message = tache.message + '\n';
-  }else {
-    this.createDemandeAvt(tache);
-  }
-}
-
-createSansEffet(tache: Tache){
-  this.create(tache, 'SANS_EFFET');
-}
-
-
-
 }
 

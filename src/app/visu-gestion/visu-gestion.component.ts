@@ -17,8 +17,7 @@ export class VisuGestionComponent implements OnInit {
   ngOnInit() {
     this.titreService.updateTitre('Tableau de Bord');
     // vider la liste des pieces temporaire
-    this.tacheservice.removePiecesTemporaire();
-    this.tacheservice.supprimerActionMetierTemporaire();   
+    this.tacheservice.removeTacheTemporaire();
   }
 
   ifConnexion(): boolean {

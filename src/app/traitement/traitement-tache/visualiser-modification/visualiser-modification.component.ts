@@ -52,7 +52,7 @@ export class VisualiserModificationComponent implements OnInit {
     this.modifService.supprimerModif(modif)
     this.chargerListeModif()    
     if (this.lesModifs.length == 0) {      
-      this.tacheService.supprimerActionMetierTemporaire();
+      this.tacheService.removeTacheTemporaire(true);
       let idContext = this.currentDossier.context.ident
       this.router.navigate(['/TraitementTache', { id: this.currentDossier.context.ident, piece: modif.idTache }]);
     }

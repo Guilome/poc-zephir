@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Modification, Donnee } from '../../../../shared/domain/Modification';
-import { Tache } from '../../../../shared/domain/Tache';
+import { Tache, Nature } from '../../../../shared/domain/Tache';
 import { TacheService } from '../../../../shared/services/tache.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModificationService } from '../../../../shared/services/modification.service';
@@ -54,6 +54,9 @@ export class InformationPcComponent implements OnInit {
        date != this.currentDate || departement != this.currentDepartement || 
        prefecture != this.currentPrefecture) {
       this.change = true    
+      if( this.tacheService.getActionMetierByDossier(this.currentTache.idTacheMere).length == 0){
+        this.tacheService.createTacheTemporaire("AVT",this.tacheService.getDossierById(this.currentTache.idTacheMere), Nature.TACHE);
+      }
       this.DemandeAvt(numero, categorie, date, departement, prefecture)
     }
   }
@@ -93,7 +96,6 @@ export class InformationPcComponent implements OnInit {
       this.currentPrefecture = prefecture
       this.modifService.ajoutModification(modifPC)
     }
-    this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));    
     this.toastr.success('Une demande d\'avenant a été créée');
   }
 

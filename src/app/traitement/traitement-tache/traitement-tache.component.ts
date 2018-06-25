@@ -137,7 +137,7 @@ export class TraitementTacheComponent implements OnInit {
    * Valider le dossier 
    */
   valider() {  
-    if (this.tacheService.listPieceEnAttente.length > 0 ){
+    if (this.tacheService.listPieceEnAttente.length > 0 && this.tacheService.getActionMetierByDossier(this.dossier.ident).length == 0){
       if ( this.tacheService.getStatutTache(this.dossier) === 'En attente'){
         this.toastr.success("Le dossier a été mis <b>En attente</b>",'', {enableHtml: true});
         this.tacheService.affecterTacheUtilisateur(this.dossier, null)
@@ -145,11 +145,10 @@ export class TraitementTacheComponent implements OnInit {
       }else {
         this.toastr.success("Le dossier a été déplacé à la bannette <b>Vérification</b>",'', {enableHtml: true});
       }
-      this.tacheService.addPieceEnAttente(this.dossier);
-    } else if (this.tacheService.getAll().filter(a => a.context.ident == this.dossier.context.ident).length > 0) { // Si demande d'avenant
+      this.tacheService.addTacheEnAttente(this.dossier);
+    } else if (this.tacheService.getActionMetierByDossier(this.dossier.ident).length > 0) { // Si demande d'avenant
       // Ajout toute les demande d'avenant
-      this.tacheService.getAll().filter(a => a.context.ident == this.dossier.context.ident && a.nature == Nature.TACHE)
-                                .forEach(am => this.tacheService.ajoutActionMetier(am))
+      this.tacheService.getActionMetierByDossier(this.dossier.ident).forEach(am => this.tacheService.addTacheEnAttente(this.tacheService.getDossierById(am.idTacheMere)))
       // Transfert le dossier au groupe AVN
       this.tacheService.affecterTacheGroupe(this.dossier, this.groupeService.getGroupeByCode(CodeGroupe.AVT))
       this.tacheService.affecterTacheUtilisateur(this.dossier, null)
@@ -197,9 +196,9 @@ export class TraitementTacheComponent implements OnInit {
     }else {
         if(confirm('Confirmez-vous la demande de cette/ces pièce(s) ?\n' + lPieces )){ 
           for (let val of this.selectedItems){
-              this.tacheService.createPieceTemporaire(val.id, this.dossier);
+              this.tacheService.createTacheTemporaire(val.id, this.dossier, Nature.PIECE);
               if ( this.boolVerification ) {
-                this.tacheService.viderPiecesTemporaire();
+                this.tacheService.viderTacheTemporaire();
               }
           }
           this.currentModal.close();

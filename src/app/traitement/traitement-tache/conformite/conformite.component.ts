@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Tache, Status} from '../../../shared/domain/Tache';
+import {Tache, Status, Nature} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
 import {Subscription} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
@@ -169,7 +169,7 @@ export class ConformiteComponent implements OnInit {
     if ( this.motifselected.length > 0){
     this.piece.message = (<HTMLInputElement>document.getElementById('noteComplementaire')).value  
     if ( this.piece.status != 'À vérifier') {
-          this.tacheService.createPieceTemporaire(this.piece.codeTache, this.dossier, this.piece);
+          this.tacheService.createTacheTemporaire(this.piece.codeTache, this.dossier, Nature.PIECE, this.piece);
     } else {
       this.tacheService.demandeNouvellePiece(this.piece);
     }

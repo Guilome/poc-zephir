@@ -2,7 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { TacheService } from '../../../../shared/services/tache.service';
-import { Tache } from '../../../../shared/domain/Tache';
+import { Tache, Nature } from '../../../../shared/domain/Tache';
 import { Modification, Donnee } from '../../../../shared/domain/Modification';
 import { ModificationService } from '../../../../shared/services/modification.service';
 
@@ -63,7 +63,10 @@ export class InformationCgComponent implements OnInit {
        designation != this.currentDesignation || mda != this.currentMDA || 
        da != this.currentDA) { // Vérifie si au moins un des champs à été modifié
       
-      this.change = true    
+      this.change = true
+      if( this.tacheService.getActionMetierByDossier(this.currentTache.idTacheMere).length == 0){
+        this.tacheService.createTacheTemporaire("AVT",this.tacheService.getDossierById(this.currentTache.idTacheMere), Nature.TACHE);
+      }
       this.DemandeAvt(marque, immat, modele, mec, designation, mda, da)
     }
   }
@@ -84,7 +87,6 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.MARQUE_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MARQUE_VEHICULE, this.currentMarque, marque);
         this.modifService.ajoutModification(modifCG)
-        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getModifByDonnee(Donnee.MARQUE_VEHICULE);
@@ -96,7 +98,6 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.IMMATRICULATION_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.IMMATRICULATION_VEHICULE, this.currentImmat, immat)
         this.modifService.ajoutModification(modifCG)
-        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getModifByDonnee(Donnee.IMMATRICULATION_VEHICULE);
@@ -108,7 +109,6 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.MODELE_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MODELE_VEHICULE, this.currentModele, modele)
         this.modifService.ajoutModification(modifCG)
-        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getModifByDonnee(Donnee.MODELE_VEHICULE);
@@ -120,7 +120,6 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.MEC_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MEC_VEHICULE, this.currentMEC, mec)
         this.modifService.ajoutModification(modifCG)
-        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getModifByDonnee(Donnee.MEC_VEHICULE);
@@ -132,7 +131,6 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.DESIGNATION_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.DESIGNATION_VEHICULE, this.currentDesignation, designation)
         this.modifService.ajoutModification(modifCG)
-        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getModifByDonnee(Donnee.DESIGNATION_VEHICULE);
@@ -144,7 +142,6 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.MA_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.MA_VEHICULE, this.currentMDA, mda)
         this.modifService.ajoutModification(modifCG)
-        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getModifByDonnee(Donnee.MA_VEHICULE);
@@ -156,7 +153,6 @@ export class InformationCgComponent implements OnInit {
       if (this.modifService.getModifByDonnee(Donnee.DA_VEHICULE) == null) {
         modifCG = new Modification(this.currentTache.ident,Donnee.DA_VEHICULE, this.currentDA, da)
         this.modifService.ajoutModification(modifCG)
-        this.tacheService.updateDemandeAvt(this.tacheService.getDossierById(this.currentTache.idTacheMere));
         this.toastr.success('Une demande d\'avenant a été créée')
       } else {
         modifCG = this.modifService.getModifByDonnee(Donnee.DA_VEHICULE);
