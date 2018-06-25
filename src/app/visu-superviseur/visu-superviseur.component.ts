@@ -123,7 +123,7 @@ export class VisuSuperviseurComponent implements OnInit {
         this.dossiersEncours.forEach(d => {          
           this.dossierDetail.push({
             ident: d.ident,
-            code: d.code,
+            code: d.codeTache,
             numContrat: d.context.contrat.numero,
             produit: d.context.contrat.codeProduit,
             client: d.context.nomAppelClient,
@@ -139,7 +139,7 @@ export class VisuSuperviseurComponent implements OnInit {
         this.dossiersEncours.forEach(d => {          
           this.dossierDetail.push({
             ident: d.ident,
-            code: d.code,
+            code: d.codeTache,
             numContrat: d.context.contrat.numero,
             produit: d.context.contrat.codeProduit,
             client: d.context.nomAppelClient,
@@ -155,7 +155,7 @@ export class VisuSuperviseurComponent implements OnInit {
         this.dossiersEncours.forEach(d => {      
           this.dossierDetail.push({
             ident: d.ident,
-            code: d.code,
+            code: d.codeTache,
             numContrat: d.context.contrat.numero,
             produit: d.context.contrat.codeProduit,
             client: d.context.nomAppelClient,
@@ -172,7 +172,7 @@ export class VisuSuperviseurComponent implements OnInit {
         dossierFiltre.forEach(d => {      
           this.dossierDetail.push({
             ident: d.ident,
-            code: d.code,
+            code: d.codeTache,
             numContrat: d.context.contrat.numero,
             produit: d.context.contrat.codeProduit,
             client: d.context.nomAppelClient,
