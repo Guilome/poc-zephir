@@ -146,7 +146,7 @@ export class GraphiqueTermineComponent implements OnInit {
       this.dossiersTermine = this.tacheService.getTacheTermine().filter(tache => tache.dateCloture.toLocaleDateString() === value)  
     }
     else if (typeTri === "month") {
-      this.dossiersTermine = this.tacheService.getTacheEncours().filter(tache => tache.dateCloture.getMonth() == value)  
+      this.dossiersTermine = this.tacheService.getTacheTermine().filter(tache => tache.dateCloture.getMonth() == value)  
     }
     else if (typeTri == "week") {     
       this.dossiersTermine = this.tacheService.getTacheTermine().filter(tache => value[0] < tache.dateCloture.getDate() && tache.dateCloture.getDate() < value[1])      

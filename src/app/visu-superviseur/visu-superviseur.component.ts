@@ -57,9 +57,7 @@ export class VisuSuperviseurComponent implements OnInit {
           }
         })
       }
-    })
-    console.log(this.dossiersEncours);
-    
+    })    
   }
 
   /**
