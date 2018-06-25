@@ -61,32 +61,22 @@ export class ConformiteComponent implements OnInit {
     }
 
   /*
-   Fermer la tache et créer une nouvelle si étape "A_VALIDER"
+   Validation de la pièce à l"étape de vérification
     */
   conforme() {
     this.motifselected = [];
     if (this.piece.dateCloture == null) {
-      if (this.piece.status === Status.A_VERIFIER) {
       if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
         
         this.tacheService.toEtapeValidation(this.piece.ident);
         this.toastr.success('La pièce a été <b>vérifiée</b>', '', {enableHtml: true});
         this.docSuivant();
-      }
-
-    } else if (this.piece.status === Status.A_VALIDER) {
-      if (confirm('Confirmez-vous la conformité de ce document ?')) {
-        this.piece = this.tacheService.closePieceConforme(this.piece.ident);
-        this.toastr.success('La tâche a été <b>fermée</b>', '', {enableHtml: true});
-      }
-    }
+    } 
   } else {
       this.toastr.success('La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture), '', {enableHtml: true});
     }
 
   }
-
-
   /**
    * Cas de la Bannette vérification 
    */
@@ -95,11 +85,9 @@ export class ConformiteComponent implements OnInit {
     let idNext = null;
   
     for ( let val of this.tacheService.getPiecesByDossier(this.dossier.ident)) {
-        console.log(val.status);
         
-         if(val.status != 'À valider' ) {
+         if(val.status === Status.A_VERIFIER ) {
              idNext = val.ident;
-             console.log(idNext);
              break;
          } 
      }
