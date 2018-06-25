@@ -70,8 +70,8 @@ export class GroupeService {
     this.utilisateurs = this.getUtilisateurByGroupe(idGroupe).filter(g => g.profil.code != ProfilCode.DIRECTEUR)    
     this.utilisateurs.forEach(g => map.set( g.nom+' '+g.prenom, 0))
     for (const t of this.tachesEnCours) {
-      if (t.idUtilisateur != null && this.utilisateurs.find(u => u.ident == t.idUtilisateur)) {
-        let gestionnaire = this.utilisateurService.getUserById(t.idUtilisateur)
+      if (t.utilisateur != null && this.utilisateurs.find(u => u.ident == t.utilisateur.ident)) {
+        let gestionnaire = this.utilisateurService.getUserById(t.utilisateur.ident)
         map.set(gestionnaire.nom+' '+gestionnaire.prenom,  (map.get(gestionnaire.nom+' '+gestionnaire.prenom)) + 1);
       } else {
         map.set('Non Affectées', (map.get('Non Affectées')) + 1);
@@ -125,12 +125,11 @@ export class GroupeService {
    * @param idGroupe 
    */
   public dispatcher(idGroupe: number) {
-    let list;
+    const tailleGestionnaires = this.getUtilisateurByGroupe(idGroupe).filter(u => u.profil.code != ProfilCode.DIRECTEUR).length     
+    let list;    
     this.tacheService.listerTaches().subscribe(t => list = t)
-    list.filter(t => t.idGroupe == idGroupe).forEach( ( tache , i) => {
-      const tailleGestionnaires =  this.getUtilisateurByGroupe(idGroupe)
-          .filter(u => u.profil.code != ProfilCode.DIRECTEUR && u.profil.groupes.find( g => g == tache.idGroupe)).length;
-          this.tacheService.affecterTacheUtilisateur(tache, this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires])
+    list.filter(t => t.nature != Nature.PIECE && t.groupe.ident == idGroupe).forEach( ( tache , i) => {
+      this.tacheService.affecterTacheUtilisateur(tache, this.getUtilisateurByGroupe(idGroupe)[i % tailleGestionnaires])
     });
     this.tacheService.nextListSubject(list);
     this.getTacheEnCoursByGroupe(idGroupe, "gestionnaire");
@@ -143,7 +142,7 @@ export class GroupeService {
    */
   public dispatcherGestionnaire(utilisateurs: Utilisateur[], taches: Tache[]){
     taches.forEach( ( tache , i) => {
-      const tailleGestionnaires =  utilisateurs.filter(u => u.profil.groupes.find( g => g == tache.groupe.ident)).length;
+      const tailleGestionnaires = utilisateurs.filter(u => u.profil.groupes.find( g => g == tache.groupe.ident)).length;
       this.tacheService.affecterTacheUtilisateur(tache, utilisateurs[i % tailleGestionnaires])
     });
   }
@@ -155,7 +154,7 @@ export class GroupeService {
   public corbeille(idGroupe: number) {  
     let list;
     this.tacheService.listerTaches().subscribe(t => list = t)
-    list.filter(tache => tache.dateCloture == null).forEach(tache => tache.idUtilisateur = null);
+    list.filter(tache => tache.dateCloture == null).forEach(tache => tache.utilisateur = null);
     this.tacheService.nextListSubject(list);
     this.getTacheEnCoursByGroupe(idGroupe, "gestionnaire");
   }
