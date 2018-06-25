@@ -167,10 +167,10 @@ export class GroupeService {
     let list;
     if(idUser != null) {
       this.tacheService.listerTaches().subscribe(t => list = t);
-      if (list.filter(tache => tache.idUtilisateur === idUser).length == 0 ){
-        return false;
+      if (list.filter(tache => tache.nature === Nature.DOSSIER && tache.utilisateur != null && tache.utilisateur.ident === idUser).length == 0 ){
+         return false; 
       }
-      list.filter(tache => tache.idUtilisateur === idUser).forEach(tache => tache.idUtilisateur = null);
+      list.filter(tache => tache.nature === Nature.DOSSIER && tache.utilisateur != null && tache.utilisateur.ident === idUser).forEach(tache => tache.utilisateur = null);
       this.tacheService.nextListSubject(list);
       return true;
     }

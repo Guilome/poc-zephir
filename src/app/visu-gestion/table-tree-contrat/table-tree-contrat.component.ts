@@ -32,7 +32,8 @@ export class TableTreeContratComponent implements OnInit {
     let utilisateur = this.utilisateurService.getUserById(this.idCurrentUser)            
     this.tacheService.listerTaches().subscribe(data => {     
       //recupère les dossiers en fonction de l'utilisateur et si la date de cloture est non renseigné
-      this.dossiers = data.filter( d => d.nature === Nature.DOSSIER && d.dateCloture == null && d.utilisateur === utilisateur)
+      this.dossiers = data.filter( d => d.nature === Nature.DOSSIER && d.dateCloture == null && d.utilisateur === utilisateur);
+      
       this.dossierAffichage = []
       this.dossiers.forEach(dossier => {
         //récupère les pièces du dossier
