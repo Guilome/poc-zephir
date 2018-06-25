@@ -24,13 +24,6 @@ export class DetailTacheComponent implements OnInit {
         this.tache = this.tacheService.getTacheById(+params.piece);
       }
     });
-
-    /* TITRE 
-    if ( this.tache.status.toLowerCase() === 'à vérifier') {
-      this.titreService.updateTitre('Tâche de vérification');
-    } else if ( this.tache.status.toLowerCase() === 'à valider' ) {
-      this.titreService.updateTitre('Tâche de validation');
-    }*/
   }
 
 }

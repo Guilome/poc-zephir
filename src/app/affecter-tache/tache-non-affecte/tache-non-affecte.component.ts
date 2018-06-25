@@ -136,10 +136,10 @@ export class TacheNonAffecteComponent implements OnInit {
   statutFilter(enAttente, aVerifier, aValider, ok) {
     if( enAttente.checked || aVerifier.checked  || aValider.checked || ok.checked ){    
       this.lesDossiers = this.tousLesDossiers.filter( dos =>                                                  
-        (enAttente.checked ? this.tacheService.getStatutTache(dos) === 'En attente' : false) ||
-        (aVerifier.checked ? this.tacheService.getStatutTache(dos) === 'À vérifier'   : false) ||
-        (aValider.checked  ? this.tacheService.getStatutTache(dos) === 'À valider'    : false) || 
-        (ok.checked ? this.tacheService.getStatutTache(dos) === 'Ok' : false)
+        (enAttente.checked ? this.tacheService.getStatutTache(dos) === Status.EN_ATTENTE : false) ||
+        (aVerifier.checked ? this.tacheService.getStatutTache(dos) === Status.A_VERIFIER   : false) ||
+        (aValider.checked  ? this.tacheService.getStatutTache(dos) === Status.A_VALIDER    : false) || 
+        (ok.checked ? this.tacheService.getStatutTache(dos) === Status.OK : false)
       );
     } else {
       this.lesDossiers = this.tousLesDossiers;

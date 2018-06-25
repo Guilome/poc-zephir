@@ -124,12 +124,12 @@ export class ConformiteComponent implements OnInit {
 
   groupeVerification(): boolean {
     if(this.dossier != null)
-        return this.tacheService.getStatutTache(this.dossier) != 'À valider';
+        return this.tacheService.getStatutTache(this.dossier) != Status.A_VALIDER;
     return false;
   }
   groupeValidation(): boolean {
     if(this.dossier != null)
-      return this.tacheService.getStatutTache(this.dossier) === 'À valider';
+      return this.tacheService.getStatutTache(this.dossier) === Status.A_VALIDER;
     return false;
    }
 

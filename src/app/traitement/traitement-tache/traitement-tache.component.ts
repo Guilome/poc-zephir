@@ -101,9 +101,9 @@ export class TraitementTacheComponent implements OnInit {
     if ( this.dossier != null) {
       const idLabelStatus = document.getElementById('idLabelStatus');
       idLabelStatus.innerHTML = '<span style="color: green">OK</span>'
-            if(this.tacheService.getStatutTache(this.dossier) === 'À vérifier' || this.tacheService.getStatutTache(this.dossier) === 'En attente' )  {
+            if(this.tacheService.getStatutTache(this.dossier) === Status.A_VERIFIER || this.tacheService.getStatutTache(this.dossier) === Status.EN_ATTENTE )  {
                 idLabelStatus.innerHTML = '<span style="color: #ffc520">Vérification</span>';
-              } else if (this.tacheService.getStatutTache(this.dossier) === 'À valider') {
+              } else if (this.tacheService.getStatutTache(this.dossier) === Status.A_VALIDER) {
                 idLabelStatus.innerHTML = '<span style="color: #00b3ee">Validation</span>';
               } 
            else {
@@ -119,10 +119,10 @@ export class TraitementTacheComponent implements OnInit {
     const element = document.getElementsByClassName('bg-row')[0];
     if(element != null) {
         element.classList.remove('bg-row');
-        if (this.tacheService.getStatutTache(this.dossier) != 'À vérifier') {
+        if (this.tacheService.getStatutTache(this.dossier) != Status.A_VERIFIER) {
            for (let i = 0 ; i <document.getElementsByClassName('spanStatus').length ; i++ ){
                 const ele = document.getElementsByClassName('spanStatus')[i];
-                if (ele.innerHTML.toString().indexOf('À valider') > 0){
+                if (ele.innerHTML.toString().indexOf(Status.A_VALIDER) > 0){
                        ele.innerHTML = '<span class="badge badge-success float-right">Visualisée</span>';
                 }
            }

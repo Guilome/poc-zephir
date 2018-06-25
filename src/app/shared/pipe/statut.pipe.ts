@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Status } from '../domain/Tache';
 
 @Pipe({
   name: 'statut'
@@ -6,11 +7,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StatutPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
-    if(value === 'À valider'){
+    if(value === Status.A_VALIDER){
       return `<span class="badge badge-info">${value} </span>`;
-    }else if(value === 'À vérifier') {
+    }else if(value === Status.A_VERIFIER) {
     return `<span class="badge badge-warning">${value}</span>`;
-    } else if (value === 'Ok') {
+    } else if (value === Status.OK) {
       return `<span class="badge badge-success">${value}</span>`;
     }
 
