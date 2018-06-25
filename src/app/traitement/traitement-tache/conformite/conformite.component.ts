@@ -92,10 +92,8 @@ export class ConformiteComponent implements OnInit {
          } 
      }
        
-    if (idNext == null) {
-      if (this.utilisateurService.getUserById(this.idCurrentUser) != null) {
-       // this.tacheService.affecterTacheUtilisateur(this.dossier, null)
-      }      
+    if (idNext == null) {    
+      this.tacheService.affecterTacheUtilisateur(this.dossier, null)     
       this.router.navigate(['/gestionBO']);
     } else {
       this.router.navigate(['/TraitementTache', { id: this.piece.context.ident, piece: idNext }]);
