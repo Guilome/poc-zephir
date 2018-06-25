@@ -335,7 +335,7 @@ export class TacheService {
   }
 
   /**
-   *  Méthode qui modifie l'idUtilisateur d'une tâche 
+   *  Méthode qui modifie l'utilisateur d'une tâche 
    * @param tache 
    * @param utilisateur 
    */

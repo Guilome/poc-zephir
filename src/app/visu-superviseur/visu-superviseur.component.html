@@ -38,7 +38,7 @@
 								</tr>
 								<ng-container *ngFor="let dossier of dossierDetail">
 									<tr *ngIf="entete.statut == dossier.statusDossier">
-										<td>{{dossier.numContrat}} - {{dossier.code == 'AFN' ? 'AFN' : dossier.code}}</td>
+										<td>{{dossier.numContrat}} - {{dossier.codeTache}}</td>
 										<td>{{dossier.produit}}</td>
 										<td>{{dossier.client}}</td>
 										<td>{{dossier.intermediaire}}</td>
@@ -48,7 +48,7 @@
 										<td><a (click)="traiterPieces(dossier.ident)"><i class="fa fa-share-square-o fa-lg" title="Traiter"></i></a></td>
 									</tr>
 									<tr *ngIf="entete.nom === dossier.utilisateur || entete ==  dossier.statusDossier || entete.nom == dossier.produit ">
-										<td>{{dossier.numContrat}} - {{dossier.code == 'AFN' ? 'AFN' : dossier.code}}</td>
+										<td>{{dossier.numContrat}} - {{dossier.codeTache}}</td>
 										<td>{{dossier.produit}}</td>
 										<td>{{dossier.client}}</td>
 										<td>{{dossier.intermediaire}}</td>

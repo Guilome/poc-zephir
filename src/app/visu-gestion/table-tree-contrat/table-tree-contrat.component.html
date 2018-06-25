@@ -91,7 +91,7 @@
           </tr>
           <ng-container *ngFor="let piece of lesPieces">
             <tr *ngIf="piece.status == 'À valider' || piece.status == 'Ok'">
-              <th scope="row">{{getName(piece.idUtilisateurVerification)}}</th>
+              <th scope="row">{{getName(piece.utilisateurVerification.ident)}}</th>
               <td>{{piece.libelle}}</td>
               <td>Vérification de la pièce</td>
               <td>{{piece.dateVerification.toLocaleDateString()}}</td>
@@ -104,7 +104,7 @@
           </tr>
           <ng-container *ngFor="let piece of lesPieces">
             <tr *ngIf="piece.status == 'Ok'">
-              <th scope="row">{{getName(piece.idUtilisateurCloture)}}</th>
+              <th scope="row">{{getName(piece.utilisateurCloture.ident)}}</th>
               <td>{{piece.libelle}}</td>
               <td>Validation de la pièce</td>
               <td>{{piece.dateCloture.toLocaleDateString()}}</td>
