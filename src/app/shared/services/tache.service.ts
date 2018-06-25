@@ -227,18 +227,6 @@ export class TacheService {
     this.listPieceEnAttente = [];
   }
 
-/*   public ajoutActionMetier(actionMetier: Tache){
-    this.listTaches.push(actionMetier)
-    this.tacheSubject.next(this.listTaches)
-  } */
-  
-/*   public supprimerActionMetierTemporaire() {
-    if( this.actionMetierTemporaire != null) {
-      this.listTaches.splice(this.listTaches.indexOf(this.actionMetierTemporaire), 1)
-      this.actionMetierTemporaire = null;
-    }
-  } */
-
   /**
    * Cas de la vérification : les pièces ajoutées seront conservées
    * ( aucun moyen d'annuler )
