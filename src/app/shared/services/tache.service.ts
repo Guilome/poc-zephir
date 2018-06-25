@@ -76,7 +76,7 @@ export class TacheService {
   }
 
   getTacheTermine(){
-    return this.listTaches.filter( t => t.nature === Nature.DOSSIER && t.dateCloture != null)
+    return this.listTaches.filter( t => t.dateCloture != null)
   }
 
   getTacheEncours(){
