@@ -43,14 +43,15 @@ export class Tache {
   public dateCreation: Date;
   public dateLimite: Date; // format DD/MM/YYYY hh:mm
   public dateCloture: Date; // format DD/MM/YYYY hh:mm
+  public dateReception: Date;
+  public dateVerification: Date;
   public urlDocument: string;
   public motifNonConformite: string;
   public context: Context;
   public idTacheMere: number;
   public utilisateurVerification: Utilisateur;
   public utilisateurCloture: Utilisateur;
-  public dateReception: Date;
-  public dateVerification: Date;
+
   utilisateur: Utilisateur;
   groupe: Groupe;
 
