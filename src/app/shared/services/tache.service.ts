@@ -282,9 +282,9 @@ export class TacheService {
     if (tache.nature === Nature.DOSSIER){
       let lesPieces = this.getPiecesByDossier(tache.ident).filter(pi => pi.dateCloture == null);
       const mapCount = new Map<string,number>();
-      mapCount.set('En attente', 0);
-      mapCount.set('À vérifier', 0);
-      mapCount.set('À valider', 0);
+      mapCount.set(Status.EN_ATTENTE, 0);
+      mapCount.set(Status.A_VERIFIER, 0);
+      mapCount.set(Status.A_VALIDER, 0);
       const nbPiecesNonCloturees = lesPieces.length;
       if ( nbPiecesNonCloturees == 0) {
         return Status.OK// pour le jeu de test sinon le dossier est en attente
@@ -292,11 +292,11 @@ export class TacheService {
             for (let p of lesPieces) {
               mapCount.set(p.status, mapCount.get(p.status)+1);
             }
-            if(mapCount.get('À vérifier') > 0 )
+            if(mapCount.get(Status.A_VERIFIER) > 0 )
                 return Status.A_VERIFIER
-            else if (mapCount.get('À valider') == nbPiecesNonCloturees )
+            else if (mapCount.get(Status.A_VALIDER) == nbPiecesNonCloturees )
                 return Status.A_VALIDER;
-            else if( mapCount.get('En attente')  > 0)
+            else if( mapCount.get(Status.EN_ATTENTE)  > 0)
                 return Status.EN_ATTENTE;
       }
       return Status.OK 
