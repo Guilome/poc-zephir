@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Tache} from '../../shared/domain/Tache';
+import {Tache, Status, Nature} from '../../shared/domain/Tache';
 import {ActivatedRoute, Router } from '@angular/router';
 import {TacheService} from '../../shared/services/tache.service';
 import {ToastrService} from 'ngx-toastr';
@@ -64,7 +64,7 @@ export class TraitementTacheComponent implements OnInit {
     // without Subscribe
     if( this.dossier != null){
         this.statutDossier = this.tacheService.getStatutTache(this.dossier);
-        this.boolVerification = this.statutDossier === 'À vérifier'
+        this.boolVerification = this.statutDossier === Status.A_VERIFIER
     }
 
     // Multiple select piece complementaire :
@@ -148,7 +148,8 @@ export class TraitementTacheComponent implements OnInit {
       this.tacheService.addPieceEnAttente(this.dossier);
     } else if (this.tacheService.getAll().filter(a => a.context.ident == this.dossier.context.ident).length > 0) { // Si demande d'avenant
       // Ajout toute les demande d'avenant
-      this.tacheService.getAll().filter(a => a.context.ident == this.dossier.context.ident).forEach(am => this.tacheService.ajoutActionMetier(am))
+      this.tacheService.getAll().filter(a => a.context.ident == this.dossier.context.ident && a.nature == Nature.TACHE)
+                                .forEach(am => this.tacheService.ajoutActionMetier(am))
       // Transfert le dossier au groupe AVN
       this.tacheService.affecterTacheGroupe(this.dossier, this.groupeService.getGroupeByCode(CodeGroupe.AVT))
       this.tacheService.affecterTacheUtilisateur(this.dossier, null)
