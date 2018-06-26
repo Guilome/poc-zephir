@@ -110,14 +110,14 @@ export class VisuSuperviseurComponent implements OnInit {
     switch(this.filtre) {
       case "gestionnaire":
         this.gestionnaires.filter(g => g.profil.code != ProfilCode.DIRECTEUR).forEach(g => {
-          if (this.dossiersEncours.find(d => d.utilisateur.ident == g.ident)) {
+          if (this.dossiersEncours.filter(d => d.utilisateur != null && d.utilisateur.ident == g.ident)) {
             this.entetes.push({
               nom: g.nom,
               prenom: g.prenom
             })
           }
         })
-        if (this.dossiersEncours.find(d => d.utilisateur.ident == null)) {
+        if (this.dossiersEncours.filter(d => d.utilisateur == null)) {
           this.entetes.push({nom: "Non affectées", prenom: ""})
         }
         this.dossiersEncours.forEach(d => {          
