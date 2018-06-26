@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Tache, Status, Nature} from '../../../shared/domain/Tache';
 import {TacheService} from '../../../shared/services/tache.service';
@@ -11,6 +11,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-conformite',
   templateUrl: './conformite.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./conformite.component.css']
 })
 export class ConformiteComponent implements OnInit {
@@ -67,7 +68,7 @@ export class ConformiteComponent implements OnInit {
   conforme(modalConfirmation?: any) {
     this.motifselected = [];
     if (this.piece.dateCloture == null) {
-      this.currentModalConfirmation = this.modalService.open(modalConfirmation);
+      this.currentModalConfirmation = this.modalService.open(modalConfirmation,{backdropClass: 'transparent-backdrop', backdrop: 'static', centered: true} );
     } else {
       this.toastr.success('La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture), '', {enableHtml: true});
   }

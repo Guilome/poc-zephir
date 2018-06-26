@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AccueilComponent implements OnInit {
 
-  constructor(private toastr: ToastrService) { }
+  constructor() { }
 
   ngOnInit() {
   }
