@@ -159,31 +159,90 @@ export class TacheNonAffecteComponent implements OnInit {
 
   sortByDate(thDate) {
     if(this.boolSortDate){
-    this.lesDossiers = this.tousLesDossiers.sort(this.sortDateCroissant);
+      this.lesDossiers = this.tousLesDossiers.sort(this.sortDateCroissant);
     } else {
       this.lesDossiers = this.tousLesDossiers.sort(this.sortDateDeCroissant);
     }
     this.boolSortDate = !this.boolSortDate;
-    thDate.innerHTML = this.boolSortDate ? 'Date <i class="fa fa-sort-down"></i>' : 'Date <i class="fa fa-sort-up"></i>'
-    
+    thDate.innerHTML = this.boolSortDate ? 'Date <i class="fa fa-sort-down"></i>' : 'Date <i class="fa fa-sort-up"></i>'    
   }
 
   private sortDateCroissant = (dos1,dos2) => {
     if ( dos1.dateReception == dos2.dateReception )
-        return 0;
+      return 0;
     else if  (dos1.dateReception < dos2.dateReception) 
-        return 1;
-      else
-    return -1;
+      return 1;
+    else
+      return -1;
   }
 
   private sortDateDeCroissant = (dos1,dos2) => {
     if ( dos1.dateReception == dos2.dateReception )
-        return 0;
+      return 0;
     else if  (dos1.dateReception < dos2.dateReception) 
-        return -1;
-      else
-    return 1;
+      return -1;
+    else
+      return 1;
+  }
+
+  private boolSortProduit: boolean = true;  
+
+  sortByProduit(divProduit){
+    if(this.boolSortDate){
+      this.lesDossiers = this.tousLesDossiers.sort(this.sortProduitA);
+    } else {
+      this.lesDossiers = this.tousLesDossiers.sort(this.sortProduitNA);
+    }
+    this.boolSortProduit = !this.boolSortProduit;
+    divProduit.innerHTML = this.boolSortProduit ? '<i class="fa fa-sort-down"></i>' : '<i class="fa fa-sort-up"></i>'    
+  }
+  
+  private sortProduitA = (dos1,dos2) => {
+    if ( dos1.context.contrat.codeProduit === dos2.context.contrat.codeProduit )
+      return 0;
+    else if  (dos1.context.contrat.codeProduit < dos2.context.contrat.codeProduit) 
+      return 1;
+    else
+      return -1;
+  }
+  
+  private sortProduitNA = (dos1,dos2) => {
+    if ( dos1.context.contrat.codeProduit === dos2.context.contrat.codeProduit )
+      return 0;
+    else if  (dos1.context.contrat.codeProduit < dos2.context.contrat.codeProduit) 
+      return -1;
+    else
+      return 1;
+  }
+
+  private boolSortNumero: boolean = true; 
+
+  sortByNumDossier(divNumDossier){
+    if(this.boolSortNumero){
+      this.lesDossiers = this.tousLesDossiers.sort(this.sortNumeroCroissant);
+    } else {
+      this.lesDossiers = this.tousLesDossiers.sort(this.sortNumeroDecroissant);
+    }
+    this.boolSortNumero = !this.boolSortNumero;
+    divNumDossier.innerHTML = this.boolSortNumero ?'<i class="fa fa-sort-down"></i>' : '<i class="fa fa-sort-up"></i>'    
+  }
+
+  private sortNumeroCroissant = (dos1,dos2) => {
+    if ( dos1.context.contrat.numero === dos2.context.contrat.numero )
+      return 0;
+    else if  (dos1.context.contrat.numero < dos2.context.contrat.numero) 
+      return 1;
+    else
+      return -1;
+  }
+  
+  private sortNumeroDecroissant = (dos1,dos2) => {
+    if ( dos1.context.contrat.numero === dos2.context.contrat.numero )
+      return 0;
+    else if  (dos1.context.contrat.numero < dos2.context.contrat.numero) 
+      return -1;
+    else
+      return 1;
   }
 
   bannetteFilter(enAttente, aVerifier, aValider, ok): void {

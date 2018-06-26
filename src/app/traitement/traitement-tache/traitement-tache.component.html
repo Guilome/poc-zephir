@@ -9,7 +9,7 @@
   <div  class="col-3">
     <h4>Contrat <a href="/#">{{dossier.context.contrat.numero}} </a></h4>
     <h4>Statut : <label id="idLabelStatus" ></label> </h4>
-    <h4>Bannette : <label> {{dossier.code | bannette}}</label> </h4>
+    <h4>Bannette : <label> {{dossier.codeTache | bannette}}</label> </h4>
 
     <div *ngIf="dossier != null">
         <h5>Pièces justificatives :     

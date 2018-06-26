@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class BannettePipe implements PipeTransform {
 
   transform(value: string, args?: any): any {
-    if( value === '199_AFN')
+    if( value === 'AFN')
       return 'Affaire nouvelle';
     else if (value === 'RES')
       return 'Résiliation';
