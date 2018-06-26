@@ -68,11 +68,17 @@ export class ConformiteComponent implements OnInit {
   conforme(modalConfirmation?: any) {
     this.motifselected = [];
     if (this.piece.dateCloture == null) {
+      this.siIeCacherPdf();
       this.currentModalConfirmation = this.modalService.open(modalConfirmation,{backdropClass: 'transparent-backdrop', backdrop: 'static', centered: true} );
     } else {
       this.toastr.success('La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture), '', {enableHtml: true});
   }
 
+  }
+  private siIeCacherPdf() {
+    if ( !!document['documentMode']) { // cacher le pdf si le navigateur est IE
+      document.getElementById('divPdf').style.display = 'none';
+    }
   }
   /**
    * Quand l'utilisateur confirme de passer à l'étape de validation d'une pièce 
@@ -82,13 +88,14 @@ export class ConformiteComponent implements OnInit {
     this.toastr.success('La pièce a été <b>vérifiée</b>', '', {enableHtml: true});
     this.docSuivant();
     this.currentModalConfirmation.close();
-
+    document.getElementById('divPdf').style.display = 'block';
   }
   /**
    * Quand l'utilisateur annule le passage à l'étape de validation d'une pièce 
    */
   non() {
     this.currentModalConfirmation.close();
+    document.getElementById('divPdf').style.display = 'block';
   }
   /**
    * Cas de la Bannette vérification 
