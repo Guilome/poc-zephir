@@ -50,6 +50,7 @@ import { VisualiserModificationComponent } from './traitement/traitement-tache/v
 import { BannettePipe } from './shared/pipe/bannette.pipe';
 import { StatutPipe } from './shared/pipe/statut.pipe';
 import { NavTitreComponent } from './nav/nav-titre/nav-titre.component';
+import { ModalComponent } from './modal/modal.component';
 
 const appRoutes: Routes = [
   { path: 'Qui sommes nous ?', component: QuiSommeNousComponent},
@@ -107,6 +108,7 @@ const appRoutes: Routes = [
     VisualiserModificationComponent,
     BannettePipe,
     StatutPipe,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

@@ -26,6 +26,7 @@ export class TraitementTacheComponent implements OnInit {
   selectedItems = [];
   dropdownSettings = {};
   private currentModal: NgbModalRef;
+  private currentModalConfirmation: NgbModalRef;
   statutDossier: string;
   private boolVerification: boolean = false;
   constructor(private tacheService: TacheService,
@@ -185,27 +186,36 @@ export class TraitementTacheComponent implements OnInit {
   
   }
 
-  DemanderPiece() {
-
-    let lPieces = '';
-    for (let val of this.selectedItems){
-      lPieces += val.itemName + '\n';
-    }
+  DemanderPiece(content: any) {
     if (this.selectedItems.length < 1){
       this.toastr.error('Veuillez sélectionner une ou plusieurs pièce(s)')
     }else {
-        if(confirm('Confirmez-vous la demande de cette/ces pièce(s) ?\n' + lPieces )){ 
-          for (let val of this.selectedItems){
-              this.tacheService.createTacheTemporaire(val.id, this.dossier, Nature.PIECE);
-              if ( this.boolVerification ) {
-                this.tacheService.viderTacheTemporaire();
-              }
-          }
-          this.currentModal.close();
-      }
+        this.currentModalConfirmation = this.modalService.open(content);
     }    
   }
 
+  confirmationDemandePiece() {
+
+      for (let val of this.selectedItems){
+          this.tacheService.createTacheTemporaire(val.id, this.dossier, Nature.PIECE);
+          if ( this.boolVerification ) {
+            this.tacheService.viderTacheTemporaire();// les pieces seront tjr présente ds le cas de la vérif 
+          }
+      }
+      this.currentModalConfirmation.close();
+      this.currentModal.close();
+ }
+  piecesSelectionnees() : string {
+    let lPieces = '[';
+    for (let val of this.selectedItems){
+      lPieces += val.itemName + ', ';
+    }
+    lPieces += '] ';
+    return lPieces;
+  }
+  closeModal() {
+    this.currentModalConfirmation.close();
+  }
   Statut(): string {
     return this.tacheService.getStatutTache(this.dossier);
   }

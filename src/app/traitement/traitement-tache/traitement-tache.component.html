@@ -115,7 +115,7 @@
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" (click)="c('Close click')">Annuler</button>
-          <button type="button" class="btn btn-outline-primary" (click)="DemanderPiece()" >Enregistrer</button>
+          <button type="button" class="btn btn-outline-primary" (click)="DemanderPiece(modalConfirmationAjoutPiece)" >Enregistrer</button>
       </div>
 
 </ng-template>
@@ -140,4 +140,9 @@
           <button type="button" class="btn btn-outline-primary" (click)="AjouterNote(msg)" >Ajouter</button>
       </div>
 
+</ng-template>
+
+<!-- MODAL confirmation de la demande de pièces -->
+<ng-template #modalConfirmationAjoutPiece>
+  <app-modal (cancelModal)="closeModal()" (confirmModal)="confirmationDemandePiece()" [title]="'Confirmation'" [body]="'Confirmez-vous la demande de cette/ces pièce(s) ?\n' + piecesSelectionnees()"></app-modal>
 </ng-template>

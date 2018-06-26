@@ -3,7 +3,7 @@
   <div class="align-middle" xmlns="" *ngIf="piece.urlDocument != null">
 
     <button type="button" title="Conforme" [disabled]="piece.dateVerification != null" 
-      class="btn btn-success btn-circle fa fa-check" (click)="conforme()">  
+      class="btn btn-success btn-circle fa fa-check" (click)="conforme(modalConfirmationVerifiication)">  
     </button>
 
     <button type="button" title="Non conforme" [disabled]="piece.dateVerification != null" 
@@ -57,12 +57,6 @@
     </button>
   </div>
  
-  <!--div *ngIf="piece.dateVerification != null && piece.dateCloture!= null">
-    <br>
-    <p>Vérifié le {{piece.dateVerification | date: 'dd/MM/yyyy'}} par {{getNomVerification()}}</p>
-    <p>Validé le {{piece.datecloture | date: 'dd/MM/yyyy'}} par {{getNomValidation()}}</p>
-  </div-->
-
 </div>
 <!-- Modal motif de renouvellement de la pièce -->
 <ng-template #modalRenouvellement let-c="close" let-d="dismiss">
@@ -88,4 +82,9 @@
 
       </div>
 
+</ng-template>
+
+<!-- MODAL confirmation de vérification -->
+<ng-template #modalConfirmationVerifiication>
+  <app-modal (cancelModal)="non()" (confirmModal)="oui()" [title]="'Confirmation'" [body]="'Etes-vous sûr de vouloir passer à l\'étape de validation ?'"></app-modal>
 </ng-template>

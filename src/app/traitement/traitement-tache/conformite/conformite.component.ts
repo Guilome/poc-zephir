@@ -29,6 +29,7 @@ export class ConformiteComponent implements OnInit {
   private dossier: Tache;
 
   currentModal: NgbModalRef;
+  currentModalConfirmation: NgbModalRef;
   dropdownSettings = {};
   motifselected = [];
   motifsData: any;
@@ -63,19 +64,30 @@ export class ConformiteComponent implements OnInit {
   /*
    Validation de la pièce à l"étape de vérification
     */
-  conforme() {
+  conforme(modalConfirmation?: any) {
     this.motifselected = [];
     if (this.piece.dateCloture == null) {
-      if (confirm('Etes-vous sûr de vouloir passer à l\'étape de validation ?')) {
-        
-        this.tacheService.toEtapeValidation(this.piece.ident);
-        this.toastr.success('La pièce a été <b>vérifiée</b>', '', {enableHtml: true});
-        this.docSuivant();
-    } 
-  } else {
+      this.currentModalConfirmation = this.modalService.open(modalConfirmation);
+    } else {
       this.toastr.success('La tâche a été fermée le ' + this.formatDateDDmmYYYY(this.piece.dateCloture), '', {enableHtml: true});
-    }
+  }
 
+  }
+  /**
+   * Quand l'utilisateur confirme de passer à l'étape de validation d'une pièce 
+   */
+  oui(){
+    this.tacheService.toEtapeValidation(this.piece.ident);
+    this.toastr.success('La pièce a été <b>vérifiée</b>', '', {enableHtml: true});
+    this.docSuivant();
+    this.currentModalConfirmation.close();
+
+  }
+  /**
+   * Quand l'utilisateur annule le passage à l'étape de validation d'une pièce 
+   */
+  non() {
+    this.currentModalConfirmation.close();
   }
   /**
    * Cas de la Bannette vérification 
