@@ -16,17 +16,21 @@
                           <div class="input-group-addon">Filtrer par N° d'affaire : </div>
                           <input type="text" class="form-control" placeholder="N°..." (keyup)="onKeyUpFilter($event)">
                     </div>
+                    <span (click)="sortByNumDossier(divNumDossier)" #divNumDossier><i class="fa fa-sort"></i></span>
                 </div>
             </th>
-            <th>                <div class="dropdown">
-                <button class="btn btn-light dropdown-toggle" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Produit
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdown2">
+            <th>
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Produit
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdown2">
                       <div class="input-group-addon">Filtrer par produit : </div>
                       <input type="text" class="form-control" placeholder="Produit..." (keyup)="produitFilter($event)">
+                    </div>
+                    <span (click)="sortByProduit(divProduit)" #divProduit><i class="fa fa-sort"></i></span>
                 </div>
-            </div></th>
+            </th>
             <th (click)="sortByDate(thDate)" #thDate>Date <i class="fa fa-sort"></i></th >
             <th>
                     <div class="dropdown">
