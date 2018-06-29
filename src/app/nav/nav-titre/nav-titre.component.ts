@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TitreService} from '../../shared/services/titre.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-titre',
@@ -9,7 +10,7 @@ import {TitreService} from '../../shared/services/titre.service';
 export class NavTitreComponent implements OnInit {
 
   public titre: string;
-  constructor(private titreService: TitreService) { }
+  constructor(private titreService: TitreService, private router: Router) { }
 
   ngOnInit() {
     this.titreService.getTitre().subscribe(titre => this.titre = titre);
@@ -24,6 +25,7 @@ export class NavTitreComponent implements OnInit {
   }
 
   ifConnexion(): boolean {
-    return localStorage.getItem('USER') != null;
+    console.log(); 
+    return localStorage.getItem('USER') != null && this.router.url.indexOf('TraitementTache') < 0;
   }
 }
