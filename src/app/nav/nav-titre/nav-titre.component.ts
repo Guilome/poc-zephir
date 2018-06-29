@@ -25,7 +25,6 @@ export class NavTitreComponent implements OnInit {
   }
 
   ifConnexion(): boolean {
-    console.log(); 
     return localStorage.getItem('USER') != null && this.router.url.indexOf('TraitementTache') < 0;
   }
 }
