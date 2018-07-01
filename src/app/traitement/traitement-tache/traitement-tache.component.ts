@@ -123,7 +123,7 @@ export class TraitementTacheComponent implements OnInit {
         if (this.tacheService.getStatutTache(this.dossier) != Status.A_VERIFIER) {
            for (let i = 0 ; i <document.getElementsByClassName('spanStatus').length ; i++ ){
                 const ele = document.getElementsByClassName('spanStatus')[i];
-                if (ele.innerHTML.toString().indexOf(Status.A_VALIDER) > 0){
+                if (ele.innerHTML.toString().indexOf('Contrôlée') > 0){
                        ele.innerHTML = '<span class="badge badge-success float-right">Visualisée</span>';
                 }
            }

@@ -8,7 +8,7 @@ export class StatutPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
     if(value === Status.A_VALIDER){
-      return `<span class="badge badge-info">${value} </span>`;
+      return `<span class="badge badge-info">Contrôlée </span>`;
     }else if(value === Status.A_VERIFIER) {
     return `<span class="badge badge-warning">${value}</span>`;
     } else if (value === Status.OK) {

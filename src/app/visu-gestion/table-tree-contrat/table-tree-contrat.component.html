@@ -40,7 +40,7 @@
             <th colspan="1"></th>
             <td colspan="1">{{piece.priorite}}</td>
             <td colspan="1">{{piece.libelle}}</td>
-            <td colspan="1">{{piece.status}}</td>
+            <td colspan="1">{{piece.status === 'À valider' ? 'Contrôlée' : piece.status}}</td>
           </tr>
         </ng-container>
       </ng-container> 
