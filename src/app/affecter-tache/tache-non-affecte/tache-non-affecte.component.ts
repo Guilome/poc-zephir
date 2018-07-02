@@ -45,7 +45,6 @@ export class TacheNonAffecteComponent implements OnInit {
   }  
   
   trierListe() {
-    console.log(this.lesDossiers)
     this.lesDossiers = this.lesDossiers.filter(t => t.utilisateur == null && this.tacheService.getStatutTache(t) != Status.OK);
   }
   
